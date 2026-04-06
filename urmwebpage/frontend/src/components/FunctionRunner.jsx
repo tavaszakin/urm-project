@@ -28,7 +28,9 @@ import FunctionDefinitionPreview from "./FunctionDefinitionPreview.jsx";
 import PrimitiveRecursionDefinitionPreview from "./PrimitiveRecursionDefinitionPreview.jsx";
 import { InlineMath, MathEquals } from "./MathText.jsx";
 
-const API_BASE = "http://127.0.0.1:8000";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+console.log("VITE_API_URL:", import.meta.env.VITE_API_URL);
+console.log("API_URL used:", API_URL);
 const DEFAULT_FUNCTION_SPEC = { kind: "successor" };
 const VARIABLE_NAMES = ["x", "y", "z", "w", "v"];
 const PLAYBACK_INTERVAL_MS = 800;
@@ -548,7 +550,7 @@ export default function FunctionRunner({
         initial_registers: registerValues,
       };
 
-      const response = await fetch(`${API_BASE}/run-function`, {
+      const response = await fetch(`${API_URL}/run-function`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

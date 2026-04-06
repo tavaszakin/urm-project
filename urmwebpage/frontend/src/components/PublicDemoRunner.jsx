@@ -5,7 +5,7 @@ import FunctionDefinitionPreview from "./FunctionDefinitionPreview.jsx";
 import { DEMO_EXPLANATION, DEMO_FUNCTION_SPEC, DEMO_INPUTS } from "../demoDefaults.js";
 import { getFunctionDisplayName } from "../functionMetadata.js";
 
-const API_BASE = "http://127.0.0.1:8000";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 const PLAYBACK_INTERVAL_MS = 800;
 
 function resizeInputs(values, count) {
@@ -29,7 +29,7 @@ export default function PublicDemoRunner() {
       setIsLoading(true);
       setError("");
 
-      const response = await fetch(`${API_BASE}/run-function`, {
+      const response = await fetch(`${API_URL}/run-function`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
