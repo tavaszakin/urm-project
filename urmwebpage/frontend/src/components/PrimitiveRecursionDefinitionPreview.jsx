@@ -6,6 +6,13 @@ import FunctionExpressionView, {
 } from "./FunctionExpressionView.jsx";
 import { getProjectionVariableMeaning } from "../utils/mathNotation.jsx";
 import DefinitionMathLine from "./DefinitionMathLine.jsx";
+import {
+  FunctionCardControls,
+  FunctionCardLabel,
+  FunctionCardMath,
+  FunctionCardRow,
+  FunctionCardRows,
+} from "./FunctionCardLayout.jsx";
 
 const VARIABLE_NAMES = ["x", "y", "z", "w", "v"];
 
@@ -98,6 +105,10 @@ function renderConcreteExpression(spec, args = []) {
 
   if (kind === "successor" || kind === "succ") {
     return [buildCall("S", [argNodes[0] ?? createExpressionText("x")])];
+  }
+
+  if (kind === "predecessor" || kind === "pred" || kind === "truncated_predecessor") {
+    return [createExpressionText(`${argText[0] ?? "x"}∸1`)];
   }
 
   if (kind === "zero") {
@@ -204,10 +215,10 @@ export default function PrimitiveRecursionDefinitionPreview({
           <div style={previewTitleStyle}>{title}</div>
         ) : null}
 
-        <div style={currentCallExpression ? previewSummaryColumnsStyle : previewSingleColumnStyle}>
-          <div style={previewDefinitionRowStyle}>
-            {hideDefinitionLabel ? <div /> : <div style={previewLabelStyle}>Definition</div>}
-            <div className="math-text" style={previewMathSectionStyle}>
+        <FunctionCardRows>
+          <FunctionCardRow>
+            {hideDefinitionLabel ? <div /> : <FunctionCardLabel style={previewLabelStyle}>Definition</FunctionCardLabel>}
+            <FunctionCardMath className="math-text" style={previewMathSectionStyle}>
               <div style={previewPrimaryMathStyle}>
                 <DefinitionMathLine expressions={baseLine} />
                 <DefinitionMathLine expressions={stepLine} />
@@ -218,18 +229,20 @@ export default function PrimitiveRecursionDefinitionPreview({
                   <DefinitionMathLine expressions={hLine} tone="muted" />
                 </div>
               ) : null}
-            </div>
-          </div>
+            </FunctionCardMath>
+            <FunctionCardControls />
+          </FunctionCardRow>
 
           {currentCallExpression ? (
-            <div style={previewCallRowStyle}>
-              {hideCurrentCallLabel ? <div /> : <div style={previewLabelStyle}>Current call</div>}
-              <div className="math-text" style={previewCallMathBlockStyle}>
+            <FunctionCardRow>
+              {hideCurrentCallLabel ? <div /> : <FunctionCardLabel style={previewLabelStyle}>Current call</FunctionCardLabel>}
+              <FunctionCardMath className="math-text" style={previewCallMathBlockStyle}>
                 <DefinitionMathLine expressions={[currentCallExpression]} />
-              </div>
-            </div>
+              </FunctionCardMath>
+              <FunctionCardControls />
+            </FunctionCardRow>
           ) : null}
-        </div>
+        </FunctionCardRows>
       </div>
     </section>
   );
@@ -250,26 +263,6 @@ const previewTitleStyle = {
   opacity: 0.86,
 };
 
-const previewDefinitionRowStyle = {
-  display: "grid",
-  gap: 3,
-  minWidth: 0,
-};
-
-const previewSingleColumnStyle = {
-  display: "grid",
-  gap: 0,
-  minWidth: 0,
-};
-
-const previewSummaryColumnsStyle = {
-  display: "grid",
-  gridTemplateColumns: "minmax(0, 1fr) auto",
-  gap: 14,
-  alignItems: "start",
-  minWidth: 0,
-};
-
 const previewMathSectionStyle = {
   display: "grid",
   gap: 2,
@@ -288,12 +281,6 @@ const previewLabelStyle = {
   color: "var(--surface-text-structural)",
   paddingTop: 3,
   opacity: 0.74,
-};
-
-const previewCallRowStyle = {
-  display: "grid",
-  gap: 2,
-  minWidth: 0,
 };
 
 const previewMathBlockStyle = {

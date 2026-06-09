@@ -244,4 +244,3 @@ from visualize import pretty_trace
 
 res = run(add(), [4, 3])
 pretty_trace(res["trace"])
-

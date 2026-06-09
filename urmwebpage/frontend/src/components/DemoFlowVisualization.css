@@ -1,0 +1,280 @@
+.demo-flow-card {
+  display: grid;
+  gap: var(--app-space-4);
+  margin-top: var(--app-space-4);
+}
+
+.demo-flow-card-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: var(--app-space-3);
+}
+
+.demo-flow-title {
+  margin: 0;
+  color: var(--app-text-color);
+  font-size: var(--app-section-title-size);
+  font-weight: var(--app-section-title-weight);
+  letter-spacing: 0;
+  line-height: var(--app-section-title-line);
+}
+
+.demo-flow-caption {
+  margin: 4px 0 0;
+  color: var(--app-muted-color);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.demo-flow-step-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--machine-active-border, var(--app-primary));
+  border-radius: var(--app-control-radius);
+  background: var(--machine-active-bg, var(--theme-accent-soft));
+  color: var(--machine-active-text, var(--app-text-color));
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 1.35;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.demo-flow-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.75fr) minmax(230px, 0.65fr);
+  gap: var(--app-space-4);
+  align-items: stretch;
+}
+
+.demo-flow-diagram {
+  min-width: 0;
+  border: 1px solid #000;
+  border-radius: var(--app-control-radius);
+  background: var(--app-surface);
+  overflow: hidden;
+}
+
+.demo-flow-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 460px;
+}
+
+.demo-flow-svg-edge-path {
+  fill: none;
+  stroke: #000;
+  stroke-width: 0.85;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
+.demo-flow-arrow-marker-path {
+  fill: #000;
+}
+
+.demo-flow-svg-edge-label-object,
+.demo-flow-svg-node-label-object,
+.demo-flow-svg-endpoint-label-object {
+  overflow: visible;
+}
+
+.demo-flow-svg-edge-label {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  color: #000;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1;
+}
+
+.demo-flow-svg-node-shape {
+  fill: var(--app-surface);
+  stroke: #000;
+  stroke-width: 0.75;
+}
+
+.demo-flow-svg-node-terminal .demo-flow-svg-node-shape {
+  fill: var(--app-surface);
+}
+
+.demo-flow-svg-node-decision .demo-flow-svg-node-shape {
+  fill: var(--app-surface);
+}
+
+.demo-flow-svg-node-state .demo-flow-svg-node-shape {
+  fill: var(--app-surface);
+  stroke-width: 0.65;
+}
+
+.demo-flow-svg-node.is-active .demo-flow-svg-node-shape {
+  fill: var(--machine-active-bg, var(--theme-accent-soft));
+  stroke: #000;
+  stroke-width: 1;
+}
+
+.demo-flow-svg-node-label {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 3px;
+  width: 100%;
+  height: 100%;
+  color: #000;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.demo-flow-svg-node-state .demo-flow-svg-node-label {
+  font-size: 12.5px;
+}
+
+.demo-flow-svg-node-label .math-text,
+.demo-flow-svg-endpoint-label .math-text,
+.demo-flow-svg-edge-label .math-text,
+.demo-flow-instruction .math-text,
+.demo-flow-register-value .math-text {
+  color: #000;
+}
+
+.demo-flow-svg-node-label .katex,
+.demo-flow-svg-endpoint-label .katex,
+.demo-flow-svg-edge-label .katex {
+  font-size: 1em;
+}
+
+.demo-flow-svg-node.is-active .demo-flow-svg-node-label {
+  font-weight: 600;
+}
+
+.demo-flow-svg-endpoint-label {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 2px;
+  width: 100%;
+  height: 100%;
+  color: #000;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.demo-flow-svg-endpoint-label-object.is-active .demo-flow-svg-endpoint-label {
+  color: var(--machine-active-text, #000);
+  font-weight: 600;
+}
+
+.demo-flow-status {
+  display: grid;
+  gap: var(--app-space-3);
+  align-content: start;
+  padding: 12px;
+  border: 1px solid #000;
+  border-radius: var(--app-control-radius);
+  background: var(--app-surface);
+}
+
+.demo-flow-status-block {
+  display: grid;
+  gap: 8px;
+}
+
+.demo-flow-status-label {
+  color: #000;
+  font-size: var(--app-label-size);
+  font-weight: var(--app-label-weight);
+  letter-spacing: var(--app-label-letter-spacing);
+  line-height: var(--app-label-line);
+  text-transform: uppercase;
+}
+
+.demo-flow-instruction {
+  padding: 9px 10px;
+  border: 1px solid #000;
+  border-radius: var(--app-control-radius);
+  background: var(--app-surface);
+  color: #000;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.demo-flow-registers {
+  display: grid;
+  gap: 8px;
+}
+
+.demo-flow-register {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 10px;
+  border: 1px solid #000;
+  border-radius: var(--app-control-radius);
+  background: var(--app-surface);
+}
+
+.demo-flow-register-name,
+.demo-flow-register-value {
+  color: #000;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 1.35;
+  font-variant-numeric: tabular-nums;
+}
+
+.demo-flow-register-name {
+  color: #000;
+}
+
+.demo-flow-note {
+  color: #000;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+@media (max-width: 980px) {
+  .demo-flow-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .demo-flow-card-header {
+    flex-direction: column;
+  }
+
+  .demo-flow-svg {
+    min-height: 360px;
+  }
+}
+
+.border-experiment[data-border-experiment="on"] .demo-flow-diagram,
+.border-experiment[data-border-experiment="on"] .demo-flow-status,
+.border-experiment[data-border-experiment="on"] .demo-flow-instruction,
+.border-experiment[data-border-experiment="on"] .demo-flow-register {
+  border-color: var(--border-diagram);
+}
+
+.border-experiment[data-border-experiment="on"] .demo-flow-svg-edge-path,
+.border-experiment[data-border-experiment="on"] .demo-flow-svg-node-shape,
+.border-experiment[data-border-experiment="on"] .demo-flow-svg-node.is-active .demo-flow-svg-node-shape {
+  stroke: var(--border-diagram);
+}
+
+.border-experiment[data-border-experiment="on"] .demo-flow-arrow-marker-path {
+  fill: var(--border-diagram);
+}

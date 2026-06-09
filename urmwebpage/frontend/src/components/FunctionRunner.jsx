@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import ByHandEvaluationCard from "./ByHandEvaluationCard.jsx";
 import MachinePanel from "./MachinePanel";
+import MachinePlaybackControls from "./MachinePlaybackControls.jsx";
 import NestedEvaluationPanel from "./NestedEvaluationPanel";
 import FunctionSpecBuilder, {
   COMPOSITION_FUNCTION_ORDER,
@@ -25,16 +26,24 @@ import {
   normalizeFunctionKind,
 } from "../functionMetadata.js";
 import FunctionDefinitionPreview from "./FunctionDefinitionPreview.jsx";
+import { FunctionCard } from "./FunctionCardLayout.jsx";
 import PrimitiveRecursionDefinitionPreview from "./PrimitiveRecursionDefinitionPreview.jsx";
 import { InlineMath, MathEquals } from "./MathText.jsx";
+import { API_URL } from "../api.js";
+import { getTracePlaybackTiming } from "../utils/tracePlayback.js";
+import {
+  CHARACTERISTIC_RELATIONS,
+  normalizeCharacteristicRelation,
+} from "../characteristicMetadata.js";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
-console.log("VITE_API_URL:", import.meta.env.VITE_API_URL);
-console.log("API_URL used:", API_URL);
 const DEFAULT_FUNCTION_SPEC = { kind: "successor" };
 const VARIABLE_NAMES = ["x", "y", "z", "w", "v"];
-const PLAYBACK_INTERVAL_MS = 800;
 const CONSTANT_FUNCTION_NOTE = "In this UI, constant(k) and zero are treated as 1-ary functions.";
+const CHARACTERISTIC_DIVIDES_BOUNDS = {
+  x: { min: 1, max: 6 },
+  y: { min: 1, max: 8 },
+  defaultValues: [2, 6],
+};
 
 function getVariableNames(count) {
   return Array.from({ length: count }, (_, index) => VARIABLE_NAMES[index] ?? `x${index + 1}`);
@@ -156,7 +165,58 @@ function createDefaultFunctionSpec(kind = "successor") {
     };
   }
 
+  if (kind === "minimization") {
+    return {
+      kind,
+      inner: createDefaultFunctionSpec("bounded_sub"),
+    };
+  }
+
+  if (kind === "characteristic") {
+    return {
+      kind,
+      relation: "leq",
+    };
+  }
+
   return { kind };
+}
+
+function isCharacteristicDividesSpec(spec) {
+  return (
+    normalizeFunctionKind(spec?.kind) === "characteristic"
+    && normalizeCharacteristicRelation(spec?.relation) === "divides"
+  );
+}
+
+function clampRegisterValue(value, { min = undefined, max = undefined } = {}) {
+  if (!Number.isFinite(value)) return min ?? 0;
+
+  let nextValue = Math.trunc(value);
+
+  if (Number.isInteger(min)) {
+    nextValue = Math.max(min, nextValue);
+  }
+
+  if (Number.isInteger(max)) {
+    nextValue = Math.min(max, nextValue);
+  }
+
+  return nextValue;
+}
+
+function getCharacteristicRegisterConstraint(spec, index) {
+  if (normalizeFunctionKind(spec?.kind) !== "characteristic") {
+    return null;
+  }
+
+  if (isCharacteristicDividesSpec(spec)) {
+    return index === 0
+      ? CHARACTERISTIC_DIVIDES_BOUNDS.x
+      : CHARACTERISTIC_DIVIDES_BOUNDS.y;
+  }
+
+  return { min: 0 };
 }
 
 function updatePrimitiveRecursionIndex(spec, rawValue) {
@@ -176,7 +236,7 @@ function updateFunctionNumberField(spec, field, rawValue) {
 function PrimitiveEvaluateField({ label, value, onChange, min = undefined }) {
   return (
     <label style={primitiveEvaluateFieldStyle} className="runner-variable-field">
-      <span style={primitiveEvaluateLabelStyle}>
+      <span style={primitiveEvaluateLabelStyle} className="runner-inline-math-label">
         <InlineMath value={label} />
         <MathEquals style={{ marginLeft: 4 }} />
       </span>
@@ -192,7 +252,7 @@ function PrimitiveEvaluateField({ label, value, onChange, min = undefined }) {
   );
 }
 
-function SimpleModeParameterControls({ spec, onChange }) {
+function SimpleModeParameterControls({ spec, onChange, onClearRunState = null }) {
   const kind = normalizeFunctionKind(spec?.kind);
 
   if (kind === "constant" || kind === "const") {
@@ -239,6 +299,36 @@ function SimpleModeParameterControls({ spec, onChange }) {
           </label>
         </div>
       </div>
+    );
+  }
+
+  if (kind === "characteristic") {
+    const relation = normalizeCharacteristicRelation(spec?.relation);
+
+    return (
+      <label style={simpleMetaControlStyle}>
+        <span style={simpleMetaLabelStyle}>Relation</span>
+        <select
+          value={relation}
+          onChange={(event) => {
+            onChange((current) => ({
+              ...current,
+              relation: normalizeCharacteristicRelation(event.target.value),
+            }));
+            if (typeof onClearRunState === "function") {
+              onClearRunState();
+            }
+          }}
+          style={simpleMetaSelectStyle}
+          className="dashboard-control runner-toolbar-select"
+        >
+          {CHARACTERISTIC_RELATIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </label>
     );
   }
 
@@ -399,12 +489,20 @@ function deriveFunctionArity(spec) {
     return { status: "known", arity: 1, source: "successor uses one input register" };
   }
 
+  if (kind === "predecessor" || kind === "pred" || kind === "truncated_predecessor") {
+    return { status: "known", arity: 1, source: "predecessor uses one input register" };
+  }
+
   if (kind === "add" || kind === "addition") {
     return { status: "known", arity: 2, source: "add uses two inputs" };
   }
 
   if (kind === "bounded_sub" || kind === "sub" || kind === "truncated_sub" || kind === "truncated_subtraction") {
     return { status: "known", arity: 2, source: "bounded subtraction uses two inputs" };
+  }
+
+  if (kind === "characteristic") {
+    return { status: "known", arity: 2, source: "characteristic functions for binary relations use two inputs" };
   }
 
   if (kind === "projection" || kind === "proj") {
@@ -426,6 +524,24 @@ function deriveFunctionArity(spec) {
 
     if (innerArity.status === "known") {
       return { status: "known", arity: innerArity.arity, source: "compose uses the inner function arity" };
+    }
+
+    return innerArity;
+  }
+
+  if (kind === "minimization") {
+    if (!spec?.inner) {
+      return { status: "unknown", source: "minimization needs an inner function to infer visible inputs" };
+    }
+
+    const innerArity = deriveFunctionArity(spec.inner);
+
+    if (innerArity.status === "known") {
+      return {
+        status: "known",
+        arity: Math.max(innerArity.arity - 1, 0),
+        source: "minimization uses the inner function arity minus the search variable",
+      };
     }
 
     return innerArity;
@@ -519,12 +635,309 @@ function isPrimitiveRecursionSpec(spec) {
   return kind === "primrec" || kind === "primitive_rec" || kind === "primitive_recursion";
 }
 
+function formatCandidateCount(count) {
+  return `${count} candidate${count === 1 ? "" : "s"}`;
+}
+
+function buildMinimizationSummaryModel(computationStructure) {
+  if (!computationStructure || computationStructure.kind !== "minimization") {
+    return null;
+  }
+
+  const iterations = Array.isArray(computationStructure.iterations)
+    ? computationStructure.iterations
+    : [];
+  const iterationCount =
+    Number.isInteger(computationStructure.iteration_count) && computationStructure.iteration_count >= 0
+      ? computationStructure.iteration_count
+      : iterations.length;
+  const finalCandidate =
+    Number.isInteger(computationStructure.final_candidate) && computationStructure.final_candidate >= 0
+      ? computationStructure.final_candidate
+      : null;
+
+  if (computationStructure.is_complete && finalCandidate !== null) {
+    return {
+      title: "Minimization summary",
+      lines: [
+        `Tested ${formatCandidateCount(iterationCount)}.`,
+        `First zero found at y = ${finalCandidate}.`,
+      ],
+    };
+  }
+
+  const incompleteIteration = iterations.find((iteration) => iteration?.decision === "incomplete") ?? null;
+
+  if (incompleteIteration) {
+    const completedCount = iterations.filter((iteration) => iteration?.decision !== "incomplete").length;
+
+    return {
+      title: "Minimization summary",
+      lines: [
+        completedCount === 0
+          ? "No candidate was fully tested."
+          : `Completed ${formatCandidateCount(completedCount)}.`,
+        `Search stopped during y = ${incompleteIteration.candidate}.`,
+      ],
+    };
+  }
+
+  return {
+    title: "Minimization summary",
+    lines: [
+      iterationCount === 0
+        ? "No candidate was fully tested."
+        : `Tested ${formatCandidateCount(iterationCount)} before stopping.`,
+      "No zero was found before execution stopped.",
+    ],
+  };
+}
+
+function buildMinimizationIterationItems(computationStructure) {
+  if (!computationStructure || computationStructure.kind !== "minimization") {
+    return [];
+  }
+
+  const iterations = Array.isArray(computationStructure.iterations)
+    ? computationStructure.iterations
+    : [];
+
+  return iterations
+    .filter(
+      (iteration) =>
+        Number.isInteger(iteration?.candidate) &&
+        Number.isInteger(iteration?.trace_start) &&
+        Number.isInteger(iteration?.trace_end),
+    )
+    .map((iteration) => ({
+      key: `min-iteration-${iteration.index ?? iteration.candidate}`,
+      candidate: iteration.candidate,
+      traceStart: iteration.trace_start,
+      traceEnd: iteration.trace_end,
+      decision: iteration.decision,
+      role: "iteration",
+    }));
+}
+
+function addBoundaryTraceBlocks(blocks, {
+  idPrefix,
+  kind,
+  traceLength = null,
+  setupLabel = "setup",
+  finalizationLabel = "finalization",
+}) {
+  if (!Array.isArray(blocks) || blocks.length === 0) {
+    return blocks ?? [];
+  }
+
+  const sortedBlocks = [...blocks].sort((left, right) => left.traceStart - right.traceStart);
+  const firstBlock = sortedBlocks[0];
+  const lastBlock = sortedBlocks[sortedBlocks.length - 1];
+  const augmentedBlocks = [...sortedBlocks];
+
+  if (Number.isInteger(firstBlock?.traceStart) && firstBlock.traceStart > 0) {
+    augmentedBlocks.unshift({
+      id: `${idPrefix}-setup`,
+      kind,
+      label: setupLabel,
+      traceStart: 0,
+      traceEnd: firstBlock.traceStart - 1,
+      selected: false,
+      role: "setup",
+    });
+  }
+
+  if (
+    Number.isInteger(traceLength) &&
+    traceLength > 0 &&
+    Number.isInteger(lastBlock?.traceEnd) &&
+    lastBlock.traceEnd < traceLength - 1
+  ) {
+    augmentedBlocks.push({
+      id: `${idPrefix}-finalization`,
+      kind,
+      label: finalizationLabel,
+      traceStart: lastBlock.traceEnd + 1,
+      traceEnd: traceLength - 1,
+      selected: false,
+      role: "finalization",
+    });
+  }
+
+  return augmentedBlocks;
+}
+
+function buildPrimitiveRecursionTraceBlocks(primitiveStepView) {
+  const stepGroups = Array.isArray(primitiveStepView?.stepGroups)
+    ? primitiveStepView.stepGroups
+    : [];
+
+  const stepBlocks = stepGroups
+    .filter(
+      (group) =>
+        Number.isInteger(group?.startRowIndex) &&
+        Number.isInteger(group?.endRowIndex) &&
+        group.endRowIndex >= group.startRowIndex,
+    )
+    .map((group) => ({
+      id: `primrec-${group.stepIndex}`,
+      kind: "primitive_recursion",
+      label: group.label ?? `Step ${group.stepIndex ?? 0}`,
+      traceStart: group.startRowIndex,
+      traceEnd: group.endRowIndex,
+      selected: false,
+      role: "step",
+    }));
+
+  return addBoundaryTraceBlocks(stepBlocks, {
+    idPrefix: "primrec",
+    kind: "primitive_recursion",
+    traceLength: Array.isArray(primitiveStepView?.trace) ? primitiveStepView.trace.length : null,
+  });
+}
+
+function buildCompositionTraceBlocks(composedTraceView) {
+  const trace = Array.isArray(composedTraceView?.trace) ? composedTraceView.trace : [];
+
+  if (trace.length === 0) {
+    return [];
+  }
+
+  const blocks = [];
+  let currentBlock = null;
+
+  for (let index = 0; index < trace.length; index += 1) {
+    const row = trace[index];
+    const stageKey = typeof row?.stageKey === "string" ? row.stageKey : null;
+    if (!stageKey) continue;
+
+    if (!currentBlock || currentBlock.stageKey !== stageKey) {
+      if (currentBlock) {
+        blocks.push(currentBlock);
+      }
+
+      currentBlock = {
+        id: `compose-${stageKey}-${index}`,
+        kind: "composition",
+        label: stageKey,
+        stageKey,
+        traceStart: index,
+        traceEnd: index,
+        selected: false,
+      };
+      continue;
+    }
+
+    currentBlock.traceEnd = index;
+  }
+
+  if (currentBlock) {
+    blocks.push(currentBlock);
+  }
+
+  return blocks;
+}
+
+function buildSemanticTraceBlocks({
+  minimizationIterations,
+  selectedMinimizationCandidate,
+  primitiveStepView,
+  composedTraceView,
+  traceLength,
+  currentTraceIndex,
+}) {
+  const minimizationBlocks = addBoundaryTraceBlocks(minimizationIterations.map((iteration) => ({
+    id: iteration.key,
+    kind: "minimization",
+    label: `y = ${iteration.candidate}`,
+    traceStart: iteration.traceStart,
+    traceEnd: iteration.traceEnd,
+    selected: iteration.candidate === selectedMinimizationCandidate,
+    role: iteration.role ?? "iteration",
+  })), {
+    idPrefix: "minimization",
+    kind: "minimization",
+    traceLength,
+  });
+  const primitiveBlocks = buildPrimitiveRecursionTraceBlocks(primitiveStepView);
+  const compositionBlocks = buildCompositionTraceBlocks(composedTraceView);
+
+  return [...minimizationBlocks, ...primitiveBlocks, ...compositionBlocks].map((block) => ({
+    ...block,
+    active: currentTraceIndex >= block.traceStart && currentTraceIndex <= block.traceEnd,
+  }));
+}
+
+function MinimizationSummary({ summary, iterations, selectedCandidate, onSelectIteration }) {
+  if (!summary) return null;
+
+  return (
+    <div style={minimizationSummaryStyle} className="runner-minimization-summary">
+      <div style={minimizationSummaryTitleStyle}>{summary.title}</div>
+      <div style={minimizationSummaryLinesStyle}>
+        {summary.lines.map((line) => (
+          <div key={line} style={minimizationSummaryLineStyle}>
+            {line}
+          </div>
+        ))}
+      </div>
+      {iterations.length > 0 ? (
+        <div style={minimizationIterationRowStyle}>
+          {iterations.map((iteration) => {
+            const isSelected = selectedCandidate === iteration.candidate;
+            const isStop = iteration.decision === "stop";
+            const isIncomplete = iteration.decision === "incomplete";
+
+            return (
+              <button
+                key={iteration.key}
+                type="button"
+                onClick={() => onSelectIteration(iteration)}
+                style={{
+                  ...minimizationIterationChipStyle,
+                  ...(isSelected ? minimizationIterationChipSelectedStyle : null),
+                  ...(isStop ? minimizationIterationChipStopStyle : null),
+                  ...(isIncomplete ? minimizationIterationChipIncompleteStyle : null),
+                }}
+                className="runner-minimization-chip"
+                aria-pressed={isSelected}
+              >
+                {`y = ${iteration.candidate}`}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 export default function FunctionRunner({
   initialFunctionSpec = DEFAULT_FUNCTION_SPEC,
   initialInputs = [7],
   fixedFunctionSpec = null,
   showFunctionModeSelector = true,
+  hideToolbar = false,
   autoRunOnMount = false,
+  machinePanelHeaderContent = null,
+  machinePanelProgramCaption = null,
+  hideMachinePanelSectionCaptions = false,
+  machinePanelTraceCompact = false,
+  showPlaybackSummary = true,
+  playbackExternallyControlled = false,
+  externalTraceIndex = 0,
+  externalIsPlaying = false,
+  onExternalTraceIndexChange = null,
+  onExternalIsPlayingChange = null,
+  playbackControlsDisabled = false,
+  onPlaybackInfoChange = null,
+  onRunDataChange = null,
+  onFunctionStateChange = null,
+  hideMachinePanel = false,
+  functionExecutionMode = null,
+  functionModeOptions = null,
+  templateFunctionKind = null,
+  summaryContent = null,
 }) {
   const [functionSpec, setFunctionSpec] = useState(() => fixedFunctionSpec ?? initialFunctionSpec);
   const [registerValues, setRegisterValues] = useState(() => [...initialInputs]);
@@ -534,6 +947,30 @@ export default function FunctionRunner({
   const [isPlaying, setIsPlaying] = useState(false);
   const [error, setError] = useState("");
   const [isPrimitiveSetupExpanded, setIsPrimitiveSetupExpanded] = useState(true);
+  const [selectedMinimizationCandidate, setSelectedMinimizationCandidate] = useState(null);
+  const [slowPlaybackRequested, setSlowPlaybackRequested] = useState(false);
+
+  function setPlaybackTraceIndex(nextValue) {
+    if (playbackExternallyControlled && typeof onExternalTraceIndexChange === "function") {
+      const resolvedValue =
+        typeof nextValue === "function" ? nextValue(externalTraceIndex) : nextValue;
+      onExternalTraceIndexChange(resolvedValue);
+      return;
+    }
+
+    setCurrentTraceIndex(nextValue);
+  }
+
+  function setPlaybackIsPlaying(nextValue) {
+    if (playbackExternallyControlled && typeof onExternalIsPlayingChange === "function") {
+      const resolvedValue =
+        typeof nextValue === "function" ? nextValue(externalIsPlaying) : nextValue;
+      onExternalIsPlayingChange(resolvedValue);
+      return;
+    }
+
+    setIsPlaying(nextValue);
+  }
 
   async function handleRunFunction() {
     try {
@@ -549,6 +986,10 @@ export default function FunctionRunner({
         function: normalizeFunctionSpec(functionSpec),
         initial_registers: registerValues,
       };
+
+      if (functionExecutionMode) {
+        payload.execution_mode = functionExecutionMode;
+      }
 
       const response = await fetch(`${API_URL}/run-function`, {
         method: "POST",
@@ -573,15 +1014,20 @@ export default function FunctionRunner({
 
       const json = await response.json();
       setRunData(json);
-      setCurrentTraceIndex(0);
-      setIsPlaying(false);
+      setPlaybackTraceIndex(0);
+      setPlaybackIsPlaying(!playbackExternallyControlled && !hideMachinePanel);
+      setSelectedMinimizationCandidate(null);
+      setSlowPlaybackRequested(false);
     } catch (err) {
+      setPlaybackIsPlaying(false);
       setError(mapRunErrorMessage(err.message, functionSpec));
     }
   }
 
   const composedTraceView = useMemo(() => buildComposedTraceView(runData), [runData]);
   const primitiveStepView = useMemo(() => buildPrimitiveRecursionStepView(runData), [runData]);
+  const playbackTraceIndex = playbackExternallyControlled ? externalTraceIndex : currentTraceIndex;
+  const playbackIsPlaying = playbackExternallyControlled ? externalIsPlaying : isPlaying;
   const selectedPrimitiveStep = useMemo(() => {
     const groups = primitiveStepView?.stepGroups;
     if (!Array.isArray(groups)) return null;
@@ -590,9 +1036,9 @@ export default function FunctionRunner({
       if (!Number.isInteger(group?.startRowIndex) || !Number.isInteger(group?.endRowIndex)) {
         return false;
       }
-      return currentTraceIndex >= group.startRowIndex && currentTraceIndex <= group.endRowIndex;
+      return playbackTraceIndex >= group.startRowIndex && playbackTraceIndex <= group.endRowIndex;
     }) ?? null;
-  }, [currentTraceIndex, primitiveStepView]);
+  }, [playbackTraceIndex, primitiveStepView]);
   const selectedPrimitiveStepIndex = selectedPrimitiveStep?.stepIndex ?? null;
   const activeTrace = useMemo(
     () => composedTraceView?.trace ?? runData?.trace ?? [],
@@ -601,7 +1047,11 @@ export default function FunctionRunner({
   const activeTraceLength = activeTrace.length;
   const playbackLength = activeTraceLength;
   const maxPlaybackIndex = Math.max(0, playbackLength - 1);
-  const activeTraceRowIndex = currentTraceIndex;
+  const activeTraceRowIndex = playbackTraceIndex;
+  const playbackTiming = useMemo(
+    () => getTracePlaybackTiming({ traceLength: playbackLength, slowPlaybackRequested }),
+    [playbackLength, slowPlaybackRequested],
+  );
 
   const currentRow = useMemo(() => {
     if (!runData || activeTraceLength === 0) return null;
@@ -609,24 +1059,42 @@ export default function FunctionRunner({
   }, [runData, activeTrace, activeTraceRowIndex, activeTraceLength]);
 
   useEffect(() => {
-    if (!isPlaying || playbackLength === 0) return;
+    if (playbackExternallyControlled || !playbackIsPlaying || playbackLength === 0) return;
 
-    if (currentTraceIndex >= playbackLength - 1) {
-      setIsPlaying(false);
+    if (playbackTraceIndex >= playbackLength - 1) {
+      setPlaybackIsPlaying(false);
       return;
     }
 
     const timer = setTimeout(() => {
-      setCurrentTraceIndex((i) => i + 1);
-    }, PLAYBACK_INTERVAL_MS);
+      setPlaybackTraceIndex((i) => i + 1);
+    }, playbackTiming.intervalMs);
 
     return () => clearTimeout(timer);
-  }, [isPlaying, currentTraceIndex, playbackLength]);
+  }, [playbackExternallyControlled, playbackIsPlaying, playbackLength, playbackTiming.intervalMs, playbackTraceIndex]);
 
   useEffect(() => {
-    if (currentTraceIndex <= maxPlaybackIndex) return;
-    setCurrentTraceIndex(maxPlaybackIndex);
-  }, [currentTraceIndex, maxPlaybackIndex]);
+    if (playbackTraceIndex <= maxPlaybackIndex) return;
+    setPlaybackTraceIndex(maxPlaybackIndex);
+  }, [maxPlaybackIndex, playbackTraceIndex]);
+
+  useEffect(() => {
+    if (!playbackExternallyControlled) return;
+
+    setCurrentTraceIndex(externalTraceIndex);
+    setIsPlaying(externalIsPlaying);
+  }, [externalIsPlaying, externalTraceIndex, playbackExternallyControlled]);
+
+  useEffect(() => {
+    if (typeof onPlaybackInfoChange !== "function") return;
+
+    onPlaybackInfoChange({
+      currentTraceIndex: playbackTraceIndex,
+      maxTraceIndex: maxPlaybackIndex,
+      isPlaying: playbackIsPlaying,
+      hasTrace: playbackLength > 0,
+    });
+  }, [maxPlaybackIndex, onPlaybackInfoChange, playbackIsPlaying, playbackLength, playbackTraceIndex]);
 
   const stageSummary = composedTraceView
     ? getCompositionStageSummary(currentRow, composedTraceView.stageCount)
@@ -638,12 +1106,20 @@ export default function FunctionRunner({
       : runData?.program ?? [];
 
   const panelFinalRegisters = composedTraceView?.finalRegisters ?? runData?.final_registers ?? [];
+  const outputIsFinal = runData?.status_summary?.output_is_final === true;
   const arityInfo = useMemo(() => deriveFunctionArity(functionSpec), [functionSpec]);
 
   function handleRegisterChange(index, rawValue) {
+    const constraint = getCharacteristicRegisterConstraint(functionSpec, index);
+    const fallbackValue = Number.isInteger(constraint?.min) ? constraint.min : 0;
+    const parsedValue = rawValue === "" ? fallbackValue : Number(rawValue);
+    const nextValue = constraint
+      ? clampRegisterValue(parsedValue, constraint)
+      : (rawValue === "" ? 0 : Number(rawValue));
+
     setRegisterValues((current) =>
       current.map((value, valueIndex) =>
-        valueIndex === index ? (rawValue === "" ? 0 : Number(rawValue)) : value
+        valueIndex === index ? nextValue : value
       )
     );
   }
@@ -659,23 +1135,60 @@ export default function FunctionRunner({
   function handleTogglePlayback() {
     if (playbackLength === 0) return;
 
-    if (currentTraceIndex >= playbackLength - 1) {
-      setCurrentTraceIndex(0);
-      setIsPlaying(true);
+    if (playbackTraceIndex >= playbackLength - 1) {
+      setPlaybackTraceIndex(0);
+      setPlaybackIsPlaying(true);
       return;
     }
 
-    setIsPlaying((current) => !current);
+    setPlaybackIsPlaying((current) => !current);
   }
 
   function handlePrevStep() {
-    setIsPlaying(false);
-    setCurrentTraceIndex((index) => Math.max(0, index - 1));
+    setPlaybackIsPlaying(false);
+    setPlaybackTraceIndex((index) => Math.max(0, index - 1));
   }
 
   function handleNextStep() {
-    setIsPlaying(false);
-    setCurrentTraceIndex((index) => Math.min(playbackLength - 1, index + 1));
+    setPlaybackIsPlaying(false);
+    setPlaybackTraceIndex((index) => Math.min(playbackLength - 1, index + 1));
+  }
+
+  function clearRunState() {
+    setRunData(null);
+    setError("");
+    setPlaybackTraceIndex(0);
+    setPlaybackIsPlaying(false);
+    setSelectedMinimizationCandidate(null);
+    setSlowPlaybackRequested(false);
+
+    if (typeof onRunDataChange === "function") {
+      onRunDataChange(null);
+    }
+  }
+
+  function handleFunctionModeChange(nextKind) {
+    clearRunState();
+    const nextSpec =
+      templateFunctionKind && nextKind === templateFunctionKind
+        ? { kind: templateFunctionKind }
+        : createDefaultFunctionSpec(nextKind);
+
+    setFunctionSpec(nextSpec);
+
+    if (normalizeFunctionKind(nextKind) === "characteristic") {
+      setRegisterValues([2, 3]);
+    }
+
+    if (typeof onFunctionStateChange === "function") {
+      onFunctionStateChange({
+        functionSpec: nextSpec,
+        registerValues,
+        visibleInputValues,
+        arityInfo,
+        variableNames,
+      });
+    }
   }
 
   useEffect(() => {
@@ -705,9 +1218,55 @@ export default function FunctionRunner({
     });
   }, [arityInfo]);
 
+  useEffect(() => {
+    if (!isCharacteristicDividesSpec(functionSpec)) return;
+
+    setRegisterValues((current) => {
+      const resized = resizeInputs(current, 2);
+      const defaults = CHARACTERISTIC_DIVIDES_BOUNDS.defaultValues;
+      const bounded = resized.map((value, index) => {
+        const constraint = getCharacteristicRegisterConstraint(functionSpec, index);
+        const fallbackValue = defaults[index] ?? 1;
+        const safeValue = Number.isFinite(value) ? value : fallbackValue;
+        return clampRegisterValue(safeValue, constraint ?? undefined);
+      });
+
+      if (
+        bounded.length === current.length
+        && bounded.every((value, index) => value === current[index])
+      ) {
+        return current;
+      }
+
+      return bounded;
+    });
+  }, [functionSpec]);
+
   const inputCount = arityInfo.status === "known" ? arityInfo.arity : Math.max(registerValues.length, 2);
-  const variableNames = getVariableNames(inputCount);
-  const visibleInputValues = resizeInputs(registerValues, inputCount);
+  const variableNames = useMemo(() => getVariableNames(inputCount), [inputCount]);
+  const visibleInputValues = useMemo(
+    () => resizeInputs(registerValues, inputCount),
+    [inputCount, registerValues],
+  );
+
+  useEffect(() => {
+    if (typeof onRunDataChange !== "function") return;
+
+    onRunDataChange(runData);
+  }, [onRunDataChange, runData]);
+
+  useEffect(() => {
+    if (typeof onFunctionStateChange !== "function") return;
+
+    onFunctionStateChange({
+      functionSpec,
+      registerValues,
+      visibleInputValues,
+      arityInfo,
+      variableNames,
+    });
+  }, [arityInfo, functionSpec, onFunctionStateChange, registerValues, variableNames, visibleInputValues]);
+
   const isPrimitiveRecursion = isPrimitiveRecursionSpec(functionSpec);
   const primitiveRecursionIndex = Number(functionSpec?.recursion_index ?? 0);
   const primitiveArityInfo = isPrimitiveRecursion ? arityInfo : null;
@@ -776,12 +1335,64 @@ export default function FunctionRunner({
   const disableRun = Boolean(primitiveStructureMessage);
   const showByHandEvaluation = arityInfo.status === "known" && !primitiveStructureMessage;
   const maxTraceIndex = maxPlaybackIndex;
-  const playbackProgressPercent = maxTraceIndex === 0
-    ? 0
-    : Math.round((currentTraceIndex / maxTraceIndex) * 100);
+  const resolvedMachinePanelHeaderContent =
+    typeof machinePanelHeaderContent === "function"
+      ? machinePanelHeaderContent({ currentTraceIndex: playbackTraceIndex, maxTraceIndex })
+      : machinePanelHeaderContent;
   const hasPrimitiveTrace = isPrimitiveRecursion && activeTraceLength > 0;
+  const minimizationSummary = useMemo(
+    () => buildMinimizationSummaryModel(runData?.computation_structure),
+    [runData?.computation_structure],
+  );
+  const minimizationIterations = useMemo(
+    () => buildMinimizationIterationItems(runData?.computation_structure),
+    [runData?.computation_structure],
+  );
+  const selectedMinimizationIteration = useMemo(
+    () =>
+      minimizationIterations.find(
+        (iteration) => iteration.candidate === selectedMinimizationCandidate,
+      ) ?? null,
+    [minimizationIterations, selectedMinimizationCandidate],
+  );
+  const semanticTraceBlocks = useMemo(
+    () =>
+      buildSemanticTraceBlocks({
+        minimizationIterations,
+        selectedMinimizationCandidate,
+        primitiveStepView,
+        composedTraceView,
+        traceLength: activeTraceLength,
+        currentTraceIndex: playbackTraceIndex,
+      }),
+    [activeTraceLength, composedTraceView, minimizationIterations, playbackTraceIndex, primitiveStepView, selectedMinimizationCandidate],
+  );
+  const hideCompositionTraceColumns = useMemo(
+    () => semanticTraceBlocks.some((block) => block.kind === "composition"),
+    [semanticTraceBlocks],
+  );
   const nonPrimitiveKind = normalizeFunctionKind(functionSpec?.kind);
-  const useExpandedDefinitionLayout = nonPrimitiveKind === "compose";
+  const isTemplateMode =
+    Boolean(templateFunctionKind) && nonPrimitiveKind === normalizeFunctionKind(templateFunctionKind);
+  const selectedFunctionMode = isTemplateMode ? templateFunctionKind : nonPrimitiveKind;
+  const resolvedFunctionModeOptions = useMemo(
+    () =>
+      (Array.isArray(functionModeOptions) && functionModeOptions.length > 0
+        ? functionModeOptions
+        : FUNCTION_ORDER
+      ).map((option) => {
+        const value = typeof option === "string" ? option : option.value;
+        const label = typeof option === "string" ? getFunctionDisplayName(option) : option.label;
+
+        return {
+          value,
+          label: label ?? getFunctionDisplayName(value),
+        };
+      }),
+    [functionModeOptions],
+  );
+  const useExpandedDefinitionLayout =
+    nonPrimitiveKind === "compose" || nonPrimitiveKind === "minimization";
   const primitiveTitleExpression = useMemo(
     () => buildFunctionCallNode(
       "f",
@@ -831,11 +1442,62 @@ export default function FunctionRunner({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (
+      selectedMinimizationCandidate === null ||
+      minimizationIterations.some((iteration) => iteration.candidate === selectedMinimizationCandidate)
+    ) {
+      return;
+    }
+
+    setSelectedMinimizationCandidate(null);
+  }, [minimizationIterations, selectedMinimizationCandidate]);
+
+  function handleSelectMinimizationIteration(iteration) {
+    setSelectedMinimizationCandidate(iteration.candidate);
+    setPlaybackTraceIndex(iteration.traceStart);
+    setPlaybackIsPlaying(false);
+  }
+
+  function renderFunctionModeSelect() {
+    if (!showFunctionModeSelector) return null;
+
+    return (
+      <label style={compositionModeControlStyle}>
+        <span style={compositionModeLabelStyle}>Mode</span>
+        <select
+          value={selectedFunctionMode}
+          onChange={(e) => handleFunctionModeChange(e.target.value)}
+          style={compositionModeSelectStyle}
+          className="dashboard-control runner-toolbar-select"
+        >
+          {resolvedFunctionModeOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </label>
+    );
+  }
+
   return (
     <div className="function-runner" style={{ marginBottom: 16 }}>
-      <div className="runner-toolbar-shell">
-        <div className={`runner-toolbar${isPrimitiveRecursion ? " runner-toolbar-primrec" : ""}`}>
-          {isPrimitiveRecursion ? (
+      {!hideToolbar ? (
+        <FunctionCard as="div">
+          <div className={`runner-toolbar${isPrimitiveRecursion ? " runner-toolbar-primrec" : ""}`}>
+          {isTemplateMode ? (
+            <div style={simpleDefinitionCardStyle}>
+              <div style={simpleSummaryRowStyle}>
+                <div className="runner-template-summary-content" style={compositionSummaryDefinitionStyle}>
+                  {summaryContent}
+                </div>
+                <div style={simpleSummaryControlsStyle}>
+                  {renderFunctionModeSelect()}
+                </div>
+              </div>
+            </div>
+          ) : isPrimitiveRecursion ? (
             <>
               <div style={primitiveEquationCardStyle}>
                 <div style={primitiveBodyLayoutStyle}>
@@ -892,27 +1554,12 @@ export default function FunctionRunner({
                       showSchemaCalls={false}
                       showAuxiliary={false}
                     />
+                    {summaryContent}
                   </div>
 
                   <div style={primitiveControlColumnStyle}>
                     <div style={primitiveControlClusterStyle}>
-                      {showFunctionModeSelector ? (
-                        <label style={compositionModeControlStyle}>
-                          <span style={compositionModeLabelStyle}>Mode</span>
-                          <select
-                            value={normalizeFunctionKind(functionSpec?.kind)}
-                            onChange={(e) => setFunctionSpec(createDefaultFunctionSpec(e.target.value))}
-                            style={compositionModeSelectStyle}
-                            className="dashboard-control runner-toolbar-select"
-                          >
-                            {FUNCTION_ORDER.map((option) => (
-                              <option key={option} value={option}>
-                                {getFunctionDisplayName(option)}
-                              </option>
-                            ))}
-                          </select>
-                        </label>
-                      ) : null}
+                      {renderFunctionModeSelect()}
 
                       <div style={primitiveEvaluationCardStyle}>
                         {primitiveEvaluationInputs.length > 0 ? (
@@ -969,23 +1616,7 @@ export default function FunctionRunner({
                           allowedKinds={COMPOSITION_FUNCTION_ORDER}
                         />
                       </div>
-                      {showFunctionModeSelector ? (
-                        <label style={compositionModeControlStyle}>
-                          <span style={compositionModeLabelStyle}>Mode</span>
-                          <select
-                            value={normalizeFunctionKind(functionSpec?.kind)}
-                            onChange={(e) => setFunctionSpec(createDefaultFunctionSpec(e.target.value))}
-                            style={compositionModeSelectStyle}
-                            className="dashboard-control runner-toolbar-select"
-                          >
-                            {FUNCTION_ORDER.map((option) => (
-                              <option key={option} value={option}>
-                                {getFunctionDisplayName(option)}
-                              </option>
-                            ))}
-                          </select>
-                        </label>
-                      ) : null}
+                      {renderFunctionModeSelect()}
                     </div>
 
                     <div style={compositionSummaryRowStyle}>
@@ -999,6 +1630,7 @@ export default function FunctionRunner({
                           compact
                           stackLabels
                         />
+                        {summaryContent}
                       </div>
 
                       <div style={compositionSummaryControlsStyle}>
@@ -1010,13 +1642,21 @@ export default function FunctionRunner({
                                   <InlineMath value={variableNames[index]} />
                                   <MathEquals style={{ marginLeft: 4 }} />
                                 </span>
-                                <input
-                                  type="number"
-                                  value={value}
-                                  onChange={(e) => handleRegisterChange(index, e.target.value)}
-                                  style={registerInputStyle}
-                                  className="dashboard-control runner-variable-input runner-toolbar-number-input"
-                                />
+                                {(() => {
+                                  const constraint = getCharacteristicRegisterConstraint(functionSpec, index);
+                                  return (
+                                    <input
+                                      type="number"
+                                      min={constraint?.min}
+                                      max={constraint?.max}
+                                      step="1"
+                                      value={value}
+                                      onChange={(e) => handleRegisterChange(index, e.target.value)}
+                                      style={registerInputStyle}
+                                      className="dashboard-control runner-variable-input runner-toolbar-number-input"
+                                    />
+                                  );
+                                })()}
                                 {arityInfo.status !== "known" && registerValues.length > 1 && (
                                   <button
                                     type="button"
@@ -1060,27 +1700,16 @@ export default function FunctionRunner({
                         compact
                         stackLabels
                       />
+                      {summaryContent}
                     </div>
 
                     <div style={simpleSummaryControlsStyle}>
-                      {showFunctionModeSelector ? (
-                        <label style={compositionModeControlStyle}>
-                          <span style={compositionModeLabelStyle}>Mode</span>
-                          <select
-                            value={normalizeFunctionKind(functionSpec?.kind)}
-                            onChange={(e) => setFunctionSpec(createDefaultFunctionSpec(e.target.value))}
-                            style={compositionModeSelectStyle}
-                            className="dashboard-control runner-toolbar-select"
-                          >
-                            {FUNCTION_ORDER.map((option) => (
-                              <option key={option} value={option}>
-                                {getFunctionDisplayName(option)}
-                              </option>
-                            ))}
-                          </select>
-                        </label>
-                      ) : null}
-                      <SimpleModeParameterControls spec={functionSpec} onChange={setFunctionSpec} />
+                      {renderFunctionModeSelect()}
+                      <SimpleModeParameterControls
+                        spec={functionSpec}
+                        onChange={setFunctionSpec}
+                        onClearRunState={clearRunState}
+                      />
                       <div style={simpleEvaluateRowStyle}>
                         <div style={compositionControlsRowStyle} className="runner-inputs-lane">
                           <div style={variableEditorStyle} className="runner-inputs-strip">
@@ -1090,13 +1719,21 @@ export default function FunctionRunner({
                                   <InlineMath value={variableNames[index]} />
                                   <MathEquals style={{ marginLeft: 4 }} />
                                 </span>
-                                <input
-                                  type="number"
-                                  value={value}
-                                  onChange={(e) => handleRegisterChange(index, e.target.value)}
-                                  style={compactRegisterInputStyle}
-                                  className="dashboard-control runner-variable-input runner-toolbar-number-input"
-                                />
+                                {(() => {
+                                  const constraint = getCharacteristicRegisterConstraint(functionSpec, index);
+                                  return (
+                                    <input
+                                      type="number"
+                                      min={constraint?.min}
+                                      max={constraint?.max}
+                                      step="1"
+                                      value={value}
+                                      onChange={(e) => handleRegisterChange(index, e.target.value)}
+                                      style={compactRegisterInputStyle}
+                                      className="dashboard-control runner-variable-input runner-toolbar-number-input"
+                                    />
+                                  );
+                                })()}
                                 {arityInfo.status !== "known" && registerValues.length > 1 && (
                                   <button
                                     type="button"
@@ -1134,13 +1771,14 @@ export default function FunctionRunner({
             </>
           )}
 
-          {!isPrimitiveRecursion && arityInfo.status !== "known" && (
+          {!isTemplateMode && !isPrimitiveRecursion && arityInfo.status !== "known" && (
             <div style={arityHintStyle} className="runner-arity-hint">
               Arity not inferred: {arityInfo.source}
             </div>
           )}
-        </div>
-      </div>
+          </div>
+        </FunctionCard>
+      ) : null}
 
       {error && (
         <div style={{ color: "var(--feedback-error-text)", marginBottom: 8, fontSize: 12 }}>
@@ -1148,76 +1786,52 @@ export default function FunctionRunner({
         </div>
       )}
 
-      {runData && (
+      {runData && !hideMachinePanel && (
         <>
+          <MinimizationSummary
+            summary={minimizationSummary}
+            iterations={minimizationIterations}
+            selectedCandidate={selectedMinimizationCandidate}
+            onSelectIteration={handleSelectMinimizationIteration}
+          />
           <MachinePanel
             title={
               selectedPrimitiveStep
                 ? `Execution: ${selectedPrimitiveStep.label}${selectedPrimitiveStep.callText ? ` — ${selectedPrimitiveStep.callText}` : ""}`
                 : `Function: ${getFunctionDisplayName(runData.function)}`
             }
+            headerContent={resolvedMachinePanelHeaderContent}
+            hideSectionCaptions={hideMachinePanelSectionCaptions}
+            programPanelCaption={machinePanelProgramCaption}
+            traceCompact={machinePanelTraceCompact}
             program={panelProgram}
             row={currentRow}
             finalRegisters={panelFinalRegisters}
             trace={activeTrace}
             currentTraceIndex={activeTraceRowIndex}
-            isPlaying={isPlaying}
+            semanticTraceBlocks={semanticTraceBlocks}
+            hideStageColumns={hideCompositionTraceColumns}
+            isPlaying={playbackIsPlaying}
             traceShowStepGroups
+            outputIsFinal={outputIsFinal}
             playbackControls={(
-              <div className="runner-playback-bar">
-                <div className="runner-playback-actions">
-                  <button
-                    onClick={handlePrevStep}
-                    disabled={currentTraceIndex === 0}
-                    style={playbackButtonStyle}
-                  >
-                    Prev
-                  </button>
-
-                  <button
-                    onClick={handleTogglePlayback}
-                    disabled={playbackLength === 0}
-                    style={playbackButtonStyle}
-                  >
-                    {isPlaying ? "Pause" : "Play"}
-                  </button>
-
-                  <button
-                    onClick={handleNextStep}
-                    disabled={currentTraceIndex >= playbackLength - 1}
-                    style={playbackButtonStyle}
-                  >
-                    Next
-                  </button>
-                </div>
-                <div className="runner-playback-slider-shell">
-                  <input
-                    type="range"
-                    min="0"
-                    max={maxTraceIndex}
-                    value={currentTraceIndex}
-                    onChange={(e) => {
-                      setIsPlaying(false);
-                      setCurrentTraceIndex(Number(e.target.value));
-                    }}
-                    className="runner-playback-slider"
-                    style={{
-                      ...playbackSliderStyle,
-                      "--playback-progress": `${playbackProgressPercent}%`,
-                      "--slider-track": "var(--theme-slider-track)",
-                      "--slider-active": "var(--theme-slider-active)",
-                      "--slider-thumb": "var(--theme-slider-thumb)",
-                      "--slider-thumb-shadow": "var(--theme-slider-thumb-shadow)",
-                    }}
-                  />
-                </div>
-                <div
-                  className="runner-playback-meta runner-playback-summary"
-                  style={playbackStepLabelStyle}
-                >
-                  <span className="runner-playback-summary-step">Step {currentTraceIndex} / {maxTraceIndex}</span>
-                </div>
-              </div>
+              <MachinePlaybackControls
+                disabled={playbackControlsDisabled}
+                isPlaying={playbackIsPlaying}
+                currentIndex={playbackTraceIndex}
+                maxIndex={maxTraceIndex}
+                playbackLength={playbackLength}
+                onPrev={handlePrevStep}
+                onToggle={handleTogglePlayback}
+                onNext={handleNextStep}
+                onChange={(nextIndex) => {
+                  setPlaybackIsPlaying(false);
+                  setPlaybackTraceIndex(nextIndex);
+                }}
+                showSummary={showPlaybackSummary}
+                showSlowDown={playbackTiming.isSlowDownControlAvailable && !playbackExternallyControlled}
+                onSlowDown={() => setSlowPlaybackRequested(true)}
+              />
             )}
             programSections={composedTraceView?.programSections ?? null}
             combinedProgramRows={composedTraceView?.combinedProgramRows ?? null}
@@ -1298,6 +1912,69 @@ const compositionCardExpandedStyle = {
   display: "grid",
   gap: 9,
   padding: "2px 0 0",
+};
+
+const minimizationSummaryStyle = {
+  display: "grid",
+  gap: 4,
+  marginBottom: 10,
+  padding: "10px 12px",
+  border: "1px solid var(--border-default)",
+  borderRadius: RADII.panel,
+  background: "var(--surface-card)",
+};
+
+const minimizationSummaryTitleStyle = {
+  ...TYPOGRAPHY.styles.label,
+  fontSize: TYPOGRAPHY.sizes.xs,
+  color: "var(--surface-text-structural)",
+  opacity: 0.8,
+  textTransform: "uppercase",
+  letterSpacing: "0.04em",
+};
+
+const minimizationSummaryLinesStyle = {
+  display: "grid",
+  gap: 2,
+};
+
+const minimizationSummaryLineStyle = {
+  ...TYPOGRAPHY.styles.uiText,
+  fontSize: TYPOGRAPHY.sizes.sm,
+  color: "var(--surface-text-secondary)",
+};
+
+const minimizationIterationRowStyle = {
+  display: "flex",
+  flexWrap: "wrap",
+  gap: 6,
+  marginTop: 2,
+};
+
+const minimizationIterationChipStyle = {
+  ...TYPOGRAPHY.styles.uiText,
+  fontSize: TYPOGRAPHY.sizes.xs,
+  padding: "4px 8px",
+  borderRadius: RADII.pill ?? 999,
+  border: "1px solid var(--border-default)",
+  background: "var(--surface-canvas, var(--surface-card))",
+  color: "var(--surface-text-secondary)",
+  cursor: "pointer",
+};
+
+const minimizationIterationChipSelectedStyle = {
+  borderColor: "var(--machine-active-border)",
+  background: "var(--machine-active-link-bg)",
+  color: "var(--surface-text-primary)",
+  boxShadow: "inset 0 0 0 1px color-mix(in srgb, var(--machine-active-border) 20%, transparent)",
+};
+
+const minimizationIterationChipStopStyle = {
+  color: "var(--surface-text-primary)",
+};
+
+const minimizationIterationChipIncompleteStyle = {
+  borderStyle: "dashed",
 };
 
 const compositionBuilderShellStyle = {
@@ -1425,6 +2102,15 @@ const simpleMetaNumberStyle = {
   textAlign: "center",
 };
 
+const simpleMetaSelectStyle = {
+  ...controlStyle,
+  ...TYPOGRAPHY.styles.code,
+  height: 28,
+  minWidth: 110,
+  padding: "0 8px",
+  borderRadius: RADII.control,
+};
+
 const simpleProjectionFieldsStyle = {
   display: "inline-flex",
   alignItems: "center",
@@ -1530,11 +2216,6 @@ const variableFieldStyle = {
 };
 
 const variableLabelStyle = {
-  fontFamily: "var(--font-math)",
-  fontSize: TYPOGRAPHY.sizes.base,
-  fontWeight: TYPOGRAPHY.weights.regular,
-  lineHeight: TYPOGRAPHY.lineHeights.normal,
-  color: "var(--surface-text-primary)",
   whiteSpace: "nowrap",
 };
 
@@ -1724,11 +2405,6 @@ const primitiveEvaluateFieldStyle = {
 };
 
 const primitiveEvaluateLabelStyle = {
-  fontFamily: "var(--font-math)",
-  fontSize: TYPOGRAPHY.sizes.base,
-  fontWeight: TYPOGRAPHY.weights.regular,
-  lineHeight: TYPOGRAPHY.lineHeights.normal,
-  color: "var(--surface-text-primary)",
   whiteSpace: "nowrap",
 };
 
@@ -1749,32 +2425,4 @@ const primitiveEvaluatePendingStyle = {
   display: "grid",
   gap: 4,
   minWidth: 0,
-};
-
-const playbackSliderStyle = {
-  margin: 0,
-  width: "100%",
-  verticalAlign: "middle",
-  minWidth: 0,
-  maxWidth: 160,
-};
-
-const playbackButtonStyle = {
-  ...buttonStyle,
-  height: 27,
-  padding: "0 9px",
-  border: "1px solid var(--border-default)",
-  background: "var(--surface-card)",
-  borderRadius: RADII.control,
-  color: "var(--surface-text-primary)",
-  fontSize: TYPOGRAPHY.sizes.md,
-  lineHeight: TYPOGRAPHY.lineHeights.tight,
-};
-
-const playbackStepLabelStyle = {
-  ...TYPOGRAPHY.styles.label,
-  fontSize: TYPOGRAPHY.sizes.sm,
-  color: "var(--surface-text-primary)",
-  fontVariantNumeric: "tabular-nums",
-  whiteSpace: "nowrap",
 };

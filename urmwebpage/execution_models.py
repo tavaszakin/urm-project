@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, List, Optional
+from typing import Any, List, Literal, Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -69,6 +69,34 @@ class TraceRow(BaseModel):
     note: str = ""
 
 
+class ExecutionStatusSummary(BaseModel):
+    status: str
+    capped_for_responsiveness: bool = False
+    output_is_final: bool = True
+    message: str
+
+
+class MinimizationIterationBlock(BaseModel):
+    kind: Literal["iteration"] = "iteration"
+    index: int = Field(ge=0)
+    candidate: int = Field(ge=0)
+    trace_start: int = Field(ge=0)
+    trace_end: int = Field(ge=0)
+    inner_result_value: Optional[int] = None
+    decision: Literal["continue", "stop", "incomplete"]
+    stop_reason: Optional[str] = None
+    label: Optional[str] = None
+
+
+class MinimizationComputationStructure(BaseModel):
+    kind: Literal["minimization"] = "minimization"
+    is_complete: bool
+    iteration_count: int = Field(ge=0)
+    final_candidate: Optional[int] = Field(default=None, ge=0)
+    termination_reason: Optional[str] = None
+    iterations: List[MinimizationIterationBlock] = Field(default_factory=list)
+
+
 class ExecutionResponse(ExecutionResult):
     trace: List[TraceRow]
     # Transitional compatibility alias for the current frontend shape.
@@ -78,3 +106,4 @@ class ExecutionResponse(ExecutionResult):
     # Remove after all clients use `halt_reason` and `output_value`.
     reason: Optional[str] = None
     output: Optional[int] = None
+    status_summary: Optional[ExecutionStatusSummary] = None

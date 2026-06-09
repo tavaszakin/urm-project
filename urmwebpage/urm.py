@@ -71,7 +71,7 @@ def validate_jump_target(target: int, program_length: int, line_no: int) -> None
     _validate_int(target, f"jump target at I{line_no}")
     if target < 0 or target > program_length:
         raise ValueError(
-            f"Invalid instruction at I{line_no}: jump target must be within 0..{program_length - 1}, "
+            f"Invalid instruction at I{line_no}: jump target must be within 0..{program_length}, "
             f"got {target}."
         )
 

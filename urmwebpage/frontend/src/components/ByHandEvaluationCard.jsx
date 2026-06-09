@@ -9,8 +9,13 @@ import FunctionExpressionView, {
 import { getProjectionArrayIndex, getProjectionVariableMeaning } from "../utils/mathNotation.jsx";
 import KatexMath from "./KatexMath.jsx";
 import { chainToLatex, expressionToLatex } from "../utils/expressionToLatex.js";
+import {
+  evaluateCharacteristicRelation,
+  getCharacteristicRelationMetadata,
+} from "../characteristicMetadata.js";
 
 const VARIABLE_NAMES = ["x", "y", "z", "w", "v"];
+const MINIMIZATION_BY_HAND_CANDIDATE_CAP = 8;
 
 function getVariableNames(count) {
   return Array.from({ length: count }, (_, index) => VARIABLE_NAMES[index] ?? `x${index + 1}`);
@@ -89,8 +94,16 @@ function buildMathLine(expression, annotation = "", key = null) {
   return buildLine(expression, annotation, derivedKey);
 }
 
+function createMathProse(text) {
+  return createExpressionText(`\\text{${text}}`);
+}
+
+function buildProseMathLine(text, key) {
+  return buildMathLine(createMathProse(text), "", key);
+}
+
 function isAtomicKind(kind) {
-  return ["zero", "successor", "constant", "projection", "add", "bounded_sub"].includes(kind);
+  return ["zero", "successor", "predecessor", "constant", "projection", "add", "bounded_sub"].includes(kind);
 }
 
 function renderConcreteCall(spec, args) {
@@ -107,6 +120,25 @@ function renderConcreteCall(spec, args) {
     return {
       expression: createExpressionText(label),
       key: label,
+    };
+  }
+
+  if (kind === "bounded_sub") {
+    const left = formatValue(args[0] ?? "x");
+    const right = formatValue(args[1] ?? "y");
+    const expression = createExpressionText(`${left}∸${right}`);
+    return {
+      expression,
+      key: serializeMathValue(expression),
+    };
+  }
+
+  if (kind === "predecessor") {
+    const value = formatValue(args[0] ?? "x");
+    const expression = createExpressionText(`${value}∸1`);
+    return {
+      expression,
+      key: serializeMathValue(expression),
     };
   }
 
@@ -177,8 +209,35 @@ function renderByHandExpression(spec, args) {
     };
   }
 
+  if (kind === "predecessor") {
+    const expression = createExpressionText(`${argText[0] ?? "x"}∸1`);
+    return {
+      expression,
+      key: serializeMathValue(expression),
+    };
+  }
+
   if (kind === "compose") {
     const expression = buildFunctionExpressionNode(spec, safeArgs);
+    return {
+      expression,
+      key: serializeMathValue(expression),
+    };
+  }
+
+  if (kind === "minimization") {
+    const innerExpression = renderConcreteCall(spec?.inner, [...args, "y"]);
+    const expression = createExpressionText(`μy[${serializeMathValue(innerExpression.expression)}=0]`);
+    return {
+      expression,
+      key: `mu:${serializeMathValue(innerExpression.expression)}`,
+    };
+  }
+
+  if (kind === "characteristic") {
+    const left = formatValue(args[0] ?? "x");
+    const right = formatValue(args[1] ?? "y");
+    const expression = createExpressionText(`\\chi_R(${left},${right})`);
     return {
       expression,
       key: serializeMathValue(expression),
@@ -200,15 +259,21 @@ function serializeExpression(spec, args) {
     return serializeExpression(spec?.outer, [inner]);
   }
 
+  if (kind === "minimization") {
+    return `μ(${serializeExpression(spec?.inner, [...args, "y"])})`;
+  }
+
   const callee = kind === "add"
     ? "addition"
     : kind === "bounded_sub"
       ? "truncated_subtraction"
-      : kind === "projection"
-        ? `projection:${spec?.index ?? "?"}:${spec?.arity ?? "?"}`
-        : kind === "constant"
-          ? `constant:${spec?.value ?? 0}`
-          : kind || "function";
+      : kind === "predecessor"
+        ? "predecessor"
+        : kind === "projection"
+          ? `projection:${spec?.index ?? "?"}:${spec?.arity ?? "?"}`
+          : kind === "constant"
+            ? `constant:${spec?.value ?? 0}`
+            : kind || "function";
 
   return `${callee}(${args.map((value) => formatValue(value)).join(",")})`;
 }
@@ -245,6 +310,30 @@ function atomicEvaluation(spec, args) {
     };
   }
 
+  if (kind === "predecessor") {
+    const input = Number(args[0] ?? 0);
+    const rendered = renderConcreteCall(spec, [input]);
+    const result = Math.max(0, input - 1);
+
+    return {
+      kind,
+      expression: rendered.expression,
+      result,
+      mainChains: [buildChain(buildLine(rendered.expression, "", rendered.key), buildLine(String(result), "", String(result)))],
+      detailSections: [
+        {
+          title: "Reduction",
+          chains: [
+            buildChain(
+              buildLine(rendered.expression, "", rendered.key),
+              buildLine(String(result), "", String(result)),
+            ),
+          ],
+        },
+      ],
+    };
+  }
+
   if (kind === "bounded_sub") {
     const left = Number(args[0] ?? 0);
     const right = Number(args[1] ?? 0);
@@ -258,11 +347,10 @@ function atomicEvaluation(spec, args) {
       mainChains: [buildChain(buildLine(rendered.expression, "", rendered.key), buildLine(String(result), "", String(result)))],
       detailSections: [
         {
-          title: "Detailed steps",
+          title: "Reduction",
           chains: [
             buildChain(
               buildLine(rendered.expression, "", rendered.key),
-              buildLine(`max(0, ${left} - ${right})`, "", `max:${left}:${right}`),
               buildLine(String(result), "", String(result)),
             ),
           ],
@@ -315,17 +403,53 @@ function atomicEvaluation(spec, args) {
     };
   }
 
+  if (kind === "characteristic") {
+    const left = Number(args[0] ?? 0);
+    const right = Number(args[1] ?? 0);
+    const relation = getCharacteristicRelationMetadata(spec?.relation);
+    const truth = evaluateCharacteristicRelation(spec?.relation, left, right);
+    const result = truth ? 1 : 0;
+    const rendered = renderByHandExpression(spec, [left, right]);
+    const truthText = truth ? "true" : "false";
+    const relationOperatorLatex = relation.value === "leq"
+      ? "\\le"
+      : relation.value === "lt"
+        ? "<"
+        : relation.value === "eq"
+          ? "="
+          : "\\mid";
+    const implicationExpression = createExpressionText(
+      `${left}${relationOperatorLatex}${right}\\text{ is ${truthText}, thus the output is }${result}\\;\\Longrightarrow\\;\\chi_R\\left(${left},${right}\\right)=${result}`
+    );
+
+    return {
+      kind,
+      expression: rendered.expression,
+      result,
+      mainChains: [
+        buildChain(
+          buildLine(implicationExpression, "", `characteristic:${relation.value}:${left}:${right}:${result}`),
+        ),
+      ],
+      detailSections: [],
+    };
+  }
+
   return null;
 }
 
 function deriveFunctionArityForByHand(spec) {
   const kind = normalizeFunctionKind(spec?.kind);
 
-  if (kind === "successor" || kind === "constant" || kind === "zero") {
+  if (kind === "successor" || kind === "predecessor" || kind === "constant" || kind === "zero") {
     return 1;
   }
 
   if (kind === "add" || kind === "bounded_sub") {
+    return 2;
+  }
+
+  if (kind === "characteristic") {
     return 2;
   }
 
@@ -336,6 +460,11 @@ function deriveFunctionArityForByHand(spec) {
 
   if (kind === "compose") {
     return deriveFunctionArityForByHand(spec?.inner);
+  }
+
+  if (kind === "minimization") {
+    const innerArity = deriveFunctionArityForByHand(spec?.inner);
+    return Number.isInteger(innerArity) && innerArity >= 0 ? Math.max(innerArity - 1, 0) : null;
   }
 
   if (kind === "primrec") {
@@ -399,12 +528,12 @@ function composeDetailSections(innerEvaluation, outerEvaluation, reducedOuterExp
   }
 
   sections.push({
-    title: "Evaluate inner function",
+    title: "Inner function",
     chains: innerEvaluation.mainChains,
   });
 
   sections.push({
-    title: "Substitute into outer function",
+    title: "Outer function",
     chains: [composeOuterSubstitutionChain(reducedOuterExpression, outerEvaluation)],
   });
 
@@ -504,6 +633,168 @@ function primitiveRecursionEvaluation(spec, args) {
   };
 }
 
+function buildMinimizationCandidateSection(candidateRecord) {
+  const nestedSections = Array.isArray(candidateRecord?.innerEvaluation?.detailSections)
+    ? candidateRecord.innerEvaluation.detailSections
+    : [];
+  const decisionExpression =
+    candidateRecord?.result === null
+      ? createMathProse("No final inner value; stop")
+      : candidateRecord.result === 0
+        ? createExpressionText("0 = 0,\\ \\text{stop}")
+        : createExpressionText(`${formatValue(candidateRecord.result)} \\ne 0,\\ \\text{continue}`);
+  const chains = [
+    ...(Array.isArray(candidateRecord?.innerEvaluation?.mainChains)
+      ? candidateRecord.innerEvaluation.mainChains
+      : []),
+    buildChain(
+      buildMathLine(decisionExpression, "", `min-decision:${candidateRecord.candidate}:${formatValue(candidateRecord.result)}`),
+    ),
+  ];
+
+  return {
+    title: `Candidate y = ${candidateRecord.candidate}`,
+    chains,
+    nestedSections,
+  };
+}
+
+function minimizationEvaluation(spec, args) {
+  const expression = renderByHandExpression(spec, args);
+
+  if (!spec?.inner) {
+    return fallbackEvaluation(spec, args);
+  }
+
+  const candidateRecords = [];
+  let successCandidate = null;
+  let stalledCandidate = null;
+
+  for (let candidate = 0; candidate < MINIMIZATION_BY_HAND_CANDIDATE_CAP; candidate += 1) {
+    const innerArgs = [...args, candidate];
+    const innerEvaluation = evaluateFunction(spec.inner, innerArgs);
+    const concreteInnerCall = renderConcreteCall(spec.inner, innerArgs);
+    const result = innerEvaluation.result;
+    const resultExpression =
+      result === null
+        ? createMathProse("Result pending")
+        : result === 0
+          ? createExpressionText("0 = 0,\\ \\text{stop}")
+          : createExpressionText(`${formatValue(result)} \\ne 0,\\ \\text{continue}`);
+    const summaryChain = buildChain(
+      buildMathLine(concreteInnerCall.expression, "", `${concreteInnerCall.key}:candidate:${candidate}`),
+      buildMathLine(resultExpression, "", `min-result:${candidate}:${formatValue(result)}`),
+    );
+
+    candidateRecords.push({
+      candidate,
+      innerArgs,
+      innerEvaluation,
+      concreteInnerCall,
+      result,
+      summaryChain,
+    });
+
+    if (result === null) {
+      stalledCandidate = candidate;
+      break;
+    }
+
+    if (result === 0) {
+      successCandidate = candidate;
+      break;
+    }
+  }
+
+  const mainChains = [
+    buildChain(buildMathLine(expression.expression, "", expression.key)),
+    ...candidateRecords.map((record) => record.summaryChain),
+  ];
+  const detailSections = candidateRecords.map((record) => buildMinimizationCandidateSection(record));
+
+  if (successCandidate !== null) {
+    mainChains.push(
+      buildChain(
+        buildMathLine(createExpressionText(`\\text{First zero found at } y = ${successCandidate}`), "", `min-success-note:${successCandidate}`),
+      ),
+    );
+    mainChains.push(
+      buildChain(
+        buildMathLine(expression.expression, "", expression.key),
+        buildMathLine(
+          createExpressionText(String(successCandidate)),
+          "",
+          `min-final:${successCandidate}`,
+        ),
+      ),
+    );
+
+    return {
+      kind: "minimization",
+      expression: expression.expression,
+      result: successCandidate,
+      mainChains,
+      detailSections,
+      candidateEvaluations: candidateRecords,
+      searchStatus: "success",
+      searchComplete: true,
+      hasFinalResult: true,
+      statusMessage: `First zero found at y=${successCandidate}, so the minimization returns ${successCandidate}.`,
+    };
+  }
+
+  if (stalledCandidate !== null) {
+    mainChains.push(
+      buildChain(
+        buildMathLine(createExpressionText(`\\text{No final inner value at } y = ${stalledCandidate}`), "", `min-stalled:${stalledCandidate}`),
+      ),
+    );
+    mainChains.push(
+      buildChain(
+        buildProseMathLine("Search stopped without a final minimization value", `min-nonfinal:${stalledCandidate}`),
+      ),
+    );
+
+    return {
+      kind: "minimization",
+      expression: expression.expression,
+      result: null,
+      mainChains,
+      detailSections,
+      candidateEvaluations: candidateRecords,
+      searchStatus: "inner_nonfinal",
+      searchComplete: false,
+      hasFinalResult: false,
+      statusMessage: `The search stopped at y=${stalledCandidate} because the inner function did not yet yield a final value.`,
+    };
+  }
+
+  const maxCandidate = Math.max(MINIMIZATION_BY_HAND_CANDIDATE_CAP - 1, 0);
+  mainChains.push(
+    buildChain(
+      buildMathLine(createExpressionText(`\\text{No zero found for } y = 0,\\ldots,${maxCandidate}`), "", `min-cap-range:${MINIMIZATION_BY_HAND_CANDIDATE_CAP}`),
+    ),
+  );
+  mainChains.push(
+    buildChain(
+      buildMathLine(createExpressionText(`\\text{Search stopped after checking } ${MINIMIZATION_BY_HAND_CANDIDATE_CAP}\\ \\text{candidates}`), "", `min-cap-stop:${MINIMIZATION_BY_HAND_CANDIDATE_CAP}`),
+    ),
+  );
+
+  return {
+    kind: "minimization",
+    expression: expression.expression,
+    result: null,
+    mainChains,
+    detailSections,
+    candidateEvaluations: candidateRecords,
+    searchStatus: "candidate_cap_reached",
+    searchComplete: false,
+    hasFinalResult: false,
+    statusMessage: `No zero was found within the first ${MINIMIZATION_BY_HAND_CANDIDATE_CAP} candidates, so the by-hand search stopped without a final minimization value.`,
+  };
+}
+
 function fallbackEvaluation(spec, args) {
   const expression = renderConcreteCall(spec, args);
 
@@ -511,7 +802,7 @@ function fallbackEvaluation(spec, args) {
     kind: normalizeFunctionKind(spec?.kind) || "function",
     expression: expression.expression,
     result: null,
-    mainChains: [[buildLine("No by-hand derivation is available for this function kind yet.", "", "unsupported")]],
+    mainChains: [[buildMathLine(createMathProse("No by-hand derivation is available for this function kind yet."), "", "unsupported")]],
     detailSections: [],
   };
 }
@@ -523,6 +814,10 @@ function evaluateFunction(spec, args) {
     return composeEvaluation(spec, args);
   }
 
+  if (kind === "minimization") {
+    return minimizationEvaluation(spec, args);
+  }
+
   if (kind === "primrec") {
     return primitiveRecursionEvaluation(spec, args);
   }
@@ -530,13 +825,21 @@ function evaluateFunction(spec, args) {
   return atomicEvaluation(spec, args) ?? fallbackEvaluation(spec, args);
 }
 
+function hasRenderableDetailSection(section) {
+  if (!section) return false;
+
+  const hasChains = Array.isArray(section.chains) && section.chains.some((chain) => Array.isArray(chain) && chain.length > 0);
+  const hasNestedSections = Array.isArray(section.nestedSections)
+    && section.nestedSections.some((nestedSection) => hasRenderableDetailSection(nestedSection));
+
+  return hasChains || hasNestedSections;
+}
+
 function buildByHandEvaluation(spec, args, enabled) {
   if (!enabled) return null;
 
   const evaluation = evaluateFunction(spec, args);
-  const detailSections = (evaluation.detailSections ?? []).filter(
-    (section) => Array.isArray(section?.chains) && section.chains.some((chain) => chain.length > 0),
-  );
+  const detailSections = (evaluation.detailSections ?? []).filter((section) => hasRenderableDetailSection(section));
 
   return {
     ...evaluation,
@@ -613,7 +916,10 @@ function DerivationChain({ chain }) {
 }
 
 function DetailSection({ section }) {
-  if (!section?.chains?.length) return null;
+  const hasChains = Array.isArray(section?.chains) && section.chains.length > 0;
+  const nestedSections = Array.isArray(section?.nestedSections) ? section.nestedSections : [];
+
+  if (!hasChains && nestedSections.length === 0) return null;
 
   return (
     <div style={{ display: "grid", gap: 6, justifyItems: "start" }}>
@@ -625,11 +931,28 @@ function DetailSection({ section }) {
       >
         {section.title}
       </div>
-      <div style={{ display: "grid", gap: 8, width: "100%" }}>
-        {section.chains.map((chain, chainIndex) => (
-          <DerivationChain key={`${section.title}-${chainIndex}`} chain={chain} />
-        ))}
-      </div>
+      {hasChains ? (
+        <div style={{ display: "grid", gap: 8, width: "100%" }}>
+          {section.chains.map((chain, chainIndex) => (
+            <DerivationChain key={`${section.title}-${chainIndex}`} chain={chain} />
+          ))}
+        </div>
+      ) : null}
+      {nestedSections.length > 0 ? (
+        <div
+          style={{
+            display: "grid",
+            gap: 10,
+            width: "100%",
+            paddingLeft: 10,
+            borderLeft: "1px solid color-mix(in srgb, var(--border-default) 48%, transparent)",
+          }}
+        >
+          {nestedSections.map((nestedSection, nestedIndex) => (
+            <DetailSection key={`${section.title}-nested-${nestedIndex}`} section={nestedSection} />
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -649,6 +972,7 @@ export default function ByHandEvaluationCard({
   if (!evaluation) return null;
 
   const isPrimitiveEvaluation = normalizeFunctionKind(evaluation.kind) === "primrec";
+  const statusMessage = typeof evaluation.statusMessage === "string" ? evaluation.statusMessage : "";
 
   return (
     <section
@@ -718,6 +1042,17 @@ export default function ByHandEvaluationCard({
         }}
       >
         <div style={{ display: "grid", gap: isPrimitiveEvaluation ? 8 : 5, width: "100%" }}>
+          {statusMessage ? (
+            <div
+              style={{
+                ...TYPOGRAPHY.styles.uiText,
+                fontSize: TYPOGRAPHY.sizes.sm,
+                color: "var(--surface-text-secondary)",
+              }}
+            >
+              {statusMessage}
+            </div>
+          ) : null}
           {evaluation.mainChains.map((chain, chainIndex) => (
             <DerivationChain key={`main-chain-${chainIndex}`} chain={chain} />
           ))}

@@ -150,7 +150,7 @@ export function getLearnDemos() {
     {
       id: "compare-and-jump",
       title: "Compare and Jump",
-      meaning: "If two registers are equal, control jumps ahead to a later instruction.",
+      meaning: "If two registers are equal, control jumps to instruction Iq.",
       program: [["J", 1, 2, 4], ["S", 3], ["S", 3], ["S", 3], ["T", 1, 3]],
       initialRegisters: [0, 2, 2, 0],
       relevantRegisters: [1, 2, 3],

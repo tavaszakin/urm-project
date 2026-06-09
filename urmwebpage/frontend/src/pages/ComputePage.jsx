@@ -1,4 +1,5 @@
 import FunctionRunner from "../components/FunctionRunner.jsx";
+import FurtherReading from "../components/FurtherReading.jsx";
 
 export default function ComputePage() {
   return (
@@ -12,7 +13,9 @@ export default function ComputePage() {
         </div>
       </section>
 
-      <FunctionRunner />
+      <FunctionRunner hideMachinePanelSectionCaptions />
+
+      <FurtherReading items={["Cutland, Computability, §§1.3, 2.1–2.5"]} />
     </div>
   );
 }

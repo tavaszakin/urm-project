@@ -2,6 +2,7 @@ import { RADII, TYPOGRAPHY } from "../theme.js";
 import {
   getFunctionDisplayName,
   normalizeFunctionKind,
+  renderFunctionExpression,
   renderFunctionLabel,
 } from "../functionMetadata.js";
 import FunctionExpressionView, {
@@ -11,7 +12,18 @@ import FunctionExpressionView, {
 } from "./FunctionExpressionView.jsx";
 import PrimitiveRecursionDefinitionPreview from "./PrimitiveRecursionDefinitionPreview.jsx";
 import DefinitionMathLine from "./DefinitionMathLine.jsx";
+import KatexMath from "./KatexMath.jsx";
+import {
+  FunctionCardControls,
+  FunctionCardLabel,
+  FunctionCardMath,
+  FunctionCardRow,
+  FunctionCardRows,
+} from "./FunctionCardLayout.jsx";
 import { getProjectionVariableMeaning } from "../utils/mathNotation.jsx";
+import {
+  getCharacteristicRelationMetadata,
+} from "../characteristicMetadata.js";
 
 const VARIABLE_NAMES = ["x", "y", "z", "w", "v"];
 
@@ -23,11 +35,15 @@ function getVariableNames(count) {
 function inferFunctionArity(spec) {
   const kind = normalizeFunctionKind(spec?.kind);
 
-  if (kind === "successor" || kind === "succ" || kind === "zero" || kind === "constant" || kind === "const") {
+  if (kind === "successor" || kind === "succ" || kind === "predecessor" || kind === "pred" || kind === "truncated_predecessor" || kind === "zero" || kind === "constant" || kind === "const") {
     return 1;
   }
 
   if (kind === "add" || kind === "addition" || kind === "bounded_sub" || kind === "sub" || kind === "truncated_sub" || kind === "truncated_subtraction") {
+    return 2;
+  }
+
+  if (kind === "characteristic") {
     return 2;
   }
 
@@ -38,6 +54,10 @@ function inferFunctionArity(spec) {
 
   if (kind === "compose") {
     return inferFunctionArity(spec?.inner);
+  }
+
+  if (kind === "minimization") {
+    return Math.max(inferFunctionArity(spec?.inner) - 1, 0);
   }
 
   if (kind === "primrec" || kind === "primitive_rec" || kind === "primitive_recursion") {
@@ -62,6 +82,13 @@ function renderMeaningExpression(spec, args = []) {
     return {
       primary: createExpressionText(`S(${args[0] ?? "x"})`),
       familiar: createExpressionText(`${args[0] ?? "x"}+1`),
+    };
+  }
+
+  if (kind === "predecessor" || kind === "pred" || kind === "truncated_predecessor") {
+    return {
+      primary: createExpressionText(`${args[0] ?? "x"}∸1`),
+      familiar: createExpressionText(`max(${args[0] ?? "x"}-1,0)`),
     };
   }
 
@@ -120,6 +147,14 @@ function renderMeaningExpression(spec, args = []) {
     };
   }
 
+  if (kind === "minimization") {
+    const innerExpression = renderFunctionExpression(spec?.inner, [...args, "y"]);
+    return {
+      primary: createExpressionText(`μy[${innerExpression}=0]`),
+      familiar: null,
+    };
+  }
+
   return {
     primary: createExpressionText(`${getFunctionDisplayName(spec)}(${formatArgs(args)})`),
     familiar: null,
@@ -153,6 +188,49 @@ export default function FunctionDefinitionPreview({
     );
   }
 
+  if (kind === "characteristic") {
+    const relation = getCharacteristicRelationMetadata(functionSpec?.relation);
+    const relationLatex = relation.latex;
+    const negatedLatex = relation.negatedLatex;
+    const currentCallValues = Array.isArray(inputValues) && inputValues.length > 0
+      ? inputValues.slice(0, 2).map((value) => String(value ?? 0))
+      : null;
+    const currentCallLatex = currentCallValues
+      ? `\\chi_R\\left(${currentCallValues.join(",")}\\right)`
+      : null;
+    const definitionLatex = `\\chi_R(x,y)=\\begin{cases}1 & \\text{if } ${relationLatex},\\\\0 & \\text{if } ${negatedLatex}.\\end{cases}`;
+
+    return (
+      <section style={previewPanelStyle} aria-label="Mathematical definition">
+        <div style={compact ? previewCompactContentStyle : previewContentStyle}>
+          {title ? (
+            <div style={previewTitleStyle}>{title}</div>
+          ) : null}
+
+          <FunctionCardRows>
+            <FunctionCardRow>
+              {hideDefinitionLabel ? <div /> : <FunctionCardLabel style={previewLabelStyle}>Definition</FunctionCardLabel>}
+              <FunctionCardMath className="math-text" style={compact ? previewCompactMathBlockStyle : previewMathBlockStyle}>
+                <KatexMath expression={`R(x,y): ${relationLatex}`} />
+                <KatexMath expression={definitionLatex} />
+              </FunctionCardMath>
+              <FunctionCardControls />
+            </FunctionCardRow>
+            {currentCallLatex ? (
+              <FunctionCardRow>
+                {hideCurrentCallLabel ? <div /> : <FunctionCardLabel style={previewLabelStyle}>{currentCallLabel}</FunctionCardLabel>}
+                <FunctionCardMath className="math-text" style={compact ? previewCompactCallBlockStyle : previewMathBlockStyle}>
+                  <KatexMath expression={currentCallLatex} />
+                </FunctionCardMath>
+                <FunctionCardControls />
+              </FunctionCardRow>
+            ) : null}
+          </FunctionCardRows>
+        </div>
+      </section>
+    );
+  }
+
   const arity =
     arityInfo?.status === "known" && Number.isInteger(arityInfo?.arity)
       ? arityInfo.arity
@@ -177,59 +255,70 @@ export default function FunctionDefinitionPreview({
         ) : null}
 
         {compact && stackLabels && currentCallValues ? (
-          <div style={previewInlineSummaryStyle}>
-            <div style={previewStackedSectionStyle}>
-              {hideDefinitionLabel ? null : <div style={previewLabelStyle}>Definition</div>}
-              <div className="math-text" style={previewCompactMathBlockStyle}>
+          <FunctionCardRows>
+            <FunctionCardRow>
+              {hideDefinitionLabel ? <div /> : <FunctionCardLabel style={previewLabelStyle}>Definition</FunctionCardLabel>}
+              <FunctionCardMath className="math-text" style={previewCompactMathBlockStyle}>
                 <DefinitionMathLine expressions={definitionExpressions} />
                 {showStructural && meaning.structural ? (
                   <div className="math-text" style={previewSecondaryMathStyle}>
                     <DefinitionMathLine expressions={[meaning.structural]} tone="muted" />
                   </div>
                 ) : null}
-              </div>
-            </div>
-            <div style={previewStackedSectionStyle}>
-              {hideCurrentCallLabel ? null : <div style={previewLabelStyle}>{currentCallLabel}</div>}
-              <div className="math-text" style={previewCompactCallBlockStyle}>
+              </FunctionCardMath>
+              <FunctionCardControls />
+            </FunctionCardRow>
+            <FunctionCardRow>
+              {hideCurrentCallLabel ? <div /> : <FunctionCardLabel style={previewLabelStyle}>{currentCallLabel}</FunctionCardLabel>}
+              <FunctionCardMath className="math-text" style={previewCompactCallBlockStyle}>
                 <DefinitionMathLine expressions={[buildFunctionCall("f", currentCallValues)]} />
-              </div>
-            </div>
-          </div>
+              </FunctionCardMath>
+              <FunctionCardControls />
+            </FunctionCardRow>
+          </FunctionCardRows>
         ) : compact && stackLabels ? (
-          <div style={previewStackedSectionStyle}>
-            {hideDefinitionLabel ? null : <div style={previewLabelStyle}>Definition</div>}
-            <div className="math-text" style={previewCompactMathBlockStyle}>
+          <FunctionCardRows>
+            <FunctionCardRow>
+              {hideDefinitionLabel ? <div /> : <FunctionCardLabel style={previewLabelStyle}>Definition</FunctionCardLabel>}
+              <FunctionCardMath className="math-text" style={previewCompactMathBlockStyle}>
               <DefinitionMathLine expressions={definitionExpressions} />
               {showStructural && meaning.structural ? (
                 <div className="math-text" style={previewSecondaryMathStyle}>
                   <DefinitionMathLine expressions={[meaning.structural]} tone="muted" />
                 </div>
               ) : null}
-            </div>
-          </div>
+              </FunctionCardMath>
+              <FunctionCardControls />
+            </FunctionCardRow>
+          </FunctionCardRows>
         ) : (
-          <div style={compact ? previewCompactRowStyle : previewRowStyle}>
-            {hideDefinitionLabel ? <div /> : <div style={previewLabelStyle}>Definition</div>}
-            <div className="math-text" style={compact ? previewCompactMathBlockStyle : previewMathBlockStyle}>
+          <FunctionCardRows>
+            <FunctionCardRow>
+              {hideDefinitionLabel ? <div /> : <FunctionCardLabel style={previewLabelStyle}>Definition</FunctionCardLabel>}
+              <FunctionCardMath className="math-text" style={compact ? previewCompactMathBlockStyle : previewMathBlockStyle}>
               <DefinitionMathLine expressions={definitionExpressions} />
               {showStructural && meaning.structural ? (
                 <div className="math-text" style={previewSecondaryMathStyle}>
                   <DefinitionMathLine expressions={[meaning.structural]} tone="muted" />
                 </div>
               ) : null}
-            </div>
-          </div>
+              </FunctionCardMath>
+              <FunctionCardControls />
+            </FunctionCardRow>
+          </FunctionCardRows>
         )}
 
         {currentCallValues ? (
           compact && stackLabels ? null : (
-            <div style={compact ? previewCompactCallRowStyle : previewRowStyle}>
-              {hideCurrentCallLabel ? <div /> : <div style={previewLabelStyle}>{currentCallLabel}</div>}
-              <div className="math-text" style={compact ? previewCompactCallBlockStyle : previewMathBlockStyle}>
+            <FunctionCardRows>
+              <FunctionCardRow>
+                {hideCurrentCallLabel ? <div /> : <FunctionCardLabel style={previewLabelStyle}>{currentCallLabel}</FunctionCardLabel>}
+                <FunctionCardMath className="math-text" style={compact ? previewCompactCallBlockStyle : previewMathBlockStyle}>
                 <DefinitionMathLine expressions={[buildFunctionCall("f", currentCallValues)]} />
-              </div>
-            </div>
+                </FunctionCardMath>
+                <FunctionCardControls />
+              </FunctionCardRow>
+            </FunctionCardRows>
           )
         ) : null}
       </div>
@@ -256,39 +345,6 @@ const previewTitleStyle = {
   color: "var(--surface-text-structural)",
 };
 
-const previewRowStyle = {
-  display: "grid",
-  gridTemplateColumns: "92px minmax(0, 1fr)",
-  gap: 8,
-  alignItems: "start",
-};
-
-const previewCompactRowStyle = {
-  display: "grid",
-  gridTemplateColumns: "0 minmax(0, 1fr)",
-  gap: 0,
-  alignItems: "start",
-};
-
-const previewCompactCallRowStyle = {
-  ...previewCompactRowStyle,
-  paddingLeft: 16,
-};
-
-const previewStackedSectionStyle = {
-  display: "grid",
-  gap: 3,
-  minWidth: 0,
-};
-
-const previewInlineSummaryStyle = {
-  display: "grid",
-  gridTemplateColumns: "minmax(0, 1fr) auto",
-  gap: 14,
-  alignItems: "start",
-  minWidth: 0,
-};
-
 const previewLabelStyle = {
   ...TYPOGRAPHY.styles.label,
   color: "var(--surface-text-structural)",
@@ -300,7 +356,6 @@ const previewMathBlockStyle = {
   display: "grid",
   gap: 3,
   fontFamily: "var(--font-math)",
-  fontSize: "1.04em",
   lineHeight: 1.45,
 };
 

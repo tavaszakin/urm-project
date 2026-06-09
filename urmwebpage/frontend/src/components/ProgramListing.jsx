@@ -9,6 +9,10 @@ export default function ProgramListing({
   compact = false,
   rowRefs = null,
   rowRefPrefix = "",
+  indexBase = 0,
+  renderInstruction = null,
+  renderIndex = null,
+  showHeader = false,
 }) {
   const codeFontFamily = `var(--program-font-family, ${TYPOGRAPHY.styles.code.fontFamily})`;
   const codeFontSize = `var(--program-font-size, ${TYPOGRAPHY.sizes.base}px)`;
@@ -25,8 +29,36 @@ export default function ProgramListing({
         lineHeight: 1.1,
       }}
     >
+      {showHeader ? (
+        <div
+          className="program-listing-header"
+          style={{
+            ...TYPOGRAPHY.styles.traceHeader,
+            display: "grid",
+            gridTemplateColumns: compact ? "32px minmax(0, 1fr)" : "36px minmax(0, 1fr)",
+            alignItems: "center",
+            gap: compact ? 7 : 10,
+            padding: compact ? "5px 10px 6px 11px" : "6px 12px 7px 13px",
+            borderLeft: "4px solid transparent",
+            borderBottom: "1px solid var(--machine-inner-border-strong)",
+            background: "var(--machine-inner-surface-alt)",
+            color: "var(--machine-inner-text-structural)",
+            fontFamily: "var(--font-ui)",
+            fontSize: "0.78em",
+            fontWeight: "var(--font-weight-semibold, 600)",
+            lineHeight: 1.1,
+            letterSpacing: "0.04em",
+            textTransform: "uppercase",
+          }}
+        >
+          <span style={{ textAlign: "center" }}>#</span>
+          <span style={{ textAlign: "left" }}>Instruction</span>
+        </div>
+      ) : null}
+
       {program.map((instruction, index) => {
         const isCurrent = activeInstructionIndex === index;
+        const displayIndex = index + indexBase;
 
         return (
           <div
@@ -41,7 +73,6 @@ export default function ProgramListing({
               ...TYPOGRAPHY.styles.code,
               fontFamily: codeFontFamily,
               fontSize: codeFontSize,
-              fontWeight: codeFontWeight,
               lineHeight: 1.1,
               display: "grid",
               gridTemplateColumns: compact ? "32px minmax(0, 1fr)" : "36px minmax(0, 1fr)",
@@ -74,7 +105,9 @@ export default function ProgramListing({
                 fontWeight: isCurrent ? "var(--program-active-weight, 500)" : codeFontWeight,
               }}
             >
-              {index + 1}
+              {typeof renderIndex === "function"
+                ? renderIndex({ instruction, index, displayIndex, isCurrent })
+                : displayIndex}
             </span>
             <span
               className="program-listing-instruction"
@@ -87,15 +120,19 @@ export default function ProgramListing({
               }}
             >
               {isCurrent ? "▶ " : ""}
-              <KatexMath
-                expression={formatInstructionLatex(instruction)}
-                style={{
-                  display: "inline-block",
-                  lineHeight: "inherit",
-                  fontSize: "0.95em",
-                  color: "inherit",
-                }}
-              />
+              {typeof renderInstruction === "function" ? (
+                renderInstruction({ instruction, index, displayIndex, isCurrent })
+              ) : (
+                <KatexMath
+                  expression={formatInstructionLatex(instruction)}
+                  style={{
+                    display: "inline-block",
+                    lineHeight: "inherit",
+                    fontSize: "0.95em",
+                    color: "inherit",
+                  }}
+                />
+              )}
             </span>
           </div>
         );

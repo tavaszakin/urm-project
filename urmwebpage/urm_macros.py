@@ -56,6 +56,19 @@ def successor() -> List[Instruction]:
     return [("S", 0)]
 
 
+def predecessor() -> List[Instruction]:
+    """Return the predecessor function x -> max(x - 1, 0) in R0."""
+    return [
+        ("J", 0, 3, 7),
+        ("S", 2),
+        ("J", 0, 2, 6),
+        ("S", 1),
+        ("S", 2),
+        ("J", 0, 0, 2),
+        ("T", 1, 0),
+    ]
+
+
 def projection(i: int) -> List[Instruction]:
     """
     Return the i-th input (1-based) as the output in R0.

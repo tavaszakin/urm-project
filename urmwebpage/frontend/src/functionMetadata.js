@@ -1,4 +1,8 @@
 import { formatProjectionNotation, getProjectionArrayIndex, getProjectionVariableMeaning } from "./utils/mathNotation.jsx";
+import {
+  getCharacteristicRelationMetadata,
+  normalizeCharacteristicRelation,
+} from "./characteristicMetadata.js";
 
 export const FUNCTION_METADATA = {
   zero: {
@@ -14,6 +18,13 @@ export const FUNCTION_METADATA = {
     notation: "S(x)",
     description: "Returns x + 1.",
     aliases: ["succ"],
+  },
+  predecessor: {
+    display: "Predecessor",
+    shortDisplay: "Predecessor",
+    notation: "x ∸ 1",
+    description: "Returns max(x − 1, 0).",
+    aliases: ["pred", "truncated_predecessor"],
   },
   constant: {
     display: "Constant",
@@ -43,6 +54,13 @@ export const FUNCTION_METADATA = {
     description: "Returns max(x − y, 0).",
     aliases: ["sub", "truncated_sub", "truncated_subtraction"],
   },
+  characteristic: {
+    display: "Characteristic Function",
+    shortDisplay: "Characteristic Function",
+    notation: "χ_R(x,y)",
+    description: "Returns 1 when the selected relation holds, and 0 otherwise.",
+    aliases: [],
+  },
   compose: {
     display: "Composition",
     shortDisplay: "Composition",
@@ -56,6 +74,13 @@ export const FUNCTION_METADATA = {
     notation: "PR(g, h)",
     description: "Defined by a base function and a step function.",
     aliases: ["primitive_rec", "primitive_recursion"],
+  },
+  minimization: {
+    display: "Minimization",
+    shortDisplay: "Minimization",
+    notation: "μ",
+    description: "Searches for the least value that makes the inner function return 0.",
+    aliases: ["min", "mu"],
   },
 };
 
@@ -72,12 +97,15 @@ const ALIAS_TO_CANONICAL = Object.entries(FUNCTION_METADATA).reduce((acc, [kind,
 export const FUNCTION_ORDER = [
   "zero",
   "successor",
+  "predecessor",
   "constant",
   "projection",
   "add",
   "bounded_sub",
+  "characteristic",
   "compose",
   "primrec",
+  "minimization",
 ];
 
 export function normalizeFunctionKind(kind) {
@@ -173,8 +201,20 @@ export function renderFunctionLabel(spec) {
     return `PR(${renderFunctionLabel(spec?.base)}, ${renderFunctionLabel(spec?.step)})`;
   }
 
+  if (kind === "minimization") {
+    return `μ(${renderFunctionLabel(spec?.inner)})`;
+  }
+
   if (kind === "bounded_sub") {
     return "truncated subtraction";
+  }
+
+  if (kind === "predecessor") {
+    return "predecessor";
+  }
+
+  if (kind === "characteristic") {
+    return `χ_${normalizeCharacteristicRelation(spec?.relation)}`;
   }
 
   if (kind) {
@@ -196,6 +236,10 @@ export function renderFunctionExpression(spec, variables = []) {
     return wrapFunctionCall("successor", [args[0] ?? "x"]);
   }
 
+  if (kind === "predecessor") {
+    return `${args[0] ?? "x"} ∸ 1`;
+  }
+
   if (kind === "add") {
     if (args.length >= 2) {
       return `${args[0]} + ${args[1]}`;
@@ -210,6 +254,14 @@ export function renderFunctionExpression(spec, variables = []) {
     }
 
     return wrapFunctionCall("truncated subtraction", [args[0] ?? "x", args[1] ?? "y"]);
+  }
+
+  if (kind === "characteristic") {
+    const relation = getCharacteristicRelationMetadata(spec?.relation);
+    if (args.length >= 2) {
+      return `χ_R(${args[0]}, ${args[1]})`;
+    }
+    return wrapFunctionCall(`χ_${relation.value}`, [args[0] ?? "x", args[1] ?? "y"]);
   }
 
   if (kind === "projection") {
@@ -242,6 +294,11 @@ export function renderFunctionExpression(spec, variables = []) {
 
   if (kind === "primrec") {
     return `PR(${renderFunctionLabel(spec?.base)}, ${renderFunctionLabel(spec?.step)})`;
+  }
+
+  if (kind === "minimization") {
+    const innerExpression = renderFunctionExpression(spec?.inner, [...args, "y"]);
+    return `μy[${innerExpression}=0]`;
   }
 
   return renderFunctionLabel(spec);

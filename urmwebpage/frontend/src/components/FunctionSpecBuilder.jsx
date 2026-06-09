@@ -6,6 +6,10 @@ import {
   getFunctionDisplayName,
   getFunctionTooltip,
 } from "../functionMetadata.js";
+import {
+  CHARACTERISTIC_RELATIONS,
+  normalizeCharacteristicRelation,
+} from "../characteristicMetadata.js";
 import FunctionExpressionView, {
   createExpressionCall,
   createExpressionPlaceholder,
@@ -13,7 +17,9 @@ import FunctionExpressionView, {
 } from "./FunctionExpressionView.jsx";
 import { InlineMath } from "./MathText.jsx";
 
-export const COMPOSITION_FUNCTION_ORDER = FUNCTION_ORDER.filter((value) => value !== "primrec");
+export const COMPOSITION_FUNCTION_ORDER = FUNCTION_ORDER.filter(
+  (value) => value !== "primrec" && value !== "characteristic",
+);
 
 function buildFunctionOptions(values) {
   return values.map((value) => ({
@@ -35,6 +41,10 @@ function getSpecRenderKey(spec) {
 
   if (kind === "primrec") {
     return `primrec:${getSpecRenderKey(spec?.base)}:${getSpecRenderKey(spec?.step)}`;
+  }
+
+  if (kind === "minimization") {
+    return `minimization:${getSpecRenderKey(spec?.inner)}`;
   }
 
   if (kind === "constant") {
@@ -71,6 +81,20 @@ function createDefaultSpec(kind = "successor") {
       base: createDefaultSpec("constant"),
       step: createDefaultSpec("successor"),
       recursion_index: 0,
+    };
+  }
+
+  if (kind === "minimization") {
+    return {
+      kind,
+      inner: createDefaultSpec("bounded_sub"),
+    };
+  }
+
+  if (kind === "characteristic") {
+    return {
+      kind,
+      relation: "leq",
     };
   }
 
@@ -117,12 +141,17 @@ function isPositiveInteger(value) {
 }
 
 function getDefaultArgumentNodes(kind, spec) {
-  if (kind === "add" || kind === "bounded_sub") {
+  if (kind === "add" || kind === "bounded_sub" || kind === "characteristic") {
     return [createExpressionText("x"), createExpressionText("y")];
   }
 
   if (kind === "compose") {
     return getDefaultArgumentNodes(String(spec?.inner?.kind ?? "successor"), spec?.inner);
+  }
+
+  if (kind === "minimization") {
+    const innerArgs = getDefaultArgumentNodes(String(spec?.inner?.kind ?? "bounded_sub"), spec?.inner);
+    return innerArgs.slice(0, Math.max(innerArgs.length - 1, 0));
   }
 
   if (kind === "projection") {
@@ -137,13 +166,19 @@ function getDefaultArgumentNodes(kind, spec) {
 }
 
 function getExpectedArgumentCount(kind, spec) {
-  if (kind === "add" || kind === "bounded_sub") return 2;
+  if (kind === "add" || kind === "bounded_sub" || kind === "characteristic") return 2;
   if (kind === "projection") {
     const arity = Number(spec?.arity);
     return Number.isInteger(arity) && arity > 0 ? arity : 2;
   }
   if (kind === "compose") {
     return getExpectedArgumentCount(String(spec?.inner?.kind ?? "successor"), spec?.inner);
+  }
+  if (kind === "minimization") {
+    return Math.max(
+      getExpectedArgumentCount(String(spec?.inner?.kind ?? "bounded_sub"), spec?.inner) - 1,
+      0,
+    );
   }
   if (kind === "primrec") return 2;
   return 1;
@@ -232,6 +267,29 @@ function buildEditableExpressionNode(spec, onChange, depth = 0, args = undefined
     );
   }
 
+  if (kind === "characteristic") {
+    const relation = normalizeCharacteristicRelation(workingSpec?.relation);
+    return createExpressionCall(
+      <span key={`characteristic-${depth}`} style={expressionProjectionHeadStyle}>
+        {kindControl}
+        <select
+          value={relation}
+          onChange={(event) => onChange({ ...workingSpec, relation: event.target.value })}
+          style={expressionSelectStyle}
+          className="dashboard-control function-toolbar-select runner-toolbar-select"
+          title="Characteristic relation"
+        >
+          {CHARACTERISTIC_RELATIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </span>,
+      fallbackArgs,
+    );
+  }
+
   if (kind === "compose") {
     const innerExpression = buildEditableExpressionNode(
       workingSpec.inner ?? createDefaultSpec("add"),
@@ -254,7 +312,22 @@ function buildEditableExpressionNode(spec, onChange, depth = 0, args = undefined
     );
   }
 
-  if (kind === "zero" || kind === "successor" || kind === "add" || kind === "bounded_sub") {
+  if (kind === "minimization") {
+    const innerKind = String(workingSpec?.inner?.kind ?? "bounded_sub");
+    const innerExpression = buildEditableExpressionNode(
+      workingSpec.inner ?? createDefaultSpec("bounded_sub"),
+      (nextInner) => onChange({ ...workingSpec, inner: nextInner }),
+      depth + 1,
+      fillEditableArgsToArity(
+        [...fallbackArgs, createExpressionText("y")],
+        getExpectedArgumentCount(innerKind, workingSpec?.inner),
+      ),
+      allowedKinds,
+    );
+    return createExpressionCall(kindControl, [innerExpression]);
+  }
+
+  if (kind === "zero" || kind === "successor" || kind === "predecessor" || kind === "add" || kind === "bounded_sub") {
     return createExpressionCall(kindControl, fallbackArgs);
   }
 
@@ -332,6 +405,14 @@ export function validateFunctionSpec(spec, path = "Function") {
     );
   }
 
+  if (kind === "minimization") {
+    if (!spec.inner) {
+      return `${path} requires an inner function.`;
+    }
+
+    return validateFunctionSpec(spec.inner, `${path} inner`);
+  }
+
   if (kind === "primrec") {
     if (!spec.base) {
       return `${path} requires a base function.`;
@@ -353,6 +434,15 @@ export function validateFunctionSpec(spec, path = "Function") {
       validateFunctionSpec(spec.base, `${path} base`) ||
       validateFunctionSpec(spec.step, `${path} step`)
     );
+  }
+
+  if (kind === "characteristic") {
+    const relation = normalizeCharacteristicRelation(spec.relation);
+    const isKnownRelation = CHARACTERISTIC_RELATIONS.some((option) => option.value === relation);
+    if (!isKnownRelation) {
+      return `${path} requires a supported relation.`;
+    }
+    return "";
   }
 
   return "";
@@ -389,6 +479,13 @@ export function normalizeFunctionSpec(spec) {
     };
   }
 
+  if (kind === "minimization") {
+    return {
+      kind,
+      inner: normalizeFunctionSpec(spec.inner),
+    };
+  }
+
   if (kind === "primrec") {
     const normalized = {
       kind,
@@ -401,6 +498,13 @@ export function normalizeFunctionSpec(spec) {
     }
 
     return normalized;
+  }
+
+  if (kind === "characteristic") {
+    return {
+      kind,
+      relation: normalizeCharacteristicRelation(spec.relation),
+    };
   }
 
   return { kind };
@@ -570,6 +674,24 @@ export default function FunctionSpecBuilder({
           </>
         )}
 
+        {kind === "characteristic" && (
+          <span style={toolbarFieldStyle}>
+            <select
+              value={normalizeCharacteristicRelation(safeSpec.relation)}
+              onChange={(event) => onChange({ ...safeSpec, relation: event.target.value })}
+              style={toolbarSelectStyle}
+              className="dashboard-control function-toolbar-select runner-toolbar-select"
+              title="Characteristic relation"
+            >
+              {CHARACTERISTIC_RELATIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </span>
+        )}
+
         {kind === "compose" && (
           <FunctionExpressionView
             key={`${layout}-${depth}-${renderKey}-compose`}
@@ -579,6 +701,19 @@ export default function FunctionSpecBuilder({
             ], allowedKinds)}
             style={toolbarComposeGroupStyle}
           />
+        )}
+
+        {kind === "minimization" && (
+          <span style={toolbarRoleGroupStyle}>
+            <span style={toolbarTokenLabelStyle}>Inner function</span>
+            <FunctionSpecBuilder
+              spec={safeSpec.inner ?? createDefaultSpec("bounded_sub")}
+              onChange={(nextInner) => onChange({ ...safeSpec, inner: nextInner })}
+              depth={depth + 1}
+              layout="toolbarChild"
+              allowedKinds={allowedKinds}
+            />
+          </span>
         )}
 
         {kind === "primrec" && (
@@ -647,7 +782,7 @@ export default function FunctionSpecBuilder({
           key={`${layout}-${depth}-${renderKey}-kind`}
           value={kind}
           onChange={(e) => handleKindChange(e.target.value)}
-          style={isPipelineChild ? functionBlockSelectStyle : controlStyle}
+          style={isPipelineChild ? functionBlockSelectStyle : selectControlStyle}
           className="dashboard-control"
           title={getFunctionTooltip(safeSpec)}
         >
@@ -710,6 +845,27 @@ export default function FunctionSpecBuilder({
         </div>
       )}
 
+      {kind === "characteristic" && (
+        <div style={isPipelineChild ? compactInlineFieldRowStyle : inlineFieldRowStyle}>
+          <label style={isPipelineChild ? compactLabelStyle : labelStyle}>
+            Relation
+            <br />
+            <select
+              value={normalizeCharacteristicRelation(safeSpec.relation)}
+              onChange={(event) => onChange({ ...safeSpec, relation: event.target.value })}
+              style={isPipelineChild ? compactInputStyle : selectControlStyle}
+              className="dashboard-control"
+            >
+              {CHARACTERISTIC_RELATIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+      )}
+
       {kind === "compose" && (
         <div style={pipelineLayoutStyle}>
           <div style={pipelineColumnStyle}>
@@ -736,6 +892,16 @@ export default function FunctionSpecBuilder({
             />
           </div>
         </div>
+      )}
+
+      {kind === "minimization" && (
+        <FunctionSpecBuilder
+          spec={safeSpec.inner ?? createDefaultSpec("bounded_sub")}
+          onChange={(nextInner) => onChange({ ...safeSpec, inner: nextInner })}
+          depth={depth + 1}
+          title="Inner function"
+          allowedKinds={allowedKinds}
+        />
       )}
 
       {kind === "primrec" && (
@@ -869,14 +1035,22 @@ const controlStyle = {
   width: "100%",
 };
 
-const functionBlockSelectStyle = {
+const selectControlStyle = {
   ...controlStyle,
+  fontFamily: undefined,
+  fontSize: undefined,
+  fontWeight: undefined,
+  lineHeight: undefined,
+  letterSpacing: undefined,
+};
+
+const functionBlockSelectStyle = {
+  ...selectControlStyle,
   height: 32,
   padding: "3px 10px",
   borderRadius: RADII.control,
   border: "1px solid var(--input-border)",
   background: "var(--input-bg)",
-  fontWeight: 600,
   boxShadow: "none",
 };
 
@@ -889,12 +1063,11 @@ const compactInputStyle = {
 };
 
 export const expressionSelectStyle = {
-  ...compactInputStyle,
+  ...selectControlStyle,
   width: "auto",
   minWidth: 0,
   height: 30,
   padding: "4px 28px 4px 8px",
-  fontWeight: TYPOGRAPHY.weights.semibold,
 };
 
 const expressionNumberInputStyle = {
