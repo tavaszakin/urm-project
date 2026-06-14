@@ -465,7 +465,6 @@ function createBetaFlowDebugIdentity({
     layoutMode === "generated" ||
     layoutMode === "generatedScanV2" ||
     layoutMode === "sketchV1" ||
-    layoutMode === "sketchV2" ||
     layoutMode === "sketchV3"
       ? layoutMode
       : null;
@@ -474,8 +473,6 @@ function createBetaFlowDebugIdentity({
       ? "scanV2"
       : layoutMode === "sketchV1"
         ? "sketchV1"
-      : layoutMode === "sketchV2"
-        ? "sketchV2"
       : layoutMode === "sketchV3"
         ? "sketchV3"
       : layoutMode === "generated"
@@ -17741,7 +17738,6 @@ function buildDiagramModelUnsafe(program, selectedFunctionId, options = {}, layo
     normalizedLayoutMode === "generated" ||
     normalizedLayoutMode === "generatedScanV2" ||
     normalizedLayoutMode === "sketchV1" ||
-    normalizedLayoutMode === "sketchV2" ||
     normalizedLayoutMode === "sketchV3";
   const useGeneratedAlgorithmLayout = isGeneratedLikeLayoutMode;
   const _pt = typeof performance !== "undefined" ? performance : null;
@@ -21412,7 +21408,6 @@ function classifyVisualGeometry(layoutPlan, selectedFunctionId = "") {
     : null;
   const generatedScanV2PlacementDebug = layoutPlan.generatedScanV2PlacementDebug ?? null;
   const sketchV1PlacementDebug = layoutPlan.sketchV1PlacementDebug ?? null;
-  const sketchV2PlacementDebug = layoutPlan.sketchV2PlacementDebug ?? null;
   const sketchV3PlacementDebug = layoutPlan.sketchV3PlacementDebug ?? null;
   const scanV2AuditEnabled =
     layoutPlan.layoutMode === "generatedScanV2" &&
@@ -21934,62 +21929,6 @@ function classifyVisualGeometry(layoutPlan, selectedFunctionId = "") {
       ...layoutPlan.sketchV1FallbackDiagnostics,
     });
   }
-  if (sketchV2PlacementDebug && isBetaFlowAuditDebugEnabled()) {
-    motifs.push({
-      kind: "sketchV2Placement",
-      sketchV2Enabled: sketchV2PlacementDebug.sketchV2Enabled ?? false,
-      sketchV2FallbackUsed: layoutPlan.sketchV2FallbackUsed ?? false,
-      sketchV2FallbackReason: layoutPlan.sketchV2FallbackReason ?? null,
-      sketchV2OrdinaryDiamondSplitExitNotStraightFixedAngle:
-        sketchV2PlacementDebug.sketchV2OrdinaryDiamondSplitExitNotStraightFixedAngle ?? false,
-      sketchV2OrdinaryDiamondSplitExitLShaped:
-        sketchV2PlacementDebug.sketchV2OrdinaryDiamondSplitExitLShaped ?? false,
-      sketchV2NoYesSideOwnershipPreserved:
-        sketchV2PlacementDebug.sketchV2NoYesSideOwnershipPreserved ?? false,
-      sketchV2DiamondExitRows: sketchV2PlacementDebug.sketchV2DiamondExitRows ?? [],
-      sketchV2NonStraightDiamondExitRows:
-        sketchV2PlacementDebug.sketchV2NonStraightDiamondExitRows ?? [],
-      sketchV2LShapedDiamondExitRows:
-        sketchV2PlacementDebug.sketchV2LShapedDiamondExitRows ?? [],
-      sketchV2NoYesSideOwnershipRows:
-        sketchV2PlacementDebug.sketchV2NoYesSideOwnershipRows ?? [],
-      sketchV2LoopReturnRows:
-        sketchV2PlacementDebug.sketchV2LoopReturnRows ?? [],
-      sketchV2LoopReturnBelowClearanceRows:
-        sketchV2PlacementDebug.sketchV2LoopReturnBelowClearanceRows ?? [],
-      sketchV2LoopReturnDiamondObstacleRows:
-        sketchV2PlacementDebug.sketchV2LoopReturnDiamondObstacleRows ?? [],
-      sketchV2LoopReturnSplitExitLaneConflictRows:
-        sketchV2PlacementDebug.sketchV2LoopReturnSplitExitLaneConflictRows ?? [],
-      sketchV2LoopReturnUnrelatedEdgeLaneConflictRows:
-        sketchV2PlacementDebug.sketchV2LoopReturnUnrelatedEdgeLaneConflictRows ?? [],
-      sketchV2PlacementRejectionRows:
-        sketchV2PlacementDebug.sketchV2PlacementRejectionRows ?? [],
-      sketchV2DeferredHaltRows:
-        sketchV2PlacementDebug.sketchV2DeferredHaltRows ?? [],
-      sketchV2DeferredHaltConflictRows:
-        sketchV2PlacementDebug.sketchV2DeferredHaltConflictRows ?? [],
-      sketchV2HaltCommittedBeforeOrdinaryPlacementComplete:
-        sketchV2PlacementDebug.sketchV2HaltCommittedBeforeOrdinaryPlacementComplete ?? false,
-      sketchV2SharedHaltNodeId:
-        sketchV2PlacementDebug.sketchV2SharedHaltNodeId ?? null,
-      sketchV2PlacementRows: sketchV2PlacementDebug.sketchV2PlacementRows ?? [],
-      sketchV2TraversalRows: sketchV2PlacementDebug.sketchV2TraversalRows ?? [],
-      sketchV2PendingBranchCorridorRows:
-        sketchV2PlacementDebug.sketchV2PendingBranchCorridorRows ?? [],
-      sketchV2PendingBranchCorridorConflictRows:
-        sketchV2PlacementDebug.sketchV2PendingBranchCorridorConflictRows ?? [],
-      sketchV2FailureRows: sketchV2PlacementDebug.sketchV2FailureRows ?? [],
-    });
-  }
-  if (layoutPlan.sketchV2FallbackDiagnostics && isBetaFlowAuditDebugEnabled()) {
-    motifs.push({
-      kind: "sketchV2FallbackDiagnostics",
-      sketchV2FallbackUsed: layoutPlan.sketchV2FallbackUsed ?? false,
-      sketchV2FallbackReason: layoutPlan.sketchV2FallbackReason ?? null,
-      ...layoutPlan.sketchV2FallbackDiagnostics,
-    });
-  }
   if (sketchV3PlacementDebug && isBetaFlowAuditDebugEnabled()) {
     motifs.push({
       kind: "sketchV3Placement",
@@ -22230,8 +22169,6 @@ function classifyVisualGeometry(layoutPlan, selectedFunctionId = "") {
       generatedScanV2FallbackReason: layoutPlan.generatedScanV2FallbackReason ?? null,
       sketchV1FallbackUsed: layoutPlan.sketchV1FallbackUsed ?? false,
       sketchV1FallbackReason: layoutPlan.sketchV1FallbackReason ?? null,
-      sketchV2FallbackUsed: layoutPlan.sketchV2FallbackUsed ?? false,
-      sketchV2FallbackReason: layoutPlan.sketchV2FallbackReason ?? null,
       sketchV3FallbackUsed: layoutPlan.sketchV3FallbackUsed ?? false,
       sketchV3FallbackReason: layoutPlan.sketchV3FallbackReason ?? null,
       hasTunedLayout: identity.hasTunedLayout ?? null,
