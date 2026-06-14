@@ -22996,12 +22996,14 @@ export default function BetaFlowDiagram({
     () => isInstructionList(program) && showLayoutComparison
       ? safeComputeLayout(program, selectedFunctionId, {
           collapseSetupBlocks,
-          layoutMode: generatedLayoutControlMode,
+          // Phase C2a: the kept comparison always targets the tuned/reference
+          // layout. URL/localStorage override modes no longer affect this target.
+          layoutMode: "tuned",
           selectedExampleName,
           debugLayoutMetadata: layoutMetadata,
         })
       : [null, null],
-    [program, selectedFunctionId, collapseSetupBlocks, generatedLayoutControlMode, selectedExampleName, layoutMetadata, showLayoutComparison],
+    [program, selectedFunctionId, collapseSetupBlocks, selectedExampleName, layoutMetadata, showLayoutComparison],
   );
 
   // Ref to detect genuine cache misses (useMemo fires) vs no-ops.
@@ -23048,50 +23050,11 @@ export default function BetaFlowDiagram({
   }
 
   const geometryDebugEnabled = isVisualGeometryDebugEnabled();
-  const generatedLayoutMode = generatedLayoutControlMode;
-  const generatedStrategyLabel = `Generated strategy: ${getGeneratedStrategyLabel(generatedLayoutMode)}`;
-  const showGeneratedStrategyControl = showLayoutComparison;
-  const generatedStrategyControl = showGeneratedStrategyControl ? (
-    <select
-      className="beta-flow-generated-strategy-select"
-      aria-label="Generated strategy"
-      value={generatedLayoutControlMode}
-      onChange={(event) => {
-        const nextMode = ["tuned", "generated", "generatedScanV2", "sketchV1", "sketchV3"].includes(event.target.value)
-          ? event.target.value
-          : "tuned";
-
-        if (typeof window !== "undefined") {
-          try {
-            window.localStorage?.setItem("betaFlowGeneratedLayoutMode", nextMode);
-          } catch {
-            // Ignore localStorage failures in debug-only selector.
-          }
-
-          try {
-            const params = new URLSearchParams(window.location.search);
-            params.set("generatedLayoutMode", nextMode);
-            const nextQuery = params.toString();
-            const nextUrl = `${window.location.pathname}${nextQuery ? `?${nextQuery}` : ""}${window.location.hash ?? ""}`;
-            window.history.replaceState({}, "", nextUrl);
-          } catch {
-            // Ignore URL update failures for debug-only selector.
-          }
-        }
-
-        const refreshedInfo = getGeneratedLayoutModeOverrideInfo();
-        setGeneratedLayoutControlMode(refreshedInfo.mode);
-        setGeneratedLayoutControlSource(refreshedInfo.source);
-      }}
-      title={`Override source: ${generatedLayoutControlSource}`}
-    >
-      <option value="tuned">Tuned (legacy default)</option>
-      <option value="generated">Generated algorithm</option>
-      <option value="generatedScanV2">scanV2 experimental</option>
-      <option value="sketchV1">sketchV1 experimental</option>
-      <option value="sketchV3">sketchV3 structural</option>
-    </select>
-  ) : null;
+  // Phase C2a: the kept comparison always targets the tuned/reference layout,
+  // so the multi-engine selector has been removed. A static badge replaces it,
+  // and URL/localStorage override state no longer affects the comparison target.
+  const generatedStrategyLabel = "Reference (tuned)";
+  const generatedStrategyControl = null;
   // generatedLayoutPlan and generatedLayoutError come from the useMemo above.
 
   if (geometryDebugEnabled && generatedLayoutPlan) {
