@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { API_URL } from "../api.js";
 import BetaFlowDiagram, {
   buildFlowGeometryReport,
@@ -252,6 +252,32 @@ export default function FlowDiagramBetaPage() {
     [compiledResult],
   );
 
+  // FunctionRunner has a useEffect([onRunDataChange, runData]) that fires whenever either dep
+  // changes.  An inline onRunDataChange is a new reference every render, so after the user
+  // clicks Run (runData != null) any state change in this component would re-fire that effect,
+  // call setCompiledResult with a new object, which triggers another render, which creates
+  // another new onRunDataChange — an infinite loop.
+  //
+  // Fix: keep a ref to the current functionSpec so the callback can always access the latest
+  // value without being recreated, then use an empty-dep useCallback so its identity is stable.
+  const _selectedFunctionSpecRef = useRef(selectedFunctionState.functionSpec);
+  _selectedFunctionSpecRef.current = selectedFunctionState.functionSpec;
+
+  const handleRunDataChange = useCallback((runData) => {
+    if (!Array.isArray(runData?.program)) return;
+    const functionSpec = _selectedFunctionSpecRef.current;
+    setCompiledResult((prev) => {
+      // Bail out when the incoming program+spec are the same references as what is already
+      // stored.  This prevents a cascading layoutMetadata / layoutPlan recompute when the
+      // run result matches an already-compiled diagram.
+      if (prev !== null && prev.program === runData.program && prev.functionSpec === functionSpec) {
+        return prev;
+      }
+      return { program: runData.program, functionSpec };
+    });
+    setDiagramMessage("");
+  }, []); // empty deps — identity is stable for the lifetime of this component
+
   useEffect(() => {
     const functionSpec = selectedFunctionState.functionSpec;
     const validationMessage = validateFunctionSpec(functionSpec);
@@ -468,15 +494,7 @@ export default function FlowDiagramBetaPage() {
         <FunctionRunner
           initialFunctionSpec={DEFAULT_FUNCTION_SPEC}
           hideMachinePanel
-          onRunDataChange={(runData) => {
-            if (Array.isArray(runData?.program)) {
-              setCompiledResult({
-                program: runData.program,
-                functionSpec: selectedFunctionState.functionSpec,
-              });
-              setDiagramMessage("");
-            }
-          }}
+          onRunDataChange={handleRunDataChange}
           onFunctionStateChange={setSelectedFunctionState}
         />
       </section>

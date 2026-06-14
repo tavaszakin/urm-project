@@ -1,6 +1,6 @@
 import KatexMath from "./KatexMath.jsx";
 import { applySketchV1Layout } from "./SketchV1FlowDiagram.jsx";
-import { applySketchV3Layout } from "./SketchV3FlowDiagram.jsx";
+import { applySketchV3LayoutWithAutomaticRepair } from "./SketchV3FlowDiagram.jsx";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 const TEXTBOOK_LAYOUT = {
@@ -50,6 +50,8 @@ const MAX_COMFORTABLE_GRAPH_WIDTH = 1500;
 const GRAPH_SCALE_NODE_THRESHOLD = 30;
 const MIN_GRAPH_SCALE = 0.7;
 const MAX_BETA_FLOW_DEBUG_REPORT_HISTORY = 120;
+// Cap the per-phase timing log so it cannot grow without bound across repeated selections.
+const MAX_BETA_FLOW_PERF_LOG_ENTRIES = 50;
 let BETA_FLOW_DEBUG_RENDER_COUNTER = 0;
 
 function normalizeOpcode(instruction) {
@@ -17801,9 +17803,10 @@ function buildDiagramModelUnsafe(program, selectedFunctionId, options = {}, layo
   });
   const _t3 = _pt?.now() ?? 0;
   if (normalizedLayoutMode === "sketchV3") {
-    const sketchV3Placement = applySketchV3Layout({
+    const sketchV3Placement = applySketchV3LayoutWithAutomaticRepair({
       ...layoutPlan,
       layoutMode: normalizedLayoutMode,
+      sketchV3DiagnosticsRequested: isSketchV3DiagnosticsRequested(),
     });
     const _t4 = _pt?.now() ?? 0;
     const routed = routeFlowEdges({
@@ -17813,8 +17816,8 @@ function buildDiagramModelUnsafe(program, selectedFunctionId, options = {}, layo
     });
     const _t5 = _pt?.now() ?? 0;
     if (typeof window !== "undefined" && _pt) {
-      window.__betaFlowPerfLog = window.__betaFlowPerfLog ?? [];
-      window.__betaFlowPerfLog.push({
+      const perfLog = window.__betaFlowPerfLog ?? [];
+      perfLog.push({
         type: "phases",
         layoutMode: "sketchV3",
         n: program.length,
@@ -17825,6 +17828,11 @@ function buildDiagramModelUnsafe(program, selectedFunctionId, options = {}, layo
         routeFlowEdges: _t5 - _t4,
         total: _t5 - _t0,
       });
+      // Keep only the most recent entries so repeated selections cannot grow this unbounded.
+      if (perfLog.length > MAX_BETA_FLOW_PERF_LOG_ENTRIES) {
+        perfLog.splice(0, perfLog.length - MAX_BETA_FLOW_PERF_LOG_ENTRIES);
+      }
+      window.__betaFlowPerfLog = perfLog;
     }
     return routed;
   }
@@ -22536,6 +22544,10 @@ function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow di
 
     window.__betaFlowLoopReturnAudit = window.__betaFlowLoopReturnAudit ?? {};
     window.__betaFlowLoopReturnAudit[audit.layoutMode] = loopAudit;
+    // Diagnostic: expose full sketchV3LoopReturnDiagnostic for each backward edge.
+    // loopRows entries ARE the diagnostic object (spread-in by buildLoopReturnDiagnostics),
+    // so row itself is the diag — not row.sketchV3LoopReturnDiagnostic.
+    window.__sketchV3LoopReturnFullDiag = loopRows.map((row) => ({ ...row }));
   }, [layoutPlan]);
 
   const graphScale = computeGraphRenderScale(layoutPlan);
@@ -22680,6 +22692,29 @@ function isVisualGeometryDebugEnabled() {
   return false;
 }
 
+// Signals to the SketchV3 engine (via layoutPlan.sketchV3DiagnosticsRequested) whether the
+// full sketchV3PlacementDebug payload is actually consumed this render. It is only read by
+// the geometry-debug / audit reports, the geometry-collection report (buildFlowGeometryReport
+// -> classifyVisualGeometry), and automatic split-orientation repair (handled inside the
+// engine). On the normal render path none of these are active, so the engine skips the
+// expensive post-layout diagnostic assembly. (Comparison mode renders nodes/edges only and
+// does not read the debug payload, so it does not force diagnostics on its own.)
+function isSketchV3DiagnosticsRequested() {
+  if (isVisualGeometryDebugEnabled()) return true; // covers betaFlowAudit + geometryDebug
+  if (typeof window === "undefined") return true;   // headless harness / tests / SSR
+  try {
+    if (new URLSearchParams(window.location.search).get("geometryCollect") === "1") return true;
+  } catch {
+    // Ignore URL parsing issues in debug-only collection mode.
+  }
+  try {
+    if (window.localStorage?.getItem("betaFlowGeometryCollect") === "1") return true;
+  } catch {
+    // Ignore localStorage access issues in debug-only collection mode.
+  }
+  return false;
+}
+
 function isBetaFlowAuditDebugEnabled() {
   if (typeof window === "undefined") return false;
 
@@ -22710,6 +22745,8 @@ function safeComputeLayout(program, selectedFunctionId, options, layout) {
   }
 }
 
+// Headless verification entry point (node harness / dev console); not used by the app UI.
+export { buildDiagramModel };
 
 export function buildFlowGeometryReport(
   program,
@@ -22737,6 +22774,14 @@ export default function BetaFlowDiagram({
   // Both hooks must be called unconditionally before any early returns (Rules of Hooks).
   // useMemo callbacks are pure — no side effects, no try/catch, no performance.now().
   // Logging and counts are flushed to window via useEffect below.
+  //
+  // layoutMetadata is intentionally excluded from this dep array.
+  // It is passed only as debugLayoutMetadata which populates the debug identity object
+  // (hasTunedLayout, layoutStatus) — it has no effect on node positions, edge routes, or
+  // any other visual output.  layoutMetadata always changes atomically with program (both
+  // derive from compiledResult), so omitting it here never skips a visually-relevant recompute.
+  // Including it caused unnecessary expensive recomputes when compiledResult was replaced with
+  // a new object holding the same program reference (e.g., from a run result matching a compile).
   const layoutPlan = useMemo(
     () => isInstructionList(program)
       ? buildDiagramModel(program, selectedFunctionId, {
@@ -22746,7 +22791,8 @@ export default function BetaFlowDiagram({
           debugLayoutMetadata: layoutMetadata,
         })
       : null,
-    [program, selectedFunctionId, collapseSetupBlocks, selectedExampleName, layoutMetadata],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [program, selectedFunctionId, collapseSetupBlocks, selectedExampleName],
   );
 
   const [generatedLayoutPlan, generatedLayoutError] = useMemo(
@@ -22775,6 +22821,9 @@ export default function BetaFlowDiagram({
     prevLayoutPlanRef.current = layoutPlan;
     if (typeof window === "undefined") return;
     window.__betaFlowPrimaryComputeCount = (window.__betaFlowPrimaryComputeCount ?? 0) + 1;
+    // Dev/debug only: expose the rendered layout plan so manual verification
+    // tooling (DevTools, headless drivers) can inspect the exact plan the SVG uses.
+    window.__betaFlowLastLayoutPlan = layoutPlan;
   }, [layoutPlan]);
 
   useEffect(() => {
