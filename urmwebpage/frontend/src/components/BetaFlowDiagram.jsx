@@ -17855,17 +17855,6 @@ function buildDiagramModelUnsafe(program, selectedFunctionId, options = {}, layo
       !keepNestedLoopUncollapsed,
   });
   const _t3 = _pt?.now() ?? 0;
-  if (normalizedLayoutMode === "sketchV2") {
-    const sketchV2Placement = applySketchV2Layout({
-      ...layoutPlan,
-      layoutMode: normalizedLayoutMode,
-    });
-    return routeFlowEdges({
-      ...sketchV2Placement.layoutPlan,
-      layoutMode: normalizedLayoutMode,
-      sketchV2PlacementDebug: sketchV2Placement.diagnostics,
-    });
-  }
   if (normalizedLayoutMode === "sketchV3") {
     const sketchV3Placement = applySketchV3Layout({
       ...layoutPlan,
@@ -18037,60 +18026,6 @@ function buildDiagramModel(program, selectedFunctionId, options = {}, layout = T
         sketchV3FallbackUsed: true,
         sketchV3FallbackReason,
         sketchV3FallbackDiagnostics,
-      };
-    }
-  }
-  if (requestedLayoutMode === "sketchV2") {
-    try {
-      const layoutPlan = buildDiagramModelUnsafe(program, selectedFunctionId, options, layout);
-      const invalidGeometryReason = getInvalidDiagramGeometryReason(layoutPlan);
-      if (invalidGeometryReason) {
-        throw new Error(invalidGeometryReason);
-      }
-      return {
-        ...layoutPlan,
-        sketchV2FallbackUsed: false,
-        sketchV2FallbackReason: null,
-      };
-    } catch (error) {
-      const sketchV2FallbackReason = String(error?.message ?? error ?? "unknownError");
-      const sketchV2FallbackDiagnostics = error?.sketchV2FallbackDiagnostics ?? null;
-      console.warn(
-        "[beta-flow] sketchV2 placement failed; using legacy generated layout for this render.",
-        {
-          sketchV2FallbackUsed: true,
-          sketchV2FallbackReason,
-          sketchV2FallbackDiagnostics,
-          selectedFunctionId,
-        },
-      );
-      const fallbackPlan = buildDiagramModelUnsafe(
-        program,
-        selectedFunctionId,
-        { ...options, layoutMode: "generated" },
-        layout,
-      );
-      const fallbackDebugIdentity = fallbackPlan.analysis?.debugIdentity ?? null;
-      const sketchV2DebugIdentity = fallbackDebugIdentity
-        ? {
-            ...fallbackDebugIdentity,
-            layoutMode: "sketchV2",
-            effectiveGeneratedLayoutMode: "sketchV2",
-            generatedStrategy: "sketchV2",
-          }
-        : fallbackDebugIdentity;
-
-      return {
-        ...fallbackPlan,
-        layoutMode: "sketchV2",
-        analysis: {
-          ...fallbackPlan.analysis,
-          layoutMode: "sketchV2",
-          debugIdentity: sketchV2DebugIdentity,
-        },
-        sketchV2FallbackUsed: true,
-        sketchV2FallbackReason,
-        sketchV2FallbackDiagnostics,
       };
     }
   }
