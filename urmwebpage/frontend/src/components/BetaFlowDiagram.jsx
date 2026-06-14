@@ -22881,55 +22881,6 @@ function isBetaFlowAuditDebugEnabled() {
   }
 }
 
-function getGeneratedLayoutModeOverrideInfo() {
-  if (typeof window === "undefined") {
-    return { mode: "tuned", source: "default" };
-  }
-
-  try {
-    const params = new URLSearchParams(window.location.search);
-    const modeParam = String(params.get("generatedLayoutMode") ?? "").trim();
-    if (modeParam === "generatedScanV2" || modeParam === "scanV2") {
-      return { mode: "generatedScanV2", source: "url" };
-    }
-    if (modeParam === "sketchV1") {
-      return { mode: "sketchV1", source: "url" };
-    }
-    // sketchV2 retired from selectable debug modes (phase A); a stale
-    // ?generatedLayoutMode=sketchV2 value now falls through to the default ("tuned").
-    if (modeParam === "sketchV3") {
-      return { mode: "sketchV3", source: "url" };
-    }
-    if (modeParam === "generated" || modeParam === "default") {
-      return { mode: "generated", source: "url" };
-    }
-  } catch {
-    // Ignore URL parsing issues for debug-only mode override.
-  }
-
-  try {
-    const localMode = String(window.localStorage?.getItem("betaFlowGeneratedLayoutMode") ?? "").trim();
-    if (localMode === "generatedScanV2" || localMode === "scanV2") {
-      return { mode: "generatedScanV2", source: "localStorage" };
-    }
-    if (localMode === "sketchV1") {
-      return { mode: "sketchV1", source: "localStorage" };
-    }
-    // sketchV2 retired from selectable debug modes (phase A); a stale
-    // betaFlowGeneratedLayoutMode=sketchV2 value now falls through to the default ("tuned").
-    if (localMode === "sketchV3") {
-      return { mode: "sketchV3", source: "localStorage" };
-    }
-    if (localMode === "generated" || localMode === "default") {
-      return { mode: "generated", source: "localStorage" };
-    }
-  } catch {
-    // Ignore localStorage access issues for debug-only mode override.
-  }
-
-  return { mode: "tuned", source: "default" };
-}
-
 function safeComputeLayout(program, selectedFunctionId, options, layout) {
   try {
     return [buildDiagramModel(program, selectedFunctionId, options, layout), null];
@@ -22938,13 +22889,6 @@ function safeComputeLayout(program, selectedFunctionId, options, layout) {
   }
 }
 
-function getGeneratedStrategyLabel(layoutMode) {
-  if (layoutMode === "tuned") return "tuned";
-  if (layoutMode === "generatedScanV2") return "scanV2";
-  if (layoutMode === "sketchV1") return "sketchV1";
-  if (layoutMode === "sketchV3") return "sketchV3";
-  return "legacy";
-}
 
 export function buildFlowGeometryReport(
   program,
@@ -22968,14 +22912,6 @@ export default function BetaFlowDiagram({
   collapseSetupBlocks = false,
   showLayoutComparison = false,
 }) {
-  const initialGeneratedLayoutInfo = getGeneratedLayoutModeOverrideInfo();
-  const [generatedLayoutControlMode, setGeneratedLayoutControlMode] = useState(
-    initialGeneratedLayoutInfo.mode,
-  );
-  const [generatedLayoutControlSource, setGeneratedLayoutControlSource] = useState(
-    initialGeneratedLayoutInfo.source,
-  );
-
   // Memoize layout computations so they only re-run when their inputs change.
   // Both hooks must be called unconditionally before any early returns (Rules of Hooks).
   // useMemo callbacks are pure — no side effects, no try/catch, no performance.now().
@@ -23050,11 +22986,9 @@ export default function BetaFlowDiagram({
   }
 
   const geometryDebugEnabled = isVisualGeometryDebugEnabled();
-  // Phase C2a: the kept comparison always targets the tuned/reference layout,
-  // so the multi-engine selector has been removed. A static badge replaces it,
-  // and URL/localStorage override state no longer affects the comparison target.
+  // The kept comparison always targets the tuned/reference layout; a static
+  // badge labels it and there is no engine selector.
   const generatedStrategyLabel = "Reference (tuned)";
-  const generatedStrategyControl = null;
   // generatedLayoutPlan and generatedLayoutError come from the useMemo above.
 
   if (geometryDebugEnabled && generatedLayoutPlan) {
@@ -23062,78 +22996,37 @@ export default function BetaFlowDiagram({
   }
 
   const generatedUnavailableNote = generatedLayoutError
-    ? `Generated algorithm layout is unavailable for this example (${generatedLayoutError?.message ?? "unknown error"}).`
+    ? `Reference (tuned) layout is unavailable for this example (${generatedLayoutError?.message ?? "unknown error"}).`
     : null;
-
-  if (!shouldShowTunedComparisonPanel) {
-    return (
-      <div className="beta-flow-comparison-grid">
-        {renderFlowSvgPanel(
-          layoutPlan,
-          "Generated layout",
-          null,
-          "Generated URM flow diagram",
-        )}
-        {generatedLayoutPlan
-          ? renderFlowSvgPanel(
-              generatedLayoutPlan,
-              "Generated base-algorithm layout",
-              "No confirmed tuned layout exists for this example.",
-              "Generated base-algorithm URM flow diagram",
-              generatedStrategyLabel,
-              generatedStrategyControl,
-            )
-          : (
-              <section className="beta-flow-comparison-panel beta-flow-comparison-panel-empty" aria-label="Generated algorithm layout unavailable">
-                <header className="beta-flow-comparison-panel-header">
-                  <div className="beta-flow-comparison-panel-title-row">
-                    <h4 className="beta-flow-comparison-panel-title">Generated base-algorithm layout</h4>
-                    <div className="beta-flow-comparison-panel-title-tools">
-                      <span className="beta-flow-comparison-panel-badge">{generatedStrategyLabel}</span>
-                      {generatedStrategyControl}
-                    </div>
-                  </div>
-                </header>
-                <div className="beta-flow-placeholder">
-                  {generatedUnavailableNote ?? "Generated algorithm layout is not available for this example yet."}
-                </div>
-              </section>
-            )
-        }
-      </div>
-    );
-  }
 
   return (
     <div className="beta-flow-comparison-grid">
       {renderFlowSvgPanel(
         layoutPlan,
-        "Current tuned layout",
+        "sketchV3 layout",
         null,
-        "Current tuned URM flow diagram",
+        "sketchV3 URM flow diagram",
       )}
       {generatedLayoutPlan
         ? renderFlowSvgPanel(
           generatedLayoutPlan,
-          "Generated base-algorithm layout",
+          "Reference (tuned) layout",
           null,
-          "Generated base-algorithm URM flow diagram",
+          "Reference (tuned) URM flow diagram",
           generatedStrategyLabel,
-          generatedStrategyControl,
         )
         : (
-          <section className="beta-flow-comparison-panel beta-flow-comparison-panel-empty" aria-label="Generated algorithm layout unavailable">
+          <section className="beta-flow-comparison-panel beta-flow-comparison-panel-empty" aria-label="Reference (tuned) layout unavailable">
             <header className="beta-flow-comparison-panel-header">
               <div className="beta-flow-comparison-panel-title-row">
-                <h4 className="beta-flow-comparison-panel-title">Generated base-algorithm layout</h4>
+                <h4 className="beta-flow-comparison-panel-title">Reference (tuned) layout</h4>
                 <div className="beta-flow-comparison-panel-title-tools">
                   <span className="beta-flow-comparison-panel-badge">{generatedStrategyLabel}</span>
-                  {generatedStrategyControl}
                 </div>
               </div>
             </header>
             <div className="beta-flow-placeholder">
-              {generatedUnavailableNote ?? "Generated algorithm layout is not available for this example yet."}
+              {generatedUnavailableNote ?? "Reference (tuned) layout is not available for this example yet."}
             </div>
           </section>
         )}
