@@ -1,6 +1,5 @@
 import KatexMath from "./KatexMath.jsx";
 import { applySketchV1Layout } from "./SketchV1FlowDiagram.jsx";
-import { applySketchV2Layout } from "./SketchV2FlowDiagram.jsx";
 import { applySketchV3Layout } from "./SketchV3FlowDiagram.jsx";
 import { useEffect, useMemo, useRef, useState } from "react";
 
