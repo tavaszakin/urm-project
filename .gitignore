@@ -1,0 +1,11 @@
+# Python bytecode cache
+__pycache__/
+*.pyc
+*.pyo
+
+# SketchV3 headless verification harness (local dev tooling)
+.sketchv3-harness/
+
+# Frontend build output and dependencies
+dist/
+node_modules/
