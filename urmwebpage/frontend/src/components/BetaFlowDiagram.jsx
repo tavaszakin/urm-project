@@ -22942,7 +22942,6 @@ function getGeneratedStrategyLabel(layoutMode) {
   if (layoutMode === "tuned") return "tuned";
   if (layoutMode === "generatedScanV2") return "scanV2";
   if (layoutMode === "sketchV1") return "sketchV1";
-  if (layoutMode === "sketchV2") return "sketchV2";
   if (layoutMode === "sketchV3") return "sketchV3";
   return "legacy";
 }
@@ -23055,7 +23054,7 @@ export default function BetaFlowDiagram({
       aria-label="Generated strategy"
       value={generatedLayoutControlMode}
       onChange={(event) => {
-        const nextMode = ["tuned", "generated", "generatedScanV2", "sketchV1", "sketchV2", "sketchV3"].includes(event.target.value)
+        const nextMode = ["tuned", "generated", "generatedScanV2", "sketchV1", "sketchV3"].includes(event.target.value)
           ? event.target.value
           : "tuned";
 
