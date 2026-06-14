@@ -14041,41 +14041,6 @@ function routeSketchV1Edge(edge, fromNode, toNode, layout, analysis, nodeMap) {
   };
 }
 
-function routeSketchV2Edge(edge, fromNode, toNode, layout) {
-  const reservedRoute = edge.sketchV2ReservedRoute;
-
-  if (
-    Array.isArray(reservedRoute?.points) &&
-    reservedRoute.points.length >= 2 &&
-    reservedRoute.points.every((point) => (
-      Array.isArray(point) &&
-      Number.isFinite(point[0]) &&
-      Number.isFinite(point[1])
-    ))
-  ) {
-    return {
-      ...edge,
-      points: reservedRoute.points,
-      labelX: Number.isFinite(reservedRoute.labelX)
-        ? reservedRoute.labelX
-        : edge.labelX,
-      labelY: Number.isFinite(reservedRoute.labelY)
-        ? reservedRoute.labelY - layout.labelOffset
-        : edge.labelY,
-      sketchV2RouteKind: reservedRoute.routeKind ?? "reserved",
-    };
-  }
-
-  const fromBounds = getNodeBounds(fromNode, layout);
-  const toBounds = getNodeBounds(toNode, layout);
-
-  return {
-    ...edge,
-    points: [getBottomPort(fromBounds), getTopPort(toBounds)],
-    sketchV2RouteKind: "fallbackDirect",
-  };
-}
-
 function routeSketchV3Edge(edge, fromNode, toNode, layout) {
   const reservedRoute = edge.sketchV3ReservedRoute;
 
@@ -14148,10 +14113,6 @@ function routeEdgeWithGenericRegionGrammar(
 
   if (analysis.layoutMode === "sketchV1") {
     return routeSketchV1Edge(edge, fromNode, toNode, layout, analysis, nodeMap);
-  }
-
-  if (analysis.layoutMode === "sketchV2") {
-    return routeSketchV2Edge(edge, fromNode, toNode, layout);
   }
 
   if (analysis.layoutMode === "sketchV3") {
@@ -17649,17 +17610,6 @@ function applyGeneratedLaneSeparationForSharedCorridors(layoutPlan, routedEdges)
 }
 
 function routeFlowEdges(layoutPlan) {
-  if (layoutPlan.layoutMode === "sketchV2") {
-    const routedEdges = layoutPlan.edges
-      .map((edge) => {
-        const from = layoutPlan.nodeMap.get(edge.from);
-        const to = layoutPlan.nodeMap.get(edge.to);
-        if (!from || !to) return null;
-        return routeSketchV2Edge(edge, from, to, layoutPlan.layout);
-      })
-      .filter(Boolean);
-    return measureLayoutPlan(layoutPlan, routedEdges);
-  }
   if (layoutPlan.layoutMode === "sketchV3") {
     const routedEdges = layoutPlan.edges
       .map((edge) => {
@@ -22471,7 +22421,7 @@ function auditEdgeBoundsForLayoutPlan(layoutPlan) {
       sourceIndex: edge.sourceIndex ?? null,
       targetIndex: edge.targetIndex ?? null,
       branch: edge.branch ?? null,
-      routeKind: edge.sketchV3RouteKind ?? edge.sketchV2RouteKind ?? edge.routeKind ?? null,
+      routeKind: edge.sketchV3RouteKind ?? edge.routeKind ?? null,
       type: edge.type ?? null,
       pointCount: pts.length,
       firstPt,
