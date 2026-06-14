@@ -498,15 +498,17 @@ export default function FlowDiagramBetaPage() {
           {" "}
           Collapse setup blocks
         </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={showLayoutComparison}
-            onChange={(event) => setShowLayoutComparison(event.target.checked)}
-          />
-          {" "}
-          Show layout comparison (beta)
-        </label>
+        {layoutMetadata?.hasTunedLayout ? (
+          <label>
+            <input
+              type="checkbox"
+              checked={showLayoutComparison}
+              onChange={(event) => setShowLayoutComparison(event.target.checked)}
+            />
+            {" "}
+            Show layout comparison (beta)
+          </label>
+        ) : null}
         {compiledResult ? (
           <BetaFlowDiagram
             program={compiledResult.program}

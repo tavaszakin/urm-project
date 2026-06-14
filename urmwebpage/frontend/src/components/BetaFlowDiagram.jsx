@@ -23040,7 +23040,10 @@ export default function BetaFlowDiagram({
     emitVisualGeometryDebugReport(layoutPlan, selectedFunctionId);
   }
 
-  if (!showLayoutComparison) {
+  // Layout comparison is only meaningful when a tuned/reference layout exists for
+  // this function. Without it (or with comparison off) render the single sketchV3
+  // view; the legacy no-tuned comparison grid below is intentionally unreachable now.
+  if (!shouldShowTunedComparisonPanel) {
     return renderFlowSvg(layoutPlan);
   }
 
