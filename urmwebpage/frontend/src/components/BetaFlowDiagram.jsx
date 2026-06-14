@@ -22895,9 +22895,8 @@ function getGeneratedLayoutModeOverrideInfo() {
     if (modeParam === "sketchV1") {
       return { mode: "sketchV1", source: "url" };
     }
-    if (modeParam === "sketchV2") {
-      return { mode: "sketchV2", source: "url" };
-    }
+    // sketchV2 retired from selectable debug modes (phase A); a stale
+    // ?generatedLayoutMode=sketchV2 value now falls through to the default ("tuned").
     if (modeParam === "sketchV3") {
       return { mode: "sketchV3", source: "url" };
     }
@@ -22916,9 +22915,8 @@ function getGeneratedLayoutModeOverrideInfo() {
     if (localMode === "sketchV1") {
       return { mode: "sketchV1", source: "localStorage" };
     }
-    if (localMode === "sketchV2") {
-      return { mode: "sketchV2", source: "localStorage" };
-    }
+    // sketchV2 retired from selectable debug modes (phase A); a stale
+    // betaFlowGeneratedLayoutMode=sketchV2 value now falls through to the default ("tuned").
     if (localMode === "sketchV3") {
       return { mode: "sketchV3", source: "localStorage" };
     }
@@ -23089,7 +23087,6 @@ export default function BetaFlowDiagram({
       <option value="generated">Generated algorithm</option>
       <option value="generatedScanV2">scanV2 experimental</option>
       <option value="sketchV1">sketchV1 experimental</option>
-      <option value="sketchV2">sketchV2 experimental</option>
       <option value="sketchV3">sketchV3 structural</option>
     </select>
   ) : null;
