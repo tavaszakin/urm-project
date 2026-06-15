@@ -15009,8 +15009,11 @@ function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow di
   }, []);
 
   // Run edge/bounds audit on every layout plan change and expose on window.
+  // Debug instrumentation only: skip on normal renders so it never computes the
+  // audit or writes the window debug payload outside audit/debug mode.
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (!isBetaFlowAuditDebugEnabled()) return;
     const audit = auditEdgeBoundsForLayoutPlan(layoutPlan);
     window.__betaFlowEdgeAudit = window.__betaFlowEdgeAudit ?? {};
     window.__betaFlowEdgeAudit[audit.layoutMode] = audit;

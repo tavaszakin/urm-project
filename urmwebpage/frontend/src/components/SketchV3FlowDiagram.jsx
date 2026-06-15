@@ -6835,21 +6835,26 @@ export function applySketchV3LayoutWithAutomaticRepair(layoutPlan) {
   // Baseline failure propagates exactly as before — automatic repair only
   // refines layouts that already succeed.
   const baselineResult = applySketchV3Layout(layoutPlan);
-  const baselineSummary = summarizeSketchV3RunForAutoRepair(baselineResult.diagnostics);
+  // Building the baseline summary only matters for the repair trials below, so skip it
+  // on the normal render path where automatic repair is disabled.
+  const repairEnabled = autoEnabled && !manualOverrides;
+  const baselineSummary = repairEnabled
+    ? summarizeSketchV3RunForAutoRepair(baselineResult.diagnostics)
+    : null;
 
   const repair = {
-    enabled: autoEnabled && !manualOverrides,
+    enabled: repairEnabled,
     disabledReason: !autoEnabled
       ? "optInFlagNotSet (enable with ?sketchV3AutoFlip=1, localStorage sketchV3AutoFlip=1, or globalThis.__sketchV3AutoFlip=true)"
       : manualOverrides
         ? "manualOverridesActive (manual overrides take precedence; automatic repair is skipped for this run)"
         : null,
-    baselineCrossingCount: baselineSummary.crossingCount,
+    baselineCrossingCount: baselineSummary?.crossingCount ?? null,
     baselineSummary,
     candidates: [],
     testedOverrideMaps: [],
     selectedOverrides: null,
-    finalCrossingCount: baselineSummary.crossingCount,
+    finalCrossingCount: baselineSummary?.crossingCount ?? null,
   };
   baselineResult.diagnostics.automaticSplitOrientationRepair = repair;
   if (!repair.enabled) return baselineResult;
