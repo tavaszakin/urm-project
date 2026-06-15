@@ -13482,7 +13482,6 @@ function classifyVisualGeometry(layoutPlan, selectedFunctionId = "") {
         kind: node.kind,
         x: node.x,
         y: node.y,
-        generatedScanV2LocalFrameId: node.generatedScanV2LocalFrameId ?? null,
         sketchV1FrameId: node.sketchV1FrameId ?? null,
       })),
       edges: layoutPlan.edges.map((edge) => ({
@@ -14253,8 +14252,6 @@ function classifyVisualGeometry(layoutPlan, selectedFunctionId = "") {
   const includeVerboseScanDiagnostics =
     layoutPlan.layoutMode !== "generatedScanV2" ||
     scanV2AuditEnabled;
-  const generatedScanV2VisualReadabilityDebug = { available: false, skippedReason: "auditModeDisabled" };
-  const generatedScanV2VisualGrammarDebug = { available: false, skippedReason: "auditModeDisabled", hardFailureRules: [] };
   const generatedLocalSideChainPlacementDebug = layoutPlan.generatedLocalSideChainPlacementDebug ?? null;
   const generatedRegionEdgePlanDebug = layoutPlan.generatedRegionEdgePlanDebug ?? null;
   const outerContinuationLaneDebug = layoutPlan.generatedOuterContinuationLaneDebug ?? null;
@@ -14656,49 +14653,6 @@ function classifyVisualGeometry(layoutPlan, selectedFunctionId = "") {
       ...layoutPlan.sketchV3FallbackDiagnostics,
     });
   }
-  if (generatedScanV2VisualReadabilityDebug.available) {
-    motifs.push({
-      kind: "generatedScanV2VisualReadability",
-      ...generatedScanV2VisualReadabilityDebug,
-    });
-
-    if (generatedScanV2VisualReadabilityDebug.excessiveTopWhitespace) {
-      warnings.push("GeneratedScanV2 readability failure: excessive top whitespace before first instruction node.");
-    }
-    if (generatedScanV2VisualReadabilityDebug.graphTooSmallForCanvas) {
-      warnings.push("GeneratedScanV2 readability failure: graph content occupies too little of the canvas height.");
-    }
-    if (generatedScanV2VisualReadabilityDebug.graphVerticallyMiscentered) {
-      warnings.push("GeneratedScanV2 readability failure: graph center is vertically miscentered in the canvas.");
-    }
-    if (generatedScanV2VisualReadabilityDebug.excessiveLongEdges) {
-      warnings.push("GeneratedScanV2 readability failure: too many long edges relative to local node spacing.");
-    }
-    if ((generatedScanV2VisualReadabilityDebug.unreadableNodeCount ?? 0) > 0) {
-      warnings.push("GeneratedScanV2 readability failure: rendered nodes are below readability threshold.");
-    }
-  } else if (layoutPlan.layoutMode === "generatedScanV2") {
-    motifs.push({
-      kind: "generatedScanV2VisualReadability",
-      available: false,
-      skippedReason: generatedScanV2VisualReadabilityDebug.skippedReason ?? "unavailable",
-    });
-  }
-  if (generatedScanV2VisualGrammarDebug.available) {
-    motifs.push({
-      kind: "generatedScanV2VisualGrammar",
-      ...generatedScanV2VisualGrammarDebug,
-    });
-    (generatedScanV2VisualGrammarDebug.hardFailureRules ?? []).forEach((rule) => {
-      warnings.push(`GeneratedScanV2 visual grammar hard failure: ${rule}.`);
-    });
-  } else if (layoutPlan.layoutMode === "generatedScanV2") {
-    motifs.push({
-      kind: "generatedScanV2VisualGrammar",
-      available: false,
-      skippedReason: generatedScanV2VisualGrammarDebug.skippedReason ?? "unavailable",
-    });
-  }
   if (generatedLocalSideChainPlacementDebug) {
     const renderedLocalSideChainAudit = buildGeneratedLocalSideChainRenderedAudit(
       layoutPlan,
@@ -14803,18 +14757,12 @@ function classifyVisualGeometry(layoutPlan, selectedFunctionId = "") {
       layoutMode: layoutPlan.layoutMode ?? analysis.layoutMode ?? "tuned",
       effectiveGeneratedLayoutMode: identity.effectiveGeneratedLayoutMode ?? null,
       generatedStrategy: identity.generatedStrategy ?? null,
-      generatedScanV2FallbackUsed: layoutPlan.generatedScanV2FallbackUsed ?? false,
-      generatedScanV2FallbackReason: layoutPlan.generatedScanV2FallbackReason ?? null,
       sketchV1FallbackUsed: layoutPlan.sketchV1FallbackUsed ?? false,
       sketchV1FallbackReason: layoutPlan.sketchV1FallbackReason ?? null,
       sketchV3FallbackUsed: layoutPlan.sketchV3FallbackUsed ?? false,
       sketchV3FallbackReason: layoutPlan.sketchV3FallbackReason ?? null,
       hasTunedLayout: identity.hasTunedLayout ?? null,
       layoutStatus: identity.layoutStatus ?? null,
-      generatedScanV2VisuallyReadable:
-        layoutPlan.layoutMode === "generatedScanV2" && generatedScanV2VisualGrammarDebug.available
-          ? generatedScanV2VisualGrammarDebug.generatedScanV2VisuallyReadable
-          : null,
       motifKind: layoutPlan.motif.kind,
       instructionCount: analysis.program.length,
       renderedEdgeCount: layoutPlan.edges.length,
