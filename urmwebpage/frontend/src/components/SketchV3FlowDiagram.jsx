@@ -5839,20 +5839,21 @@ function buildSketchV3GeometryQualitySummary({
 }
 
 // Whether to produce the full SketchV3 diagnostic payload for this run. The payload
-// (split-orientation crossings, geometry-quality summary, serialized drawing state,
-// per-candidate blocker rows) is post-hoc measurement that never affects placement or
-// route selection, so the normal in-browser render path skips it. It is still produced
-// for:
-//   - automatic split-orientation repair (consumes splitOrientationDiagnostics.candidates
-//     and sketchV3GeometryQualitySummary for its acceptance gates),
-//   - the geometry-debug / audit / collection consumers in the React layer, which signal
-//     via layoutPlan.sketchV3DiagnosticsRequested, and
-//   - any non-browser caller (headless harness / tests / SSR), which always receives the
-//     full payload so existing tooling keeps working unchanged.
+// (serialized drawing state, diamond/loop/focused per-route rows, etc.) is post-hoc
+// measurement that never affects placement or route selection, so the normal
+// in-browser render path skips it. It is still produced for:
+//   - the geometry-debug / audit / collection consumers in the React layer, which
+//     signal via layoutPlan.sketchV3DiagnosticsRequested, and
+//   - any non-browser caller (headless harness / tests / SSR), which always receives
+//     the full payload so existing tooling keeps working unchanged.
+// Automatic split-orientation repair does NOT force the full payload: it only needs
+// crossings, geometry-quality, and loop-return signals, which are built far more
+// cheaply via the "repair probe" tier (see repairProbe in applySketchV3Layout). This
+// keeps default-on auto-flip from re-introducing the full per-render diagnostic cost.
 function sketchV3DiagnosticsEnabledFor(layoutPlan) {
   if (typeof window === "undefined") return true;
   if (layoutPlan?.sketchV3DiagnosticsRequested === true) return true;
-  return isSketchV3AutomaticSplitOrientationRepairEnabled();
+  return false;
 }
 
 export function applySketchV3Layout(layoutPlan) {
@@ -5861,6 +5862,15 @@ export function applySketchV3Layout(layoutPlan) {
   }
 
   const diagnosticsEnabled = sketchV3DiagnosticsEnabledFor(layoutPlan);
+  // Repair-probe tier: when automatic split-orientation repair is active but the full
+  // debug payload was not requested, build only the inputs the repair's acceptance gate
+  // reads (crossings, geometry-quality, loop-return) and skip the expensive serialized
+  // drawing state and per-route debug rows. layoutPlan.sketchV3AutoRepairProbe lets the
+  // repair's trial passes opt in explicitly even if the enablement flag is re-evaluated.
+  const repairProbe = !diagnosticsEnabled &&
+    (layoutPlan.sketchV3AutoRepairProbe === true ||
+      isSketchV3AutomaticSplitOrientationRepairEnabled());
+  const buildRepairInputs = diagnosticsEnabled || repairProbe;
   const _pt = typeof performance !== "undefined" ? performance : null;
   const _t0 = _pt?.now() ?? 0;
 
@@ -6599,24 +6609,10 @@ export function applySketchV3Layout(layoutPlan) {
   let splitOrientationDiagnostics = null;
   let sketchV3GeometryQualitySummary = null;
   let drawingStateRecords = null;
-  if (diagnosticsEnabled) {
-    diamondDiagnostics = buildDiamondDiagnostics(
-      edges,
-      edgeRouteById,
-      layout,
-      instructionCount,
-      instructionNodeByIndex,
-      drawingState,
-      pendingCorridorRows,
-    );
+  if (buildRepairInputs) {
+    // Inputs the automatic split-orientation repair gate reads. loopReturnDiagnostics
+    // also feeds the gate's loop-return signals, so the repair probe builds it too.
     loopReturnDiagnostics = buildLoopReturnDiagnostics(edgeRouteById);
-    focusedOrdinaryRouteDiagnostics = buildFocusedOrdinaryRouteDiagnostics({
-      edgesById,
-      edgeRouteById,
-      drawingState,
-      failures,
-      instructionCount,
-    });
     splitOrientationDiagnostics = buildSplitOrientationDiagnostics({
       edges,
       edgeRouteById,
@@ -6629,6 +6625,25 @@ export function applySketchV3Layout(layoutPlan) {
       placedByNodeId,
       layout,
       splitOrientationDiagnostics,
+    });
+  }
+  if (diagnosticsEnabled) {
+    // Full debug payload only — not needed by the repair gate.
+    diamondDiagnostics = buildDiamondDiagnostics(
+      edges,
+      edgeRouteById,
+      layout,
+      instructionCount,
+      instructionNodeByIndex,
+      drawingState,
+      pendingCorridorRows,
+    );
+    focusedOrdinaryRouteDiagnostics = buildFocusedOrdinaryRouteDiagnostics({
+      edgesById,
+      edgeRouteById,
+      drawingState,
+      failures,
+      instructionCount,
     });
     drawingStateRecords = serializeDrawingState(drawingState);
   }
@@ -6733,6 +6748,22 @@ export function applySketchV3Layout(layoutPlan) {
         .filter((row) => row.suspicious).length,
       exits: deferredHaltResult.haltRoutingDiagnostics ?? [],
     },
+    // Repair-probe extras: only the crossing/quality/loop-return inputs the automatic
+    // split-orientation repair gate consumes (summarizeSketchV3RunForAutoRepair and
+    // candidate generation). Absent on the pure-lean path; harmless to other consumers.
+    ...(repairProbe ? {
+      sketchV3AutoRepairProbe: true,
+      splitOrientationDiagnostics,
+      sketchV3GeometryQualitySummary,
+      sketchV3LoopReturnBelowClearanceRows:
+        loopReturnDiagnostics.filter((row) => row.belowClearanceThreshold),
+      sketchV3LoopReturnDiamondObstacleRows:
+        loopReturnDiagnostics.filter((row) => row.passesThroughExpandedDiamondObstacle),
+      sketchV3LoopReturnSplitExitLaneConflictRows:
+        loopReturnDiagnostics.filter((row) => row.overlapsProtectedSplitExitLane),
+      sketchV3LoopReturnUnrelatedEdgeLaneConflictRows:
+        loopReturnDiagnostics.filter((row) => row.overlapsUnrelatedEdgeLane),
+    } : null),
   };
 
   if (fallbackRequired) {
@@ -6794,11 +6825,21 @@ function isSketchV3AutomaticSplitOrientationRepairEnabled() {
       // Ignore URL parsing issues in non-browser/debug contexts.
     }
     try {
-      return window.localStorage?.getItem("sketchV3AutoFlip") === "1";
+      const stored = window.localStorage?.getItem("sketchV3AutoFlip");
+      if (stored === "1") return true;
+      if (stored === "0") return false;
     } catch {
-      return false;
+      // Ignore localStorage access issues for debug-only overrides.
     }
+    // Default ON in the browser. The conservative strict-improvement gate
+    // (getAutoRepairRejectionReason) only applies a flip when it strictly reduces
+    // crossings without regressing node/edge overlaps, HALT, or loop-return, so a
+    // default-on repair can never produce a worse layout than the baseline. Use
+    // ?sketchV3AutoFlip=0 (or localStorage "0") to compare against the raw baseline.
+    return true;
   }
+  // Non-browser callers (headless harness / tests / SSR) stay opt-in via the global
+  // flag handled above, so existing tooling baselines are unchanged.
   return false;
 }
 
