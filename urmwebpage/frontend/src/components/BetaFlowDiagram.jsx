@@ -14172,18 +14172,13 @@ function routeFlowEdges(layoutPlan) {
   }
 
   const finalizeWithGeneratedPasses = (plan, initialEdges) => {
-    const scanV2LoopClosureRouting = applyGeneratedScanV2LoopClosureRouting(plan, initialEdges);
     const outerContinuationLanePass = applyGeneratedOuterContinuationLanePass(
-      {
-        ...plan,
-        generatedScanV2LoopClosureRoutingDebug: scanV2LoopClosureRouting.debug,
-      },
-      scanV2LoopClosureRouting.routedEdges,
+      plan,
+      initialEdges,
     );
     const regionPlanProtectedReroute = applyGeneratedRegionPlanProtectedReroute(
       {
         ...plan,
-        generatedScanV2LoopClosureRoutingDebug: scanV2LoopClosureRouting.debug,
         generatedOuterContinuationLaneDebug: outerContinuationLanePass.debug,
       },
       outerContinuationLanePass.routedEdges,
@@ -14191,7 +14186,6 @@ function routeFlowEdges(layoutPlan) {
     const reroute = applyConservativeProtectedRegionAwareRerouting(
       {
         ...plan,
-        generatedScanV2LoopClosureRoutingDebug: scanV2LoopClosureRouting.debug,
         generatedOuterContinuationLaneDebug: outerContinuationLanePass.debug,
         generatedRegionPlanProtectedRerouteDebug: regionPlanProtectedReroute.debug,
       },
@@ -14200,7 +14194,6 @@ function routeFlowEdges(layoutPlan) {
     const laneSeparation = applyGeneratedLaneSeparationForSharedCorridors(
       {
         ...plan,
-        generatedScanV2LoopClosureRoutingDebug: scanV2LoopClosureRouting.debug,
         generatedOuterContinuationLaneDebug: outerContinuationLanePass.debug,
         generatedRegionPlanProtectedRerouteDebug: regionPlanProtectedReroute.debug,
         protectedRegionAwareRerouteDebug: reroute.debug,
@@ -14211,7 +14204,6 @@ function routeFlowEdges(layoutPlan) {
     return measureLayoutPlan(
       {
         ...plan,
-        generatedScanV2LoopClosureRoutingDebug: scanV2LoopClosureRouting.debug,
         generatedOuterContinuationLaneDebug: outerContinuationLanePass.debug,
         generatedRegionPlanProtectedRerouteDebug: regionPlanProtectedReroute.debug,
         protectedRegionAwareRerouteDebug: reroute.debug,
