@@ -471,6 +471,25 @@ function snapToDiamondPort(bounds, point) {
   return { name: nearestName, point: ports[nearestName] };
 }
 
+// Step 3 geometry-cache: terminal diamond port for a route that ends at a diamond, memoized
+// on the route object so the same committed route is not re-snapped O(candidates) times
+// during loop-return routing and diamond-port-conflict checks. A route's target node is
+// fixed within a run, and every caller snaps a route only against its own target diamond's
+// bounds (whose value is therefore invariant per route), so the port is invariant per route
+// and the memo needs no bounds key. Speculative lookahead routes carry their own object and
+// memoize independently; a missing route/target/points returns null exactly as the prior
+// inline snaps did. Returns the snapToDiamondPort result ({name, point} | null); every caller
+// reads only `.name`, so handing back the shared object is safe.
+function getRouteTerminalPort(route, targetBounds) {
+  if (!route || !targetBounds || !Array.isArray(route.points) || route.points.length === 0) {
+    return null;
+  }
+  if (route._terminalPort !== undefined) return route._terminalPort;
+  const port = snapToDiamondPort(targetBounds, route.points[route.points.length - 1]);
+  route._terminalPort = port;
+  return port;
+}
+
 function getAngleTangent(layout) {
   return Math.tan(Math.max(0.2, (layout.branchAngleDeg * Math.PI) / 180));
 }
@@ -1594,8 +1613,7 @@ function findDiamondPortConflict({
   if (!targetPlacement || targetPlacement.node.kind !== "conditionalJump") return null;
 
   const targetBounds = getNodeBoundsAt(targetPlacement.node, targetPlacement, layout);
-  const lastPoint = points[points.length - 1];
-  const snapped = snapToDiamondPort(targetBounds, lastPoint);
+  const snapped = getRouteTerminalPort(route, targetBounds);
 
   if (!snapped) {
     return makePlacementRejection({
@@ -1650,7 +1668,7 @@ function findDiamondPortConflict({
     if (isHaltEdge(committedEdge, instructionCount)) continue;
     const committedPoints = committedRoute.points ?? [];
     if (committedPoints.length < 2) continue;
-    const committedSnapped = snapToDiamondPort(targetBounds, committedPoints[committedPoints.length - 1]);
+    const committedSnapped = getRouteTerminalPort(committedRoute, targetBounds);
     if (!committedSnapped || committedSnapped.name !== snapped.name) continue;
 
     const committedFinal = {
@@ -2889,7 +2907,7 @@ function makeLoopReturnRoute({
         if (!committedEdge || committedEdge.to !== edge.to || isHaltEdge(committedEdge, instructionCount)) continue;
         const cpts = committedRoute.points ?? [];
         if (cpts.length === 0) continue;
-        const snapped = snapToDiamondPort(toBounds, cpts[cpts.length - 1]);
+        const snapped = getRouteTerminalPort(committedRoute, toBounds);
         if (snapped) names.add(snapped.name);
       }
     }
@@ -2907,7 +2925,7 @@ function makeLoopReturnRoute({
       toBounds: targetIsDiamond ? toBounds : null,
     });
     const lastPoint = c.route.points[c.route.points.length - 1];
-    const snapped = (targetIsDiamond && lastPoint) ? snapToDiamondPort(toBounds, lastPoint) : null;
+    const snapped = (targetIsDiamond && lastPoint) ? getRouteTerminalPort(c.route, toBounds) : null;
     const targetPortName = snapped?.name ?? null;
     // Soft adjacency penalty: count port-adjacent-endpoint exemptions where this candidate's
     // final approach runs through a named diamond port that a committed same-target edge already
