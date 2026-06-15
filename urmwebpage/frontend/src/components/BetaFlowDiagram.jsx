@@ -10450,68 +10450,6 @@ function routeGenericForwardBranchCompact(edge, fromBounds, toBounds, layout) {
   };
 }
 
-function routeGeneratedScanV2DiamondBranch(edge, fromBounds, toBounds, layout, branchAssignment) {
-  const side = branchAssignment?.side === "left" ? "left" : "right";
-  const direction = side === "left" ? -1 : 1;
-  const anchors = getDiamondAnchors(fromBounds);
-  const start = side === "left"
-    ? anchors.lowerLeftSideCenter
-    : anchors.lowerRightSideCenter;
-  const end = getTopPort(toBounds);
-  const fork = [
-    start[0] + direction * Math.max(layout.branchForkDx, layout.minDiagonalBranchLength),
-    start[1] + Math.max(layout.branchForkDy, 16),
-  ];
-  const labelPoint = interpolatePoint(start, fork, 0.52);
-  const directDiagonalDx = Math.abs(end[0] - fork[0]);
-  const directDiagonalDy = end[1] - fork[1];
-  const canUseCompactDiagonal = (
-    directDiagonalDy > 0 &&
-    directDiagonalDx <= Math.max(layout.minDiagonalBranchLength, layout.sideRouteGap * 2)
-  );
-  const approachY = Math.max(fork[1], end[1] - layout.sideRouteGap);
-  const points = canUseCompactDiagonal
-    ? [start, fork, end]
-    : [
-        start,
-        fork,
-        [fork[0], approachY],
-        [end[0], approachY],
-        end,
-      ];
-
-  return {
-    ...edge,
-    points,
-    labelX: labelPoint[0],
-    labelY: labelPoint[1] - layout.labelOffset,
-    generatedScanV2DiamondPortRoute: true,
-  };
-}
-
-function routeGeneratedScanV2LocalMotifBranch(edge, fromBounds, toBounds, layout, motif) {
-  return routeGeneratedScanV2DiamondBranch(edge, fromBounds, toBounds, layout, {
-    side: motif?.branchSideByEdgeId?.[edge.id] === "left" ? "left" : "right",
-  });
-}
-
-function routeGeneratedScanV2DiamondPortIntent(edge, fromNode, toNode, layout, analysis) {
-  if (analysis.layoutMode !== "generatedScanV2") return null;
-  if (!edge.branch || isHaltExitEdge(edge, analysis.program.length)) return null;
-
-  const branchAssignment =
-    fromNode.generatedScanV2DiamondPorts?.branchAssignmentByEdgeId?.[edge.id] ?? null;
-  if (!branchAssignment?.preferLowerDiagonal) return null;
-
-  return routeGeneratedScanV2DiamondBranch(
-    edge,
-    getNodeBounds(fromNode, layout),
-    getNodeBounds(toNode, layout),
-    layout,
-    branchAssignment,
-  );
-}
-
 function routeSketchV1Edge(edge, fromNode, toNode, layout, analysis, nodeMap) {
   const fromBounds = getNodeBounds(fromNode, layout);
   const toBounds = getNodeBounds(toNode, layout);
