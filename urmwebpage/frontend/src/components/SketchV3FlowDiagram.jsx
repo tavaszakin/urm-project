@@ -259,6 +259,24 @@ function segmentsIntersect(a, b, c, d) {
   return Math.abs(o4) < 0.001 && pointOnSegment(b, c, d);
 }
 
+// Strict interior X-crossing between two segments. Returns the intersection point
+// when both segments are properly crossed in their interiors (collinear overlaps
+// and shared-endpoint touches return null), mirroring the harness's
+// properIntersection so detection matches the verification metric.
+function properSegmentCrossing(a, b, c, d) {
+  const o1 = segmentOrientation(a, b, c);
+  const o2 = segmentOrientation(a, b, d);
+  const o3 = segmentOrientation(c, d, a);
+  const o4 = segmentOrientation(c, d, b);
+  if (o1 * o2 < -0.001 && o3 * o4 < -0.001) {
+    const denom = (a[0] - b[0]) * (c[1] - d[1]) - (a[1] - b[1]) * (c[0] - d[0]);
+    if (Math.abs(denom) < 1e-9) return null;
+    const t = ((a[0] - c[0]) * (c[1] - d[1]) - (a[1] - c[1]) * (c[0] - d[0])) / denom;
+    return [a[0] + t * (b[0] - a[0]), a[1] + t * (b[1] - a[1])];
+  }
+  return null;
+}
+
 function segmentsOnlyMeetAtNonCollinearEndpoint(left, right) {
   const sharedEndpoint = pointsEqual(left.start, right.start) ||
     pointsEqual(left.start, right.end) ||
@@ -3991,6 +4009,35 @@ function scoreHaltRouteCandidate(candidate, metrics) {
   return cost;
 }
 
+// Per-crossing penalty applied ONLY during the post-commit crossing repair pass
+// (never in initial selection). Sits above bend/diagonal/length so any non-crossing
+// legal candidate beats a crossing one, and above outside-lane/backtrack so the
+// repair prefers a clean interior re-route, yet below the 1e9 fan/past-HALT tier so
+// it never resurrects a hard-illegal shape.
+const HALT_COST_HALT_CROSSING = 5e7;
+
+// Counts strict interior crossings between a candidate HALT route and the other
+// already-committed HALT routes. Intersections inside the expanded shared-HALT
+// bounds are exempt: every HALT final approach converges on the same sink edge, so
+// near-sink intersections are legitimate convergence, not defects.
+function countHaltRouteCrossings(candidatePoints, obstacleRoutes, haltBounds, params) {
+  if (!Array.isArray(candidatePoints) || candidatePoints.length < 2) return 0;
+  const clearance = Math.max(SKETCH_V3_LANE_CLEARANCE, params.haltDistance * 0.08);
+  const convergenceZone = expandRectBounds(haltBounds, clearance);
+  const candidateSegs = routeSegments(candidatePoints);
+  let count = 0;
+  for (const obstacle of obstacleRoutes) {
+    const obstacleSegs = routeSegments(obstacle.points);
+    for (const cs of candidateSegs) {
+      for (const os of obstacleSegs) {
+        const pt = properSegmentCrossing(cs.start, cs.end, os.start, os.end);
+        if (pt && !pointInsideRectBounds(pt, convergenceZone)) count += 1;
+      }
+    }
+  }
+  return count;
+}
+
 // --- Hard terminal-sink geometry validator -----------------------------------
 //
 // The cost model alone is not enough: some HALT route shapes must be treated as
@@ -4135,15 +4182,19 @@ function dedupeRoutePoints(points) {
 // slot (a distinct y on HALT's near edge) and enter HALT with a single
 // horizontal final segment. These are the preferred shapes; legacy candidates
 // remain available only as a collision fallback behind the validator.
-function buildTerminalHaltLandingCandidates({ edge, sourceBounds, haltBounds, landingY, params }) {
+function buildTerminalHaltLandingCandidates({ edge, sourceBounds, haltBounds, landingY, params, extendedLanes = false }) {
   const tol = 0.5;
   const approachGap = Math.max(SKETCH_V3_LANE_CLEARANCE * 2, params.haltDistance * 0.18);
   const entry = [haltBounds.left, landingY];
   const maxLaneX = haltBounds.left - approachGap;
   const minLaneX = sourceBounds.right + Math.max(SKETCH_V3_LANE_CLEARANCE, params.haltDistance * 0.25);
   const laneStep = Math.max(SKETCH_V3_LANE_CLEARANCE * 3, params.loopLaneDistance * 0.5);
+  // Repair-only: lift the 8-lane cap so the lane range reaches the full source→sink
+  // span and a lane left of a crossing partner's wall is actually generated. The
+  // default initial path keeps the original 8-lane cap (byte-identical behavior).
+  const laneLimit = extendedLanes ? 64 : 8;
   const laneXs = [];
-  for (let x = maxLaneX; x >= minLaneX - tol && laneXs.length < 8; x -= laneStep) laneXs.push(x);
+  for (let x = maxLaneX; x >= minLaneX - tol && laneXs.length < laneLimit; x -= laneStep) laneXs.push(x);
   if (laneXs.length === 0) laneXs.push(maxLaneX);
 
   const sourceExits = [
@@ -5063,14 +5114,21 @@ function commitDeferredHaltRoutes({
     bottom: haltBounds.centerY + landingSpanHalf,
   };
 
-  haltExits.forEach(({ edge, sourcePlacement, depth, recordedOrder, haltExitRecordId }, haltIndex) => {
-    edge.to = sharedHaltNode.id;
-    const landingY = landingYByExitIndex.get(haltIndex) ?? haltBounds.centerY;
+  // Per-exit candidate evaluation + min-cost selection, factored into a closure so
+  // the post-commit crossing-repair pass can re-run it without duplicating logic.
+  // The initial path calls it with no repair options, reproducing the original
+  // behavior exactly (no crossing penalty added, original 8-lane landing cap). The
+  // repair path passes crossingObstacles (the other committed HALT routes) and
+  // extendedLanes. Returns { accepted, evaluated }; accepted may be null (no route).
+  const evaluateHaltExitSelection = (edge, sourcePlacement, haltIndex, landingY, {
+    crossingObstacles = null,
+    extendedLanes = false,
+  } = {}) => {
     const sourceBounds = getNodeBoundsAt(sourcePlacement.node, sourcePlacement, layout);
     // Preferred clean landing-slot candidates first, legacy candidates after as a
     // collision fallback. The validator culls illegal legacy shapes below.
     const candidates = [
-      ...buildTerminalHaltLandingCandidates({ edge, sourceBounds, haltBounds, landingY, params }),
+      ...buildTerminalHaltLandingCandidates({ edge, sourceBounds, haltBounds, landingY, params, extendedLanes }),
       ...buildDeferredHaltRouteCandidates({
         edge,
         sourcePlacement,
@@ -5180,7 +5238,15 @@ function commitDeferredHaltRoutes({
     let acceptedCost = Infinity;
     for (const candidate of pool) {
       const metrics = analyzeHaltRouteGeometry(candidate.route.points, haltEntry, params);
-      const cost = scoreHaltRouteCandidate(candidate, metrics);
+      let cost = scoreHaltRouteCandidate(candidate, metrics);
+      // Repair-only: penalize candidates that cross an already-committed HALT route
+      // so a non-crossing legal candidate wins when one exists. Never added on the
+      // initial path (crossingObstacles is null there), keeping selection identical.
+      if (crossingObstacles && crossingObstacles.length > 0) {
+        const crossingCount = countHaltRouteCrossings(candidate.route.points, crossingObstacles, haltBounds, params);
+        candidate.haltCrossingCount = crossingCount;
+        cost += crossingCount * HALT_COST_HALT_CROSSING;
+      }
       if (cost < acceptedCost) {
         accepted = candidate;
         acceptedCost = cost;
@@ -5189,6 +5255,14 @@ function commitDeferredHaltRoutes({
         accepted.selectionTier = selectionTier;
       }
     }
+    return { accepted, evaluated };
+  };
+
+  const routedHaltExits = [];
+  haltExits.forEach(({ edge, sourcePlacement, depth, recordedOrder, haltExitRecordId }, haltIndex) => {
+    edge.to = sharedHaltNode.id;
+    const landingY = landingYByExitIndex.get(haltIndex) ?? haltBounds.centerY;
+    const { accepted, evaluated } = evaluateHaltExitSelection(edge, sourcePlacement, haltIndex, landingY);
     if (!accepted) {
       const firstRejection = evaluated[0]?.rejection ?? null;
       const failure = {
@@ -5308,6 +5382,7 @@ function commitDeferredHaltRoutes({
     if (validatorBypassed && !diagnostic.suspiciousReasons.includes("validatorBypassed")) {
       diagnostic.suspiciousReasons.push("validatorBypassed");
     }
+    const diagnosticIndex = haltRoutingDiagnostics.length;
     haltRoutingDiagnostics.push({
       ...diagnostic,
       suspicious: diagnostic.suspicious || validatorBypassed,
@@ -5315,9 +5390,288 @@ function commitDeferredHaltRoutes({
       selectionTier: accepted.selectionTier ?? null,
       validatorBypassed,
     });
+    // Repair-pass context: per-exit inputs needed to re-run selection later.
+    routedHaltExits.push({
+      edge,
+      sourcePlacement,
+      haltIndex,
+      landingY,
+      haltExitRecordId,
+      recordedOrder,
+      depth,
+      diagnosticIndex,
+      haltRowIndex: haltRows.length - 1,
+      routePoints: acceptedRoute.points,
+    });
   });
 
+  // --- Localized shared-HALT crossing repair (post-commit, repair-only) -------
+  // Every HALT route above is individually valid, but the per-route validator never
+  // checks pairwise crossings: a route that detours through a near-sink vertical lane
+  // can wall across a neighbor's landing row. Here, after all HALT routes are
+  // committed, detect pairwise strict-interior crossings among them and try to
+  // re-route one member of each crossing pair away from the other's wall. This fires
+  // ONLY when a HALT-HALT crossing exists, so diagrams without one are untouched.
+  const haltCrossingRepair = {
+    enabled: routedHaltExits.length >= 2,
+    pairsDetected: [],
+    attempts: [],
+    repairedEdgeIds: [],
+    beforeCrossingCount: 0,
+    afterCrossingCount: 0,
+    skippedReason: null,
+  };
+
+  const detectHaltCrossings = () => {
+    const clearance = Math.max(SKETCH_V3_LANE_CLEARANCE, params.haltDistance * 0.08);
+    const convergenceZone = expandRectBounds(haltBounds, clearance);
+    const found = [];
+    for (let i = 0; i < routedHaltExits.length; i += 1) {
+      for (let j = i + 1; j < routedHaltExits.length; j += 1) {
+        const segsA = routeSegments(routedHaltExits[i].routePoints);
+        const segsB = routeSegments(routedHaltExits[j].routePoints);
+        let point = null;
+        for (const sa of segsA) {
+          for (const sb of segsB) {
+            const pt = properSegmentCrossing(sa.start, sa.end, sb.start, sb.end);
+            // Exempt legitimate convergence at the shared sink (inside expanded HALT
+            // bounds) — every HALT final approach meets there by design.
+            if (pt && !pointInsideRectBounds(pt, convergenceZone)) { point = pt; break; }
+          }
+          if (point) break;
+        }
+        if (point) found.push({ i, j, point });
+      }
+    }
+    return found;
+  };
+
+  if (haltCrossingRepair.enabled) {
+    let crossings = detectHaltCrossings();
+    haltCrossingRepair.beforeCrossingCount = crossings.length;
+    haltCrossingRepair.pairsDetected = crossings.map((c) => ({
+      a: routedHaltExits[c.i].edge.id,
+      b: routedHaltExits[c.j].edge.id,
+      point: [Math.round(c.point[0] * 10) / 10, Math.round(c.point[1] * 10) / 10],
+    }));
+
+    const obstaclesExcluding = (memberIdx) => routedHaltExits
+      .filter((_, idx) => idx !== memberIdx)
+      .map((exit) => ({ edgeId: exit.edge.id, points: exit.routePoints }));
+
+    // Re-commit a re-routed edge and update every committed structure
+    // (edgeRouteById, drawingState, haltRows, haltRoutingDiagnostics). Returns
+    // { snapshot, suspicious } so a multi-edge tactic (slot swap) can revert if the
+    // combined result does not help. Placement is fixed, so no node ever moves.
+    const applyRepairedRoute = (exit, accepted, landingYOverride = null) => {
+      const snapshot = {
+        route: edgeRouteById.get(exit.edge.id) ?? null,
+        landingY: exit.landingY,
+        routePoints: exit.routePoints,
+        haltRow: Number.isInteger(exit.haltRowIndex) ? haltRows[exit.haltRowIndex] : null,
+        diagnostic: Number.isInteger(exit.diagnosticIndex) ? haltRoutingDiagnostics[exit.diagnosticIndex] : null,
+      };
+      const repairedMetrics = accepted.haltMetrics
+        ?? analyzeHaltRouteGeometry(accepted.route.points, haltEntry, params);
+      const repairedDiagnostic = buildHaltRouteDiagnostic({
+        edge: exit.edge,
+        sourcePlacement: exit.sourcePlacement,
+        haltNodeId: sharedHaltNode.id,
+        sourcePort: accepted.sourceExit ?? null,
+        route: accepted.route,
+        metrics: repairedMetrics,
+        usesOutsideLane: haltCandidateUsesOutsideLane(accepted),
+        selectionCost: accepted.haltCost ?? null,
+        direction: accepted.direction ?? null,
+        finalStyle: accepted.finalStyle ?? null,
+      });
+      const repairedRoute = {
+        ...accepted.route,
+        sketchV3DeferredHaltDiagnostic: {
+          ...(accepted.route.sketchV3DeferredHaltDiagnostic ?? {}),
+          edgeId: exit.edge.id,
+          source: exit.edge.from ?? null,
+          target: sharedHaltNode.id,
+          laneX: accepted.laneX,
+          direction: accepted.direction ?? null,
+          finalStyle: accepted.finalStyle ?? null,
+          haltCrossingRepaired: true,
+        },
+      };
+      assignRoute(exit.edge, repairedRoute, edgeRouteById, drawingState, instructionCount);
+      recordHaltExitRouted({
+        drawingState,
+        haltExitRecordId: exit.haltExitRecordId,
+        sharedHaltNodeId: sharedHaltNode.id,
+        route: repairedRoute,
+        routedOrder: placementRows.length,
+      });
+      if (landingYOverride !== null) exit.landingY = landingYOverride;
+      exit.routePoints = repairedRoute.points;
+      if (Number.isInteger(exit.haltRowIndex) && haltRows[exit.haltRowIndex]) {
+        haltRows[exit.haltRowIndex] = {
+          ...haltRows[exit.haltRowIndex],
+          laneX: accepted.laneX,
+          laneRank: accepted.laneRank,
+          doglegX: accepted.doglegX,
+          doglegRank: accepted.doglegRank,
+          approachY: accepted.approachY,
+          approachRank: accepted.approachRank,
+          sourceExit: accepted.sourceExit ?? null,
+          sourceExitRank: accepted.sourceExitRank ?? null,
+          direction: accepted.direction ?? null,
+          finalStyle: accepted.finalStyle ?? null,
+          routePoints: repairedRoute.points,
+          haltCrossingRepaired: true,
+        };
+      }
+      if (Number.isInteger(exit.diagnosticIndex) && haltRoutingDiagnostics[exit.diagnosticIndex]) {
+        haltRoutingDiagnostics[exit.diagnosticIndex] = {
+          ...repairedDiagnostic,
+          suspicious: repairedDiagnostic.suspicious,
+          routed: true,
+          selectionTier: accepted.selectionTier ?? null,
+          validatorBypassed: false,
+          haltCrossingRepaired: true,
+        };
+      }
+      return { snapshot, suspicious: repairedDiagnostic.suspicious };
+    };
+
+    const restoreMember = (exit, snapshot) => {
+      if (snapshot.route) {
+        assignRoute(exit.edge, snapshot.route, edgeRouteById, drawingState, instructionCount);
+        recordHaltExitRouted({
+          drawingState,
+          haltExitRecordId: exit.haltExitRecordId,
+          sharedHaltNodeId: sharedHaltNode.id,
+          route: snapshot.route,
+          routedOrder: placementRows.length,
+        });
+      }
+      exit.landingY = snapshot.landingY;
+      exit.routePoints = snapshot.routePoints;
+      if (Number.isInteger(exit.haltRowIndex) && snapshot.haltRow) haltRows[exit.haltRowIndex] = snapshot.haltRow;
+      if (Number.isInteger(exit.diagnosticIndex) && snapshot.diagnostic) haltRoutingDiagnostics[exit.diagnosticIndex] = snapshot.diagnostic;
+    };
+
+    // Tactic 1: re-route a single member at its own slot, steering it (crossing
+    // penalty + extended lanes) onto a non-crossing lane. Works when the member has
+    // room to avoid the other's wall (e.g. divides' straight route).
+    const tryRepairMember = (memberIdx) => {
+      const exit = routedHaltExits[memberIdx];
+      const obstacles = obstaclesExcluding(memberIdx);
+      const currentCrossings = countHaltRouteCrossings(exit.routePoints, obstacles, haltBounds, params);
+      const attempt = { tactic: "reroute", edgeId: exit.edge.id, currentCrossings, newCrossings: null, applied: false, reason: null };
+      if (currentCrossings === 0) { attempt.reason = "memberNotCrossing"; return attempt; }
+      // The candidate's own current route is excluded from collision checks
+      // (excludeEdgeIds already includes edge.id), so it is scored against every OTHER
+      // HALT route.
+      const { accepted } = evaluateHaltExitSelection(
+        exit.edge, exit.sourcePlacement, exit.haltIndex, exit.landingY,
+        { crossingObstacles: obstacles, extendedLanes: true },
+      );
+      if (!accepted) { attempt.reason = "noCandidate"; return attempt; }
+      if (accepted.selectionTier === "lastResortValidatorBypassed") { attempt.reason = "validatorBypassed"; return attempt; }
+      const newCrossings = countHaltRouteCrossings(accepted.route.points, obstacles, haltBounds, params);
+      attempt.newCrossings = newCrossings;
+      attempt.selectionTier = accepted.selectionTier;
+      if (newCrossings >= currentCrossings) { attempt.reason = "noImprovement"; return attempt; }
+      const res = applyRepairedRoute(exit, accepted);
+      if (res.suspicious) { restoreMember(exit, res.snapshot); attempt.reason = "wouldBeSuspicious"; return attempt; }
+      attempt.applied = true;
+      attempt.reason = "applied";
+      return attempt;
+    };
+
+    // Tactic 2: swap the two members' landing slots and re-route both. Needed when
+    // neither member can avoid the crossing at its own slot because a third obstacle
+    // (e.g. eq's i-47 node body) sits in one member's landing row — exchanging slots
+    // moves that member's row clear of the obstacle. Reverts unless the total HALT
+    // crossing count strictly drops and neither re-route is suspicious.
+    const trySwapPair = (idxA, idxB) => {
+      const a = routedHaltExits[idxA];
+      const b = routedHaltExits[idxB];
+      const attempt = { tactic: "slotSwap", edgeA: a.edge.id, edgeB: b.edge.id, before: null, after: null, applied: false, reason: null };
+      const targetA = b.landingY;
+      const targetB = a.landingY;
+      if (Math.abs(targetA - a.landingY) < 0.001) { attempt.reason = "identicalSlots"; return attempt; }
+      const before = crossings.length;
+      attempt.before = before;
+      const selA = evaluateHaltExitSelection(
+        a.edge, a.sourcePlacement, a.haltIndex, targetA,
+        { crossingObstacles: obstaclesExcluding(idxA), extendedLanes: true },
+      );
+      if (!selA.accepted || selA.accepted.selectionTier === "lastResortValidatorBypassed") { attempt.reason = "swapNoCandidateA"; return attempt; }
+      const resA = applyRepairedRoute(a, selA.accepted, targetA);
+      const selB = evaluateHaltExitSelection(
+        b.edge, b.sourcePlacement, b.haltIndex, targetB,
+        { crossingObstacles: obstaclesExcluding(idxB), extendedLanes: true },
+      );
+      if (!selB.accepted || selB.accepted.selectionTier === "lastResortValidatorBypassed") {
+        restoreMember(a, resA.snapshot);
+        attempt.reason = "swapNoCandidateB";
+        return attempt;
+      }
+      const resB = applyRepairedRoute(b, selB.accepted, targetB);
+      const after = detectHaltCrossings().length;
+      attempt.after = after;
+      if (resA.suspicious || resB.suspicious || after >= before) {
+        restoreMember(b, resB.snapshot);
+        restoreMember(a, resA.snapshot);
+        attempt.reason = (resA.suspicious || resB.suspicious) ? "swapSuspicious" : "swapNoImprovement";
+        return attempt;
+      }
+      attempt.applied = true;
+      attempt.reason = "applied";
+      return attempt;
+    };
+
+    let guard = 0;
+    const maxGuard = routedHaltExits.length * 2;
+    while (crossings.length > 0 && guard < maxGuard) {
+      guard += 1;
+      const pair = crossings[0];
+      // Prefer rerouting the member with more segments — the detour route has the
+      // freedom to move its lane; the short/straight route usually cannot.
+      const segCountA = routeSegments(routedHaltExits[pair.i].routePoints).length;
+      const segCountB = routeSegments(routedHaltExits[pair.j].routePoints).length;
+      const order = segCountA >= segCountB ? [pair.i, pair.j] : [pair.j, pair.i];
+      let repaired = false;
+      for (const memberIdx of order) {
+        const attempt = tryRepairMember(memberIdx);
+        haltCrossingRepair.attempts.push(attempt);
+        if (attempt.applied) {
+          haltCrossingRepair.repairedEdgeIds.push(routedHaltExits[memberIdx].edge.id);
+          repaired = true;
+          break;
+        }
+      }
+      // If neither member could be re-routed at its own slot, try swapping slots.
+      if (!repaired) {
+        const swapAttempt = trySwapPair(pair.i, pair.j);
+        haltCrossingRepair.attempts.push(swapAttempt);
+        if (swapAttempt.applied) {
+          haltCrossingRepair.repairedEdgeIds.push(routedHaltExits[pair.i].edge.id, routedHaltExits[pair.j].edge.id);
+          repaired = true;
+        }
+      }
+      const next = detectHaltCrossings();
+      // Stop if nothing could be repaired or the count did not strictly drop
+      // (defensive — a successful repair always strictly reduces it).
+      if (!repaired || next.length >= crossings.length) {
+        crossings = next;
+        break;
+      }
+      crossings = next;
+    }
+    haltCrossingRepair.afterCrossingCount = crossings.length;
+  } else {
+    haltCrossingRepair.skippedReason = "fewerThanTwoHaltRoutes";
+  }
+
   return {
+    haltCrossingRepair,
     sharedHaltNodeId: sharedHaltNode.id,
     haltRows,
     haltConflictRows,
@@ -6724,6 +7078,7 @@ export function applySketchV3Layout(layoutPlan) {
       suspiciousCount: (deferredHaltResult.haltRoutingDiagnostics ?? [])
         .filter((row) => row.suspicious).length,
       exits: deferredHaltResult.haltRoutingDiagnostics ?? [],
+      haltCrossingRepair: deferredHaltResult.haltCrossingRepair ?? null,
     },
     sketchV3FocusedOrdinaryRouteRows: focusedOrdinaryRouteDiagnostics,
     sketchV3HaltCommittedBeforeOrdinaryPlacementComplete:
@@ -6784,6 +7139,7 @@ export function applySketchV3Layout(layoutPlan) {
       suspiciousCount: (deferredHaltResult.haltRoutingDiagnostics ?? [])
         .filter((row) => row.suspicious).length,
       exits: deferredHaltResult.haltRoutingDiagnostics ?? [],
+      haltCrossingRepair: deferredHaltResult.haltCrossingRepair ?? null,
     },
     // Repair-probe extras: only the crossing/quality/loop-return inputs the automatic
     // split-orientation repair gate consumes (summarizeSketchV3RunForAutoRepair and
