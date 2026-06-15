@@ -5044,6 +5044,26 @@ function commitDeferredHaltRoutes({
         haltIndex,
       }),
     ];
+    // Committed geometry is fixed across this HALT exit's candidate evaluation (placement
+    // and prior-exit routes do not change while these candidates are scored), so compute the
+    // committed node boxes and edge segments once and share them across every candidate's
+    // findRouteRejection / collectRouteBlockingRows call — mirroring the loop-return
+    // shared-geometry path. Exclusions match those calls exactly (node boxes exclude
+    // [edge.from, sharedHaltNode.id]; edge segments use excludeEdgeIds [edge.id] and
+    // excludeNodeIds [edge.from]) and Map iteration order is preserved, so per-candidate
+    // rejection results and first-rejection identity are byte-identical.
+    const haltCommittedNodeBoxes = getCommittedNodeBoxes(
+      placedByNodeId,
+      layout,
+      new Set([edge.from, sharedHaltNode.id]),
+    );
+    const haltCommittedEdgeSegments = getCommittedEdgeSegments({
+      edgeRouteById,
+      edgesById,
+      instructionCount,
+      excludeEdgeIds: new Set([edge.id]),
+      excludeNodeIds: new Set([edge.from]),
+    });
     const evaluated = candidates.map((candidate) => {
       const rejection = findRouteRejection({
         edge,
@@ -5058,6 +5078,8 @@ function commitDeferredHaltRoutes({
         excludeEdgeNodeIds: new Set([edge.from]),
         excludeEdgeIds: new Set([edge.id]),
         excludePendingEdgeIds: new Set([edge.id]),
+        committedNodeBoxes: haltCommittedNodeBoxes,
+        committedEdgeSegments: haltCommittedEdgeSegments,
       });
       // HALT selection uses only `rejection` (collision), validateTerminalHaltRoute, and
       // the cost model below — never the blocker rows. So the full blocker-row scan is
@@ -5077,6 +5099,8 @@ function commitDeferredHaltRoutes({
         excludeEdgeNodeIds: new Set([edge.from]),
         excludeEdgeIds: new Set([edge.id]),
         excludePendingEdgeIds: new Set([edge.id]),
+        committedNodeBoxes: haltCommittedNodeBoxes,
+        committedEdgeSegments: haltCommittedEdgeSegments,
       }) : null;
       return {
         ...candidate,
