@@ -15574,8 +15574,6 @@ function classifyVisualGeometry(layoutPlan, selectedFunctionId = "") {
   const generatedScanV2VisualReadabilityDebug = { available: false, skippedReason: "auditModeDisabled" };
   const generatedScanV2VisualGrammarDebug = { available: false, skippedReason: "auditModeDisabled", hardFailureRules: [] };
   const generatedLocalSideChainPlacementDebug = layoutPlan.generatedLocalSideChainPlacementDebug ?? null;
-  const generatedScanV2LoopClosureRoutingDebug =
-    layoutPlan.generatedScanV2LoopClosureRoutingDebug ?? null;
   const generatedRegionEdgePlanDebug = layoutPlan.generatedRegionEdgePlanDebug ?? null;
   const outerContinuationLaneDebug = layoutPlan.generatedOuterContinuationLaneDebug ?? null;
   const generatedRegionPlanProtectedRerouteDebug =
@@ -16188,29 +16186,6 @@ function classifyVisualGeometry(layoutPlan, selectedFunctionId = "") {
       kind: "generatedScanV2VisualGrammar",
       available: false,
       skippedReason: generatedScanV2VisualGrammarDebug.skippedReason ?? "unavailable",
-    });
-  }
-  if (generatedScanV2LoopClosureRoutingDebug) {
-    motifs.push({
-      kind: "generatedScanV2LoopClosureRouting",
-      enabled: generatedScanV2LoopClosureRoutingDebug.enabled ?? false,
-      skippedReason: generatedScanV2LoopClosureRoutingDebug.skippedReason ?? null,
-      appliedCount: generatedScanV2LoopClosureRoutingDebug.appliedCount ?? 0,
-      attempts: generatedScanV2LoopClosureRoutingDebug.attempts ?? [],
-      beforeAudit: generatedScanV2LoopClosureRoutingDebug.beforeAudit ?? null,
-      afterAudit: generatedScanV2LoopClosureRoutingDebug.afterAudit ?? null,
-      comparison: generatedScanV2LoopClosureRoutingDebug.auditComparison ?? null,
-      rejectedReasonCounts: generatedScanV2LoopClosureRoutingDebug.rejectedReasonCounts ?? {},
-      defaultedLeftWithoutScoringCount:
-        generatedScanV2LoopClosureRoutingDebug.defaultedLeftWithoutScoringCount ?? 0,
-      sideGeometryMismatchCount:
-        generatedScanV2LoopClosureRoutingDebug.sideGeometryMismatchCount ?? 0,
-      loopSideGeometryMismatchEdges:
-        generatedScanV2LoopClosureRoutingDebug.loopSideGeometryMismatchEdges ?? [],
-      reservedLoopCorridors:
-        generatedScanV2LoopClosureRoutingDebug.reservedLoopCorridors ?? [],
-      safetyOverrideGeometryRows:
-        generatedScanV2LoopClosureRoutingDebug.safetyOverrideGeometryRows ?? [],
     });
   }
   if (generatedLocalSideChainPlacementDebug) {
