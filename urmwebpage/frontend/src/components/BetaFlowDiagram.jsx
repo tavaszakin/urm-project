@@ -17837,30 +17837,6 @@ function buildDiagramModelUnsafe(program, selectedFunctionId, options = {}, layo
     return routed;
   }
 
-  const shouldBuildGeneratedScanPlacement = normalizedLayoutMode === "generatedScanV2";
-  const generatedScanRegionDecompositionDebug = shouldBuildGeneratedScanPlacement
-    ? buildGeneratedScanRegionDecomposition(analysis, normalizedLayoutMode)
-    : null;
-  const generatedScanLayoutPlanDebug = shouldBuildGeneratedScanPlacement
-    ? buildGeneratedScanLayoutPlan(
-        generatedScanRegionDecompositionDebug,
-        analysis,
-        normalizedLayoutMode,
-      )
-    : null;
-  const generatedScanCellLayoutDebug = shouldBuildGeneratedScanPlacement
-    ? buildGeneratedScanCellLayout(generatedScanLayoutPlanDebug, normalizedLayoutMode)
-    : null;
-  const generatedScanV2PlacementDebug = shouldBuildGeneratedScanPlacement
-    ? applyGeneratedScanV2Placement(
-        {
-          ...layoutPlan,
-          layoutMode: normalizedLayoutMode,
-        },
-        generatedScanLayoutPlanDebug,
-        generatedScanCellLayoutDebug,
-      )
-    : null;
   const sketchV1Placement = applySketchV1Layout(
     {
       ...layoutPlan,
@@ -17884,10 +17860,6 @@ function buildDiagramModelUnsafe(program, selectedFunctionId, options = {}, layo
   return routeFlowEdges({
     ...activeLayoutPlan,
     layoutMode: normalizedLayoutMode,
-    generatedScanRegionDecompositionDebug,
-    generatedScanLayoutPlanDebug,
-    generatedScanCellLayoutDebug,
-    generatedScanV2PlacementDebug,
     sketchV1PlacementDebug: sketchV1Placement.diagnostics,
     generatedLocalSideChainPlacementDebug,
     generatedRegionEdgePlanDebug,
@@ -18019,42 +17991,7 @@ function buildDiagramModel(program, selectedFunctionId, options = {}, layout = T
       };
     }
   }
-  if (requestedLayoutMode !== "generatedScanV2") {
-    return buildDiagramModelUnsafe(program, selectedFunctionId, options, layout);
-  }
-
-  try {
-    const layoutPlan = buildDiagramModelUnsafe(program, selectedFunctionId, options, layout);
-    const invalidGeometryReason = getInvalidDiagramGeometryReason(layoutPlan);
-    if (invalidGeometryReason) {
-      throw new Error(invalidGeometryReason);
-    }
-    return {
-      ...layoutPlan,
-      generatedScanV2FallbackUsed: false,
-      generatedScanV2FallbackReason: null,
-    };
-  } catch (error) {
-    const generatedScanV2FallbackReason = String(error?.message ?? error ?? "unknownError");
-    console.warn(
-      "[beta-flow] generatedScanV2 placement failed; using legacy generated layout for this render.",
-      {
-        generatedScanV2FallbackUsed: true,
-        generatedScanV2FallbackReason,
-        selectedFunctionId,
-      },
-    );
-    return {
-      ...buildDiagramModelUnsafe(
-        program,
-        selectedFunctionId,
-        { ...options, layoutMode: "generated" },
-        layout,
-      ),
-      generatedScanV2FallbackUsed: true,
-      generatedScanV2FallbackReason,
-    };
-  }
+  return buildDiagramModelUnsafe(program, selectedFunctionId, options, layout);
 }
 
 function pointsToString(points, offsetX, offsetY) {
