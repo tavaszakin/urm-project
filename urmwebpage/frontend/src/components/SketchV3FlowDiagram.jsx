@@ -933,6 +933,14 @@ function placeNode(
   node.x = position.x;
   node.y = position.y;
   const placement = { node, x: position.x, y: position.y };
+  // Step 1 geometry-cache: memoize committed node bounds on the placement object itself
+  // (the object lookahead clones), so hot-path helpers read the cache instead of
+  // recomputing. Computed only when layout is available, matching the prior helper inputs
+  // exactly. The live placement is never moved (node.x/y are write-once), so the memo can
+  // never go stale; drawingState.nodesById[].bounds is left untouched as a diagnostic snapshot.
+  if (layout) {
+    placement.bounds = getNodeBoundsAt(node, placement, layout);
+  }
   placedByNodeId.set(node.id, placement);
   const placedOrder = placementRows.length;
   placementRows.push({
@@ -959,10 +967,21 @@ function placeNode(
   return placement;
 }
 
+// Node bounds for an already-committed placement, preferring the memo attached when the
+// placement was created (see placeNode). Speculative/lookahead placements are created
+// inline (e.g. evaluatePlacementCandidate's targetPlacement) without a memo and fall
+// through to the exact prior computation, so candidate evaluation is byte-for-byte
+// unchanged. Always returns a fresh clone, so callers can never mutate the cached object.
+function getPlacementNodeBounds(placement, layout) {
+  return placement.bounds
+    ? cloneBounds(placement.bounds)
+    : getNodeBoundsAt(placement.node, placement, layout);
+}
+
 function getPlacedNodeBoxes(placedByNodeId, layout) {
   return Array.from(placedByNodeId.values()).map((placement) => ({
     nodeId: placement.node.id,
-    box: getNodeBoundsAt(placement.node, placement, layout),
+    box: getPlacementNodeBounds(placement, layout),
   }));
 }
 
@@ -1010,8 +1029,8 @@ function getCommittedNodeBoxes(placedByNodeId, layout, excludeNodeIds = new Set(
       nodeId: placement.node.id,
       geometryRole: placement.node.kind === "conditionalJump" ? "diamond node" : "node",
       box: placement.node.kind === "conditionalJump"
-        ? inflateBox(getNodeBoundsAt(placement.node, placement, layout), SKETCH_V3_DIAMOND_OBSTACLE_MARGIN)
-        : getNodeBoundsAt(placement.node, placement, layout),
+        ? inflateBox(getPlacementNodeBounds(placement, layout), SKETCH_V3_DIAMOND_OBSTACLE_MARGIN)
+        : getPlacementNodeBounds(placement, layout),
     }));
 }
 
@@ -1692,7 +1711,7 @@ function findRouteRejection({
       if (distance < SKETCH_V3_LANE_CLEARANCE) {
         const blockingPlacement = placedByNodeId.get(entry.nodeId) ?? null;
         const blockingNodeBounds = blockingPlacement
-          ? getNodeBoundsAt(blockingPlacement.node, blockingPlacement, layout)
+          ? getPlacementNodeBounds(blockingPlacement, layout)
           : null;
         const distanceToActualNodeBounds = blockingNodeBounds !== null
           ? segmentBoxDistance(segment.start, segment.end, blockingNodeBounds)
@@ -1820,7 +1839,7 @@ function findRouteRejection({
   if (isLoopReturnEdge(edge) && !isHaltEdge(edge, instructionCount) && segments.length > 0) {
     const targetDiamondPlacement = edge.to ? (placedByNodeId.get(edge.to) ?? null) : null;
     const targetDiamondBounds = targetDiamondPlacement?.node?.kind === "conditionalJump"
-      ? getNodeBoundsAt(targetDiamondPlacement.node, targetDiamondPlacement, layout)
+      ? getPlacementNodeBounds(targetDiamondPlacement, layout)
       : null;
 
     for (const [committedEdgeId, committedRoute] of edgeRouteById) {
