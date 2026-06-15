@@ -2784,13 +2784,7 @@ function buildGeneratedScanLayoutPlan(scanDecomposition, analysis, layoutMode = 
       .filter((run) => run.role === "setupRun")
       .map((run) => run.interval),
   };
-  const dfsGrammar = layoutMode === "generatedScanV2"
-    ? buildGeneratedScanV2DfsGrammar({
-        analysis,
-        runs: scanRuns,
-        regions: regionEntriesExits,
-      })
-    : null;
+  const dfsGrammar = null;
 
   return {
     enabled: true,
