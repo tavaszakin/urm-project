@@ -10350,15 +10350,6 @@ function routeGenericEmbeddedNestedLoopBlockEdges(layoutPlan) {
 
     const fromBounds = getNodeBounds(from, layout);
     const toBounds = getNodeBounds(to, layout);
-    const diamondPortRoute = routeGeneratedScanV2DiamondPortIntent(
-      edge,
-      from,
-      to,
-      layout,
-      analysis,
-    );
-    if (diamondPortRoute) return diamondPortRoute;
-
     if (edge.routeKind === "nestedLoopInnerReturn") {
       return {
         ...edge,
@@ -10672,15 +10663,6 @@ function routeEdgeWithGenericRegionGrammar(
     return routeTerminalExit(edge, fromBounds, toBounds);
   }
 
-  const diamondPortRoute = routeGeneratedScanV2DiamondPortIntent(
-    edge,
-    fromNode,
-    toNode,
-    layout,
-    analysis,
-  );
-  if (diamondPortRoute) return diamondPortRoute;
-
   if (!genericRegionModel) {
     return routeDefaultEdge(edge, nodeMap, layout, analysis);
   }
@@ -10701,18 +10683,6 @@ function routeEdgeWithGenericRegionGrammar(
     : null;
   const sameGenericRegion = Number.isInteger(sourceRegionId) && sourceRegionId === targetRegionId;
   const isForward = Number.isInteger(sourceIndex) && Number.isInteger(targetIndex) && targetIndex > sourceIndex;
-  const localMotif = analysis.layoutMode === "generatedScanV2"
-    ? fromNode.generatedScanV2LocalMotif ?? null
-    : null;
-
-  if (
-    localMotif &&
-    edge.branch &&
-    localMotif.localBranchEdgeIds?.includes(edge.id)
-  ) {
-    return routeGeneratedScanV2LocalMotifBranch(edge, fromBounds, toBounds, layout, localMotif);
-  }
-
   if (edge.generatedLocalSideChainRole === "decisionToSide") {
     return routeGeneratedSideChainEntry(edge, fromBounds, toBounds, layout);
   }
