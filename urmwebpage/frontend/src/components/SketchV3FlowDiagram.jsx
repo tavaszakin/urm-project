@@ -377,6 +377,22 @@ function isLoopReturnEdge(edge) {
     edge.targetIndex <= edge.sourceIndex;
 }
 
+// v1 context-aware vertical pitch gate. True only for a forward, branch-free
+// continuation whose endpoints BOTH lie strictly inside the pre-decision setup
+// chain (indices before the first conditionalJump = setupBoundary). Such gaps
+// provably carry no diamond, split exit, loop-return, or HALT routing between
+// the two rows, so they may use the compact setup pitch. Any gap that touches or
+// crosses the first decision keeps the default ordinaryStepY.
+function isSetupChainContinuationEdge(edge, setupBoundary) {
+  return Boolean(edge) &&
+    !edge.branch &&
+    Number.isInteger(edge.sourceIndex) &&
+    Number.isInteger(edge.targetIndex) &&
+    edge.targetIndex > edge.sourceIndex &&
+    edge.sourceIndex < setupBoundary &&
+    edge.targetIndex < setupBoundary;
+}
+
 function getRouteGeometryRole(edge, route = null, instructionCount = 0) {
   if (isHaltEdge(edge, instructionCount) || route?.routeKind === "sketchV3HaltExit") return "HALT";
   if (
@@ -526,6 +542,15 @@ function buildSketchV3Parameters(layout) {
   );
   return {
     ordinaryStepY,
+    // v1 context-aware vertical pitch: a tighter row stride used ONLY for pure
+    // pre-decision setup-chain continuations (see isSetupChainContinuationEdge).
+    // Deliberately NOT a lowering of ordinaryStepY, which is overloaded as a
+    // general clearance unit (loop-return corridor geometry, HALT fan/approach
+    // steps). This isolates the setup row-pitch role, mirroring the
+    // loopRailBaseGutter split-out. Equals one action node plus a single
+    // verticalGap of separation (matches the tuned setup-chain pitch); clamped to
+    // never exceed ordinaryStepY so it can only narrow, never widen, a setup gap.
+    compactStepY: Math.min(ordinaryStepY, layout.actionNodeHeight + layout.verticalGap),
     splitStepY,
     splitStepX,
     loopLaneDistance: Math.max(layout.loopLaneDistance * 1.8, 96),
@@ -3431,8 +3456,11 @@ function getBranchPlacementCandidates(args) {
   ));
 }
 
-function getContinuationPlacementCandidates({ position, params }) {
-  return [0, 0.35, 0.7, 1.1].map((scale) => ({
+function getContinuationPlacementCandidates({ position, params, compact = false }) {
+  // position.y is the default base (predecessor.y + ordinaryStepY). The ladder's
+  // first rung (scale 0) is exactly today's default placement, so when a compact
+  // rung is rejected the chooser recovers current geometry exactly.
+  const ladder = [0, 0.35, 0.7, 1.1].map((scale) => ({
     position: {
       x: position.x,
       y: position.y + params.ordinaryStepY * scale,
@@ -3441,6 +3469,21 @@ function getContinuationPlacementCandidates({ position, params }) {
     distanceScale: 1,
     extraY: params.ordinaryStepY * scale,
   }));
+  if (!compact) return ladder;
+  // Prepend a tighter rung (chooseLegalPlacement picks the first legal candidate,
+  // so this is tried first). compactDy <= 0 shifts the row up to the compact
+  // pitch; if it fails any legality check the unchanged ladder above recovers the
+  // exact default geometry.
+  const compactDy = params.compactStepY - params.ordinaryStepY;
+  return [
+    {
+      position: { x: position.x, y: position.y + compactDy },
+      route: null,
+      distanceScale: 1,
+      extraY: compactDy,
+    },
+    ...ladder,
+  ];
 }
 
 function evaluatePlacementCandidate({
@@ -6278,6 +6321,11 @@ export function applySketchV3Layout(layoutPlan) {
   const layout = layoutPlan.layout;
   const instructionCount = layoutPlan.analysis.program.length;
   const params = buildSketchV3Parameters(layout);
+  // First-decision boundary for the v1 compact setup-chain pitch gate. Falls back
+  // to 0 (no compaction) if the metadata is unavailable, preserving today's layout.
+  const setupBoundary = Number.isInteger(layoutPlan.analysis?.visualRoles?.metadata?.setupBoundary)
+    ? layoutPlan.analysis.visualRoles.metadata.setupBoundary
+    : 0;
   const nodes = layoutPlan.nodes.map((node) => ({ ...node }));
   const edges = layoutPlan.edges.map((edge) => ({ ...edge }));
   const nodeById = new Map(nodes.map((node) => [node.id, node]));
@@ -6590,7 +6638,14 @@ export function applySketchV3Layout(layoutPlan) {
             // default orientation, matching pre-override behavior exactly.
             orientation: getOverrideOrientationForDiamond(sourcePlacement.node) ?? DEFAULT_BRANCH_ORIENTATION,
           })
-        : getContinuationPlacementCandidates({ position: nextPosition, params });
+        : getContinuationPlacementCandidates({
+            position: nextPosition,
+            params,
+            // v1: compact pitch only for pure pre-decision setup-chain rows. The
+            // default ordinaryStepY base (nextPosition) is unchanged; the compact
+            // rung is offered first and recovers exactly on rejection.
+            compact: isSetupChainContinuationEdge(incoming, setupBoundary),
+          });
       let selectedCandidate = incoming && sourcePlacement
         ? chooseLegalPlacement({
             candidates,
