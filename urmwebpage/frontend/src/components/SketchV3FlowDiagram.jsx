@@ -393,6 +393,28 @@ function isSetupChainContinuationEdge(edge, setupBoundary) {
     edge.targetIndex < setupBoundary;
 }
 
+// Guard-diamond dogleg gate (see sketchv3_dogleg_safety_gate). True only for a
+// depth-0 / on-main-trunk conditionalJump whose HALT branch is a direct terminal
+// exit and whose other branch is an ordinary forward fall-through continuation
+// (targetIndex === sourceIndex + 1). Such a guard is NOT a real two-way fork: the
+// surviving continuation belongs on the vertical spine beneath the diamond and
+// routes straight bottom->top, matching the tuned grammar. The depth === 0
+// requirement is essential and NOT optional — interior HALT guards (e.g.
+// characteristic:leq i-23, eq i-45/i-46, divides i-50/i-55) share the exact same
+// CFG shape but sit inside branch arms and must keep today's branch-column
+// geometry, so the CFG pattern alone is too broad and was deliberately rejected.
+function isSpineGuardContinuation({ diamondNode, haltEdge, continuationEdge, depth, instructionCount }) {
+  return Boolean(diamondNode) &&
+    diamondNode.kind === "conditionalJump" &&
+    depth === 0 &&
+    Boolean(haltEdge) && isHaltEdge(haltEdge, instructionCount) &&
+    Boolean(continuationEdge) && !isHaltEdge(continuationEdge, instructionCount) &&
+    !isLoopReturnEdge(continuationEdge) &&
+    Number.isInteger(continuationEdge.sourceIndex) &&
+    Number.isInteger(continuationEdge.targetIndex) &&
+    continuationEdge.targetIndex === continuationEdge.sourceIndex + 1;
+}
+
 function getRouteGeometryRole(edge, route = null, instructionCount = 0) {
   if (isHaltEdge(edge, instructionCount) || route?.routeKind === "sketchV3HaltExit") return "HALT";
   if (
@@ -3322,7 +3344,12 @@ function routeBetweenPlacements({
   const fromBounds = getNodeBoundsAt(sourcePlacement.node, sourcePlacement, layout);
   const toBounds = getNodeBoundsAt(targetPlacement.node, targetPlacement, layout);
 
-  if (sourcePlacement.node.kind === "conditionalJump" && edge.branch) {
+  if (sourcePlacement.node.kind === "conditionalJump" && edge.branch &&
+      !edge.sketchV3SpineGuardContinuation) {
+    // A qualifying guard-diamond spine continuation (isSpineGuardContinuation)
+    // skips the diagonal side-face exit and falls through to the straight
+    // bottom->top continuation route below, preserving edge.branch (YES/NO label
+    // and semantics are unchanged; only the exit geometry differs).
     const anchors = getDiamondAnchors(fromBounds);
     // Manual override only: callers that don't pass an orientation (sibling route
     // reservation, already-drawn-target routing) must still see the overridden
@@ -6505,6 +6532,10 @@ export function applySketchV3Layout(layoutPlan) {
     let nextPosition = position;
     let incoming = incomingEdge;
     let currentBranchPath = branchPath;
+    // Set by the diamond block when the next-iteration continuation qualifies as a
+    // guard-diamond spine continuation (isSpineGuardContinuation); consumed once at
+    // the placement candidate site below.
+    let spineGuardContinuationPending = false;
     drawingState.activeBranchPath = cloneBranchPath(currentBranchPath);
 
     if (incomingEdge?.branch) {
@@ -6626,7 +6657,11 @@ export function applySketchV3Layout(layoutPlan) {
         ? placedByNodeId.get(incoming.from)
         : null;
       const placementDepth = incoming?.branch ? Math.max(0, depth - 1) : depth;
-      const candidates = incoming && sourcePlacement && incoming.branch && sourcePlacement.node.kind === "conditionalJump"
+      // Consume the guard-diamond spine flag set by the previous iteration's diamond
+      // block. Only true for a qualifying depth-0 guard continuation.
+      const useSpineGuardContinuation = spineGuardContinuationPending;
+      spineGuardContinuationPending = false;
+      const branchCandidates = incoming && sourcePlacement && incoming.branch && sourcePlacement.node.kind === "conditionalJump"
         ? getBranchPlacementCandidates({
             edge: incoming,
             sourcePlacement,
@@ -6638,6 +6673,19 @@ export function applySketchV3Layout(layoutPlan) {
             // default orientation, matching pre-override behavior exactly.
             orientation: getOverrideOrientationForDiamond(sourcePlacement.node) ?? DEFAULT_BRANCH_ORIENTATION,
           })
+        : null;
+      const candidates = branchCandidates
+        ? (useSpineGuardContinuation
+            // Guard-diamond dogleg fix: offer the spine continuation ladder FIRST (the
+            // marked edge routes straight bottom->top), then append the unchanged
+            // branch-column candidates as fallback so a rejected spine placement
+            // recovers today's exact geometry (chooseLegalPlacement takes the first
+            // legal candidate). compact is left off: this is not a setup-chain row.
+            ? [
+                ...getContinuationPlacementCandidates({ position: nextPosition, params }),
+                ...branchCandidates,
+              ]
+            : branchCandidates)
         : getContinuationPlacementCandidates({
             position: nextPosition,
             params,
@@ -6960,15 +7008,49 @@ export function applySketchV3Layout(layoutPlan) {
           return;
         }
         index = noEdge.targetIndex;
-        nextPosition = getBranchPosition({
-          edge: noEdge,
-          sourcePlacement: placement,
-          targetNode: noTargetNode,
-          layout,
-          params,
+        if (isSpineGuardContinuation({
+          diamondNode: placement.node,
+          haltEdge: yesEdge,
+          continuationEdge: noEdge,
           depth,
-          orientation: chosenOrientation,
-        });
+          instructionCount,
+        })) {
+          // Guard-diamond dogleg fix: keep the surviving continuation on the spine
+          // beneath the diamond (x = placement.x, normal ordinary downstream Y) and
+          // route it straight bottom->top (the marker is read in routeBetweenPlacements
+          // and at the placement site below, where the unchanged branch-column
+          // candidate is appended as fallback). Depth still increments, so downstream
+          // split spacing is untouched.
+          noEdge.sketchV3SpineGuardContinuation = true;
+          spineGuardContinuationPending = true;
+          // Release the sibling HALT exit's provisional spine-egress reservation. It
+          // is only a short stub directly below the diamond (the single spot this
+          // continuation must occupy); the HALT edge is still queued in haltExits and
+          // its route is recomputed independently by the post-pass (which exits to the
+          // side), so the stub would otherwise block the spine for no real reason.
+          retirePendingBranchCorridor({
+            edge: yesEdge,
+            pendingCorridorByEdgeId,
+            pendingCorridorRows,
+            removedOrder: placementRows.length,
+            removedReason: "spineGuardContinuationReleasedHaltEgress",
+            drawingState,
+          });
+          nextPosition = {
+            x: placement.x,
+            y: placement.y + params.ordinaryStepY,
+          };
+        } else {
+          nextPosition = getBranchPosition({
+            edge: noEdge,
+            sourcePlacement: placement,
+            targetNode: noTargetNode,
+            layout,
+            params,
+            depth,
+            orientation: chosenOrientation,
+          });
+        }
         incoming = noEdge;
         placementKind = "noBranchTarget";
         currentBranchPath = [...currentBranchPath, noEdge.id];
