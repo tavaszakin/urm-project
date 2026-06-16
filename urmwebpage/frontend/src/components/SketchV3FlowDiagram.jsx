@@ -529,6 +529,16 @@ function buildSketchV3Parameters(layout) {
     splitStepY,
     splitStepX,
     loopLaneDistance: Math.max(layout.loopLaneDistance * 1.8, 96),
+    // Horizontal base offset from the diagram body to the nearest loop-return rail.
+    // Deliberately separate from loopLaneDistance: that value is overloaded for
+    // vertical source/target clearance, inter-rail laneStep, and diagonal entry
+    // stubs, none of which should be tightened here. This controls ONLY how far
+    // outside the body the rank-0 outside rail starts. Obstacle-driven outward
+    // stepping (depth * 18 + rank * laneStep) is unchanged, and the existing
+    // crossing-free candidate search still steps farther out when a tighter rail
+    // would collide or cross — so a smaller base gutter can only narrow, never
+    // worsen, a layout. Kept comfortably above SKETCH_V3_LANE_CLEARANCE (16).
+    loopRailBaseGutter: Math.max(layout.loopLaneDistance * 0.7, 40),
     haltDistance: Math.max(layout.sideHaltDistance, 154),
   };
 }
@@ -2356,7 +2366,7 @@ function buildLoopReturnRouteCandidates({ edge, fromBounds, toBounds, layout, pa
   const diamondTargetPorts = targetIsDiamond ? getDiamondPorts(toBounds) : null;
 
   for (let rank = 0; rank < 12; rank += 1) {
-    const laneX = leftBoundary - params.loopLaneDistance - depth * 18 - rank * laneStep;
+    const laneX = leftBoundary - params.loopRailBaseGutter - depth * 18 - rank * laneStep;
     const points = [leftStart, [laneX, leftStart[1]], [laneX, leftEnd[1]], leftEnd];
     candidates.push({
       side: "left",
@@ -2377,7 +2387,7 @@ function buildLoopReturnRouteCandidates({ edge, fromBounds, toBounds, layout, pa
       { targetEntry: "target-sw", end: diamondTargetPorts.SW, directionSuffix: "sw-port", reason: "outsideLaneSWPortEntryForSameSideClearance" },
     ]) {
       for (let rank = 0; rank < 12; rank += 1) {
-        const laneX = leftBoundary - params.loopLaneDistance - depth * 18 - rank * laneStep;
+        const laneX = leftBoundary - params.loopRailBaseGutter - depth * 18 - rank * laneStep;
         const points = [leftStart, [laneX, leftStart[1]], [laneX, cornerEntry.end[1]], cornerEntry.end];
         candidates.push({
           side: "left",
@@ -2394,7 +2404,7 @@ function buildLoopReturnRouteCandidates({ edge, fromBounds, toBounds, layout, pa
 
   for (const entry of targetEntryPorts) {
     for (let rank = 0; rank < 12; rank += 1) {
-      const laneX = leftBoundary - params.loopLaneDistance - depth * 18 - rank * laneStep;
+      const laneX = leftBoundary - params.loopRailBaseGutter - depth * 18 - rank * laneStep;
       const points = [leftStart, [laneX, leftStart[1]], [laneX, entry.end[1]], entry.end];
       candidates.push({
         side: "left",
@@ -2412,7 +2422,7 @@ function buildLoopReturnRouteCandidates({ edge, fromBounds, toBounds, layout, pa
     for (let sourceExitRank = 0; sourceExitRank < 8; sourceExitRank += 1) {
       const sourceExitY = leftStart[1] + sourceOffset.offsetDirection * sourceOffsetStep * (sourceExitRank + 1);
       for (let rank = 0; rank < 12; rank += 1) {
-        const laneX = leftBoundary - params.loopLaneDistance - depth * 18 - rank * laneStep;
+        const laneX = leftBoundary - params.loopRailBaseGutter - depth * 18 - rank * laneStep;
         const points = [leftStart, [leftStart[0], sourceExitY], [laneX, sourceExitY], [laneX, leftEnd[1]], leftEnd];
         candidates.push({
           side: "left",
@@ -2439,7 +2449,7 @@ function buildLoopReturnRouteCandidates({ edge, fromBounds, toBounds, layout, pa
       for (let offsetRank = 0; offsetRank < targetOffsetRankCount; offsetRank += 1) {
         const approachY = entry.end[1] + entry.offsetDirection * targetOffsetStep * (offsetRank + 1);
         for (let rank = 0; rank < 12; rank += 1) {
-          const laneX = leftBoundary - params.loopLaneDistance - depth * 18 - rank * laneStep;
+          const laneX = leftBoundary - params.loopRailBaseGutter - depth * 18 - rank * laneStep;
           const points = [
             leftStart,
             [leftStart[0], sourceExitY],
@@ -2471,7 +2481,7 @@ function buildLoopReturnRouteCandidates({ edge, fromBounds, toBounds, layout, pa
     for (let offsetRank = 0; offsetRank < targetOffsetRankCount; offsetRank += 1) {
       const approachY = entry.end[1] + entry.offsetDirection * targetOffsetStep * (offsetRank + 1);
       for (let rank = 0; rank < 12; rank += 1) {
-        const laneX = leftBoundary - params.loopLaneDistance - depth * 18 - rank * laneStep;
+        const laneX = leftBoundary - params.loopRailBaseGutter - depth * 18 - rank * laneStep;
         const points = [leftStart, [laneX, leftStart[1]], [laneX, approachY], [entry.end[0], approachY], entry.end];
         candidates.push({
           side: "left",
@@ -2525,7 +2535,7 @@ function buildLoopReturnRouteCandidates({ edge, fromBounds, toBounds, layout, pa
       );
       for (const entry of leftSideDirectEntries) {
         for (let rank = 0; rank < 12; rank += 1) {
-          const laneX = leftBoundary - params.loopLaneDistance - depth * 18 - rank * laneStep;
+          const laneX = leftBoundary - params.loopRailBaseGutter - depth * 18 - rank * laneStep;
           const points = [
             leftStart,
             [leftStart[0], sourceExitY],
@@ -2551,7 +2561,7 @@ function buildLoopReturnRouteCandidates({ edge, fromBounds, toBounds, layout, pa
   }
 
   for (let rank = 0; rank < 8; rank += 1) {
-    const laneX = rightBoundary + params.loopLaneDistance + depth * 18 + rank * laneStep;
+    const laneX = rightBoundary + params.loopRailBaseGutter + depth * 18 + rank * laneStep;
     const points = [rightStart, [laneX, rightStart[1]], [laneX, rightEnd[1]], rightEnd];
     candidates.push({
       side: "right",
@@ -2571,7 +2581,7 @@ function buildLoopReturnRouteCandidates({ edge, fromBounds, toBounds, layout, pa
       { targetEntry: "target-se", end: diamondTargetPorts.SE, directionSuffix: "se-port", reason: "outsideLaneSEPortEntryForSameSideClearance" },
     ]) {
       for (let rank = 0; rank < 8; rank += 1) {
-        const laneX = rightBoundary + params.loopLaneDistance + depth * 18 + rank * laneStep;
+        const laneX = rightBoundary + params.loopRailBaseGutter + depth * 18 + rank * laneStep;
         const points = [rightStart, [laneX, rightStart[1]], [laneX, cornerEntry.end[1]], cornerEntry.end];
         candidates.push({
           side: "right",
@@ -2588,7 +2598,7 @@ function buildLoopReturnRouteCandidates({ edge, fromBounds, toBounds, layout, pa
 
   for (const entry of targetEntryPorts) {
     for (let rank = 0; rank < 8; rank += 1) {
-      const laneX = rightBoundary + params.loopLaneDistance + depth * 18 + rank * laneStep;
+      const laneX = rightBoundary + params.loopRailBaseGutter + depth * 18 + rank * laneStep;
       const points = [rightStart, [laneX, rightStart[1]], [laneX, entry.end[1]], entry.end];
       candidates.push({
         side: "right",
@@ -2606,7 +2616,7 @@ function buildLoopReturnRouteCandidates({ edge, fromBounds, toBounds, layout, pa
     for (let sourceExitRank = 0; sourceExitRank < 8; sourceExitRank += 1) {
       const sourceExitY = rightStart[1] + sourceOffset.offsetDirection * sourceOffsetStep * (sourceExitRank + 1);
       for (let rank = 0; rank < 8; rank += 1) {
-        const laneX = rightBoundary + params.loopLaneDistance + depth * 18 + rank * laneStep;
+        const laneX = rightBoundary + params.loopRailBaseGutter + depth * 18 + rank * laneStep;
         const points = [rightStart, [rightStart[0], sourceExitY], [laneX, sourceExitY], [laneX, rightEnd[1]], rightEnd];
         candidates.push({
           side: "right",
@@ -2633,7 +2643,7 @@ function buildLoopReturnRouteCandidates({ edge, fromBounds, toBounds, layout, pa
       for (let offsetRank = 0; offsetRank < targetOffsetRankCount; offsetRank += 1) {
         const approachY = entry.end[1] + entry.offsetDirection * targetOffsetStep * (offsetRank + 1);
         for (let rank = 0; rank < 8; rank += 1) {
-          const laneX = rightBoundary + params.loopLaneDistance + depth * 18 + rank * laneStep;
+          const laneX = rightBoundary + params.loopRailBaseGutter + depth * 18 + rank * laneStep;
           const points = [
             rightStart,
             [rightStart[0], sourceExitY],
@@ -2665,7 +2675,7 @@ function buildLoopReturnRouteCandidates({ edge, fromBounds, toBounds, layout, pa
     for (let offsetRank = 0; offsetRank < targetOffsetRankCount; offsetRank += 1) {
       const approachY = entry.end[1] + entry.offsetDirection * targetOffsetStep * (offsetRank + 1);
       for (let rank = 0; rank < 8; rank += 1) {
-        const laneX = rightBoundary + params.loopLaneDistance + depth * 18 + rank * laneStep;
+        const laneX = rightBoundary + params.loopRailBaseGutter + depth * 18 + rank * laneStep;
         const points = [rightStart, [laneX, rightStart[1]], [laneX, approachY], [entry.end[0], approachY], entry.end];
         candidates.push({
           side: "right",
@@ -2714,7 +2724,7 @@ function buildLoopReturnRouteCandidates({ edge, fromBounds, toBounds, layout, pa
       );
       for (const entry of rightSideDirectEntries) {
         for (let rank = 0; rank < 8; rank += 1) {
-          const laneX = rightBoundary + params.loopLaneDistance + depth * 18 + rank * laneStep;
+          const laneX = rightBoundary + params.loopRailBaseGutter + depth * 18 + rank * laneStep;
           const points = [
             rightStart,
             [rightStart[0], sourceExitY],
@@ -2783,7 +2793,7 @@ function buildLoopReturnRouteCandidates({ edge, fromBounds, toBounds, layout, pa
       );
       for (const entry of leftDoglegEntries) {
         for (let rank = 0; rank < 12; rank += 1) {
-          const laneX = leftBoundary - params.loopLaneDistance - depth * 18 - rank * laneStep;
+          const laneX = leftBoundary - params.loopRailBaseGutter - depth * 18 - rank * laneStep;
           const points = [
             leftStart,
             [leftStart[0], sourceExitY],
@@ -2839,7 +2849,7 @@ function buildLoopReturnRouteCandidates({ edge, fromBounds, toBounds, layout, pa
       );
       for (const entry of rightDoglegEntries) {
         for (let rank = 0; rank < 8; rank += 1) {
-          const laneX = rightBoundary + params.loopLaneDistance + depth * 18 + rank * laneStep;
+          const laneX = rightBoundary + params.loopRailBaseGutter + depth * 18 + rank * laneStep;
           const points = [
             rightStart,
             [rightStart[0], sourceExitY],
