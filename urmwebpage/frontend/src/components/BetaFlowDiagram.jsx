@@ -1,6 +1,9 @@
 import KatexMath from "./KatexMath.jsx";
 import { applySketchV1Layout } from "./SketchV1FlowDiagram.jsx";
 import { applySketchV3LayoutWithAutomaticRepair } from "./SketchV3FlowDiagram.jsx";
+// SketchV4 is opt-in only (?flowLayout=sketchv4). The modules are pure and have no import
+// side effects; buildLayout() never runs unless the flag is set (see computePrimaryLayoutPlan).
+import { buildLayout as buildSketchV4Layout } from "../layout/sketchv4/pipeline.js";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 const TEXTBOOK_LAYOUT = {
@@ -49,6 +52,9 @@ const MAX_COMFORTABLE_GRAPH_HEIGHT = 1100;
 const MAX_COMFORTABLE_GRAPH_WIDTH = 1500;
 const GRAPH_SCALE_NODE_THRESHOLD = 30;
 const MIN_GRAPH_SCALE = 0.7;
+// Below this whole-diagram fit scale, force-fitting the full height makes a tall diagram
+// unreadable; switch to readable width-fit + vertical scroll instead. View-layer only.
+const READABLE_FIT_THRESHOLD = 0.45;
 const MAX_BETA_FLOW_DEBUG_REPORT_HISTORY = 120;
 // Cap the per-phase timing log so it cannot grow without bound across repeated selections.
 const MAX_BETA_FLOW_PERF_LOG_ENTRIES = 50;
@@ -203,6 +209,54 @@ function getZeroRegister(instruction) {
   return Number.isInteger(register) ? register : null;
 }
 
+function isCopyInstruction(instruction) {
+  return normalizeOpcode(instruction) === "T";
+}
+
+// ============================================================================================
+// ARCHIVED / DISABLED — "Collapse setup blocks" v1 (display-collapse cluster).
+// This cluster (detectSetupRun … buildCollapsedSetupDisplayNodes, plus remapEdgesToDisplayNodes
+// below) is the setup-block display compression. It is currently INERT: collapseSetupBlocks is
+// hardcoded false at the BetaFlowDiagram entry, so buildDisplayNodes/buildDisplayEdges never take
+// their collapse branches. Kept in place as reference for a future collapse v2 (which must be a
+// post-layout display macro layer over the full-program layout, NOT a program rewrite).
+// See .sketchv3-harness/archive/collapse_setup_blocks_v1_disabled.md. Do not re-wire without v2.
+// ============================================================================================
+// Detect the maximal contiguous collapsible *setup run* starting at `index`, or null
+// when the instruction there does not start a collapsible category. Two categories,
+// both pure compiler scaffolding:
+//   - "clear": a Z(r), Z(r+1), ... run over consecutive registers (workspace clearing).
+//   - "copy":  a contiguous run of T (copy/staging) instructions.
+// The category only selects the macro label/summary -- the SAFETY gating applied to the
+// run afterwards (no interior jump targets / non-fall-through entries, fall-through-only
+// internal edges, minimum length) is identical for both, so a copy run is never collapsed
+// across a diamond, jump, loop-return, HALT, or branch boundary.
+function detectSetupRun(program, index) {
+  const firstRegister = getZeroRegister(program[index]);
+  if (firstRegister !== null) {
+    let endIndex = index;
+    let expectedRegister = firstRegister + 1;
+    while (
+      endIndex + 1 < program.length &&
+      getZeroRegister(program[endIndex + 1]) === expectedRegister
+    ) {
+      endIndex += 1;
+      expectedRegister += 1;
+    }
+    return { endIndex, category: "clear" };
+  }
+
+  if (isCopyInstruction(program[index])) {
+    let endIndex = index;
+    while (endIndex + 1 < program.length && isCopyInstruction(program[endIndex + 1])) {
+      endIndex += 1;
+    }
+    return { endIndex, category: "copy" };
+  }
+
+  return null;
+}
+
 function collectJumpTargets(program) {
   return new Set(
     program
@@ -284,33 +338,50 @@ function createCollapsedSetupDisplayNode(program, startIndex, endIndex) {
   };
 }
 
+// Macro node for a collapsed contiguous T-copy run. `label` is chosen by the caller from
+// the run's position (pre-decision setup vs. in-body staging); the summary keeps the first
+// and last copy visible so it is always clear what was folded away. Same block shape as the
+// clear-workspace node, so all downstream rendering / SketchV4 pre-layout plumbing is reused.
+function createCollapsedCopyDisplayNode(program, startIndex, endIndex, label) {
+  return {
+    kind: "collapsedBlock",
+    id: `I${startIndex}-I${endIndex}`,
+    startIndex,
+    endIndex,
+    instructionIndices: rangeIndexes(startIndex, endIndex),
+    label,
+    summary: `${formatInstruction(program[startIndex])},...,${formatInstruction(program[endIndex])}`,
+    nodeType: "block",
+  };
+}
+
+// Label-only heuristic for a collapsed copy run: copies that finish before the program's
+// first decision are argument/input staging ("copy inputs"); later copy runs are in-body
+// workspace shuffling ("copy workspace"). Pure cosmetics -- never affects control flow.
+function copyRunLabel(endIndex, firstDecisionIndex) {
+  return firstDecisionIndex < 0 || endIndex < firstDecisionIndex
+    ? "copy inputs"
+    : "copy workspace";
+}
+
 function buildCollapsedSetupDisplayNodes(program, analysis) {
   const rawDisplayNodes = buildRawDisplayNodes(program, analysis);
   const jumpTargets = collectJumpTargets(program);
   const nonFallthroughEntryTargets = collectNonFallthroughEntryTargets(analysis.edges);
+  const firstDecisionIndex = analysis.nodeRoles.indexOf("conditionalJump");
   const displayNodes = [];
   let index = 0;
 
   while (index < program.length) {
-    const firstRegister = getZeroRegister(program[index]);
+    const run = detectSetupRun(program, index);
 
-    if (firstRegister === null) {
+    if (run === null) {
       displayNodes.push(rawDisplayNodes[index]);
       index += 1;
       continue;
     }
 
-    let endIndex = index;
-    let expectedRegister = firstRegister + 1;
-
-    while (
-      endIndex + 1 < program.length &&
-      getZeroRegister(program[endIndex + 1]) === expectedRegister
-    ) {
-      endIndex += 1;
-      expectedRegister += 1;
-    }
-
+    const { endIndex, category } = run;
     let cursor = index;
 
     while (cursor <= endIndex) {
@@ -335,7 +406,16 @@ function buildCollapsedSetupDisplayNodes(program, analysis) {
         subRunLength >= 3 &&
         hasSafeZeroingRunEdges(analysis.edges, subRunStart, subRunEnd);
 
-      if (canCollapse) {
+      if (canCollapse && category === "copy") {
+        displayNodes.push(
+          createCollapsedCopyDisplayNode(
+            program,
+            subRunStart,
+            subRunEnd,
+            copyRunLabel(subRunEnd, firstDecisionIndex),
+          ),
+        );
+      } else if (canCollapse) {
         displayNodes.push(createCollapsedSetupDisplayNode(program, subRunStart, subRunEnd));
       } else {
         rangeIndexes(subRunStart, subRunEnd).forEach((rawIndex) => {
@@ -352,6 +432,10 @@ function buildCollapsedSetupDisplayNodes(program, analysis) {
   return displayNodes;
 }
 
+// NOTE: collapseSetupBlocks is hardcoded false at the BetaFlowDiagram entry (collapse v1 is
+// disabled/archived), so the collapse branch below is currently never taken. The display-collapse
+// cluster (buildCollapsedSetupDisplayNodes + helpers above) is kept wired but inert as reference
+// for a future collapse v2. See .sketchv3-harness/archive/collapse_setup_blocks_v1_disabled.md.
 function buildDisplayNodes(program, analysis, { collapseSetupBlocks = false } = {}) {
   return collapseSetupBlocks
     ? buildCollapsedSetupDisplayNodes(program, analysis)
@@ -14994,6 +15078,10 @@ function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow di
   // Start with MAX_COMFORTABLE_GRAPH_WIDTH so the first render matches the existing
   // graphScale behavior. ResizeObserver updates this to the actual container width.
   const [containerWidth, setContainerWidth] = useState(MAX_COMFORTABLE_GRAPH_WIDTH);
+  // View mode for fitting the (already-computed) SVG into the panel: "auto" picks
+  // fit-whole for short diagrams and readable-scroll for tall ones; the toggle lets the
+  // user force either. Purely a display choice — never touches layout/positions/routes.
+  const [viewMode, setViewMode] = useState("auto");
 
   useEffect(() => {
     const el = containerRef.current;
@@ -15140,27 +15228,68 @@ function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow di
   const availWidth = Math.max(64, containerWidth - FIT_PANEL_PADDING * 2);
   const availHeight = getFitMaxHeight();
 
-  // fitScale ≤ 1: shrink-only. Never enlarge a small diagram beyond its natural size.
-  const fitScale = Math.min(1, availWidth / naturalWidth, availHeight / naturalHeight);
+  // Both candidate scales are shrink-only (≤1): a small diagram is never enlarged.
+  // - widthFitScale: fit the width only (readable-scroll mode); height overflows + scrolls.
+  // - fitWholeScale: fit the entire diagram into the panel (current behavior); a tall
+  //   diagram gets force-shrunk by its height, which is what made divisor_count ~18%.
+  const widthFitScale = Math.min(1, availWidth / naturalWidth);
+  const fitWholeScale = Math.min(widthFitScale, availHeight / naturalHeight);
+
+  // Tall diagrams auto-switch to readable-scroll: fitting them whole drops below the
+  // readable threshold or they are more than ~2 panels tall. The toggle can force either.
+  const autoReadableScroll =
+    fitWholeScale < READABLE_FIT_THRESHOLD || naturalHeight > availHeight * 2;
+  const readableScroll = viewMode === "auto" ? autoReadableScroll : viewMode === "scroll";
+
+  const fitScale = readableScroll ? widthFitScale : fitWholeScale;
   const displayWidth = Math.round(naturalWidth * fitScale);
   const displayHeight = Math.round(naturalHeight * fitScale);
 
-  // Show debug info whenever the diagram is scaled down, or when audit debug is on.
+  // Show info whenever the diagram is scaled down, scrolling, or when audit debug is on.
   const isScaled = fitScale < 0.999;
-  const showDebugInfo = isScaled || isBetaFlowAuditDebugEnabled();
-  const debugText = isScaled
-    ? `bounds ${Math.round(layoutPlan.width)}×${Math.round(layoutPlan.height)} | fit ${(fitScale * 100).toFixed(0)}% → ${displayWidth}×${displayHeight}px`
-    : `bounds ${Math.round(layoutPlan.width)}×${Math.round(layoutPlan.height)}`;
+  const showDebugInfo = isScaled || readableScroll || isBetaFlowAuditDebugEnabled();
+  const boundsText = `bounds ${Math.round(layoutPlan.width)}×${Math.round(layoutPlan.height)}`;
+  const debugText = readableScroll
+    ? `${boundsText} | readable ${(fitScale * 100).toFixed(0)}% → ${displayWidth}×${displayHeight}px (scroll)`
+    : isScaled
+      ? `${boundsText} | fit ${(fitScale * 100).toFixed(0)}% → ${displayWidth}×${displayHeight}px`
+      : boundsText;
 
   return (
-    <div
-      ref={containerRef}
-      className="beta-flow-svg-shell"
-      data-fit-scale={fitScale.toFixed(4)}
-      data-diagram-bounds={`${Math.round(layoutPlan.width)}x${Math.round(layoutPlan.height)}`}
-    >
-      <svg
-        className="beta-flow-svg"
+    <div className="beta-flow-svg-viewport">
+      <div className="beta-flow-svg-controls">
+        <div className="beta-flow-view-toggle" role="group" aria-label="Diagram view mode">
+          <button
+            type="button"
+            className={`beta-flow-view-toggle-button${!readableScroll ? " is-active" : ""}`}
+            aria-pressed={!readableScroll}
+            onClick={() => setViewMode("fit")}
+          >
+            Fit all
+          </button>
+          <button
+            type="button"
+            className={`beta-flow-view-toggle-button${readableScroll ? " is-active" : ""}`}
+            aria-pressed={readableScroll}
+            onClick={() => setViewMode("scroll")}
+          >
+            Readable scroll
+          </button>
+        </div>
+        {showDebugInfo ? (
+          <span className="beta-flow-diagram-debug-info" aria-hidden="true">{debugText}</span>
+        ) : null}
+      </div>
+      <div
+        ref={containerRef}
+        className="beta-flow-svg-shell"
+        style={readableScroll ? { maxHeight: availHeight } : undefined}
+        data-fit-scale={fitScale.toFixed(4)}
+        data-diagram-bounds={`${Math.round(layoutPlan.width)}x${Math.round(layoutPlan.height)}`}
+        data-view-mode={readableScroll ? "scroll" : "fit"}
+      >
+        <svg
+          className="beta-flow-svg"
         style={{ display: "block", width: displayWidth, height: displayHeight, flex: "none" }}
         viewBox={`0 0 ${naturalWidth} ${naturalHeight}`}
         role="img"
@@ -15186,11 +15315,23 @@ function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow di
               <g key={edge.id} className={`beta-flow-edge beta-flow-edge-${edge.type}`}>
                 <polyline
                   fill="none"
-                  stroke="currentColor"
+                  stroke={edge.debugPortCase ? "#d946ef" : "currentColor"}
                   points={pointsToString(edge.points, layoutPlan.offsetX, layoutPlan.offsetY)}
                   markerEnd="url(#beta-flow-arrow)"
-                  strokeWidth={layout.arrowStrokeWidth}
+                  strokeWidth={edge.debugPortCase ? layout.arrowStrokeWidth * 2.5 : layout.arrowStrokeWidth}
                 />
+                {edge.debugPortCase ? (
+                  <text
+                    x={safeSvgCoordinate(edge.labelX + layoutPlan.offsetX)}
+                    y={safeSvgCoordinate(edge.labelY + layoutPlan.offsetY - 4)}
+                    textAnchor="middle"
+                    fill="#d946ef"
+                    fontSize="11"
+                    fontWeight="700"
+                  >
+                    {edge.debugPortCase}
+                  </text>
+                ) : null}
                 {edge.branch ? (
                   <text
                     className="beta-flow-edge-label"
@@ -15225,10 +15366,8 @@ function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow di
             ))}
           </g>
         </g>
-      </svg>
-      {showDebugInfo ? (
-        <div className="beta-flow-diagram-debug-info" aria-hidden="true">{debugText}</div>
-      ) : null}
+        </svg>
+      </div>
     </div>
   );
 }
@@ -15326,8 +15465,256 @@ function safeComputeLayout(program, selectedFunctionId, options, layout) {
   }
 }
 
-// Headless verification entry point (node harness / dev console); not used by the app UI.
-export { buildDiagramModel };
+// ---- SketchV4 opt-in integration (Phase 8) ---------------------------------------------
+// SketchV4 is an explicit opt-in layout mode. The default URL is byte-unchanged: it always
+// builds (and renders) SketchV3 exactly as before. Only ?flowLayout=sketchv4 activates V4,
+// and any V4 error falls back to SketchV3 so the page always renders.
+
+function isSketchV4Requested() {
+  // Headless override (node harness / tests), mirroring __sketchV3AutoFlip. Never set in the app.
+  if (typeof globalThis !== "undefined" && globalThis.__sketchV4Requested) return true;
+  if (typeof window === "undefined") return false; // SSR/headless default = SketchV3
+  try {
+    return new URLSearchParams(window.location.search).get("flowLayout")?.toLowerCase() === "sketchv4";
+  } catch {
+    return false;
+  }
+}
+
+// V4-ONLY opt-in visual debug: ?flowDebugPorts=1 (only meaningful when V4 is active) highlights
+// the Phase-4a changed-port edges and labels their portPolicyCase, so the (often subtle) port
+// changes are visible in the live diagram. Never affects SketchV3 (it tags V4 plan edges only).
+function isPortDebugRequested() {
+  if (typeof globalThis !== "undefined" && globalThis.__sketchV4PortDebug) return true;
+  if (typeof window === "undefined") return false;
+  try {
+    return new URLSearchParams(window.location.search).get("flowDebugPorts") === "1";
+  } catch {
+    return false;
+  }
+}
+
+// Builds only the cheap shared metadata V4 needs from the legacy model: labels, node kinds,
+// display nodes, layout constants, and analysis. It intentionally stops before SketchV3
+// placement/routing/auto-repair, which can be the dominant browser cost for large programs.
+function buildSketchV4MetadataPlan(program, selectedFunctionId, options = {}, layout = TEXTBOOK_LAYOUT) {
+  const normalizedLayoutMode = "sketchV3";
+  const baseAnalysis = analyzeProgramFlow(program, layout);
+  const detectedMotif = detectFlowMotif(baseAnalysis, selectedFunctionId);
+  const debugIdentity = createBetaFlowDebugIdentity({
+    selectedExampleName: options.selectedExampleName ?? selectedFunctionId,
+    layoutMode: normalizedLayoutMode,
+    motifHint: detectedMotif.kind,
+    program,
+    nodeRoles: baseAnalysis.nodeRoles,
+    hasTunedLayout: options.debugLayoutMetadata?.hasTunedLayout ?? null,
+    layoutStatus: options.debugLayoutMetadata?.layoutStatus ?? null,
+  });
+  const visualRoles = classifyVisualRoles(baseAnalysis, baseAnalysis.program, detectedMotif);
+  const analysis = {
+    ...baseAnalysis,
+    visualRoles,
+    layoutMode: normalizedLayoutMode,
+    debugIdentity,
+  };
+
+  if (ENABLE_VISUAL_ROLE_DEBUG || isBetaFlowAuditDebugEnabled()) {
+    emitVisualRoleDebugReport(analysis, selectedFunctionId);
+  }
+
+  // Collapse setup blocks (v1) is disabled/archived: V4 lays out the original full program, so the
+  // metadata plan no longer builds a collapsed layout program or gates on collapse eligibility
+  // (see .sketchv3-harness/archive/collapse_setup_blocks_v1_disabled.md). motifForLayout stays the
+  // generic instruction fallback used for generated functions.
+  const motifForLayout = {
+    kind: "genericInstructionFallback",
+    primaryLoop: detectedMotif.primaryLoop ?? baseAnalysis.loopMotifs[0] ?? null,
+    comparisonMode: "generated",
+    sourceMotifKind: detectedMotif.kind,
+  };
+
+  const layoutPlan = buildLayoutPlan(analysis, motifForLayout, layout);
+  // Full SketchV3 later collapses contextual HALT placeholders into one shared sink.
+  // V4 has the same single-sink assumption, so keep only the canonical shared HALT here.
+  const nodes = layoutPlan.nodes.filter((node) => node.kind !== "halt" || node.id === "halt");
+  if (!nodes.some((node) => node.id === "halt")) {
+    nodes.push({ id: "halt", kind: "halt", label: "HALT", x: 0, y: 0 });
+  }
+
+  return {
+    ...layoutPlan,
+    nodes,
+    displayNodes: getDisplayNodesFromRenderNodes(nodes),
+    nodeMap: new Map(nodes.map((node) => [node.id, node])),
+    layoutMode: normalizedLayoutMode,
+    sketchV3PlacementDebug: {
+      sketchV3Enabled: false,
+      sketchV3SkippedReason: "sketchV4MetadataOnly",
+    },
+  };
+}
+
+// Label anchor for an edge polyline: the point at half the *arclength* (not half the point
+// count), optionally nudged perpendicular to the local segment so the label sits beside the
+// edge rather than on it. The old `pts[floor(len/2)]` heuristic returned the *endpoint* of a
+// 2-point branch-exit polyline ([sourcePort, targetTop]) — i.e. the target node's top port —
+// which dropped "yes"/"no" labels onto the destination box. Arclength-midpoint puts a 2-point
+// label at the true segment midpoint, clear of both the diamond and the target node.
+// Degenerate inputs (empty / single / repeated points) fall back to a safe finite point.
+function labelPointForPolyline(points, { offset = 0 } = {}) {
+  const pts = Array.isArray(points)
+    ? points.filter((p) => Array.isArray(p) && Number.isFinite(p[0]) && Number.isFinite(p[1]))
+    : [];
+  if (pts.length === 0) return [0, 0];
+  if (pts.length === 1) return [pts[0][0], pts[0][1]];
+  const segLen = [];
+  let total = 0;
+  for (let i = 1; i < pts.length; i++) {
+    const len = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+    segLen.push(len);
+    total += len;
+  }
+  if (total < 1e-6) return [pts[0][0], pts[0][1]]; // zero-length / coincident points
+  const half = total / 2;
+  let acc = 0;
+  let si = 0;
+  while (si < segLen.length - 1 && acc + segLen[si] < half) {
+    acc += segLen[si];
+    si += 1;
+  }
+  const a = pts[si];
+  const b = pts[si + 1];
+  const t = Math.max(0, Math.min(1, (half - acc) / (segLen[si] || 1)));
+  const baseX = a[0] + (b[0] - a[0]) * t;
+  const baseY = a[1] + (b[1] - a[1]) * t;
+  if (!offset) return [baseX, baseY];
+  // Unit perpendicular to the local segment, biased upward (negative y) so labels sit above
+  // the edge regardless of branch side; for (near-)vertical segments this resolves to a
+  // horizontal nudge, which still clears the line.
+  let nx = -(b[1] - a[1]);
+  let ny = b[0] - a[0];
+  const nlen = Math.hypot(nx, ny) || 1;
+  nx /= nlen;
+  ny /= nlen;
+  if (ny > 0) {
+    nx = -nx;
+    ny = -ny;
+  }
+  return [baseX + nx * offset, baseY + ny * offset];
+}
+
+// Perpendicular offset (layout px) applied to branch ("yes"/"no") labels so they sit beside
+// the branch edge. Tuned to the current SVG scale (diamond/action node sizes, ~11px label
+// font, render-time -3px nudge); large enough to clear the line, small enough not to drift.
+const SKETCHV4_BRANCH_LABEL_OFFSET = 12;
+
+// Adapts a SketchV4 buildLayout() result into the layoutPlan shape FlowSvgDisplay renders.
+// Reuses the shared plan's node metadata (labels/kinds/dimensions) and overrides positions
+// + routes with V4 geometry; sizes the viewport from route-inclusive renderBounds. Throws if
+// the node set does not align (e.g. collapsed blocks), so the caller falls back to SketchV3.
+function buildSketchV4LayoutPlan(program, selectedFunctionId, sketchV3Plan, options = {}) {
+  if (typeof globalThis !== "undefined" && globalThis.__sketchV4ForceError) {
+    throw new Error("SketchV4 forced error (test hook)");
+  }
+  const ld = sketchV3Plan.layout;
+  const sizeForKind = (kind) =>
+    kind === "start" || kind === "halt" ? [ld.terminalWidth, ld.terminalHeight]
+      : kind === "conditionalJump" ? [ld.diamondWidth, ld.diamondHeight]
+        : kind === "unconditionalJump" ? [ld.unconditionalNodeWidth, ld.unconditionalNodeHeight]
+          : [ld.actionNodeWidth, ld.actionNodeHeight];
+  const visual = {
+    sizeForKind,
+    branchAngleTan: Math.tan(Math.max(0.2, ((ld.branchAngleDeg ?? 30) * Math.PI) / 180)),
+    pitch: { setupPitch: 54, ordinaryPitch: 82, branchRayDistance: 126 },
+    terminalSize: [ld.terminalWidth, ld.terminalHeight],
+    haltBandOffset: 154,
+    clearance: 16,
+  };
+  // Collapse setup blocks (v1) is disabled/archived: V4 always lays out the original full program —
+  // no collapsed-program rewrite and no id translation (placements/edges already use render-node
+  // ids). See .sketchv3-harness/archive/collapse_setup_blocks_v1_disabled.md.
+  const v4 = buildSketchV4Layout(program, {
+    programName: options.selectedExampleName ?? selectedFunctionId ?? null,
+    orientationSource: "v4Assigned",
+    visual,
+    pins: new Map(), // app-level manual pins map here when a pin source exists; none at dispatch today
+    diagnostics: true,
+  });
+
+  const rb = v4.renderBounds;
+  const offsetX = -rb.minX; // shift V4 coords (origin at start, can be negative) into [0, width]
+  const offsetY = -rb.minY;
+  const placements = new Map(v4.skeleton.placements);
+  const haltBox = v4.halt.haltBox;
+
+  const nodes = sketchV3Plan.nodes.map((node) => {
+    if (node.id === "halt") return { ...node, x: haltBox.cx, y: haltBox.cy };
+    const p = placements.get(node.id);
+    if (!p) throw new Error(`SketchV4: no placement for node "${node.id}" (node-set mismatch) — falling back`);
+    return { ...node, x: p.cx, y: p.cy };
+  });
+
+  const branchOf = (id) => (id.endsWith("-yes") ? "yes" : id.endsWith("-no") ? "no" : null);
+  // V4-only port debug: map of edgeId -> portPolicyCase for the Phase-4a CHANGED-port edges.
+  const portDebug = isPortDebugRequested();
+  const changedPortCase = new Map(
+    (v4.diagnostics?.sketchV4ChangedPortRecords ?? []).map((c) => [c.edgeId, c.portPolicyCase]),
+  );
+  const edges = v4.routed.routes.map((e) => {
+    const pts = e.points;
+    const branch = branchOf(e.edgeId);
+    // Arclength midpoint (+ perpendicular nudge for branch labels) instead of the old
+    // point-index midpoint, which landed 2-point branch labels on the target node's top port.
+    const [labelX, labelY] = labelPointForPolyline(pts, {
+      offset: branch ? SKETCHV4_BRANCH_LABEL_OFFSET : 0,
+    });
+    // branch is intrinsic to the edge id; from/to are already render-node ids (full program).
+    const edge = { id: e.edgeId, from: e.source, to: e.target, points: pts, branch, type: e.routeFamily, labelX, labelY };
+    if (portDebug && changedPortCase.has(e.edgeId)) edge.debugPortCase = changedPortCase.get(e.edgeId);
+    return edge;
+  });
+
+  return {
+    ...sketchV3Plan, // keep layout/analysis + sketchV3PlacementDebug for side-by-side comparison
+    layoutMode: "sketchV4",
+    sketchV4Active: true,
+    nodes,
+    edges,
+    width: rb.width,   // route-inclusive renderBounds drive the viewBox, not placement-only bounds
+    height: rb.height,
+    offsetX,
+    offsetY,
+    nodeMap: new Map(nodes.map((node) => [node.id, node])),
+    sketchV4PlacementDebug: v4.diagnostics,
+    sketchV4PlacementBounds: v4.placementBounds,
+    sketchV4RenderBounds: v4.renderBounds,
+    sketchV4OrientationFlips: [...v4.orientationMap].filter(([, o]) => o?.no === "right").map(([f]) => f),
+  };
+}
+
+// Primary layout dispatch. The default render builds SketchV3 exactly as before. When
+// ?flowLayout=sketchv4 is set it builds only the cheap shared metadata plan first, attempts
+// V4, and only pays for the full SketchV3 path if V4 fails and a fallback is needed.
+// When V4 is not requested this is identical to the previous buildDiagramModel(sketchV3) call.
+// Collapse setup blocks (v1) is disabled/archived — V4 always lays out the original full program
+// (see .sketchv3-harness/archive/collapse_setup_blocks_v1_disabled.md).
+function computePrimaryLayoutPlan(program, selectedFunctionId, options = {}) {
+  if (!isSketchV4Requested()) {
+    return buildDiagramModel(program, selectedFunctionId, { ...options, layoutMode: "sketchV3" });
+  }
+  try {
+    const sketchV4MetadataPlan = buildSketchV4MetadataPlan(program, selectedFunctionId, options);
+    return buildSketchV4LayoutPlan(program, selectedFunctionId, sketchV4MetadataPlan, options);
+  } catch (error) {
+    const sketchV3Plan = buildDiagramModel(program, selectedFunctionId, { ...options, layoutMode: "sketchV3" });
+    sketchV3Plan.sketchV4Active = false;
+    sketchV3Plan.sketchV4Error = { message: error?.message ?? String(error), stack: error?.stack ?? null };
+    return sketchV3Plan;
+  }
+}
+
+// Headless verification entry points (node harness / dev console); not used by the app UI.
+export { buildDiagramModel, buildSketchV4LayoutPlan, computePrimaryLayoutPlan, labelPointForPolyline };
 
 export function buildFlowGeometryReport(
   program,
@@ -15348,9 +15735,13 @@ export default function BetaFlowDiagram({
   selectedFunctionId,
   selectedExampleName = null,
   layoutMetadata = null,
-  collapseSetupBlocks = false,
   showLayoutComparison = false,
 }) {
+  // "Collapse setup blocks" (v1) is disabled/archived — see
+  // .sketchv3-harness/archive/collapse_setup_blocks_v1_disabled.md. Hardcoded false so the active
+  // SketchV4/SketchV3 layout always runs on the original full program (any prop passed is ignored).
+  // To be rebuilt as a post-layout display macro layer (v2), never a program rewrite.
+  const collapseSetupBlocks = false;
   // Memoize layout computations so they only re-run when their inputs change.
   // Both hooks must be called unconditionally before any early returns (Rules of Hooks).
   // useMemo callbacks are pure — no side effects, no try/catch, no performance.now().
@@ -15365,9 +15756,8 @@ export default function BetaFlowDiagram({
   // a new object holding the same program reference (e.g., from a run result matching a compile).
   const layoutPlan = useMemo(
     () => isInstructionList(program)
-      ? buildDiagramModel(program, selectedFunctionId, {
+      ? computePrimaryLayoutPlan(program, selectedFunctionId, {
           collapseSetupBlocks,
-          layoutMode: "sketchV3",
           selectedExampleName,
           debugLayoutMetadata: layoutMetadata,
         })

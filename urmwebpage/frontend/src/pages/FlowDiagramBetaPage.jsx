@@ -243,7 +243,10 @@ export default function FlowDiagramBetaPage() {
   // program arrived.
   const [compiledResult, setCompiledResult] = useState(null);
   const [diagramMessage, setDiagramMessage] = useState("Preparing flow diagram.");
-  const [collapseSetupBlocks, setCollapseSetupBlocks] = useState(false);
+  // "Collapse setup blocks" (v1) is disabled/archived — see
+  // .sketchv3-harness/archive/collapse_setup_blocks_v1_disabled.md. The control was removed and
+  // BetaFlowDiagram hardcodes collapseSetupBlocks=false, so the active SketchV4 layout always runs
+  // on the original full program. To be rebuilt as a post-layout display macro layer (v2).
   const [showLayoutComparison, setShowLayoutComparison] = useState(false);
   // Derive layoutMetadata from the compiled functionSpec (not the UI-selected one) so it
   // changes atomically with program. compiledResult is stable state — only updates on compile.
@@ -507,15 +510,6 @@ export default function FlowDiagramBetaPage() {
         <h3 id="beta-flow-placeholder-title" className="beta-flow-card-title">
           Generated flow diagram
         </h3>
-        <label>
-          <input
-            type="checkbox"
-            checked={collapseSetupBlocks}
-            onChange={(event) => setCollapseSetupBlocks(event.target.checked)}
-          />
-          {" "}
-          Collapse setup blocks
-        </label>
         {layoutMetadata?.hasTunedLayout ? (
           <label>
             <input
@@ -533,7 +527,6 @@ export default function FlowDiagramBetaPage() {
             selectedFunctionId={compiledResult.functionSpec?.kind}
             selectedExampleName={layoutMetadata?.exampleKey ?? compiledResult.functionSpec?.kind}
             layoutMetadata={layoutMetadata}
-            collapseSetupBlocks={collapseSetupBlocks}
             showLayoutComparison={showLayoutComparison}
           />
         ) : (

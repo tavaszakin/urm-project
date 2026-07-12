@@ -1998,6 +1998,48 @@ select:-webkit-autofill:focus {
   text-align: center;
 }
 
+.beta-flow-svg-viewport {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 0;
+}
+
+.beta-flow-svg-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.beta-flow-view-toggle {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid color-mix(in srgb, var(--compute-border) 86%, var(--compute-text) 14%);
+  border-radius: 999px;
+  background: var(--compute-surface-alt);
+}
+
+.beta-flow-view-toggle-button {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  padding: 3px 10px;
+  font-size: 11px;
+  line-height: 1.4;
+  border-radius: 999px;
+  color: var(--compute-secondary, #6b7280);
+  background: transparent;
+}
+
+.beta-flow-view-toggle-button.is-active {
+  color: var(--compute-text, #111827);
+  background: color-mix(in srgb, var(--compute-accent, #2563eb) 18%, transparent);
+  font-weight: 600;
+}
+
 .beta-flow-svg-shell {
   display: flex;
   align-items: flex-start;
