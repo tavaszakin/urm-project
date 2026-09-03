@@ -1033,6 +1033,59 @@ export function buildGeneralizedLoopSourcePortView(currentBaseline) {
   };
 }
 
+// Composition candidate: realize the existing adaptive-merge stack (plus the divides-only
+// i-57 right-to-right reentry), apply the generalized loop-source rule, and expose that whole
+// geometry to the ordinary unpinned orientation pass. Nothing is repaired after selection.
+export function buildComposedLoopSourceCandidate(rawView) {
+  const base = {
+    cfg: rawView.cfg,
+    roles: rawView.roles,
+    ownership: rawView.ownership,
+    tree: rawView.tree,
+    guardOrientationOf: roleGuardOrientation(rawView.cfg, rawView.roles),
+    program: rawView.program,
+    programName: rawView.programName,
+    terminalId: rawView.terminalId,
+  };
+  const includesRightReentry = rawView.programName === "characteristic:divides";
+  const realizeExistingStack = (orientationMap) => {
+    const adaptive = buildAdaptiveBranchRayMergeSourcesView(realizeExperimental(base, orientationMap));
+    return includesRightReentry ? applyRightToRightHvhMerge(adaptive) : adaptive;
+  };
+  const realizeComposed = (orientationMap) => buildGeneralizedLoopSourcePortView(realizeExistingStack(orientationMap));
+  const orientationResult = assignOrientation({
+    realForks: rawView.roles.realForkIds,
+    bottomUp: rawView.tree.bottomUp,
+    rfParent: rawView.tree.rfParent,
+    rfChildren: rawView.tree.rfChildren,
+    evaluate: (orientationMap) => realizeComposed(orientationMap).defects,
+    pins: new Map(),
+  });
+
+  const sameOrientationControl = realizeExistingStack(orientationResult.orientationMap);
+  const view = buildGeneralizedLoopSourcePortView(sameOrientationControl);
+  view.orientationResult = orientationResult;
+  view.viewLabel = "Ordinary HALT — composed adaptive merges + generalized loop sources";
+  view.purity = {
+    ...view.purity,
+    compositionOrder: [
+      "raw transformed realization",
+      "adaptive branch-merge routes",
+      ...(includesRightReentry ? ["i-57 right-to-right H/V/H"] : []),
+      "generalized backward-loop source attachment",
+    ],
+    includesDividesOnlyRightReentry: includesRightReentry,
+    orientationSelectionUsesComposedGeometry: true,
+    orientationSelectionPins: [],
+    orientationSelectionRerun: true,
+    directLoopSourceChangesAgainstSameOrientation: view.experimentalLoopSourcePortCensus
+      .filter((row) => row.routeChanged)
+      .map((row) => row.edgeId),
+    automaticRepairAfterConstruction: false,
+  };
+  return { view, sameOrientationControl };
+}
+
 // One-edge geometry splice for the predecessor comparison: retain the raw-role merge
 // classification and its existing target-side body, but replace its source departure with
 // the semantic branch's ordinary diamond face + fixed-angle ray. The sibling branch-exit arm
@@ -1834,6 +1887,7 @@ async function startViewer() {
   const outwardStubViewLink = document.querySelector("#outward-stub-view-link");
   const sourcePortViewLink = document.querySelector("#source-port-view-link");
   const loopSourceRuleViewLink = document.querySelector("#loop-source-rule-view-link");
+  const loopSourceCompositionViewLink = document.querySelector("#loop-source-composition-view-link");
   const fixtureControl = document.querySelector("#fixture-control");
   const programs = await fetch(new URL("../.sketchv3-harness/programs.json", import.meta.url)).then((response) => {
     if (!response.ok) throw new Error(`fixture load failed: ${response.status}`);
@@ -1844,6 +1898,7 @@ async function startViewer() {
   const outwardStubMode = query.get("view") === "outward-source-stubs";
   const sourcePortMode = query.get("view") === "loop-source-ports";
   const loopSourceRuleMode = query.get("view") === "loop-source-generalization";
+  const loopSourceCompositionMode = query.get("view") === "loop-source-composition";
   const historicalFixtureNames = ["minimization:bounded_sub", "characteristic:divides", "characteristic:eq", "primrec:basic", "predecessor"];
   const fixtureNames = outwardStubMode || sourcePortMode ? ["characteristic:divides"] : historicalFixtureNames;
   for (const name of fixtureNames) {
@@ -1862,18 +1917,21 @@ async function startViewer() {
     : outwardStubMode ? "SketchV4: i-27/i-52 outward source-stub experiment"
       : sourcePortMode ? "SketchV4: i-27/i-52 source-port comparison"
         : loopSourceRuleMode ? "SketchV4: generalized backward-loop source-port probe"
-          : "SketchV4: current ordinary-HALT baseline";
+          : loopSourceCompositionMode ? "SketchV4: composed loop-source candidate"
+            : "SketchV4: current ordinary-HALT baseline";
   document.title = historyMode ? "SketchV4 ordinary-HALT experiment history"
     : outwardStubMode ? "SketchV4 i-27/i-52 outward source-stub experiment"
       : sourcePortMode ? "SketchV4 i-27/i-52 source-port comparison"
         : loopSourceRuleMode ? "SketchV4 generalized backward-loop source-port probe"
-          : "SketchV4 current ordinary-HALT baseline";
+          : loopSourceCompositionMode ? "SketchV4 composed loop-source candidate"
+            : "SketchV4 current ordinary-HALT baseline";
   for (const [link, active] of [
-    [currentViewLink, !historyMode && !outwardStubMode && !sourcePortMode && !loopSourceRuleMode],
+    [currentViewLink, !historyMode && !outwardStubMode && !sourcePortMode && !loopSourceRuleMode && !loopSourceCompositionMode],
     [historyViewLink, historyMode],
     [outwardStubViewLink, outwardStubMode],
     [sourcePortViewLink, sourcePortMode],
     [loopSourceRuleViewLink, loopSourceRuleMode],
+    [loopSourceCompositionViewLink, loopSourceCompositionMode],
   ]) {
     if (active) link.setAttribute("aria-current", "page");
     else link.removeAttribute("aria-current");
@@ -1923,6 +1981,15 @@ async function startViewer() {
           : "Control: current adaptive-merges baseline; no right-side-reentry rule is applied.";
         generalized.viewerProvenance = "Probe: every backward loop is classified structurally; vertical-first uses bottom-center, lateral-first retains its existing outward side departure. No repair or winner selection.";
         rendered = [currentBaseline, generalized];
+      } else if (loopSourceCompositionMode) {
+        const composed = buildComposedLoopSourceCandidate(rawRoles).view;
+        currentBaseline.viewerProvenance = name === "characteristic:divides"
+          ? "Control: current adaptive-merges + divides-only right-side-reentry baseline with its existing orientation map."
+          : "Control: current adaptive-merges baseline with its existing orientation map.";
+        composed.viewerProvenance = name === "characteristic:divides"
+          ? "Candidate: adaptive merges + divides-only i-57 right-side reentry + generalized loop sources, with normal unpinned orientation selection rerun over the complete geometry."
+          : "Candidate: adaptive merges + generalized loop sources, with normal unpinned orientation selection rerun over the complete geometry.";
+        rendered = [currentBaseline, composed];
       } else {
         currentBaseline.viewerProvenance = name === "characteristic:divides"
           ? "Current baseline: adaptive merges + right-side reentry (divides-only i-57 reentry)."
@@ -1935,22 +2002,26 @@ async function startViewer() {
       : outwardStubMode ? `${name}: current combined control plus one two-edge outward-source-stub experiment. No production module is mutated.`
         : sourcePortMode ? `${name}: four independent one-edge side-vs-bottom source-port variants over the current combined baseline. No winner is selected.`
           : loopSourceRuleMode ? `${name}: current baseline plus one fixture-wide backward-loop source-port generalization probe. No production module is mutated.`
-            : `${name}: promoted harness-only ordinary-terminal baseline. No production module is mutated.`;
+            : loopSourceCompositionMode ? `${name}: current baseline plus one fully composed, normally reoriented loop-source candidate. No production module is mutated.`
+              : `${name}: promoted harness-only ordinary-terminal baseline. No production module is mutated.`;
     const currentQuery = new URLSearchParams({ fixture: name });
     const historyQuery = new URLSearchParams({ view: "history", fixture: name });
     const outwardStubQuery = new URLSearchParams({ view: "outward-source-stubs", fixture: "characteristic:divides" });
     const sourcePortQuery = new URLSearchParams({ view: "loop-source-ports", fixture: "characteristic:divides" });
     const loopSourceRuleQuery = new URLSearchParams({ view: "loop-source-generalization", fixture: name });
+    const loopSourceCompositionQuery = new URLSearchParams({ view: "loop-source-composition", fixture: name });
     currentViewLink.href = `${location.pathname}?${currentQuery}`;
     historyViewLink.href = `${location.pathname}?${historyQuery}`;
     outwardStubViewLink.href = `${location.pathname}?${outwardStubQuery}`;
     sourcePortViewLink.href = `${location.pathname}?${sourcePortQuery}`;
     loopSourceRuleViewLink.href = `${location.pathname}?${loopSourceRuleQuery}`;
+    loopSourceCompositionViewLink.href = `${location.pathname}?${loopSourceCompositionQuery}`;
     const activeQuery = historyMode ? historyQuery
       : outwardStubMode ? outwardStubQuery
         : sourcePortMode ? sourcePortQuery
           : loopSourceRuleMode ? loopSourceRuleQuery
-            : currentQuery;
+            : loopSourceCompositionMode ? loopSourceCompositionQuery
+              : currentQuery;
     window.history.replaceState(null, "", `${location.pathname}?${activeQuery}`);
   };
   const draw = () => {
