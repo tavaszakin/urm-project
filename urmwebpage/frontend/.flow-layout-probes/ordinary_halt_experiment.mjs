@@ -1434,14 +1434,21 @@ function cardFor(view, scale) {
 async function startViewer() {
   const status = document.querySelector("#status");
   const fixtureSelect = document.querySelector("#fixture");
+  const fixtureControl = document.querySelector("#fixture-control");
   const viewsNode = document.querySelector("#views");
   const scaleInput = document.querySelector("#scale");
   const scaleValue = document.querySelector("#scale-value");
+  const viewerTitle = document.querySelector("#viewer-title");
+  const currentViewLink = document.querySelector("#current-view-link");
+  const historyViewLink = document.querySelector("#history-view-link");
   const programs = await fetch(new URL("../.sketchv3-harness/programs.json", import.meta.url)).then((response) => {
     if (!response.ok) throw new Error(`fixture load failed: ${response.status}`);
     return response.json();
   });
-  const fixtureNames = ["minimization:bounded_sub", "characteristic:divides", "characteristic:eq", "primrec:basic", "predecessor"];
+  const query = new URLSearchParams(location.search);
+  const historyMode = query.get("view") === "history";
+  const historicalFixtureNames = ["minimization:bounded_sub", "characteristic:divides", "characteristic:eq", "primrec:basic", "predecessor"];
+  const fixtureNames = historyMode ? historicalFixtureNames : ["characteristic:divides"];
   for (const name of fixtureNames) {
     if (!programs[name]) continue;
     const option = document.createElement("option");
@@ -1449,32 +1456,55 @@ async function startViewer() {
     option.textContent = name;
     fixtureSelect.append(option);
   }
-  const query = new URLSearchParams(location.search);
   const requested = query.get("fixture");
-  fixtureSelect.value = fixtureNames.includes(requested) ? requested : "minimization:bounded_sub";
+  fixtureSelect.value = historyMode && fixtureNames.includes(requested) ? requested
+    : historyMode ? "minimization:bounded_sub"
+      : "characteristic:divides";
+  fixtureControl.hidden = !historyMode;
+  viewerTitle.textContent = historyMode
+    ? "SketchV4: historical ordinary-HALT experiments"
+    : "SketchV4: current ordinary-HALT baseline";
+  document.title = historyMode
+    ? "SketchV4 ordinary-HALT experiment history"
+    : "SketchV4 current ordinary-HALT baseline";
+  currentViewLink.toggleAttribute("aria-current", !historyMode);
+  historyViewLink.toggleAttribute("aria-current", historyMode);
 
   let rendered = [];
   const build = () => {
     const name = fixtureSelect.value;
     const program = programs[name];
-    const current = buildCurrentView(program, name);
-    const experiment = buildOrdinaryTerminalViews(program, name, name === "minimization:bounded_sub" ? "i-22" : null);
-    const rawRoles = buildRawRoleOrdinaryTerminalView(program, name);
-    const forcedI25Default = name === "characteristic:divides" ? buildRawRoleForcedDefaultView(rawRoles, "i-25") : null;
-    const i57RightToRight = name === "characteristic:divides" ? buildI57RightToRightHvhDiagnosticViews(rawRoles, "i-25") : null;
-    const i57RightPort = name === "characteristic:divides" ? buildI57RightPortDiagnosticViews(rawRoles, "i-25") : null;
-    const i57LeftPort = name === "characteristic:divides" ? buildI57LeftPortDiagnosticViews(rawRoles, "i-25") : null;
-    const generalized = buildBranchPreservingMergeSourcesView(rawRoles);
-    const shortStub = buildShortBranchStubMergeSourcesView(rawRoles);
-    const adaptive = buildAdaptiveBranchRayMergeSourcesView(rawRoles);
-    const adaptiveRightReentry = name === "characteristic:divides" ? buildAdaptiveRightReentryDiagnosticView(rawRoles, "i-25") : null;
-    const branchPreserving = name === "predecessor" ? buildBranchPreservingMergeSourceView(rawRoles) : null;
-    const yesRayVerticalHorizontal = name === "predecessor" ? buildYesRayVerticalHorizontalMergeView(rawRoles) : null;
-    if (name === "predecessor") experiment.normal.viewLabel = "Ordinary HALT — hybrid";
-    rendered = [current, experiment.normal, ...(experiment.forced ? [experiment.forced] : []), rawRoles, ...(forcedI25Default ? [forcedI25Default] : []), ...(i57RightToRight ? [i57RightToRight.forcedDefault, i57RightToRight.automatic] : []), ...(i57RightPort ? [i57RightPort.forcedDefault, i57RightPort.automatic] : []), ...(i57LeftPort ? [i57LeftPort.forcedDefault, i57LeftPort.automatic] : []), generalized, shortStub, adaptive, ...(branchPreserving ? [branchPreserving] : []), ...(yesRayVerticalHorizontal ? [yesRayVerticalHorizontal] : []), ...(adaptiveRightReentry ? [adaptiveRightReentry.view] : [])];
+    if (historyMode) {
+      const current = buildCurrentView(program, name);
+      const experiment = buildOrdinaryTerminalViews(program, name, name === "minimization:bounded_sub" ? "i-22" : null);
+      const rawRoles = buildRawRoleOrdinaryTerminalView(program, name);
+      const forcedI25Default = name === "characteristic:divides" ? buildRawRoleForcedDefaultView(rawRoles, "i-25") : null;
+      const i57RightToRight = name === "characteristic:divides" ? buildI57RightToRightHvhDiagnosticViews(rawRoles, "i-25") : null;
+      const i57RightPort = name === "characteristic:divides" ? buildI57RightPortDiagnosticViews(rawRoles, "i-25") : null;
+      const i57LeftPort = name === "characteristic:divides" ? buildI57LeftPortDiagnosticViews(rawRoles, "i-25") : null;
+      const generalized = buildBranchPreservingMergeSourcesView(rawRoles);
+      const shortStub = buildShortBranchStubMergeSourcesView(rawRoles);
+      const adaptive = buildAdaptiveBranchRayMergeSourcesView(rawRoles);
+      const adaptiveRightReentry = name === "characteristic:divides" ? buildAdaptiveRightReentryDiagnosticView(rawRoles, "i-25") : null;
+      const branchPreserving = name === "predecessor" ? buildBranchPreservingMergeSourceView(rawRoles) : null;
+      const yesRayVerticalHorizontal = name === "predecessor" ? buildYesRayVerticalHorizontalMergeView(rawRoles) : null;
+      if (name === "predecessor") experiment.normal.viewLabel = "Ordinary HALT — hybrid";
+      rendered = [current, experiment.normal, ...(experiment.forced ? [experiment.forced] : []), rawRoles, ...(forcedI25Default ? [forcedI25Default] : []), ...(i57RightToRight ? [i57RightToRight.forcedDefault, i57RightToRight.automatic] : []), ...(i57RightPort ? [i57RightPort.forcedDefault, i57RightPort.automatic] : []), ...(i57LeftPort ? [i57LeftPort.forcedDefault, i57LeftPort.automatic] : []), generalized, shortStub, adaptive, ...(branchPreserving ? [branchPreserving] : []), ...(yesRayVerticalHorizontal ? [yesRayVerticalHorizontal] : []), ...(adaptiveRightReentry ? [adaptiveRightReentry.view] : [])];
+    } else {
+      const rawRoles = buildRawRoleOrdinaryTerminalView(program, name);
+      rendered = [buildAdaptiveRightReentryDiagnosticView(rawRoles, "i-25").view];
+    }
     draw();
-    status.textContent = `${name}: current production control plus ${rendered.length - 1} harness-only ordinary-terminal realization${rendered.length === 2 ? "" : "s"}. No production module is mutated.`;
-    history.replaceState(null, "", `${location.pathname}?fixture=${encodeURIComponent(name)}`);
+    status.textContent = historyMode
+      ? `${name}: historical production control plus ${rendered.length - 1} harness-only ordinary-terminal realization${rendered.length === 2 ? "" : "s"}. No production module is mutated.`
+      : `${name}: promoted harness-only ordinary-terminal baseline. No production module is mutated.`;
+    if (historyMode) {
+      const historyQuery = new URLSearchParams({ view: "history", fixture: name });
+      window.history.replaceState(null, "", `${location.pathname}?${historyQuery}`);
+      historyViewLink.href = `${location.pathname}?${historyQuery}`;
+    } else {
+      window.history.replaceState(null, "", location.pathname);
+    }
   };
   const draw = () => {
     const scale = Number(scaleInput.value);
