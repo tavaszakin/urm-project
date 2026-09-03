@@ -885,6 +885,154 @@ export function buildI27I52SourcePortComparisonViews(combinedView) {
   };
 }
 
+// Fixture-wide probe that decouples backward-loop source attachment from loop-side selection.
+// It classifies the already-realized source-local body without changing its rail, bend row,
+// target attachment, or suffix. Existing lateral-first routes are retained exactly; only a
+// vertical-first route moves from its side port to the source rectangle's bottom-center port.
+export function buildGeneralizedLoopSourcePortView(currentBaseline) {
+  const EPSILON = 1e-9;
+  const same = (a, b) => Math.abs(a - b) <= EPSILON;
+  const routesById = new Map();
+  const ports = new Map(currentBaseline.routed.ports);
+  const census = [];
+
+  const loopRoutes = currentBaseline.routed.routes.filter((route) => route.edgeRole === "loop-return");
+  for (const baselineRoute of loopRoutes) {
+    const edge = currentBaseline.cfg.edgeById.get(baselineRoute.edgeId);
+    const sourceNode = currentBaseline.cfg.nodeById.get(edge?.from);
+    const targetNode = currentBaseline.cfg.nodeById.get(edge?.to);
+    const sourceBox = currentBaseline.boxes.get(edge?.from);
+    if (!edge || !sourceNode || !targetNode || !sourceBox || baselineRoute.points.length < 3) {
+      fail(`cannot classify generalized loop source for ${baselineRoute.edgeId}`);
+    }
+    if (!Number.isInteger(sourceNode.instructionIndex) || !Number.isInteger(targetNode.instructionIndex)
+      || sourceNode.instructionIndex <= targetNode.instructionIndex) {
+      fail(`${baselineRoute.edgeId} is not a backward instruction-index loop`);
+    }
+
+    const oldSourcePort = [...baselineRoute.sourcePort];
+    const targetPort = [...baselineRoute.targetPort];
+    const oldPoints = baselineRoute.points.map((point) => [...point]);
+    if (JSON.stringify(oldPoints[0]) !== JSON.stringify(oldSourcePort)) {
+      fail(`${baselineRoute.edgeId} route does not begin at its recorded source port`);
+    }
+    const sourceSide = same(oldSourcePort[0], sourceBox.left) ? "left"
+      : same(oldSourcePort[0], sourceBox.right) ? "right"
+        : null;
+    if (!sourceSide) fail(`${baselineRoute.edgeId} does not begin at a rectangle side port`);
+
+    const [first, second, third] = oldPoints;
+    const verticalFirst = same(first[0], second[0])
+      && second[1] > first[1] + EPSILON
+      && same(second[1], third[1])
+      && !same(second[0], third[0]);
+    const outwardDirection = sourceSide === "left" ? -1 : 1;
+    const lateralFirst = same(first[1], second[1])
+      && (second[0] - first[0]) * outwardDirection > EPSILON;
+    if (!verticalFirst && !lateralFirst) {
+      fail(`${baselineRoute.edgeId} is neither vertical-first nor legal outward lateral-first`);
+    }
+
+    const bodyClassification = verticalFirst ? "vertical-first" : "lateral-first";
+    const bendRow = verticalFirst ? second[1] : first[1];
+    const sourcePort = verticalFirst ? [sourceBox.cx, sourceBox.bottom] : oldSourcePort;
+    const points = verticalFirst
+      ? [sourcePort, [sourcePort[0], bendRow], ...oldPoints.slice(2).map((point) => [...point])]
+      : oldPoints.map((point) => [...point]);
+    const route = verticalFirst
+      ? { ...baselineRoute, sourcePort, targetPort, points }
+      : baselineRoute;
+    routesById.set(baselineRoute.edgeId, route);
+
+    if (verticalFirst) {
+      ports.set(baselineRoute.edgeId, {
+        ...ports.get(baselineRoute.edgeId),
+        sourcePort,
+        changed: true,
+        experimentalGeneralizedBottomSourcePort: true,
+      });
+    }
+    census.push({
+      edgeId: baselineRoute.edgeId,
+      source: edge.from,
+      target: edge.to,
+      sourceInstructionIndex: sourceNode.instructionIndex,
+      targetInstructionIndex: targetNode.instructionIndex,
+      existingSourceSide: sourceSide,
+      existingSourcePort: oldSourcePort,
+      bodyClassification,
+      resultingSourceSide: verticalFirst ? "bottom" : sourceSide,
+      resultingSourcePort: sourcePort,
+      bendRow,
+      railCoord: baselineRoute.railCoord,
+      targetPort,
+      oldRoutePoints: oldPoints,
+      newRoutePoints: points,
+      sourceAttachmentRule: verticalFirst
+        ? "bottom-center port, then vertical downward to unchanged loop bend row"
+        : `unchanged ${sourceSide} port and existing outward horizontal departure`,
+      outwardDeparture: lateralFirst ? [first, second] : null,
+      routeChanged: verticalFirst,
+      preservedRouteSuffix: verticalFirst
+        ? oldPoints.slice(2).map((point) => [...point])
+        : oldPoints.slice(1).map((point) => [...point]),
+    });
+  }
+
+  const routes = currentBaseline.routed.routes.map((route) => routesById.get(route.edgeId) ?? route);
+  const routed = { ...currentBaseline.routed, routes, ports };
+  const defects = evaluateDefects(
+    { routes, boxes: currentBaseline.boxes },
+    { realForkSet: currentBaseline.roles.realForkSet, lcaRF: currentBaseline.tree.lcaRF },
+    { clearance: CLEARANCE, program: currentBaseline.programName, orientationSource: "generalizedLoopSourcePortProbe" },
+  );
+  const attachments = attachmentRecords(currentBaseline.cfg, currentBaseline.roles, currentBaseline.boxes, routes);
+  const attachmentCensus = census.map((row) => {
+    const oldAttachment = currentBaseline.attachments.find((record) => record.edgeId === row.edgeId);
+    const newAttachment = attachments.find((record) => record.edgeId === row.edgeId);
+    return {
+      ...row,
+      oldAttachmentLegality: {
+        source: oldAttachment?.source?.legal ?? null,
+        target: oldAttachment?.target?.legal ?? null,
+        overall: oldAttachment?.legal ?? null,
+      },
+      newAttachmentLegality: {
+        source: newAttachment?.source?.legal ?? null,
+        target: newAttachment?.target?.legal ?? null,
+        overall: newAttachment?.legal ?? null,
+      },
+    };
+  });
+
+  return {
+    ...currentBaseline,
+    routed,
+    ports,
+    defects,
+    attachments,
+    renderBounds: boundsOver(currentBaseline.boxes, routes),
+    viewLabel: "Ordinary HALT — generalized backward-loop source-port probe",
+    experimentalRouteSplices: [...(currentBaseline.experimentalRouteSplices ?? []), ...attachmentCensus],
+    experimentalLoopSourcePortCensus: attachmentCensus,
+    purity: {
+      ...currentBaseline.purity,
+      loopSourceGeneralizationConsideredEdgeIds: attachmentCensus.map((row) => row.edgeId),
+      loopSourceGeneralizationChangedEdgeIds: attachmentCensus.filter((row) => row.routeChanged).map((row) => row.edgeId),
+      loopSourceGeneralizationVerticalFirstCount: attachmentCensus.filter((row) => row.bodyClassification === "vertical-first").length,
+      loopSourceGeneralizationLateralFirstCount: attachmentCensus.filter((row) => row.bodyClassification === "lateral-first").length,
+      loopReturnRailsChanged: false,
+      loopBendRowsChanged: false,
+      targetPortsChanged: false,
+      targetEntryGeometryChanged: false,
+      nodePositionsChanged: false,
+      orientationSelectionRerun: false,
+      nonLoopRoutesChanged: false,
+      automaticRepairAfterConstruction: false,
+    },
+  };
+}
+
 // One-edge geometry splice for the predecessor comparison: retain the raw-role merge
 // classification and its existing target-side body, but replace its source departure with
 // the semantic branch's ordinary diamond face + fixed-angle ray. The sibling branch-exit arm
@@ -1685,6 +1833,7 @@ async function startViewer() {
   const historyViewLink = document.querySelector("#history-view-link");
   const outwardStubViewLink = document.querySelector("#outward-stub-view-link");
   const sourcePortViewLink = document.querySelector("#source-port-view-link");
+  const loopSourceRuleViewLink = document.querySelector("#loop-source-rule-view-link");
   const fixtureControl = document.querySelector("#fixture-control");
   const programs = await fetch(new URL("../.sketchv3-harness/programs.json", import.meta.url)).then((response) => {
     if (!response.ok) throw new Error(`fixture load failed: ${response.status}`);
@@ -1694,6 +1843,7 @@ async function startViewer() {
   const historyMode = query.get("view") === "history";
   const outwardStubMode = query.get("view") === "outward-source-stubs";
   const sourcePortMode = query.get("view") === "loop-source-ports";
+  const loopSourceRuleMode = query.get("view") === "loop-source-generalization";
   const historicalFixtureNames = ["minimization:bounded_sub", "characteristic:divides", "characteristic:eq", "primrec:basic", "predecessor"];
   const fixtureNames = outwardStubMode || sourcePortMode ? ["characteristic:divides"] : historicalFixtureNames;
   for (const name of fixtureNames) {
@@ -1711,16 +1861,19 @@ async function startViewer() {
   viewerTitle.textContent = historyMode ? "SketchV4: historical ordinary-HALT experiments"
     : outwardStubMode ? "SketchV4: i-27/i-52 outward source-stub experiment"
       : sourcePortMode ? "SketchV4: i-27/i-52 source-port comparison"
-        : "SketchV4: current ordinary-HALT baseline";
+        : loopSourceRuleMode ? "SketchV4: generalized backward-loop source-port probe"
+          : "SketchV4: current ordinary-HALT baseline";
   document.title = historyMode ? "SketchV4 ordinary-HALT experiment history"
     : outwardStubMode ? "SketchV4 i-27/i-52 outward source-stub experiment"
       : sourcePortMode ? "SketchV4 i-27/i-52 source-port comparison"
-        : "SketchV4 current ordinary-HALT baseline";
+        : loopSourceRuleMode ? "SketchV4 generalized backward-loop source-port probe"
+          : "SketchV4 current ordinary-HALT baseline";
   for (const [link, active] of [
-    [currentViewLink, !historyMode && !outwardStubMode && !sourcePortMode],
+    [currentViewLink, !historyMode && !outwardStubMode && !sourcePortMode && !loopSourceRuleMode],
     [historyViewLink, historyMode],
     [outwardStubViewLink, outwardStubMode],
     [sourcePortViewLink, sourcePortMode],
+    [loopSourceRuleViewLink, loopSourceRuleMode],
   ]) {
     if (active) link.setAttribute("aria-current", "page");
     else link.removeAttribute("aria-current");
@@ -1763,6 +1916,13 @@ async function startViewer() {
         comparison.i52.side.viewerProvenance = "i-52 Variant A: unchanged left port + 16px westward stub; only i-52-jump changed.";
         comparison.i52.bottom.viewerProvenance = "i-52 Variant B: bottom-center port + vertical departure; only i-52-jump changed.";
         rendered = [comparison.i27.side, comparison.i27.bottom, comparison.i52.side, comparison.i52.bottom];
+      } else if (loopSourceRuleMode) {
+        const generalized = buildGeneralizedLoopSourcePortView(currentBaseline);
+        currentBaseline.viewerProvenance = name === "characteristic:divides"
+          ? "Control: current adaptive-merges + divides-only right-side-reentry baseline."
+          : "Control: current adaptive-merges baseline; no right-side-reentry rule is applied.";
+        generalized.viewerProvenance = "Probe: every backward loop is classified structurally; vertical-first uses bottom-center, lateral-first retains its existing outward side departure. No repair or winner selection.";
+        rendered = [currentBaseline, generalized];
       } else {
         currentBaseline.viewerProvenance = name === "characteristic:divides"
           ? "Current baseline: adaptive merges + right-side reentry (divides-only i-57 reentry)."
@@ -1774,19 +1934,23 @@ async function startViewer() {
     status.textContent = historyMode ? `${name}: historical production control plus ${rendered.length - 1} harness-only ordinary-terminal realization${rendered.length === 2 ? "" : "s"}. No production module is mutated.`
       : outwardStubMode ? `${name}: current combined control plus one two-edge outward-source-stub experiment. No production module is mutated.`
         : sourcePortMode ? `${name}: four independent one-edge side-vs-bottom source-port variants over the current combined baseline. No winner is selected.`
-          : `${name}: promoted harness-only ordinary-terminal baseline. No production module is mutated.`;
+          : loopSourceRuleMode ? `${name}: current baseline plus one fixture-wide backward-loop source-port generalization probe. No production module is mutated.`
+            : `${name}: promoted harness-only ordinary-terminal baseline. No production module is mutated.`;
     const currentQuery = new URLSearchParams({ fixture: name });
     const historyQuery = new URLSearchParams({ view: "history", fixture: name });
     const outwardStubQuery = new URLSearchParams({ view: "outward-source-stubs", fixture: "characteristic:divides" });
     const sourcePortQuery = new URLSearchParams({ view: "loop-source-ports", fixture: "characteristic:divides" });
+    const loopSourceRuleQuery = new URLSearchParams({ view: "loop-source-generalization", fixture: name });
     currentViewLink.href = `${location.pathname}?${currentQuery}`;
     historyViewLink.href = `${location.pathname}?${historyQuery}`;
     outwardStubViewLink.href = `${location.pathname}?${outwardStubQuery}`;
     sourcePortViewLink.href = `${location.pathname}?${sourcePortQuery}`;
+    loopSourceRuleViewLink.href = `${location.pathname}?${loopSourceRuleQuery}`;
     const activeQuery = historyMode ? historyQuery
       : outwardStubMode ? outwardStubQuery
         : sourcePortMode ? sourcePortQuery
-          : currentQuery;
+          : loopSourceRuleMode ? loopSourceRuleQuery
+            : currentQuery;
     window.history.replaceState(null, "", `${location.pathname}?${activeQuery}`);
   };
   const draw = () => {
