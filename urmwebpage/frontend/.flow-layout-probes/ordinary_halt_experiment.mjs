@@ -1423,8 +1423,12 @@ function cardFor(view, scale) {
   const pairs = summary.properCrossings.length
     ? summary.properCrossings.map((row) => `${row.edgeA} × ${row.edgeB}`).join(", ")
     : "none";
+  const provenance = view.viewerProvenance
+    ? `<div class="provenance">${escapeHtml(view.viewerProvenance)}</div>`
+    : "";
   const article = document.createElement("article");
   article.innerHTML = `<h2>${escapeHtml(summary.label)}</h2>`
+    + provenance
     + `<div class="summary">nodes ${summary.nodeCount} · edges ${summary.edgeCount} · production-style cost ${summary.currentProductionStyleCost} · crossings ${summary.properCrossingCount} (${escapeHtml(pairs)}) · edge overlaps ${summary.edgeOverlapCount} · node overlaps ${summary.trueNodeOverlapCount} · experimental node–edge intrusions ${summary.experimentalNodeEdgeIntrusionCount} · flips [${escapeHtml(summary.flippedForks.join(", ") || "none")}]</div>`
     + `<div class="canvas">${svgFor(view, scale)}</div>`
     + `<details><summary>Exact diagnostics</summary><pre>${escapeHtml(reportText(summary))}</pre></details>`;
@@ -1434,7 +1438,6 @@ function cardFor(view, scale) {
 async function startViewer() {
   const status = document.querySelector("#status");
   const fixtureSelect = document.querySelector("#fixture");
-  const fixtureControl = document.querySelector("#fixture-control");
   const viewsNode = document.querySelector("#views");
   const scaleInput = document.querySelector("#scale");
   const scaleValue = document.querySelector("#scale-value");
@@ -1448,7 +1451,7 @@ async function startViewer() {
   const query = new URLSearchParams(location.search);
   const historyMode = query.get("view") === "history";
   const historicalFixtureNames = ["minimization:bounded_sub", "characteristic:divides", "characteristic:eq", "primrec:basic", "predecessor"];
-  const fixtureNames = historyMode ? historicalFixtureNames : ["characteristic:divides"];
+  const fixtureNames = historicalFixtureNames;
   for (const name of fixtureNames) {
     if (!programs[name]) continue;
     const option = document.createElement("option");
@@ -1457,10 +1460,9 @@ async function startViewer() {
     fixtureSelect.append(option);
   }
   const requested = query.get("fixture");
-  fixtureSelect.value = historyMode && fixtureNames.includes(requested) ? requested
+  fixtureSelect.value = fixtureNames.includes(requested) ? requested
     : historyMode ? "minimization:bounded_sub"
       : "characteristic:divides";
-  fixtureControl.hidden = !historyMode;
   viewerTitle.textContent = historyMode
     ? "SketchV4: historical ordinary-HALT experiments"
     : "SketchV4: current ordinary-HALT baseline";
@@ -1492,19 +1494,23 @@ async function startViewer() {
       rendered = [current, experiment.normal, ...(experiment.forced ? [experiment.forced] : []), rawRoles, ...(forcedI25Default ? [forcedI25Default] : []), ...(i57RightToRight ? [i57RightToRight.forcedDefault, i57RightToRight.automatic] : []), ...(i57RightPort ? [i57RightPort.forcedDefault, i57RightPort.automatic] : []), ...(i57LeftPort ? [i57LeftPort.forcedDefault, i57LeftPort.automatic] : []), generalized, shortStub, adaptive, ...(branchPreserving ? [branchPreserving] : []), ...(yesRayVerticalHorizontal ? [yesRayVerticalHorizontal] : []), ...(adaptiveRightReentry ? [adaptiveRightReentry.view] : [])];
     } else {
       const rawRoles = buildRawRoleOrdinaryTerminalView(program, name);
-      rendered = [buildAdaptiveRightReentryDiagnosticView(rawRoles, "i-25").view];
+      const currentBaseline = name === "characteristic:divides"
+        ? buildAdaptiveRightReentryDiagnosticView(rawRoles, "i-25").view
+        : buildAdaptiveBranchRayMergeSourcesView(rawRoles);
+      currentBaseline.viewerProvenance = name === "characteristic:divides"
+        ? "Current baseline: adaptive merges + right-side reentry (divides-only i-57 reentry)."
+        : "Current baseline: adaptive merges (no right-side reentry applied).";
+      rendered = [currentBaseline];
     }
     draw();
     status.textContent = historyMode
       ? `${name}: historical production control plus ${rendered.length - 1} harness-only ordinary-terminal realization${rendered.length === 2 ? "" : "s"}. No production module is mutated.`
       : `${name}: promoted harness-only ordinary-terminal baseline. No production module is mutated.`;
-    if (historyMode) {
-      const historyQuery = new URLSearchParams({ view: "history", fixture: name });
-      window.history.replaceState(null, "", `${location.pathname}?${historyQuery}`);
-      historyViewLink.href = `${location.pathname}?${historyQuery}`;
-    } else {
-      window.history.replaceState(null, "", location.pathname);
-    }
+    const currentQuery = new URLSearchParams({ fixture: name });
+    const historyQuery = new URLSearchParams({ view: "history", fixture: name });
+    currentViewLink.href = `${location.pathname}?${currentQuery}`;
+    historyViewLink.href = `${location.pathname}?${historyQuery}`;
+    window.history.replaceState(null, "", `${location.pathname}?${historyMode ? historyQuery : currentQuery}`);
   };
   const draw = () => {
     const scale = Number(scaleInput.value);
