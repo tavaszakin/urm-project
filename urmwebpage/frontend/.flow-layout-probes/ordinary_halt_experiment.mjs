@@ -646,6 +646,109 @@ export function buildAdaptiveRightReentryDiagnosticView(rawView, forkId = "i-25"
   };
 }
 
+// Two-edge divides-only attachment experiment over the completed combined baseline. Preserve
+// each existing side port, loop-return rail, target port, and route suffix from the first rail
+// approach onward. Insert one clearance unit outward, then move the source-local vertical leg
+// to that X. No orientation, placement, port, or rail decision is rerun.
+export function buildI27I52OutwardSourceStubView(combinedView) {
+  const edgeIds = ["i-27-jump", "i-52-jump"];
+  if (combinedView.programName !== "characteristic:divides") {
+    fail("i-27/i-52 outward-source-stub experiment is divides-only");
+  }
+
+  const changedById = new Map();
+  const changes = [];
+  for (const edgeId of edgeIds) {
+    const edge = combinedView.cfg.edgeById.get(edgeId);
+    const baselineRoute = combinedView.routed.routes.find((route) => route.edgeId === edgeId);
+    const sourceBox = combinedView.boxes.get(edge?.from);
+    if (!edge || !baselineRoute || !sourceBox || baselineRoute.edgeRole !== "loop-return" || baselineRoute.points.length < 3) {
+      fail(`cannot apply outward source stub to ${edgeId}`);
+    }
+
+    const sourcePort = [...baselineRoute.sourcePort];
+    const oldTargetPort = [...baselineRoute.targetPort];
+    const oldPoints = baselineRoute.points.map((point) => [...point]);
+    if (JSON.stringify(oldPoints[0]) !== JSON.stringify(sourcePort) || Math.abs(oldPoints[1][0] - sourcePort[0]) > 1e-9) {
+      fail(`${edgeId} does not begin with the expected vertical side-port departure`);
+    }
+
+    const sourceSide = Math.abs(sourcePort[0] - sourceBox.left) <= 1e-9 ? "left"
+      : Math.abs(sourcePort[0] - sourceBox.right) <= 1e-9 ? "right"
+        : null;
+    if (!sourceSide) fail(`${edgeId} source is not attached to a rectangle side port`);
+    const direction = sourceSide === "left" ? -1 : 1;
+    const stubEnd = [sourcePort[0] + direction * CLEARANCE, sourcePort[1]];
+    const shiftedVerticalEnd = [stubEnd[0], oldPoints[1][1]];
+    const points = [sourcePort, stubEnd, shiftedVerticalEnd, ...oldPoints.slice(2).map((point) => [...point])];
+    const route = { ...baselineRoute, points };
+    changedById.set(edgeId, route);
+    changes.push({
+      edgeId,
+      edgeRole: route.edgeRole,
+      routeFamily: route.routeFamily,
+      sourceSide,
+      sourcePort,
+      targetPort: oldTargetPort,
+      oldRoutePoints: oldPoints,
+      newRoutePoints: points,
+      outwardStub: [sourcePort, stubEnd],
+      outwardStubLength: CLEARANCE,
+      outwardStubRule: "one existing V4 clearance unit outward from the unchanged side port",
+      shiftedSourceLocalVertical: [stubEnd, shiftedVerticalEnd],
+      preservedRouteSuffix: oldPoints.slice(2).map((point) => [...point]),
+    });
+  }
+
+  const routes = combinedView.routed.routes.map((route) => changedById.get(route.edgeId) ?? route);
+  const routed = { ...combinedView.routed, routes };
+  const defects = evaluateDefects(
+    { routes, boxes: combinedView.boxes },
+    { realForkSet: combinedView.roles.realForkSet, lcaRF: combinedView.tree.lcaRF },
+    { clearance: CLEARANCE, program: combinedView.programName, orientationSource: "combinedI27I52OutwardSourceStubs" },
+  );
+  const attachments = attachmentRecords(combinedView.cfg, combinedView.roles, combinedView.boxes, routes);
+  const attachmentChanges = changes.map((change) => {
+    const oldAttachment = combinedView.attachments.find((record) => record.edgeId === change.edgeId);
+    const newAttachment = attachments.find((record) => record.edgeId === change.edgeId);
+    return {
+      ...change,
+      oldAttachmentLegality: {
+        source: oldAttachment?.source?.legal ?? null,
+        target: oldAttachment?.target?.legal ?? null,
+        overall: oldAttachment?.legal ?? null,
+      },
+      newAttachmentLegality: {
+        source: newAttachment?.source?.legal ?? null,
+        target: newAttachment?.target?.legal ?? null,
+        overall: newAttachment?.legal ?? null,
+      },
+    };
+  });
+
+  return {
+    ...combinedView,
+    routed,
+    defects,
+    attachments,
+    renderBounds: boundsOver(combinedView.boxes, routes),
+    viewLabel: "Ordinary HALT — combined baseline + i-27/i-52 outward source stubs",
+    experimentalRouteSplices: [...(combinedView.experimentalRouteSplices ?? []), ...attachmentChanges],
+    experimentalOutwardSourceStubs: attachmentChanges,
+    purity: {
+      ...combinedView.purity,
+      outwardSourceStubEdgeIds: edgeIds,
+      outwardSourceStubLength: CLEARANCE,
+      orientationSelectionRerun: false,
+      sourcePortsChanged: false,
+      targetPortsChanged: false,
+      loopReturnRailsChanged: false,
+      nodePositionsChanged: false,
+      automaticRepairAfterConstruction: false,
+    },
+  };
+}
+
 // One-edge geometry splice for the predecessor comparison: retain the raw-role merge
 // classification and its existing target-side body, but replace its source departure with
 // the semantic branch's ordinary diamond face + fixed-angle ray. The sibling branch-exit arm
@@ -1444,14 +1547,17 @@ async function startViewer() {
   const viewerTitle = document.querySelector("#viewer-title");
   const currentViewLink = document.querySelector("#current-view-link");
   const historyViewLink = document.querySelector("#history-view-link");
+  const outwardStubViewLink = document.querySelector("#outward-stub-view-link");
+  const fixtureControl = document.querySelector("#fixture-control");
   const programs = await fetch(new URL("../.sketchv3-harness/programs.json", import.meta.url)).then((response) => {
     if (!response.ok) throw new Error(`fixture load failed: ${response.status}`);
     return response.json();
   });
   const query = new URLSearchParams(location.search);
   const historyMode = query.get("view") === "history";
+  const outwardStubMode = query.get("view") === "outward-source-stubs";
   const historicalFixtureNames = ["minimization:bounded_sub", "characteristic:divides", "characteristic:eq", "primrec:basic", "predecessor"];
-  const fixtureNames = historicalFixtureNames;
+  const fixtureNames = outwardStubMode ? ["characteristic:divides"] : historicalFixtureNames;
   for (const name of fixtureNames) {
     if (!programs[name]) continue;
     const option = document.createElement("option");
@@ -1463,14 +1569,21 @@ async function startViewer() {
   fixtureSelect.value = fixtureNames.includes(requested) ? requested
     : historyMode ? "minimization:bounded_sub"
       : "characteristic:divides";
-  viewerTitle.textContent = historyMode
-    ? "SketchV4: historical ordinary-HALT experiments"
-    : "SketchV4: current ordinary-HALT baseline";
-  document.title = historyMode
-    ? "SketchV4 ordinary-HALT experiment history"
-    : "SketchV4 current ordinary-HALT baseline";
-  currentViewLink.toggleAttribute("aria-current", !historyMode);
-  historyViewLink.toggleAttribute("aria-current", historyMode);
+  fixtureControl.hidden = outwardStubMode;
+  viewerTitle.textContent = historyMode ? "SketchV4: historical ordinary-HALT experiments"
+    : outwardStubMode ? "SketchV4: i-27/i-52 outward source-stub experiment"
+      : "SketchV4: current ordinary-HALT baseline";
+  document.title = historyMode ? "SketchV4 ordinary-HALT experiment history"
+    : outwardStubMode ? "SketchV4 i-27/i-52 outward source-stub experiment"
+      : "SketchV4 current ordinary-HALT baseline";
+  for (const [link, active] of [
+    [currentViewLink, !historyMode && !outwardStubMode],
+    [historyViewLink, historyMode],
+    [outwardStubViewLink, outwardStubMode],
+  ]) {
+    if (active) link.setAttribute("aria-current", "page");
+    else link.removeAttribute("aria-current");
+  }
 
   let rendered = [];
   const build = () => {
@@ -1497,20 +1610,30 @@ async function startViewer() {
       const currentBaseline = name === "characteristic:divides"
         ? buildAdaptiveRightReentryDiagnosticView(rawRoles, "i-25").view
         : buildAdaptiveBranchRayMergeSourcesView(rawRoles);
-      currentBaseline.viewerProvenance = name === "characteristic:divides"
-        ? "Current baseline: adaptive merges + right-side reentry (divides-only i-57 reentry)."
-        : "Current baseline: adaptive merges (no right-side reentry applied).";
-      rendered = [currentBaseline];
+      if (outwardStubMode) {
+        const outwardStubExperiment = buildI27I52OutwardSourceStubView(currentBaseline);
+        currentBaseline.viewerProvenance = "Control: current combined baseline; no outward source stubs.";
+        outwardStubExperiment.viewerProvenance = "Experiment: unchanged combined baseline + 16px outward source stubs on i-27-jump and i-52-jump only.";
+        rendered = [currentBaseline, outwardStubExperiment];
+      } else {
+        currentBaseline.viewerProvenance = name === "characteristic:divides"
+          ? "Current baseline: adaptive merges + right-side reentry (divides-only i-57 reentry)."
+          : "Current baseline: adaptive merges (no right-side reentry applied).";
+        rendered = [currentBaseline];
+      }
     }
     draw();
-    status.textContent = historyMode
-      ? `${name}: historical production control plus ${rendered.length - 1} harness-only ordinary-terminal realization${rendered.length === 2 ? "" : "s"}. No production module is mutated.`
-      : `${name}: promoted harness-only ordinary-terminal baseline. No production module is mutated.`;
+    status.textContent = historyMode ? `${name}: historical production control plus ${rendered.length - 1} harness-only ordinary-terminal realization${rendered.length === 2 ? "" : "s"}. No production module is mutated.`
+      : outwardStubMode ? `${name}: current combined control plus one two-edge outward-source-stub experiment. No production module is mutated.`
+        : `${name}: promoted harness-only ordinary-terminal baseline. No production module is mutated.`;
     const currentQuery = new URLSearchParams({ fixture: name });
     const historyQuery = new URLSearchParams({ view: "history", fixture: name });
+    const outwardStubQuery = new URLSearchParams({ view: "outward-source-stubs", fixture: "characteristic:divides" });
     currentViewLink.href = `${location.pathname}?${currentQuery}`;
     historyViewLink.href = `${location.pathname}?${historyQuery}`;
-    window.history.replaceState(null, "", `${location.pathname}?${historyMode ? historyQuery : currentQuery}`);
+    outwardStubViewLink.href = `${location.pathname}?${outwardStubQuery}`;
+    const activeQuery = historyMode ? historyQuery : outwardStubMode ? outwardStubQuery : currentQuery;
+    window.history.replaceState(null, "", `${location.pathname}?${activeQuery}`);
   };
   const draw = () => {
     const scale = Number(scaleInput.value);

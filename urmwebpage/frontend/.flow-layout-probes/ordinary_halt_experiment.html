@@ -14,6 +14,7 @@
     nav a[aria-current="page"] { color: #172033; text-decoration: none; }
     .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
     label { display: inline-flex; align-items: center; gap: 5px; }
+    [hidden] { display: none !important; }
     select, input { font: inherit; }
     #status { margin-top: 7px; color: #536174; }
     main { padding: 14px; }
@@ -42,6 +43,7 @@
     <nav aria-label="Experiment views">
       <a id="current-view-link" href="./ordinary_halt_experiment.html" aria-current="page">Current baseline</a>
       <a id="history-view-link" href="./ordinary_halt_experiment.html?view=history&amp;fixture=characteristic%3Adivides">Historical experiments</a>
+      <a id="outward-stub-view-link" href="./ordinary_halt_experiment.html?view=outward-source-stubs&amp;fixture=characteristic%3Adivides">i-27/i-52 outward-stub experiment</a>
     </nav>
     <div class="controls">
       <label id="fixture-control">Fixture <select id="fixture"></select></label>
