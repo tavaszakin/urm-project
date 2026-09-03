@@ -749,6 +749,142 @@ export function buildI27I52OutwardSourceStubView(combinedView) {
   };
 }
 
+// Divides-only A/B source-port comparison for one explicitly named backward loop at a time.
+// Both shapes retain the established bend row and the route suffix beginning with the existing
+// horizontal-to-rail endpoint. This deliberately does not select a winner or define a policy.
+function buildSingleLoopSourcePortVariant(combinedView, edgeId, sourceMode) {
+  const allowedEdgeIds = new Set(["i-27-jump", "i-52-jump"]);
+  if (combinedView.programName !== "characteristic:divides" || !allowedEdgeIds.has(edgeId)) {
+    fail(`source-port comparison is not defined for ${combinedView.programName}:${edgeId}`);
+  }
+  if (sourceMode !== "side" && sourceMode !== "bottom") fail(`unknown source-port comparison mode ${sourceMode}`);
+
+  const edge = combinedView.cfg.edgeById.get(edgeId);
+  const baselineRoute = combinedView.routed.routes.find((route) => route.edgeId === edgeId);
+  const sourceBox = combinedView.boxes.get(edge?.from);
+  if (!edge || !baselineRoute || !sourceBox || baselineRoute.edgeRole !== "loop-return" || baselineRoute.points.length < 3) {
+    fail(`cannot build source-port comparison for ${edgeId}`);
+  }
+
+  const oldSourcePort = [...baselineRoute.sourcePort];
+  const targetPort = [...baselineRoute.targetPort];
+  const oldPoints = baselineRoute.points.map((point) => [...point]);
+  const bendRow = oldPoints[1][1];
+  if (JSON.stringify(oldPoints[0]) !== JSON.stringify(oldSourcePort) || Math.abs(oldPoints[1][0] - oldSourcePort[0]) > 1e-9) {
+    fail(`${edgeId} does not have the expected baseline side-port/vertical departure`);
+  }
+
+  const sourceSide = Math.abs(oldSourcePort[0] - sourceBox.left) <= 1e-9 ? "left"
+    : Math.abs(oldSourcePort[0] - sourceBox.right) <= 1e-9 ? "right"
+      : null;
+  if (!sourceSide) fail(`${edgeId} baseline source is not a rectangle side port`);
+
+  let sourcePort;
+  let sourceDeparture;
+  let points;
+  let departureRule;
+  if (sourceMode === "side") {
+    sourcePort = oldSourcePort;
+    const direction = sourceSide === "left" ? -1 : 1;
+    const stubEnd = [sourcePort[0] + direction * CLEARANCE, sourcePort[1]];
+    const shiftedVerticalEnd = [stubEnd[0], bendRow];
+    sourceDeparture = [sourcePort, stubEnd, shiftedVerticalEnd];
+    points = [...sourceDeparture, ...oldPoints.slice(2).map((point) => [...point])];
+    departureRule = `unchanged ${sourceSide} port, ${CLEARANCE}px outward, then vertical to unchanged bend row`;
+  } else {
+    sourcePort = [sourceBox.cx, sourceBox.bottom];
+    const verticalEnd = [sourcePort[0], bendRow];
+    sourceDeparture = [sourcePort, verticalEnd];
+    points = [...sourceDeparture, ...oldPoints.slice(2).map((point) => [...point])];
+    departureRule = "bottom-center port, then vertical downward to unchanged bend row";
+  }
+
+  const route = { ...baselineRoute, sourcePort, targetPort, points };
+  const routes = combinedView.routed.routes.map((candidate) => candidate.edgeId === edgeId ? route : candidate);
+  const ports = sourceMode === "bottom" ? new Map(combinedView.routed.ports) : combinedView.routed.ports;
+  if (sourceMode === "bottom") {
+    ports.set(edgeId, {
+      ...ports.get(edgeId),
+      sourcePort,
+      changed: true,
+      experimentalBottomSourcePort: true,
+    });
+  }
+  const routed = { ...combinedView.routed, routes, ports };
+  const defects = evaluateDefects(
+    { routes, boxes: combinedView.boxes },
+    { realForkSet: combinedView.roles.realForkSet, lcaRF: combinedView.tree.lcaRF },
+    { clearance: CLEARANCE, program: combinedView.programName, orientationSource: `combined${edge.from}${sourceMode}SourcePort` },
+  );
+  const attachments = attachmentRecords(combinedView.cfg, combinedView.roles, combinedView.boxes, routes);
+  const oldAttachment = combinedView.attachments.find((record) => record.edgeId === edgeId);
+  const newAttachment = attachments.find((record) => record.edgeId === edgeId);
+  const change = {
+    edgeId,
+    sourceMode,
+    sourceSide: sourceMode === "side" ? sourceSide : "bottom",
+    oldSourcePort,
+    sourcePort,
+    targetPort,
+    bendRow,
+    railCoord: baselineRoute.railCoord,
+    oldRoutePoints: oldPoints,
+    newRoutePoints: points,
+    sourceDeparture,
+    departureRule,
+    outwardStubLength: sourceMode === "side" ? CLEARANCE : null,
+    preservedRouteSuffix: oldPoints.slice(2).map((point) => [...point]),
+    oldAttachmentLegality: {
+      source: oldAttachment?.source?.legal ?? null,
+      target: oldAttachment?.target?.legal ?? null,
+      overall: oldAttachment?.legal ?? null,
+    },
+    newAttachmentLegality: {
+      source: newAttachment?.source?.legal ?? null,
+      target: newAttachment?.target?.legal ?? null,
+      overall: newAttachment?.legal ?? null,
+    },
+  };
+
+  return {
+    ...combinedView,
+    routed,
+    ports,
+    defects,
+    attachments,
+    renderBounds: boundsOver(combinedView.boxes, routes),
+    viewLabel: `Ordinary HALT — ${edge.from} ${sourceMode === "side" ? "legal side" : "bottom"} source attachment`,
+    experimentalRouteSplices: [...(combinedView.experimentalRouteSplices ?? []), change],
+    experimentalSourcePortComparison: change,
+    purity: {
+      ...combinedView.purity,
+      sourcePortComparisonEdgeId: edgeId,
+      sourcePortComparisonMode: sourceMode,
+      changedRouteIds: [edgeId],
+      loopReturnRailChanged: false,
+      bendRowChanged: false,
+      targetPortChanged: false,
+      targetEntryGeometryChanged: false,
+      nodePositionsChanged: false,
+      orientationSelectionRerun: false,
+      automaticRepairAfterConstruction: false,
+    },
+  };
+}
+
+export function buildI27I52SourcePortComparisonViews(combinedView) {
+  return {
+    i27: {
+      side: buildSingleLoopSourcePortVariant(combinedView, "i-27-jump", "side"),
+      bottom: buildSingleLoopSourcePortVariant(combinedView, "i-27-jump", "bottom"),
+    },
+    i52: {
+      side: buildSingleLoopSourcePortVariant(combinedView, "i-52-jump", "side"),
+      bottom: buildSingleLoopSourcePortVariant(combinedView, "i-52-jump", "bottom"),
+    },
+  };
+}
+
 // One-edge geometry splice for the predecessor comparison: retain the raw-role merge
 // classification and its existing target-side body, but replace its source departure with
 // the semantic branch's ordinary diamond face + fixed-angle ray. The sibling branch-exit arm
@@ -1548,6 +1684,7 @@ async function startViewer() {
   const currentViewLink = document.querySelector("#current-view-link");
   const historyViewLink = document.querySelector("#history-view-link");
   const outwardStubViewLink = document.querySelector("#outward-stub-view-link");
+  const sourcePortViewLink = document.querySelector("#source-port-view-link");
   const fixtureControl = document.querySelector("#fixture-control");
   const programs = await fetch(new URL("../.sketchv3-harness/programs.json", import.meta.url)).then((response) => {
     if (!response.ok) throw new Error(`fixture load failed: ${response.status}`);
@@ -1556,8 +1693,9 @@ async function startViewer() {
   const query = new URLSearchParams(location.search);
   const historyMode = query.get("view") === "history";
   const outwardStubMode = query.get("view") === "outward-source-stubs";
+  const sourcePortMode = query.get("view") === "loop-source-ports";
   const historicalFixtureNames = ["minimization:bounded_sub", "characteristic:divides", "characteristic:eq", "primrec:basic", "predecessor"];
-  const fixtureNames = outwardStubMode ? ["characteristic:divides"] : historicalFixtureNames;
+  const fixtureNames = outwardStubMode || sourcePortMode ? ["characteristic:divides"] : historicalFixtureNames;
   for (const name of fixtureNames) {
     if (!programs[name]) continue;
     const option = document.createElement("option");
@@ -1569,17 +1707,20 @@ async function startViewer() {
   fixtureSelect.value = fixtureNames.includes(requested) ? requested
     : historyMode ? "minimization:bounded_sub"
       : "characteristic:divides";
-  fixtureControl.hidden = outwardStubMode;
+  fixtureControl.hidden = outwardStubMode || sourcePortMode;
   viewerTitle.textContent = historyMode ? "SketchV4: historical ordinary-HALT experiments"
     : outwardStubMode ? "SketchV4: i-27/i-52 outward source-stub experiment"
-      : "SketchV4: current ordinary-HALT baseline";
+      : sourcePortMode ? "SketchV4: i-27/i-52 source-port comparison"
+        : "SketchV4: current ordinary-HALT baseline";
   document.title = historyMode ? "SketchV4 ordinary-HALT experiment history"
     : outwardStubMode ? "SketchV4 i-27/i-52 outward source-stub experiment"
-      : "SketchV4 current ordinary-HALT baseline";
+      : sourcePortMode ? "SketchV4 i-27/i-52 source-port comparison"
+        : "SketchV4 current ordinary-HALT baseline";
   for (const [link, active] of [
-    [currentViewLink, !historyMode && !outwardStubMode],
+    [currentViewLink, !historyMode && !outwardStubMode && !sourcePortMode],
     [historyViewLink, historyMode],
     [outwardStubViewLink, outwardStubMode],
+    [sourcePortViewLink, sourcePortMode],
   ]) {
     if (active) link.setAttribute("aria-current", "page");
     else link.removeAttribute("aria-current");
@@ -1615,6 +1756,13 @@ async function startViewer() {
         currentBaseline.viewerProvenance = "Control: current combined baseline; no outward source stubs.";
         outwardStubExperiment.viewerProvenance = "Experiment: unchanged combined baseline + 16px outward source stubs on i-27-jump and i-52-jump only.";
         rendered = [currentBaseline, outwardStubExperiment];
+      } else if (sourcePortMode) {
+        const comparison = buildI27I52SourcePortComparisonViews(currentBaseline);
+        comparison.i27.side.viewerProvenance = "i-27 Variant A: unchanged left port + 16px westward stub; only i-27-jump changed.";
+        comparison.i27.bottom.viewerProvenance = "i-27 Variant B: bottom-center port + vertical departure; only i-27-jump changed.";
+        comparison.i52.side.viewerProvenance = "i-52 Variant A: unchanged left port + 16px westward stub; only i-52-jump changed.";
+        comparison.i52.bottom.viewerProvenance = "i-52 Variant B: bottom-center port + vertical departure; only i-52-jump changed.";
+        rendered = [comparison.i27.side, comparison.i27.bottom, comparison.i52.side, comparison.i52.bottom];
       } else {
         currentBaseline.viewerProvenance = name === "characteristic:divides"
           ? "Current baseline: adaptive merges + right-side reentry (divides-only i-57 reentry)."
@@ -1625,14 +1773,20 @@ async function startViewer() {
     draw();
     status.textContent = historyMode ? `${name}: historical production control plus ${rendered.length - 1} harness-only ordinary-terminal realization${rendered.length === 2 ? "" : "s"}. No production module is mutated.`
       : outwardStubMode ? `${name}: current combined control plus one two-edge outward-source-stub experiment. No production module is mutated.`
-        : `${name}: promoted harness-only ordinary-terminal baseline. No production module is mutated.`;
+        : sourcePortMode ? `${name}: four independent one-edge side-vs-bottom source-port variants over the current combined baseline. No winner is selected.`
+          : `${name}: promoted harness-only ordinary-terminal baseline. No production module is mutated.`;
     const currentQuery = new URLSearchParams({ fixture: name });
     const historyQuery = new URLSearchParams({ view: "history", fixture: name });
     const outwardStubQuery = new URLSearchParams({ view: "outward-source-stubs", fixture: "characteristic:divides" });
+    const sourcePortQuery = new URLSearchParams({ view: "loop-source-ports", fixture: "characteristic:divides" });
     currentViewLink.href = `${location.pathname}?${currentQuery}`;
     historyViewLink.href = `${location.pathname}?${historyQuery}`;
     outwardStubViewLink.href = `${location.pathname}?${outwardStubQuery}`;
-    const activeQuery = historyMode ? historyQuery : outwardStubMode ? outwardStubQuery : currentQuery;
+    sourcePortViewLink.href = `${location.pathname}?${sourcePortQuery}`;
+    const activeQuery = historyMode ? historyQuery
+      : outwardStubMode ? outwardStubQuery
+        : sourcePortMode ? sourcePortQuery
+          : currentQuery;
     window.history.replaceState(null, "", `${location.pathname}?${activeQuery}`);
   };
   const draw = () => {
