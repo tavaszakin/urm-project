@@ -2507,6 +2507,14 @@ async function startViewer() {
       const sourcePortComparison = name === "characteristic:divides" ? buildI27I52SourcePortComparisonViews(preLoopSourceBaseline) : null;
       const generalizedLoopSources = buildGeneralizedLoopSourcePortView(preLoopSourceBaseline);
       const composedLoopSources = buildComposedLoopSourceCandidate(rawRoles).view;
+      const i52UpperLeftTarget = name === "characteristic:divides"
+        ? buildI52UpperLeftTargetAttachmentView(composedLoopSources)
+        : null;
+      const i52UpperLeftRay = name === "characteristic:divides"
+        ? buildI52UpperLeftTargetRayIntersectionView(composedLoopSources)
+        : null;
+      const generalizedLoopTargets = buildGeneralizedLoopTargetAttachmentView(composedLoopSources);
+      const composedLoopEndpoints = buildComposedLoopEndpointCandidate(rawRoles).view;
       if (name === "predecessor") experiment.normal.viewLabel = "Ordinary HALT — hybrid";
       rendered = [
         current,
@@ -2532,6 +2540,10 @@ async function startViewer() {
         ] : []),
         generalizedLoopSources,
         composedLoopSources,
+        ...(i52UpperLeftTarget ? [i52UpperLeftTarget] : []),
+        ...(i52UpperLeftRay ? [i52UpperLeftRay] : []),
+        generalizedLoopTargets,
+        composedLoopEndpoints,
       ];
     } else {
       const rawRoles = buildRawRoleOrdinaryTerminalView(program, name);
@@ -2593,10 +2605,10 @@ async function startViewer() {
         endpointCandidate.viewerProvenance = "Candidate: generalized loop sources and targets are both active inside a fresh normal unpinned orientation pass; no post-selection repair.";
         rendered = [currentBaseline, endpointCandidate];
       } else {
-        const currentBaseline = buildComposedLoopSourceCandidate(rawRoles).view;
+        const currentBaseline = buildComposedLoopEndpointCandidate(rawRoles).view;
         currentBaseline.viewerProvenance = name === "characteristic:divides"
-          ? "Current baseline: adaptive merges + divides-only i-57 right-side reentry + generalized backward-loop source attachment; normal orientation selection rerun over the complete geometry."
-          : "Current baseline: adaptive merges + generalized backward-loop source attachment; normal orientation selection rerun over the complete geometry.";
+          ? "Current baseline: adaptive merges + divides-only i-57 right-side reentry + generalized backward-loop source and target attachments; normal orientation selection rerun over the complete geometry."
+          : "Current baseline: adaptive merges + generalized backward-loop source and target attachments; normal orientation selection rerun over the complete geometry.";
         rendered = [currentBaseline];
       }
     }
