@@ -1955,45 +1955,75 @@ async function startViewer() {
       const adaptiveRightReentry = name === "characteristic:divides" ? buildAdaptiveRightReentryDiagnosticView(rawRoles, "i-25") : null;
       const branchPreserving = name === "predecessor" ? buildBranchPreservingMergeSourceView(rawRoles) : null;
       const yesRayVerticalHorizontal = name === "predecessor" ? buildYesRayVerticalHorizontalMergeView(rawRoles) : null;
+      const preLoopSourceBaseline = adaptiveRightReentry?.view ?? adaptive;
+      const outwardSourceStub = name === "characteristic:divides" ? buildI27I52OutwardSourceStubView(preLoopSourceBaseline) : null;
+      const sourcePortComparison = name === "characteristic:divides" ? buildI27I52SourcePortComparisonViews(preLoopSourceBaseline) : null;
+      const generalizedLoopSources = buildGeneralizedLoopSourcePortView(preLoopSourceBaseline);
+      const composedLoopSources = buildComposedLoopSourceCandidate(rawRoles).view;
       if (name === "predecessor") experiment.normal.viewLabel = "Ordinary HALT — hybrid";
-      rendered = [current, experiment.normal, ...(experiment.forced ? [experiment.forced] : []), rawRoles, ...(forcedI25Default ? [forcedI25Default] : []), ...(i57RightToRight ? [i57RightToRight.forcedDefault, i57RightToRight.automatic] : []), ...(i57RightPort ? [i57RightPort.forcedDefault, i57RightPort.automatic] : []), ...(i57LeftPort ? [i57LeftPort.forcedDefault, i57LeftPort.automatic] : []), generalized, shortStub, adaptive, ...(branchPreserving ? [branchPreserving] : []), ...(yesRayVerticalHorizontal ? [yesRayVerticalHorizontal] : []), ...(adaptiveRightReentry ? [adaptiveRightReentry.view] : [])];
+      rendered = [
+        current,
+        experiment.normal,
+        ...(experiment.forced ? [experiment.forced] : []),
+        rawRoles,
+        ...(forcedI25Default ? [forcedI25Default] : []),
+        ...(i57RightToRight ? [i57RightToRight.forcedDefault, i57RightToRight.automatic] : []),
+        ...(i57RightPort ? [i57RightPort.forcedDefault, i57RightPort.automatic] : []),
+        ...(i57LeftPort ? [i57LeftPort.forcedDefault, i57LeftPort.automatic] : []),
+        generalized,
+        shortStub,
+        adaptive,
+        ...(branchPreserving ? [branchPreserving] : []),
+        ...(yesRayVerticalHorizontal ? [yesRayVerticalHorizontal] : []),
+        ...(adaptiveRightReentry ? [adaptiveRightReentry.view] : []),
+        ...(outwardSourceStub ? [outwardSourceStub] : []),
+        ...(sourcePortComparison ? [
+          sourcePortComparison.i27.side,
+          sourcePortComparison.i27.bottom,
+          sourcePortComparison.i52.side,
+          sourcePortComparison.i52.bottom,
+        ] : []),
+        generalizedLoopSources,
+        composedLoopSources,
+      ];
     } else {
       const rawRoles = buildRawRoleOrdinaryTerminalView(program, name);
-      const currentBaseline = name === "characteristic:divides"
+      const preLoopSourceBaseline = name === "characteristic:divides"
         ? buildAdaptiveRightReentryDiagnosticView(rawRoles, "i-25").view
         : buildAdaptiveBranchRayMergeSourcesView(rawRoles);
       if (outwardStubMode) {
-        const outwardStubExperiment = buildI27I52OutwardSourceStubView(currentBaseline);
-        currentBaseline.viewerProvenance = "Control: current combined baseline; no outward source stubs.";
+        const outwardStubExperiment = buildI27I52OutwardSourceStubView(preLoopSourceBaseline);
+        preLoopSourceBaseline.viewerProvenance = "Control: current combined baseline; no outward source stubs.";
         outwardStubExperiment.viewerProvenance = "Experiment: unchanged combined baseline + 16px outward source stubs on i-27-jump and i-52-jump only.";
-        rendered = [currentBaseline, outwardStubExperiment];
+        rendered = [preLoopSourceBaseline, outwardStubExperiment];
       } else if (sourcePortMode) {
-        const comparison = buildI27I52SourcePortComparisonViews(currentBaseline);
+        const comparison = buildI27I52SourcePortComparisonViews(preLoopSourceBaseline);
         comparison.i27.side.viewerProvenance = "i-27 Variant A: unchanged left port + 16px westward stub; only i-27-jump changed.";
         comparison.i27.bottom.viewerProvenance = "i-27 Variant B: bottom-center port + vertical departure; only i-27-jump changed.";
         comparison.i52.side.viewerProvenance = "i-52 Variant A: unchanged left port + 16px westward stub; only i-52-jump changed.";
         comparison.i52.bottom.viewerProvenance = "i-52 Variant B: bottom-center port + vertical departure; only i-52-jump changed.";
         rendered = [comparison.i27.side, comparison.i27.bottom, comparison.i52.side, comparison.i52.bottom];
       } else if (loopSourceRuleMode) {
-        const generalized = buildGeneralizedLoopSourcePortView(currentBaseline);
-        currentBaseline.viewerProvenance = name === "characteristic:divides"
+        const generalized = buildGeneralizedLoopSourcePortView(preLoopSourceBaseline);
+        preLoopSourceBaseline.viewerProvenance = name === "characteristic:divides"
           ? "Control: current adaptive-merges + divides-only right-side-reentry baseline."
           : "Control: current adaptive-merges baseline; no right-side-reentry rule is applied.";
         generalized.viewerProvenance = "Probe: every backward loop is classified structurally; vertical-first uses bottom-center, lateral-first retains its existing outward side departure. No repair or winner selection.";
-        rendered = [currentBaseline, generalized];
+        rendered = [preLoopSourceBaseline, generalized];
       } else if (loopSourceCompositionMode) {
         const composed = buildComposedLoopSourceCandidate(rawRoles).view;
-        currentBaseline.viewerProvenance = name === "characteristic:divides"
+        preLoopSourceBaseline.viewerProvenance = name === "characteristic:divides"
           ? "Control: current adaptive-merges + divides-only right-side-reentry baseline with its existing orientation map."
           : "Control: current adaptive-merges baseline with its existing orientation map.";
         composed.viewerProvenance = name === "characteristic:divides"
           ? "Candidate: adaptive merges + divides-only i-57 right-side reentry + generalized loop sources, with normal unpinned orientation selection rerun over the complete geometry."
           : "Candidate: adaptive merges + generalized loop sources, with normal unpinned orientation selection rerun over the complete geometry.";
-        rendered = [currentBaseline, composed];
+        rendered = [preLoopSourceBaseline, composed];
       } else {
+        const currentBaseline = buildComposedLoopSourceCandidate(rawRoles).view;
         currentBaseline.viewerProvenance = name === "characteristic:divides"
-          ? "Current baseline: adaptive merges + right-side reentry (divides-only i-57 reentry)."
-          : "Current baseline: adaptive merges (no right-side reentry applied).";
+          ? "Current baseline: adaptive merges + divides-only i-57 right-side reentry + generalized backward-loop source attachment; normal orientation selection rerun over the complete geometry."
+          : "Current baseline: adaptive merges + generalized backward-loop source attachment; normal orientation selection rerun over the complete geometry.";
         rendered = [currentBaseline];
       }
     }
