@@ -1552,6 +1552,67 @@ export function buildGeneralizedLoopTargetAttachmentView(composedView) {
   };
 }
 
+// Full endpoint-composition candidate: realize the adaptive/reentry stack, generalized loop
+// sources, and generalized loop targets inside every normal orientation candidate. Selection
+// starts unpinned and no geometry is repaired afterward. The returned same-orientation
+// controls expose the exact pre-source and source-only states used by the winning map.
+export function buildComposedLoopEndpointCandidate(rawView) {
+  const base = {
+    cfg: rawView.cfg,
+    roles: rawView.roles,
+    ownership: rawView.ownership,
+    tree: rawView.tree,
+    guardOrientationOf: roleGuardOrientation(rawView.cfg, rawView.roles),
+    program: rawView.program,
+    programName: rawView.programName,
+    terminalId: rawView.terminalId,
+  };
+  const includesRightReentry = rawView.programName === "characteristic:divides";
+  const realizeExistingStack = (orientationMap) => {
+    const adaptive = buildAdaptiveBranchRayMergeSourcesView(realizeExperimental(base, orientationMap));
+    return includesRightReentry ? applyRightToRightHvhMerge(adaptive) : adaptive;
+  };
+  const realizeSources = (orientationMap) => buildGeneralizedLoopSourcePortView(realizeExistingStack(orientationMap));
+  const realizeEndpoints = (orientationMap) => buildGeneralizedLoopTargetAttachmentView(realizeSources(orientationMap));
+  const orientationResult = assignOrientation({
+    realForks: rawView.roles.realForkIds,
+    bottomUp: rawView.tree.bottomUp,
+    rfParent: rawView.tree.rfParent,
+    rfChildren: rawView.tree.rfChildren,
+    evaluate: (orientationMap) => realizeEndpoints(orientationMap).defects,
+    pins: new Map(),
+  });
+
+  const sameOrientationPreSourceControl = realizeExistingStack(orientationResult.orientationMap);
+  const sameOrientationSourceControl = buildGeneralizedLoopSourcePortView(sameOrientationPreSourceControl);
+  const view = buildGeneralizedLoopTargetAttachmentView(sameOrientationSourceControl);
+  view.orientationResult = orientationResult;
+  view.viewLabel = "Ordinary HALT — composed generalized loop endpoints";
+  view.purity = {
+    ...view.purity,
+    compositionOrder: [
+      "raw transformed realization",
+      "adaptive branch-merge routes",
+      ...(includesRightReentry ? ["i-57 right-to-right H/V/H"] : []),
+      "generalized backward-loop source attachment",
+      "generalized backward-loop target attachment",
+    ],
+    includesDividesOnlyRightReentry: includesRightReentry,
+    orientationSelectionUsesComposedGeometry: true,
+    orientationSelectionUsesComposedEndpointGeometry: true,
+    orientationSelectionPins: [],
+    orientationSelectionRerun: true,
+    directLoopSourceChangesAgainstSameOrientation: sameOrientationSourceControl.experimentalLoopSourcePortCensus
+      .filter((row) => row.routeChanged)
+      .map((row) => row.edgeId),
+    directLoopTargetChangesAgainstSameOrientation: view.experimentalLoopTargetAttachmentCensus
+      .filter((row) => row.routeChanged)
+      .map((row) => row.edgeId),
+    automaticRepairAfterConstruction: false,
+  };
+  return { view, sameOrientationPreSourceControl, sameOrientationSourceControl };
+}
+
 // One-edge geometry splice for the predecessor comparison: retain the raw-role merge
 // classification and its existing target-side body, but replace its source departure with
 // the semantic branch's ordinary diamond face + fixed-angle ray. The sibling branch-exit arm
@@ -2357,6 +2418,7 @@ async function startViewer() {
   const i52UpperLeftTargetViewLink = document.querySelector("#i52-upper-left-target-view-link");
   const i52UpperLeftRayViewLink = document.querySelector("#i52-upper-left-ray-view-link");
   const loopTargetGeneralizationViewLink = document.querySelector("#loop-target-generalization-view-link");
+  const loopEndpointCompositionViewLink = document.querySelector("#loop-endpoint-composition-view-link");
   const fixtureControl = document.querySelector("#fixture-control");
   const programs = await fetch(new URL("../.sketchv3-harness/programs.json", import.meta.url)).then((response) => {
     if (!response.ok) throw new Error(`fixture load failed: ${response.status}`);
@@ -2371,6 +2433,7 @@ async function startViewer() {
   const i52UpperLeftTargetMode = query.get("view") === "i52-upper-left-target";
   const i52UpperLeftRayMode = query.get("view") === "i52-upper-left-ray";
   const loopTargetGeneralizationMode = query.get("view") === "loop-target-generalization";
+  const loopEndpointCompositionMode = query.get("view") === "loop-endpoint-composition";
   const historicalFixtureNames = ["minimization:bounded_sub", "characteristic:divides", "characteristic:eq", "primrec:basic", "predecessor"];
   const fixtureNames = outwardStubMode || sourcePortMode || i52UpperLeftTargetMode || i52UpperLeftRayMode ? ["characteristic:divides"] : historicalFixtureNames;
   for (const name of fixtureNames) {
@@ -2393,7 +2456,8 @@ async function startViewer() {
             : i52UpperLeftTargetMode ? "SketchV4: i-52 upper-left target-attachment probe"
               : i52UpperLeftRayMode ? "SketchV4: i-52 upper-left target-ray refinement"
                 : loopTargetGeneralizationMode ? "SketchV4: generalized backward-loop target-attachment probe"
-                  : "SketchV4: current ordinary-HALT baseline";
+                  : loopEndpointCompositionMode ? "SketchV4: composed backward-loop endpoint candidate"
+                    : "SketchV4: current ordinary-HALT baseline";
   document.title = historyMode ? "SketchV4 ordinary-HALT experiment history"
     : outwardStubMode ? "SketchV4 i-27/i-52 outward source-stub experiment"
       : sourcePortMode ? "SketchV4 i-27/i-52 source-port comparison"
@@ -2402,9 +2466,10 @@ async function startViewer() {
             : i52UpperLeftTargetMode ? "SketchV4 i-52 upper-left target-attachment probe"
               : i52UpperLeftRayMode ? "SketchV4 i-52 upper-left target-ray refinement"
                 : loopTargetGeneralizationMode ? "SketchV4 generalized backward-loop target-attachment probe"
-                  : "SketchV4 current ordinary-HALT baseline";
+                  : loopEndpointCompositionMode ? "SketchV4 composed backward-loop endpoint candidate"
+                    : "SketchV4 current ordinary-HALT baseline";
   for (const [link, active] of [
-    [currentViewLink, !historyMode && !outwardStubMode && !sourcePortMode && !loopSourceRuleMode && !loopSourceCompositionMode && !i52UpperLeftTargetMode && !i52UpperLeftRayMode && !loopTargetGeneralizationMode],
+    [currentViewLink, !historyMode && !outwardStubMode && !sourcePortMode && !loopSourceRuleMode && !loopSourceCompositionMode && !i52UpperLeftTargetMode && !i52UpperLeftRayMode && !loopTargetGeneralizationMode && !loopEndpointCompositionMode],
     [historyViewLink, historyMode],
     [outwardStubViewLink, outwardStubMode],
     [sourcePortViewLink, sourcePortMode],
@@ -2413,6 +2478,7 @@ async function startViewer() {
     [i52UpperLeftTargetViewLink, i52UpperLeftTargetMode],
     [i52UpperLeftRayViewLink, i52UpperLeftRayMode],
     [loopTargetGeneralizationViewLink, loopTargetGeneralizationMode],
+    [loopEndpointCompositionViewLink, loopEndpointCompositionMode],
   ]) {
     if (active) link.setAttribute("aria-current", "page");
     else link.removeAttribute("aria-current");
@@ -2520,6 +2586,12 @@ async function startViewer() {
         currentBaseline.viewerProvenance = "Control: checkpointed composed baseline with fixed orientation and unchanged loop targets.";
         generalizedTargets.viewerProvenance = "Probe: legal loop targets remain byte-identical; each illegal target changes only when exactly one declared diagonal port ray meets its existing directed approach segment.";
         rendered = [currentBaseline, generalizedTargets];
+      } else if (loopEndpointCompositionMode) {
+        const currentBaseline = buildComposedLoopSourceCandidate(rawRoles).view;
+        const endpointCandidate = buildComposedLoopEndpointCandidate(rawRoles).view;
+        currentBaseline.viewerProvenance = "Control: checkpointed composed loop-source baseline with its normal unpinned orientation selection.";
+        endpointCandidate.viewerProvenance = "Candidate: generalized loop sources and targets are both active inside a fresh normal unpinned orientation pass; no post-selection repair.";
+        rendered = [currentBaseline, endpointCandidate];
       } else {
         const currentBaseline = buildComposedLoopSourceCandidate(rawRoles).view;
         currentBaseline.viewerProvenance = name === "characteristic:divides"
@@ -2537,7 +2609,8 @@ async function startViewer() {
               : i52UpperLeftTargetMode ? `${name}: checkpointed composed control plus one i-52 target-attachment splice. No production module is mutated.`
                 : i52UpperLeftRayMode ? `${name}: checkpointed control, previous i-52 dogleg, and direct target-ray refinement. No production module is mutated.`
                   : loopTargetGeneralizationMode ? `${name}: checkpointed control plus one generalized backward-loop target-attachment probe. No production module is mutated.`
-                    : `${name}: promoted harness-only ordinary-terminal baseline. No production module is mutated.`;
+                    : loopEndpointCompositionMode ? `${name}: checkpointed loop-source control plus one fully composed, normally reoriented loop-endpoint candidate. No production module is mutated.`
+                      : `${name}: promoted harness-only ordinary-terminal baseline. No production module is mutated.`;
     const currentQuery = new URLSearchParams({ fixture: name });
     const historyQuery = new URLSearchParams({ view: "history", fixture: name });
     const outwardStubQuery = new URLSearchParams({ view: "outward-source-stubs", fixture: "characteristic:divides" });
@@ -2547,6 +2620,7 @@ async function startViewer() {
     const i52UpperLeftTargetQuery = new URLSearchParams({ view: "i52-upper-left-target", fixture: "characteristic:divides" });
     const i52UpperLeftRayQuery = new URLSearchParams({ view: "i52-upper-left-ray", fixture: "characteristic:divides" });
     const loopTargetGeneralizationQuery = new URLSearchParams({ view: "loop-target-generalization", fixture: name });
+    const loopEndpointCompositionQuery = new URLSearchParams({ view: "loop-endpoint-composition", fixture: name });
     currentViewLink.href = `${location.pathname}?${currentQuery}`;
     historyViewLink.href = `${location.pathname}?${historyQuery}`;
     outwardStubViewLink.href = `${location.pathname}?${outwardStubQuery}`;
@@ -2556,6 +2630,7 @@ async function startViewer() {
     i52UpperLeftTargetViewLink.href = `${location.pathname}?${i52UpperLeftTargetQuery}`;
     i52UpperLeftRayViewLink.href = `${location.pathname}?${i52UpperLeftRayQuery}`;
     loopTargetGeneralizationViewLink.href = `${location.pathname}?${loopTargetGeneralizationQuery}`;
+    loopEndpointCompositionViewLink.href = `${location.pathname}?${loopEndpointCompositionQuery}`;
     const activeQuery = historyMode ? historyQuery
       : outwardStubMode ? outwardStubQuery
         : sourcePortMode ? sourcePortQuery
@@ -2564,7 +2639,8 @@ async function startViewer() {
               : i52UpperLeftTargetMode ? i52UpperLeftTargetQuery
                 : i52UpperLeftRayMode ? i52UpperLeftRayQuery
                   : loopTargetGeneralizationMode ? loopTargetGeneralizationQuery
-                    : currentQuery;
+                    : loopEndpointCompositionMode ? loopEndpointCompositionQuery
+                      : currentQuery;
     window.history.replaceState(null, "", `${location.pathname}?${activeQuery}`);
   };
   const draw = () => {
