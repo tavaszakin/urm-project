@@ -1334,6 +1334,224 @@ export function buildI52UpperLeftTargetRayIntersectionView(composedView) {
   };
 }
 
+// Fixture-wide target-attachment generalization probe over an already composed baseline.
+// Legal loop targets are immutable controls. For an illegal target, derive candidates only
+// from the target's declared diagonal named-port rays and the route's existing final
+// orthogonal approach segment. A change is allowed only when exactly one ray meets that
+// directed segment and validates against V4's attachment grammar. No edge identity, defect
+// score, clearance, obstacle, placement, rail, source, or orientation participates.
+export function buildGeneralizedLoopTargetAttachmentView(composedView) {
+  const EPSILON = 1e-9;
+  const changedById = new Map();
+  const ports = new Map(composedView.routed.ports);
+  const census = [];
+
+  for (const baselineRoute of composedView.routed.routes.filter((route) => route.edgeRole === "loop-return")) {
+    const edge = composedView.cfg.edgeById.get(baselineRoute.edgeId);
+    const sourceNode = composedView.cfg.nodeById.get(edge?.from);
+    const targetNode = composedView.cfg.nodeById.get(edge?.to);
+    const sourceBox = composedView.boxes.get(edge?.from);
+    const targetBox = composedView.boxes.get(edge?.to);
+    const oldAttachment = composedView.attachments.find((record) => record.edgeId === baselineRoute.edgeId);
+    if (!edge || !sourceNode || !targetNode || !sourceBox || !targetBox || !oldAttachment
+      || !Number.isInteger(sourceNode.instructionIndex) || !Number.isInteger(targetNode.instructionIndex)
+      || sourceNode.instructionIndex <= targetNode.instructionIndex) {
+      fail(`cannot classify generalized loop target for ${baselineRoute.edgeId}`);
+    }
+
+    const oldPoints = baselineRoute.points.map((point) => [...point]);
+    const oldTargetPort = [...baselineRoute.targetPort];
+    const oldRouteSuffix = oldPoints.slice(-3).map((point) => [...point]);
+    let route = baselineRoute;
+    let outcome = "unchanged-already-legal";
+    let approachOrientation = null;
+    let approachStart = null;
+    let approachEnd = null;
+    let inspectedPortRays = [];
+    let compatibleCandidates = [];
+
+    if (!oldAttachment.target.legal) {
+      outcome = "unchanged-no-compatible-port";
+      if (oldPoints.length >= 3) {
+        approachStart = [...oldPoints[oldPoints.length - 3]];
+        approachEnd = [...oldPoints[oldPoints.length - 2]];
+        const approachDx = approachEnd[0] - approachStart[0];
+        const approachDy = approachEnd[1] - approachStart[1];
+        approachOrientation = Math.abs(approachDy) <= EPSILON && Math.abs(approachDx) > EPSILON ? "horizontal"
+          : Math.abs(approachDx) <= EPSILON && Math.abs(approachDy) > EPSILON ? "vertical"
+            : null;
+
+        if (approachOrientation) {
+          inspectedPortRays = getLegalIncidentStubsForNode(targetNode, { box: targetBox })
+            .filter((stub) => stub.portPoint && stub.incidentDirection.includes("-"))
+            .map((stub) => {
+              const port = [...stub.portPoint];
+              const rayVector = [port[0] - targetBox.cx, port[1] - targetBox.cy];
+              let rayParameter = null;
+              let intersection = null;
+              if (approachOrientation === "horizontal" && Math.abs(rayVector[1]) > EPSILON) {
+                rayParameter = (approachStart[1] - port[1]) / rayVector[1];
+                intersection = [port[0] + rayParameter * rayVector[0], approachStart[1]];
+              } else if (approachOrientation === "vertical" && Math.abs(rayVector[0]) > EPSILON) {
+                rayParameter = (approachStart[0] - port[0]) / rayVector[0];
+                intersection = [approachStart[0], port[1] + rayParameter * rayVector[1]];
+              }
+
+              let approachParameter = null;
+              if (intersection) {
+                approachParameter = approachOrientation === "horizontal"
+                  ? (intersection[0] - approachStart[0]) / approachDx
+                  : (intersection[1] - approachStart[1]) / approachDy;
+              }
+              const rayPointsOutward = rayParameter != null && rayParameter > EPSILON;
+              const intersectionOnDirectedSegment = approachParameter != null
+                && approachParameter > EPSILON && approachParameter <= 1 + EPSILON;
+              const proposedPoints = rayPointsOutward && intersectionOnDirectedSegment
+                ? [...oldPoints.slice(0, -2).map((point) => [...point]), intersection, port]
+                : null;
+              const validation = proposedPoints
+                ? validateEdgeAttachments(
+                  { ...baselineRoute, targetPort: port, points: proposedPoints },
+                  sourceNode,
+                  targetNode,
+                  proposedPoints,
+                  { sourceBox, targetBox },
+                )
+                : null;
+              const compatible = !!proposedPoints && validation?.target?.legal === true
+                && validation.target.portName === stub.portName
+                && validation.target.incidentDirection === stub.incidentDirection;
+              return {
+                portName: stub.portName,
+                port,
+                incidentDirection: stub.incidentDirection,
+                rayVector,
+                rayParameter,
+                intersection,
+                approachParameter,
+                rayPointsOutward,
+                intersectionOnDirectedSegment,
+                resultingTargetLegal: validation?.target?.legal ?? null,
+                resultingTargetIncidentDirection: validation?.target?.incidentDirection ?? null,
+                compatible,
+                proposedPoints,
+              };
+            });
+          compatibleCandidates = inspectedPortRays.filter((candidate) => candidate.compatible);
+        }
+      }
+
+      if (compatibleCandidates.length === 1) {
+        const selected = compatibleCandidates[0];
+        route = {
+          ...baselineRoute,
+          targetPort: [...selected.port],
+          points: selected.proposedPoints.map((point) => [...point]),
+        };
+        changedById.set(baselineRoute.edgeId, route);
+        ports.set(baselineRoute.edgeId, {
+          ...ports.get(baselineRoute.edgeId),
+          targetPort: [...selected.port],
+          changed: true,
+          experimentalGeneralizedTargetPort: true,
+          experimentalTargetRayIntersection: [...selected.intersection],
+        });
+        outcome = "generalized-unique-compatible-port";
+      } else if (compatibleCandidates.length > 1) {
+        outcome = "unchanged-ambiguous-compatible-ports";
+      }
+    }
+
+    census.push({
+      edgeId: baselineRoute.edgeId,
+      source: edge.from,
+      target: edge.to,
+      sourceInstructionIndex: sourceNode.instructionIndex,
+      targetInstructionIndex: targetNode.instructionIndex,
+      currentTargetPort: oldTargetPort,
+      currentTargetPortName: oldAttachment.target.portName,
+      currentTargetLegal: oldAttachment.target.legal,
+      outcome,
+      routeChanged: route !== baselineRoute,
+      candidateCount: compatibleCandidates.length,
+      candidateNamedPort: compatibleCandidates.length === 1 ? compatibleCandidates[0].portName : null,
+      candidateIncidentDirection: compatibleCandidates.length === 1 ? compatibleCandidates[0].incidentDirection : null,
+      intersection: compatibleCandidates.length === 1 ? compatibleCandidates[0].intersection : null,
+      approachOrientation,
+      approachStart,
+      approachEnd,
+      inspectedPortRays,
+      oldRouteSuffix,
+      newRouteSuffix: route.points.slice(-3).map((point) => [...point]),
+      oldRoutePoints: oldPoints,
+      newRoutePoints: route.points.map((point) => [...point]),
+      railCoord: baselineRoute.railCoord,
+      sourcePort: [...baselineRoute.sourcePort],
+    });
+  }
+
+  const routes = composedView.routed.routes.map((route) => changedById.get(route.edgeId) ?? route);
+  const routed = { ...composedView.routed, routes, ports };
+  const defects = evaluateDefects(
+    { routes, boxes: composedView.boxes },
+    { realForkSet: composedView.roles.realForkSet, lcaRF: composedView.tree.lcaRF },
+    { clearance: CLEARANCE, program: composedView.programName, orientationSource: "generalizedLoopTargetAttachmentProbe" },
+  );
+  const attachments = attachmentRecords(composedView.cfg, composedView.roles, composedView.boxes, routes);
+  const completedCensus = census.map((row) => {
+    const newAttachment = attachments.find((record) => record.edgeId === row.edgeId);
+    return {
+      ...row,
+      resultingTargetPort: newAttachment?.target?.portPoint ?? null,
+      resultingTargetPortName: newAttachment?.target?.portName ?? null,
+      resultingTargetIncidentDirection: newAttachment?.target?.incidentDirection ?? null,
+      resultingTargetLegal: newAttachment?.target?.legal ?? null,
+      resultingOverallAttachmentLegal: newAttachment?.legal ?? null,
+    };
+  });
+  const changedEdgeIds = completedCensus.filter((row) => row.routeChanged).map((row) => row.edgeId);
+  const ambiguousEdgeIds = completedCensus
+    .filter((row) => row.outcome === "unchanged-ambiguous-compatible-ports")
+    .map((row) => row.edgeId);
+  const noCandidateEdgeIds = completedCensus
+    .filter((row) => row.outcome === "unchanged-no-compatible-port")
+    .map((row) => row.edgeId);
+  const unexpectedlyChangedLegalEdgeIds = completedCensus
+    .filter((row) => row.currentTargetLegal && row.routeChanged)
+    .map((row) => row.edgeId);
+
+  return {
+    ...composedView,
+    routed,
+    ports,
+    defects,
+    attachments,
+    renderBounds: boundsOver(composedView.boxes, routes),
+    viewLabel: "Ordinary HALT — generalized backward-loop target attachments",
+    experimentalRouteSplices: [...(composedView.experimentalRouteSplices ?? []), ...completedCensus],
+    experimentalLoopTargetAttachmentCensus: completedCensus,
+    purity: {
+      ...composedView.purity,
+      loopTargetGeneralizationConsideredEdgeIds: completedCensus.map((row) => row.edgeId),
+      loopTargetGeneralizationChangedEdgeIds: changedEdgeIds,
+      loopTargetGeneralizationAmbiguousEdgeIds: ambiguousEdgeIds,
+      loopTargetGeneralizationNoCandidateEdgeIds: noCandidateEdgeIds,
+      unexpectedlyChangedLegalEdgeIds,
+      fixedLengthTargetStubUsed: false,
+      crossingOrDefectScoreUsedForSelection: false,
+      obstacleOrClearanceSearchUsedForSelection: false,
+      sourcePortsChanged: false,
+      sourceGeometryChanged: false,
+      loopReturnRailsChanged: false,
+      loopBendRowsChanged: false,
+      nodePositionsChanged: false,
+      orientationSelectionRerun: false,
+      nonLoopRoutesChanged: false,
+      automaticRepairAfterConstruction: false,
+    },
+  };
+}
+
 // One-edge geometry splice for the predecessor comparison: retain the raw-role merge
 // classification and its existing target-side body, but replace its source departure with
 // the semantic branch's ordinary diamond face + fixed-angle ray. The sibling branch-exit arm
@@ -2138,6 +2356,7 @@ async function startViewer() {
   const loopSourceCompositionViewLink = document.querySelector("#loop-source-composition-view-link");
   const i52UpperLeftTargetViewLink = document.querySelector("#i52-upper-left-target-view-link");
   const i52UpperLeftRayViewLink = document.querySelector("#i52-upper-left-ray-view-link");
+  const loopTargetGeneralizationViewLink = document.querySelector("#loop-target-generalization-view-link");
   const fixtureControl = document.querySelector("#fixture-control");
   const programs = await fetch(new URL("../.sketchv3-harness/programs.json", import.meta.url)).then((response) => {
     if (!response.ok) throw new Error(`fixture load failed: ${response.status}`);
@@ -2151,6 +2370,7 @@ async function startViewer() {
   const loopSourceCompositionMode = query.get("view") === "loop-source-composition";
   const i52UpperLeftTargetMode = query.get("view") === "i52-upper-left-target";
   const i52UpperLeftRayMode = query.get("view") === "i52-upper-left-ray";
+  const loopTargetGeneralizationMode = query.get("view") === "loop-target-generalization";
   const historicalFixtureNames = ["minimization:bounded_sub", "characteristic:divides", "characteristic:eq", "primrec:basic", "predecessor"];
   const fixtureNames = outwardStubMode || sourcePortMode || i52UpperLeftTargetMode || i52UpperLeftRayMode ? ["characteristic:divides"] : historicalFixtureNames;
   for (const name of fixtureNames) {
@@ -2172,7 +2392,8 @@ async function startViewer() {
           : loopSourceCompositionMode ? "SketchV4: composed loop-source candidate"
             : i52UpperLeftTargetMode ? "SketchV4: i-52 upper-left target-attachment probe"
               : i52UpperLeftRayMode ? "SketchV4: i-52 upper-left target-ray refinement"
-                : "SketchV4: current ordinary-HALT baseline";
+                : loopTargetGeneralizationMode ? "SketchV4: generalized backward-loop target-attachment probe"
+                  : "SketchV4: current ordinary-HALT baseline";
   document.title = historyMode ? "SketchV4 ordinary-HALT experiment history"
     : outwardStubMode ? "SketchV4 i-27/i-52 outward source-stub experiment"
       : sourcePortMode ? "SketchV4 i-27/i-52 source-port comparison"
@@ -2180,9 +2401,10 @@ async function startViewer() {
           : loopSourceCompositionMode ? "SketchV4 composed loop-source candidate"
             : i52UpperLeftTargetMode ? "SketchV4 i-52 upper-left target-attachment probe"
               : i52UpperLeftRayMode ? "SketchV4 i-52 upper-left target-ray refinement"
-                : "SketchV4 current ordinary-HALT baseline";
+                : loopTargetGeneralizationMode ? "SketchV4 generalized backward-loop target-attachment probe"
+                  : "SketchV4 current ordinary-HALT baseline";
   for (const [link, active] of [
-    [currentViewLink, !historyMode && !outwardStubMode && !sourcePortMode && !loopSourceRuleMode && !loopSourceCompositionMode && !i52UpperLeftTargetMode && !i52UpperLeftRayMode],
+    [currentViewLink, !historyMode && !outwardStubMode && !sourcePortMode && !loopSourceRuleMode && !loopSourceCompositionMode && !i52UpperLeftTargetMode && !i52UpperLeftRayMode && !loopTargetGeneralizationMode],
     [historyViewLink, historyMode],
     [outwardStubViewLink, outwardStubMode],
     [sourcePortViewLink, sourcePortMode],
@@ -2190,6 +2412,7 @@ async function startViewer() {
     [loopSourceCompositionViewLink, loopSourceCompositionMode],
     [i52UpperLeftTargetViewLink, i52UpperLeftTargetMode],
     [i52UpperLeftRayViewLink, i52UpperLeftRayMode],
+    [loopTargetGeneralizationViewLink, loopTargetGeneralizationMode],
   ]) {
     if (active) link.setAttribute("aria-current", "page");
     else link.removeAttribute("aria-current");
@@ -2291,6 +2514,12 @@ async function startViewer() {
         upperLeftDogleg.viewerProvenance = "Previous probe: V4 upper-left target port through a local fixed-16px H/V/diagonal dogleg.";
         upperLeftRay.viewerProvenance = "Refinement: V4 upper-left target port; its incident ray extends directly back to the unchanged horizontal approach row, with no fixed-length stub.";
         rendered = [currentBaseline, upperLeftDogleg, upperLeftRay];
+      } else if (loopTargetGeneralizationMode) {
+        const currentBaseline = buildComposedLoopSourceCandidate(rawRoles).view;
+        const generalizedTargets = buildGeneralizedLoopTargetAttachmentView(currentBaseline);
+        currentBaseline.viewerProvenance = "Control: checkpointed composed baseline with fixed orientation and unchanged loop targets.";
+        generalizedTargets.viewerProvenance = "Probe: legal loop targets remain byte-identical; each illegal target changes only when exactly one declared diagonal port ray meets its existing directed approach segment.";
+        rendered = [currentBaseline, generalizedTargets];
       } else {
         const currentBaseline = buildComposedLoopSourceCandidate(rawRoles).view;
         currentBaseline.viewerProvenance = name === "characteristic:divides"
@@ -2307,7 +2536,8 @@ async function startViewer() {
             : loopSourceCompositionMode ? `${name}: current baseline plus one fully composed, normally reoriented loop-source candidate. No production module is mutated.`
               : i52UpperLeftTargetMode ? `${name}: checkpointed composed control plus one i-52 target-attachment splice. No production module is mutated.`
                 : i52UpperLeftRayMode ? `${name}: checkpointed control, previous i-52 dogleg, and direct target-ray refinement. No production module is mutated.`
-                  : `${name}: promoted harness-only ordinary-terminal baseline. No production module is mutated.`;
+                  : loopTargetGeneralizationMode ? `${name}: checkpointed control plus one generalized backward-loop target-attachment probe. No production module is mutated.`
+                    : `${name}: promoted harness-only ordinary-terminal baseline. No production module is mutated.`;
     const currentQuery = new URLSearchParams({ fixture: name });
     const historyQuery = new URLSearchParams({ view: "history", fixture: name });
     const outwardStubQuery = new URLSearchParams({ view: "outward-source-stubs", fixture: "characteristic:divides" });
@@ -2316,6 +2546,7 @@ async function startViewer() {
     const loopSourceCompositionQuery = new URLSearchParams({ view: "loop-source-composition", fixture: name });
     const i52UpperLeftTargetQuery = new URLSearchParams({ view: "i52-upper-left-target", fixture: "characteristic:divides" });
     const i52UpperLeftRayQuery = new URLSearchParams({ view: "i52-upper-left-ray", fixture: "characteristic:divides" });
+    const loopTargetGeneralizationQuery = new URLSearchParams({ view: "loop-target-generalization", fixture: name });
     currentViewLink.href = `${location.pathname}?${currentQuery}`;
     historyViewLink.href = `${location.pathname}?${historyQuery}`;
     outwardStubViewLink.href = `${location.pathname}?${outwardStubQuery}`;
@@ -2324,6 +2555,7 @@ async function startViewer() {
     loopSourceCompositionViewLink.href = `${location.pathname}?${loopSourceCompositionQuery}`;
     i52UpperLeftTargetViewLink.href = `${location.pathname}?${i52UpperLeftTargetQuery}`;
     i52UpperLeftRayViewLink.href = `${location.pathname}?${i52UpperLeftRayQuery}`;
+    loopTargetGeneralizationViewLink.href = `${location.pathname}?${loopTargetGeneralizationQuery}`;
     const activeQuery = historyMode ? historyQuery
       : outwardStubMode ? outwardStubQuery
         : sourcePortMode ? sourcePortQuery
@@ -2331,7 +2563,8 @@ async function startViewer() {
             : loopSourceCompositionMode ? loopSourceCompositionQuery
               : i52UpperLeftTargetMode ? i52UpperLeftTargetQuery
                 : i52UpperLeftRayMode ? i52UpperLeftRayQuery
-                  : currentQuery;
+                  : loopTargetGeneralizationMode ? loopTargetGeneralizationQuery
+                    : currentQuery;
     window.history.replaceState(null, "", `${location.pathname}?${activeQuery}`);
   };
   const draw = () => {
