@@ -1,0 +1,3140 @@
+{
+ "meta": {
+  "date": "2026-07-12",
+  "engine": "sketchV4 buildLayout v4Assigned"
+ },
+ "fixtures": {
+  "zero": {
+   "totalDefects": 0,
+   "crossings": 0,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 0,
+   "illegalAttachmentEndpoints": 0,
+   "illegalAttachmentDetail": [],
+   "changedPortCount": 0,
+   "targetPortJams": [],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [],
+   "placementHash": "d1e3cdc0",
+   "nonMergeRouteHash": "53e9501e",
+   "flips": "",
+   "labelTop3": [],
+   "renderBounds": [
+    266,
+    106
+   ]
+  },
+  "successor": {
+   "totalDefects": 0,
+   "crossings": 0,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 0,
+   "illegalAttachmentEndpoints": 0,
+   "illegalAttachmentDetail": [],
+   "changedPortCount": 0,
+   "targetPortJams": [],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [],
+   "placementHash": "d1e3cdc0",
+   "nonMergeRouteHash": "53e9501e",
+   "flips": "",
+   "labelTop3": [],
+   "renderBounds": [
+    266,
+    106
+   ]
+  },
+  "predecessor": {
+   "totalDefects": 0,
+   "crossings": 0,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 2,
+   "illegalAttachmentEndpoints": 2,
+   "illegalAttachmentDetail": [
+    {
+     "edgeId": "i-2-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-2-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    }
+   ],
+   "changedPortCount": 2,
+   "targetPortJams": [],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [],
+   "placementHash": "8196137b",
+   "nonMergeRouteHash": "953dbc3a",
+   "flips": "",
+   "labelTop3": [
+    {
+     "edgeId": "i-0-yes",
+     "routeFamily": "halt",
+     "branch": "yes",
+     "labelDistFromDiamond": 266,
+     "pointCount": 4
+    },
+    {
+     "edgeId": "i-2-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 109,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-2-no",
+     "routeFamily": "branch-exit",
+     "branch": "no",
+     "labelDistFromDiamond": 109,
+     "pointCount": 2
+    }
+   ],
+   "renderBounds": [
+    632,
+    553
+   ]
+  },
+  "constant(3)": {
+   "totalDefects": 0,
+   "crossings": 0,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 0,
+   "illegalAttachmentEndpoints": 0,
+   "illegalAttachmentDetail": [],
+   "changedPortCount": 0,
+   "targetPortJams": [],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [],
+   "placementHash": "8a0f2108",
+   "nonMergeRouteHash": "1c2da509",
+   "flips": "",
+   "labelTop3": [],
+   "renderBounds": [
+    266,
+    268
+   ]
+  },
+  "projection(1,2)": {
+   "totalDefects": 0,
+   "crossings": 0,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 0,
+   "illegalAttachmentEndpoints": 0,
+   "illegalAttachmentDetail": [],
+   "changedPortCount": 0,
+   "targetPortJams": [],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [],
+   "placementHash": "d1e3cdc0",
+   "nonMergeRouteHash": "53e9501e",
+   "flips": "",
+   "labelTop3": [],
+   "renderBounds": [
+    266,
+    106
+   ]
+  },
+  "add": {
+   "totalDefects": 0,
+   "crossings": 0,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 0,
+   "illegalAttachmentEndpoints": 0,
+   "illegalAttachmentDetail": [],
+   "changedPortCount": 0,
+   "targetPortJams": [],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [],
+   "placementHash": "c98d5332",
+   "nonMergeRouteHash": "b31f6839",
+   "flips": "",
+   "labelTop3": [
+    {
+     "edgeId": "i-1-yes",
+     "routeFamily": "halt",
+     "branch": "yes",
+     "labelDistFromDiamond": 108,
+     "pointCount": 4
+    },
+    {
+     "edgeId": "i-1-no",
+     "routeFamily": "spine",
+     "branch": "no",
+     "labelDistFromDiamond": 47,
+     "pointCount": 2
+    }
+   ],
+   "renderBounds": [
+    306,
+    434
+   ]
+  },
+  "bounded_sub": {
+   "totalDefects": 0,
+   "crossings": 0,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 3,
+   "illegalAttachmentEndpoints": 3,
+   "illegalAttachmentDetail": [
+    {
+     "edgeId": "i-3-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-6-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-6-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    }
+   ],
+   "changedPortCount": 1,
+   "targetPortJams": [],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [
+    {
+     "edgeId": "i-3-yes",
+     "portPolicyCase": "merge-side-entry",
+     "connectorKind": "sideEntryJog",
+     "target": "i-9",
+     "points": [
+      [
+       0,
+       351
+      ],
+      [
+       0,
+       679
+      ],
+      [
+       29,
+       679
+      ],
+      [
+       29,
+       710
+      ],
+      [
+       13,
+       710
+      ]
+     ],
+     "sourceDropX": 0,
+     "targetBox": {
+      "left": -75,
+      "right": 13,
+      "cx": -31,
+      "top": 695
+     },
+     "interiorClipLen": 0,
+     "dropColumnInsideFootprint": true,
+     "penetrationSx": 13
+    }
+   ],
+   "placementHash": "283daa7f",
+   "nonMergeRouteHash": "c41ed65e",
+   "flips": "",
+   "labelTop3": [
+    {
+     "edgeId": "i-3-yes",
+     "routeFamily": "merge-connector",
+     "branch": "yes",
+     "labelDistFromDiamond": 225,
+     "pointCount": 5
+    },
+    {
+     "edgeId": "i-3-no",
+     "routeFamily": "branch-exit",
+     "branch": "no",
+     "labelDistFromDiamond": 109,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-1-yes",
+     "routeFamily": "halt",
+     "branch": "yes",
+     "labelDistFromDiamond": 108,
+     "pointCount": 4
+    }
+   ],
+   "renderBounds": [
+    645,
+    898
+   ]
+  },
+  "multiplication": {
+   "totalDefects": 0,
+   "crossings": 0,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 5,
+   "illegalAttachmentEndpoints": 5,
+   "illegalAttachmentDetail": [
+    {
+     "edgeId": "i-5-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-5-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-12-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-12-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-18-jump",
+     "routeFamily": "loop-return",
+     "source": {
+      "port": "left",
+      "dir": "south",
+      "reason": "legal port left, illegal incident direction south; expected west"
+     },
+     "target": null
+    }
+   ],
+   "changedPortCount": 0,
+   "targetPortJams": [],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [],
+   "placementHash": "e4a176b3",
+   "nonMergeRouteHash": "6e6915c4",
+   "flips": "",
+   "labelTop3": [
+    {
+     "edgeId": "i-5-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-5-no",
+     "routeFamily": "branch-exit",
+     "branch": "no",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-12-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 109,
+     "pointCount": 2
+    }
+   ],
+   "renderBounds": [
+    919,
+    1373
+   ]
+  },
+  "exponentiation": {
+   "totalDefects": 0,
+   "crossings": 0,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 8,
+   "illegalAttachmentEndpoints": 8,
+   "illegalAttachmentDetail": [
+    {
+     "edgeId": "i-6-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-6-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-22-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-22-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-29-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-29-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-35-jump",
+     "routeFamily": "loop-return",
+     "source": {
+      "port": "left",
+      "dir": "south",
+      "reason": "legal port left, illegal incident direction south; expected west"
+     },
+     "target": null
+    },
+    {
+     "edgeId": "i-39-jump",
+     "routeFamily": "loop-return",
+     "source": {
+      "port": "left",
+      "dir": "south",
+      "reason": "legal port left, illegal incident direction south; expected west"
+     },
+     "target": null
+    }
+   ],
+   "changedPortCount": 0,
+   "targetPortJams": [],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [],
+   "placementHash": "f5cac210",
+   "nonMergeRouteHash": "9d0ad1a7",
+   "flips": "",
+   "labelTop3": [
+    {
+     "edgeId": "i-6-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-6-no",
+     "routeFamily": "branch-exit",
+     "branch": "no",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-22-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 109,
+     "pointCount": 2
+    }
+   ],
+   "renderBounds": [
+    1095,
+    2804
+   ]
+  },
+  "factorial": {
+   "totalDefects": 0,
+   "crossings": 0,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 8,
+   "illegalAttachmentEndpoints": 8,
+   "illegalAttachmentDetail": [
+    {
+     "edgeId": "i-6-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-6-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-22-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-22-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-29-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-29-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-35-jump",
+     "routeFamily": "loop-return",
+     "source": {
+      "port": "left",
+      "dir": "south",
+      "reason": "legal port left, illegal incident direction south; expected west"
+     },
+     "target": null
+    },
+    {
+     "edgeId": "i-39-jump",
+     "routeFamily": "loop-return",
+     "source": {
+      "port": "left",
+      "dir": "south",
+      "reason": "legal port left, illegal incident direction south; expected west"
+     },
+     "target": null
+    }
+   ],
+   "changedPortCount": 0,
+   "targetPortJams": [],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [],
+   "placementHash": "f5cac210",
+   "nonMergeRouteHash": "9d0ad1a7",
+   "flips": "",
+   "labelTop3": [
+    {
+     "edgeId": "i-6-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-6-no",
+     "routeFamily": "branch-exit",
+     "branch": "no",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-22-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 109,
+     "pointCount": 2
+    }
+   ],
+   "renderBounds": [
+    1095,
+    2804
+   ]
+  },
+  "geometric_sum": {
+   "totalDefects": 0,
+   "crossings": 0,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 13,
+   "illegalAttachmentEndpoints": 13,
+   "illegalAttachmentDetail": [
+    {
+     "edgeId": "i-6-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-6-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-156-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-156-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-172-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-172-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-179-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-179-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-185-jump",
+     "routeFamily": "loop-return",
+     "source": {
+      "port": "left",
+      "dir": "south",
+      "reason": "legal port left, illegal incident direction south; expected west"
+     },
+     "target": null
+    },
+    {
+     "edgeId": "i-189-jump",
+     "routeFamily": "loop-return",
+     "source": {
+      "port": "left",
+      "dir": "south",
+      "reason": "legal port left, illegal incident direction south; expected west"
+     },
+     "target": null
+    },
+    {
+     "edgeId": "i-199-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-199-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-206-jump",
+     "routeFamily": "loop-return",
+     "source": {
+      "port": "left",
+      "dir": "south",
+      "reason": "legal port left, illegal incident direction south; expected west"
+     },
+     "target": null
+    }
+   ],
+   "changedPortCount": 0,
+   "targetPortJams": [],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [],
+   "placementHash": "bcf1fb5f",
+   "nonMergeRouteHash": "327dfef8",
+   "flips": "",
+   "labelTop3": [
+    {
+     "edgeId": "i-6-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-6-no",
+     "routeFamily": "branch-exit",
+     "branch": "no",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-156-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 109,
+     "pointCount": 2
+    }
+   ],
+   "renderBounds": [
+    1246,
+    15153
+   ]
+  },
+  "divisor_count": {
+   "totalDefects": 1,
+   "crossings": 1,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 25,
+   "illegalAttachmentEndpoints": 26,
+   "illegalAttachmentDetail": [
+    {
+     "edgeId": "i-57-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-57-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-220-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-220-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-221-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-221-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-230-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-230-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-232-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-235-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-235-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-242-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-242-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-244-jump",
+     "routeFamily": "loop-return",
+     "source": {
+      "port": "left",
+      "dir": "south",
+      "reason": "legal port left, illegal incident direction south; expected west"
+     },
+     "target": null
+    },
+    {
+     "edgeId": "i-253-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-253-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-255-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-258-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-258-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-265-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-265-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-269-jump",
+     "routeFamily": "loop-return",
+     "source": {
+      "port": "left",
+      "dir": "south",
+      "reason": "legal port left, illegal incident direction south; expected west"
+     },
+     "target": {
+      "port": "left",
+      "dir": "north",
+      "reason": "legal port left, illegal incident direction north; expected west"
+     }
+    },
+    {
+     "edgeId": "i-270-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-283-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-283-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    }
+   ],
+   "changedPortCount": 3,
+   "targetPortJams": [
+    {
+     "portKey": "i-238@-605,17970",
+     "edges": [
+      {
+       "edgeId": "i-232-yes",
+       "routeFamily": "merge-connector"
+      },
+      {
+       "edgeId": "i-235-yes",
+       "routeFamily": "branch-exit"
+      }
+     ]
+    },
+    {
+     "portKey": "i-221@-407,16744",
+     "edges": [
+      {
+       "edgeId": "i-244-jump",
+       "routeFamily": "loop-return"
+      },
+      {
+       "edgeId": "i-269-jump",
+       "routeFamily": "loop-return"
+      }
+     ]
+    },
+    {
+     "portKey": "i-261@-592,18864",
+     "edges": [
+      {
+       "edgeId": "i-255-yes",
+       "routeFamily": "merge-connector"
+      },
+      {
+       "edgeId": "i-258-yes",
+       "routeFamily": "branch-exit"
+      }
+     ]
+    },
+    {
+     "portKey": "i-275@-246,18801",
+     "edges": [
+      {
+       "edgeId": "i-272-jump",
+       "routeFamily": "merge-connector"
+      },
+      {
+       "edgeId": "i-274-cont",
+       "routeFamily": "merge-connector"
+      }
+     ]
+    }
+   ],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [
+    {
+     "edgeId": "i-232-yes",
+     "portPolicyCase": "merge-top",
+     "connectorKind": "straight",
+     "target": "i-238",
+     "points": [
+      [
+       -605,
+       17687
+      ],
+      [
+       -605,
+       17970
+      ]
+     ],
+     "sourceDropX": -605,
+     "targetBox": {
+      "left": -649,
+      "right": -561,
+      "cx": -605,
+      "top": 17970
+     },
+     "interiorClipLen": 0,
+     "dropColumnInsideFootprint": false,
+     "penetrationSx": 0
+    },
+    {
+     "edgeId": "i-255-yes",
+     "portPolicyCase": "merge-top",
+     "connectorKind": "straight",
+     "target": "i-261",
+     "points": [
+      [
+       -592,
+       18582
+      ],
+      [
+       -592,
+       18864
+      ]
+     ],
+     "sourceDropX": -592,
+     "targetBox": {
+      "left": -636,
+      "right": -548,
+      "cx": -592,
+      "top": 18864
+     },
+     "interiorClipLen": 0,
+     "dropColumnInsideFootprint": false,
+     "penetrationSx": 0
+    },
+    {
+     "edgeId": "i-270-yes",
+     "portPolicyCase": "merge-side-entry",
+     "connectorKind": "sideEntry",
+     "target": "i-273",
+     "points": [
+      [
+       -40,
+       16767
+      ],
+      [
+       -40,
+       16843
+      ],
+      [
+       -191,
+       16843
+      ]
+     ],
+     "sourceDropX": -40,
+     "targetBox": {
+      "left": -279,
+      "right": -191,
+      "cx": -235,
+      "top": 16828
+     },
+     "interiorClipLen": 0,
+     "dropColumnInsideFootprint": false,
+     "penetrationSx": 0
+    },
+    {
+     "edgeId": "i-272-jump",
+     "portPolicyCase": "merge-side-entry",
+     "connectorKind": "sideEntry",
+     "target": "i-275",
+     "points": [
+      [
+       91,
+       16940
+      ],
+      [
+       91,
+       18801
+      ],
+      [
+       -246,
+       18801
+      ]
+     ],
+     "sourceDropX": 91,
+     "targetBox": {
+      "left": -334,
+      "right": -246,
+      "cx": -290,
+      "top": 18786
+     },
+     "interiorClipLen": 0,
+     "dropColumnInsideFootprint": false,
+     "penetrationSx": 0
+    },
+    {
+     "edgeId": "i-274-cont",
+     "portPolicyCase": "merge-side-entry",
+     "connectorKind": "sideEntryJog",
+     "target": "i-275",
+     "points": [
+      [
+       -235,
+       16940
+      ],
+      [
+       -235,
+       18770
+      ],
+      [
+       -230,
+       18770
+      ],
+      [
+       -230,
+       18801
+      ],
+      [
+       -246,
+       18801
+      ]
+     ],
+     "sourceDropX": -235,
+     "targetBox": {
+      "left": -334,
+      "right": -246,
+      "cx": -290,
+      "top": 18786
+     },
+     "interiorClipLen": 0,
+     "dropColumnInsideFootprint": false,
+     "penetrationSx": 0
+    }
+   ],
+   "placementHash": "72a7eacd",
+   "nonMergeRouteHash": "dd1c09b4",
+   "flips": "i-242,i-265,i-270",
+   "labelTop3": [
+    {
+     "edgeId": "i-232-yes",
+     "routeFamily": "merge-connector",
+     "branch": "yes",
+     "labelDistFromDiamond": 165,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-255-yes",
+     "routeFamily": "merge-connector",
+     "branch": "yes",
+     "labelDistFromDiamond": 165,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-57-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    }
+   ],
+   "renderBounds": [
+    1491,
+    19805
+   ]
+  },
+  "characteristic:leq": {
+   "totalDefects": 0,
+   "crossings": 0,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 6,
+   "illegalAttachmentEndpoints": 6,
+   "illegalAttachmentDetail": [
+    {
+     "edgeId": "i-9-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-9-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-11-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-14-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-14-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-23-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    }
+   ],
+   "changedPortCount": 3,
+   "targetPortJams": [],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [
+    {
+     "edgeId": "i-11-yes",
+     "portPolicyCase": "merge-side-entry",
+     "connectorKind": "sideEntryJog",
+     "target": "i-17",
+     "points": [
+      [
+       -203,
+       846
+      ],
+      [
+       -203,
+       1174
+      ],
+      [
+       -175,
+       1174
+      ],
+      [
+       -175,
+       1205
+      ],
+      [
+       -191,
+       1205
+      ]
+     ],
+     "sourceDropX": -203,
+     "targetBox": {
+      "left": -279,
+      "right": -191,
+      "cx": -235,
+      "top": 1190
+     },
+     "interiorClipLen": 0,
+     "dropColumnInsideFootprint": true,
+     "penetrationSx": 13
+    }
+   ],
+   "placementHash": "74c32951",
+   "nonMergeRouteHash": "55146b3",
+   "flips": "",
+   "labelTop3": [
+    {
+     "edgeId": "i-11-yes",
+     "routeFamily": "merge-connector",
+     "branch": "yes",
+     "labelDistFromDiamond": 225,
+     "pointCount": 5
+    },
+    {
+     "edgeId": "i-9-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-9-no",
+     "routeFamily": "branch-exit",
+     "branch": "no",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    }
+   ],
+   "renderBounds": [
+    1051,
+    1393
+   ]
+  },
+  "characteristic:lt": {
+   "totalDefects": 0,
+   "crossings": 0,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 6,
+   "illegalAttachmentEndpoints": 6,
+   "illegalAttachmentDetail": [
+    {
+     "edgeId": "i-11-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-11-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-13-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-16-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-16-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-25-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    }
+   ],
+   "changedPortCount": 3,
+   "targetPortJams": [],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [
+    {
+     "edgeId": "i-13-yes",
+     "portPolicyCase": "merge-side-entry",
+     "connectorKind": "sideEntryJog",
+     "target": "i-19",
+     "points": [
+      [
+       -203,
+       954
+      ],
+      [
+       -203,
+       1282
+      ],
+      [
+       -175,
+       1282
+      ],
+      [
+       -175,
+       1313
+      ],
+      [
+       -191,
+       1313
+      ]
+     ],
+     "sourceDropX": -203,
+     "targetBox": {
+      "left": -279,
+      "right": -191,
+      "cx": -235,
+      "top": 1298
+     },
+     "interiorClipLen": 0,
+     "dropColumnInsideFootprint": true,
+     "penetrationSx": 13
+    }
+   ],
+   "placementHash": "171e09a7",
+   "nonMergeRouteHash": "9f2c919c",
+   "flips": "",
+   "labelTop3": [
+    {
+     "edgeId": "i-13-yes",
+     "routeFamily": "merge-connector",
+     "branch": "yes",
+     "labelDistFromDiamond": 225,
+     "pointCount": 5
+    },
+    {
+     "edgeId": "i-11-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-11-no",
+     "routeFamily": "branch-exit",
+     "branch": "no",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    }
+   ],
+   "renderBounds": [
+    1051,
+    1501
+   ]
+  },
+  "characteristic:eq": {
+   "totalDefects": 0,
+   "crossings": 0,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 14,
+   "illegalAttachmentEndpoints": 14,
+   "illegalAttachmentDetail": [
+    {
+     "edgeId": "i-9-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-9-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-11-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-14-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-14-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-29-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-29-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-31-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-34-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-34-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-43-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-43-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-45-jump",
+     "routeFamily": "halt",
+     "source": {
+      "port": "right",
+      "dir": "south",
+      "reason": "legal port right, illegal incident direction south; expected east"
+     },
+     "target": null
+    },
+    {
+     "edgeId": "i-46-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    }
+   ],
+   "changedPortCount": 4,
+   "targetPortJams": [],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [
+    {
+     "edgeId": "i-11-yes",
+     "portPolicyCase": "merge-side-entry",
+     "connectorKind": "sideEntryJog",
+     "target": "i-17",
+     "points": [
+      [
+       -203,
+       846
+      ],
+      [
+       -203,
+       1174
+      ],
+      [
+       -175,
+       1174
+      ],
+      [
+       -175,
+       1205
+      ],
+      [
+       -191,
+       1205
+      ]
+     ],
+     "sourceDropX": -203,
+     "targetBox": {
+      "left": -279,
+      "right": -191,
+      "cx": -235,
+      "top": 1190
+     },
+     "interiorClipLen": 0,
+     "dropColumnInsideFootprint": true,
+     "penetrationSx": 13
+    },
+    {
+     "edgeId": "i-31-yes",
+     "portPolicyCase": "merge-side-entry",
+     "connectorKind": "sideEntryJog",
+     "target": "i-37",
+     "points": [
+      [
+       40,
+       1703
+      ],
+      [
+       40,
+       1995
+      ],
+      [
+       76,
+       1995
+      ],
+      [
+       76,
+       2026
+      ],
+      [
+       60,
+       2026
+      ]
+     ],
+     "sourceDropX": 40,
+     "targetBox": {
+      "left": -28,
+      "right": 60,
+      "cx": 16,
+      "top": 2011
+     },
+     "interiorClipLen": 0,
+     "dropColumnInsideFootprint": true,
+     "penetrationSx": 20
+    }
+   ],
+   "placementHash": "5cdb9407",
+   "nonMergeRouteHash": "e54a780c",
+   "flips": "",
+   "labelTop3": [
+    {
+     "edgeId": "i-11-yes",
+     "routeFamily": "merge-connector",
+     "branch": "yes",
+     "labelDistFromDiamond": 225,
+     "pointCount": 5
+    },
+    {
+     "edgeId": "i-31-yes",
+     "routeFamily": "merge-connector",
+     "branch": "yes",
+     "labelDistFromDiamond": 210,
+     "pointCount": 5
+    },
+    {
+     "edgeId": "i-9-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    }
+   ],
+   "renderBounds": [
+    1343,
+    2214
+   ]
+  },
+  "characteristic:divides": {
+   "totalDefects": 0,
+   "crossings": 0,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 22,
+   "illegalAttachmentEndpoints": 23,
+   "illegalAttachmentDetail": [
+    {
+     "edgeId": "i-3-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-3-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-4-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-4-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-13-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-13-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-15-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-18-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-18-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-25-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-25-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-27-jump",
+     "routeFamily": "loop-return",
+     "source": {
+      "port": "left",
+      "dir": "south",
+      "reason": "legal port left, illegal incident direction south; expected west"
+     },
+     "target": null
+    },
+    {
+     "edgeId": "i-36-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-36-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-38-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-41-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-41-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-48-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-48-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-52-jump",
+     "routeFamily": "loop-return",
+     "source": {
+      "port": "left",
+      "dir": "south",
+      "reason": "legal port left, illegal incident direction south; expected west"
+     },
+     "target": {
+      "port": "left",
+      "dir": "north",
+      "reason": "legal port left, illegal incident direction north; expected west"
+     }
+    },
+    {
+     "edgeId": "i-53-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-57-cont",
+     "routeFamily": "halt",
+     "source": {
+      "port": "right",
+      "dir": "south",
+      "reason": "legal port right, illegal incident direction south; expected east"
+     },
+     "target": null
+    }
+   ],
+   "changedPortCount": 4,
+   "targetPortJams": [
+    {
+     "portKey": "i-4@-244,425",
+     "edges": [
+      {
+       "edgeId": "i-27-jump",
+       "routeFamily": "loop-return"
+      },
+      {
+       "edgeId": "i-52-jump",
+       "routeFamily": "loop-return"
+      }
+     ]
+    },
+    {
+     "portKey": "i-44@-228,2586",
+     "edges": [
+      {
+       "edgeId": "i-38-yes",
+       "routeFamily": "merge-connector"
+      },
+      {
+       "edgeId": "i-41-yes",
+       "routeFamily": "branch-exit"
+      }
+     ]
+    }
+   ],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [
+    {
+     "edgeId": "i-15-yes",
+     "portPolicyCase": "merge-side-entry",
+     "connectorKind": "sideEntryJog",
+     "target": "i-21",
+     "points": [
+      [
+       -498,
+       1404
+      ],
+      [
+       -498,
+       1675
+      ],
+      [
+       -445,
+       1675
+      ],
+      [
+       -445,
+       1706
+      ],
+      [
+       -461,
+       1706
+      ]
+     ],
+     "sourceDropX": -498,
+     "targetBox": {
+      "left": -549,
+      "right": -461,
+      "cx": -505,
+      "top": 1691
+     },
+     "interiorClipLen": 0,
+     "dropColumnInsideFootprint": true,
+     "penetrationSx": 37
+    },
+    {
+     "edgeId": "i-38-yes",
+     "portPolicyCase": "merge-top",
+     "connectorKind": "straight",
+     "target": "i-44",
+     "points": [
+      [
+       -228,
+       2303
+      ],
+      [
+       -228,
+       2586
+      ]
+     ],
+     "sourceDropX": -228,
+     "targetBox": {
+      "left": -272,
+      "right": -184,
+      "cx": -228,
+      "top": 2586
+     },
+     "interiorClipLen": 0,
+     "dropColumnInsideFootprint": false,
+     "penetrationSx": 0
+    },
+    {
+     "edgeId": "i-53-yes",
+     "portPolicyCase": "merge-side-entry",
+     "connectorKind": "sideEntry",
+     "target": "i-56",
+     "points": [
+      [
+       203,
+       448
+      ],
+      [
+       203,
+       544
+      ],
+      [
+       4,
+       544
+      ]
+     ],
+     "sourceDropX": 203,
+     "targetBox": {
+      "left": -84,
+      "right": 4,
+      "cx": -40,
+      "top": 529
+     },
+     "interiorClipLen": 0,
+     "dropColumnInsideFootprint": false,
+     "penetrationSx": 0
+    }
+   ],
+   "placementHash": "6fa8cf0f",
+   "nonMergeRouteHash": "ce182fb4",
+   "flips": "i-48,i-53",
+   "labelTop3": [
+    {
+     "edgeId": "i-15-yes",
+     "routeFamily": "merge-connector",
+     "branch": "yes",
+     "labelDistFromDiamond": 209,
+     "pointCount": 5
+    },
+    {
+     "edgeId": "i-38-yes",
+     "routeFamily": "merge-connector",
+     "branch": "yes",
+     "labelDistFromDiamond": 165,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-3-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    }
+   ],
+   "renderBounds": [
+    1510,
+    2838
+   ]
+  },
+  "compose(succ,succ)": {
+   "totalDefects": 0,
+   "crossings": 0,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 0,
+   "illegalAttachmentEndpoints": 0,
+   "illegalAttachmentDetail": [],
+   "changedPortCount": 0,
+   "targetPortJams": [],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [],
+   "placementHash": "2cddded4",
+   "nonMergeRouteHash": "787dcf25",
+   "flips": "",
+   "labelTop3": [],
+   "renderBounds": [
+    266,
+    430
+   ]
+  },
+  "primrec(zero,succ)": {
+   "totalDefects": 0,
+   "crossings": 0,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 2,
+   "illegalAttachmentEndpoints": 2,
+   "illegalAttachmentDetail": [
+    {
+     "edgeId": "i-5-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-5-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    }
+   ],
+   "changedPortCount": 0,
+   "targetPortJams": [],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [],
+   "placementHash": "fc9ca2ee",
+   "nonMergeRouteHash": "fa712963",
+   "flips": "",
+   "labelTop3": [
+    {
+     "edgeId": "i-5-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-5-no",
+     "routeFamily": "branch-exit",
+     "branch": "no",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    }
+   ],
+   "renderBounds": [
+    712,
+    1123
+   ]
+  },
+  "minimization(add)": {
+   "totalDefects": 0,
+   "crossings": 0,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 4,
+   "illegalAttachmentEndpoints": 4,
+   "illegalAttachmentDetail": [
+    {
+     "edgeId": "i-8-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-8-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-13-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-13-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    }
+   ],
+   "changedPortCount": 0,
+   "targetPortJams": [],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [],
+   "placementHash": "d3def6a4",
+   "nonMergeRouteHash": "825bde90",
+   "flips": "i-8",
+   "labelTop3": [
+    {
+     "edgeId": "i-8-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-8-no",
+     "routeFamily": "branch-exit",
+     "branch": "no",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-13-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 109,
+     "pointCount": 2
+    }
+   ],
+   "renderBounds": [
+    915,
+    994
+   ]
+  },
+  "subst:double": {
+   "totalDefects": 0,
+   "crossings": 0,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 2,
+   "illegalAttachmentEndpoints": 2,
+   "illegalAttachmentDetail": [
+    {
+     "edgeId": "i-14-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-14-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    }
+   ],
+   "changedPortCount": 0,
+   "targetPortJams": [],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [],
+   "placementHash": "1abd6920",
+   "nonMergeRouteHash": "fedf28a1",
+   "flips": "",
+   "labelTop3": [
+    {
+     "edgeId": "i-14-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-14-no",
+     "routeFamily": "branch-exit",
+     "branch": "no",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    }
+   ],
+   "renderBounds": [
+    712,
+    1199
+   ]
+  },
+  "subst:square": {
+   "totalDefects": 0,
+   "crossings": 0,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 5,
+   "illegalAttachmentEndpoints": 5,
+   "illegalAttachmentDetail": [
+    {
+     "edgeId": "i-23-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-23-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-30-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-30-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-36-jump",
+     "routeFamily": "loop-return",
+     "source": {
+      "port": "left",
+      "dir": "south",
+      "reason": "legal port left, illegal incident direction south; expected west"
+     },
+     "target": null
+    }
+   ],
+   "changedPortCount": 0,
+   "targetPortJams": [],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [],
+   "placementHash": "f2576689",
+   "nonMergeRouteHash": "67787804",
+   "flips": "",
+   "labelTop3": [
+    {
+     "edgeId": "i-23-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-23-no",
+     "routeFamily": "branch-exit",
+     "branch": "no",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-30-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 109,
+     "pointCount": 2
+    }
+   ],
+   "renderBounds": [
+    919,
+    2345
+   ]
+  },
+  "subst:diagonal_divides": {
+   "totalDefects": 1,
+   "crossings": 1,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 21,
+   "illegalAttachmentEndpoints": 22,
+   "illegalAttachmentDetail": [
+    {
+     "edgeId": "i-30-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-30-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-31-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-31-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-40-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-40-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-42-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-45-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-45-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-52-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-52-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-54-jump",
+     "routeFamily": "loop-return",
+     "source": {
+      "port": "left",
+      "dir": "south",
+      "reason": "legal port left, illegal incident direction south; expected west"
+     },
+     "target": null
+    },
+    {
+     "edgeId": "i-63-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-63-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-65-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-68-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-68-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-75-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    },
+    {
+     "edgeId": "i-75-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-79-jump",
+     "routeFamily": "loop-return",
+     "source": {
+      "port": "left",
+      "dir": "south",
+      "reason": "legal port left, illegal incident direction south; expected west"
+     },
+     "target": {
+      "port": "left",
+      "dir": "north",
+      "reason": "legal port left, illegal incident direction north; expected west"
+     }
+    },
+    {
+     "edgeId": "i-80-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    }
+   ],
+   "changedPortCount": 4,
+   "targetPortJams": [
+    {
+     "portKey": "i-31@-244,1883",
+     "edges": [
+      {
+       "edgeId": "i-54-jump",
+       "routeFamily": "loop-return"
+      },
+      {
+       "edgeId": "i-79-jump",
+       "routeFamily": "loop-return"
+      }
+     ]
+    },
+    {
+     "portKey": "i-71@-442,4044",
+     "edges": [
+      {
+       "edgeId": "i-65-yes",
+       "routeFamily": "merge-connector"
+      },
+      {
+       "edgeId": "i-68-yes",
+       "routeFamily": "branch-exit"
+      }
+     ]
+    },
+    {
+     "portKey": "i-85@-97,3981",
+     "edges": [
+      {
+       "edgeId": "i-82-jump",
+       "routeFamily": "merge-connector"
+      },
+      {
+       "edgeId": "i-84-cont",
+       "routeFamily": "merge-connector"
+      }
+     ]
+    }
+   ],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [
+    {
+     "edgeId": "i-42-yes",
+     "portPolicyCase": "merge-side-entry",
+     "connectorKind": "sideEntryJog",
+     "target": "i-48",
+     "points": [
+      [
+       -498,
+       2862
+      ],
+      [
+       -498,
+       3133
+      ],
+      [
+       -445,
+       3133
+      ],
+      [
+       -445,
+       3164
+      ],
+      [
+       -461,
+       3164
+      ]
+     ],
+     "sourceDropX": -498,
+     "targetBox": {
+      "left": -549,
+      "right": -461,
+      "cx": -505,
+      "top": 3149
+     },
+     "interiorClipLen": 0,
+     "dropColumnInsideFootprint": true,
+     "penetrationSx": 37
+    },
+    {
+     "edgeId": "i-65-yes",
+     "portPolicyCase": "merge-top",
+     "connectorKind": "straight",
+     "target": "i-71",
+     "points": [
+      [
+       -442,
+       3761
+      ],
+      [
+       -442,
+       4044
+      ]
+     ],
+     "sourceDropX": -442,
+     "targetBox": {
+      "left": -486,
+      "right": -398,
+      "cx": -442,
+      "top": 4044
+     },
+     "interiorClipLen": 0,
+     "dropColumnInsideFootprint": false,
+     "penetrationSx": 0
+    },
+    {
+     "edgeId": "i-80-yes",
+     "portPolicyCase": "merge-side-entry",
+     "connectorKind": "sideEntry",
+     "target": "i-83",
+     "points": [
+      [
+       203,
+       1906
+      ],
+      [
+       203,
+       2002
+      ],
+      [
+       4,
+       2002
+      ]
+     ],
+     "sourceDropX": 203,
+     "targetBox": {
+      "left": -84,
+      "right": 4,
+      "cx": -40,
+      "top": 1987
+     },
+     "interiorClipLen": 0,
+     "dropColumnInsideFootprint": false,
+     "penetrationSx": 0
+    },
+    {
+     "edgeId": "i-82-jump",
+     "portPolicyCase": "merge-side-entry",
+     "connectorKind": "sideEntry",
+     "target": "i-85",
+     "points": [
+      [
+       366,
+       2099
+      ],
+      [
+       366,
+       3981
+      ],
+      [
+       -97,
+       3981
+      ]
+     ],
+     "sourceDropX": 366,
+     "targetBox": {
+      "left": -185,
+      "right": -97,
+      "cx": -141,
+      "top": 3966
+     },
+     "interiorClipLen": 0,
+     "dropColumnInsideFootprint": false,
+     "penetrationSx": 0
+    },
+    {
+     "edgeId": "i-84-cont",
+     "portPolicyCase": "merge-side-entry",
+     "connectorKind": "sideEntry",
+     "target": "i-85",
+     "points": [
+      [
+       -40,
+       2099
+      ],
+      [
+       -40,
+       3981
+      ],
+      [
+       -97,
+       3981
+      ]
+     ],
+     "sourceDropX": -40,
+     "targetBox": {
+      "left": -185,
+      "right": -97,
+      "cx": -141,
+      "top": 3966
+     },
+     "interiorClipLen": 0,
+     "dropColumnInsideFootprint": false,
+     "penetrationSx": 0
+    }
+   ],
+   "placementHash": "4a30a84e",
+   "nonMergeRouteHash": "d455c18e",
+   "flips": "i-52,i-75,i-80",
+   "labelTop3": [
+    {
+     "edgeId": "i-42-yes",
+     "routeFamily": "merge-connector",
+     "branch": "yes",
+     "labelDistFromDiamond": 209,
+     "pointCount": 5
+    },
+    {
+     "edgeId": "i-65-yes",
+     "routeFamily": "merge-connector",
+     "branch": "yes",
+     "labelDistFromDiamond": 165,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-30-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    }
+   ],
+   "renderBounds": [
+    1510,
+    4296
+   ]
+  },
+  "subst:add_succ": {
+   "totalDefects": 0,
+   "crossings": 0,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 2,
+   "illegalAttachmentEndpoints": 2,
+   "illegalAttachmentDetail": [
+    {
+     "edgeId": "i-32-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-32-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    }
+   ],
+   "changedPortCount": 0,
+   "targetPortJams": [],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [],
+   "placementHash": "1a05426e",
+   "nonMergeRouteHash": "1313160c",
+   "flips": "",
+   "labelTop3": [
+    {
+     "edgeId": "i-32-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-32-no",
+     "routeFamily": "branch-exit",
+     "branch": "no",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    }
+   ],
+   "renderBounds": [
+    712,
+    2171
+   ]
+  },
+  "subst:succ_add": {
+   "totalDefects": 0,
+   "crossings": 0,
+   "nodeOverlaps": 0,
+   "illegalAttachmentEdges": 2,
+   "illegalAttachmentEndpoints": 2,
+   "illegalAttachmentDetail": [
+    {
+     "edgeId": "i-6-yes",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-west",
+      "reason": "legal port top, illegal incident direction north-west; expected north"
+     }
+    },
+    {
+     "edgeId": "i-6-no",
+     "routeFamily": "branch-exit",
+     "source": null,
+     "target": {
+      "port": "top",
+      "dir": "north-east",
+      "reason": "legal port top, illegal incident direction north-east; expected north"
+     }
+    }
+   ],
+   "changedPortCount": 0,
+   "targetPortJams": [],
+   "sourcePortJamCount": 0,
+   "mergeBoxClips": [],
+   "mergeRoutes": [],
+   "placementHash": "60ae57f5",
+   "nonMergeRouteHash": "83eb3b12",
+   "flips": "",
+   "labelTop3": [
+    {
+     "edgeId": "i-6-yes",
+     "routeFamily": "branch-exit",
+     "branch": "yes",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    },
+    {
+     "edgeId": "i-6-no",
+     "routeFamily": "branch-exit",
+     "branch": "no",
+     "labelDistFromDiamond": 133,
+     "pointCount": 2
+    }
+   ],
+   "renderBounds": [
+    712,
+    931
+   ]
+  }
+ }
+}

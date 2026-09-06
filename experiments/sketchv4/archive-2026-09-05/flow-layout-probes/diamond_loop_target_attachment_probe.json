@@ -1,0 +1,3472 @@
+{
+  "meta": {
+    "baselineSha": "93b3626c303d3013ed42a7ba0f0b35cae2c5e2e1",
+    "checkpointSha": "2cbcc69130fd549a602a66e5a7febdd7f3d38c42",
+    "experiment": "diagnostic-only; fixed checkpoint orientation and placement; no product source changes",
+    "candidateRule": "For a loop-return into a diamond, retain the lane side; resolve the named target port from clearY's pre-sequential-displacement approach row. Choose the upper/lower diagonal port only when that row lies in its exterior incident quadrant; otherwise retain side-center.",
+    "orderControl": "The rule reads target-entry fromY before clearParallelLoopRailY's sequential reservation displacement."
+  },
+  "checkpointComparison": {
+    "target": "i-4",
+    "targetBox": {
+      "left": -244.2,
+      "right": -162.2,
+      "top": 402.1468,
+      "bottom": 448.1468,
+      "cx": -203.2,
+      "cy": 425.1468,
+      "w": 82,
+      "h": 46
+    },
+    "currentMetrics": {
+      "crossingCount": 0,
+      "edgeOverlapCount": 1,
+      "nodeOverlapCount": 0,
+      "nodeEdgeIntrusionCount": 0
+    },
+    "candidateMetrics": {
+      "crossingCount": 0,
+      "edgeOverlapCount": 1,
+      "nodeOverlapCount": 0,
+      "nodeEdgeIntrusionCount": 0
+    },
+    "currentRoutes": [
+      {
+        "edgeId": "i-27-jump",
+        "source": "i-27",
+        "target": "i-4",
+        "targetPort": [
+          -244.2,
+          425.1468
+        ],
+        "points": [
+          [
+            -385.752,
+            1545.68
+          ],
+          [
+            -385.752,
+            1934.1326
+          ],
+          [
+            -878,
+            1934.1326
+          ],
+          [
+            -878,
+            425.1468
+          ],
+          [
+            -244.2,
+            425.1468
+          ]
+        ]
+      },
+      {
+        "edgeId": "i-52-jump",
+        "source": "i-52",
+        "target": "i-4",
+        "targetPort": [
+          -244.2,
+          425.1468
+        ],
+        "points": [
+          [
+            -171.3507,
+            2440.5852
+          ],
+          [
+            -171.3507,
+            2829.0378
+          ],
+          [
+            -922,
+            2829.0378
+          ],
+          [
+            -922,
+            361.1468
+          ],
+          [
+            -244.2,
+            361.1468
+          ],
+          [
+            -244.2,
+            425.1468
+          ]
+        ]
+      }
+    ],
+    "candidateRoutes": [
+      {
+        "edgeId": "i-27-jump",
+        "source": "i-27",
+        "target": "i-4",
+        "targetPort": [
+          -244.2,
+          425.1468
+        ],
+        "points": [
+          [
+            -385.752,
+            1545.68
+          ],
+          [
+            -385.752,
+            1934.1326
+          ],
+          [
+            -878,
+            1934.1326
+          ],
+          [
+            -878,
+            425.1468
+          ],
+          [
+            -244.2,
+            425.1468
+          ]
+        ]
+      },
+      {
+        "edgeId": "i-52-jump",
+        "source": "i-52",
+        "target": "i-4",
+        "targetPort": [
+          -223.7,
+          413.6468
+        ],
+        "points": [
+          [
+            -171.3507,
+            2440.5852
+          ],
+          [
+            -171.3507,
+            2829.0378
+          ],
+          [
+            -922,
+            2829.0378
+          ],
+          [
+            -922,
+            361.1468
+          ],
+          [
+            -244.2,
+            361.1468
+          ],
+          [
+            -223.7,
+            413.6468
+          ]
+        ]
+      }
+    ],
+    "decisions": [
+      {
+        "edgeId": "i-27-jump",
+        "target": "i-4",
+        "side": "left",
+        "baseApproachY": 425.1468,
+        "finalApproachY": 425.1468,
+        "targetBox": {
+          "left": -244.2,
+          "right": -162.2,
+          "top": 402.1468,
+          "bottom": 448.1468,
+          "cx": -203.2,
+          "cy": 425.1468,
+          "w": 82,
+          "h": 46
+        },
+        "selectedPort": "left",
+        "selectedPoint": [
+          -244.2,
+          425.1468
+        ],
+        "changed": false,
+        "oldTargetAttachment": {
+          "portName": "left",
+          "incidentDirection": "west",
+          "legal": true,
+          "reason": null
+        },
+        "newTargetAttachment": null,
+        "unchangedSourceAttachment": null
+      },
+      {
+        "edgeId": "i-52-jump",
+        "target": "i-4",
+        "side": "left",
+        "baseApproachY": 393.1468,
+        "finalApproachY": 361.1468,
+        "targetBox": {
+          "left": -244.2,
+          "right": -162.2,
+          "top": 402.1468,
+          "bottom": 448.1468,
+          "cx": -203.2,
+          "cy": 425.1468,
+          "w": 82,
+          "h": 46
+        },
+        "selectedPort": "upper-left",
+        "selectedPoint": [
+          -223.7,
+          413.6468
+        ],
+        "oldTargetPoint": [
+          -244.2,
+          425.1468
+        ],
+        "newTargetPoint": [
+          -223.7,
+          413.6468
+        ],
+        "oldFinalSegment": [
+          [
+            -244.2,
+            361.1468
+          ],
+          [
+            -244.2,
+            425.1468
+          ]
+        ],
+        "newFinalSegment": [
+          [
+            -244.2,
+            361.1468
+          ],
+          [
+            -223.7,
+            413.6468
+          ]
+        ],
+        "changed": true,
+        "oldTargetAttachment": {
+          "portName": "left",
+          "incidentDirection": "north",
+          "legal": false,
+          "reason": "legal port left, illegal incident direction north; expected west"
+        },
+        "newTargetAttachment": {
+          "portName": "upper-left",
+          "incidentDirection": "north-west",
+          "legal": true,
+          "reason": null
+        },
+        "wholeEdgeLegalBefore": false,
+        "wholeEdgeLegalAfter": false,
+        "unchangedSourceAttachment": {
+          "portName": "left",
+          "incidentDirection": "south",
+          "legal": false,
+          "reason": "legal port left, illegal incident direction south; expected west"
+        }
+      }
+    ]
+  },
+  "processingOrderAudit": {
+    "baseApproachRule": {
+      "normal": [
+        {
+          "edgeId": "i-27-jump",
+          "target": "i-4",
+          "baseApproachY": 425.1468,
+          "finalApproachY": 425.1468,
+          "selectedPort": "left"
+        },
+        {
+          "edgeId": "i-52-jump",
+          "target": "i-4",
+          "baseApproachY": 393.1468,
+          "finalApproachY": 361.1468,
+          "selectedPort": "upper-left"
+        }
+      ],
+      "reverse": [
+        {
+          "edgeId": "i-27-jump",
+          "target": "i-4",
+          "baseApproachY": 425.1468,
+          "finalApproachY": 345.1468,
+          "selectedPort": "left"
+        },
+        {
+          "edgeId": "i-52-jump",
+          "target": "i-4",
+          "baseApproachY": 393.1468,
+          "finalApproachY": 393.1468,
+          "selectedPort": "upper-left"
+        }
+      ],
+      "assignmentsIdentical": true,
+      "baseApproachRowsIdentical": true
+    },
+    "rejectedFinalDisplacedRowRule": {
+      "normal": [
+        {
+          "edgeId": "i-27-jump",
+          "target": "i-4",
+          "baseApproachY": 425.1468,
+          "finalApproachY": 425.1468,
+          "selectedPort": "left"
+        },
+        {
+          "edgeId": "i-52-jump",
+          "target": "i-4",
+          "baseApproachY": 393.1468,
+          "finalApproachY": 361.1468,
+          "selectedPort": "upper-left"
+        }
+      ],
+      "reverse": [
+        {
+          "edgeId": "i-27-jump",
+          "target": "i-4",
+          "baseApproachY": 425.1468,
+          "finalApproachY": 345.1468,
+          "selectedPort": "upper-left"
+        },
+        {
+          "edgeId": "i-52-jump",
+          "target": "i-4",
+          "baseApproachY": 393.1468,
+          "finalApproachY": 393.1468,
+          "selectedPort": "upper-left"
+        }
+      ],
+      "assignmentsIdentical": false,
+      "note": "Uses the already-displaced committed row and therefore inherits route iteration order."
+    },
+    "normalAdjustments": [
+      {
+        "edgeId": "i-52-jump",
+        "segmentKind": "target-entry",
+        "fromY": 393.1467672771852,
+        "toY": 361.1467672771852,
+        "x0": -922,
+        "x1": -244.2,
+        "blockerCount": 1,
+        "blockers": [
+          {
+            "edgeId": "i-27-jump",
+            "segmentKind": "target-entry",
+            "y": 425.1467672771852,
+            "overlap": 633.8,
+            "dy": 32
+          }
+        ]
+      }
+    ],
+    "reverseAdjustments": [
+      {
+        "edgeId": "i-27-jump",
+        "segmentKind": "target-entry",
+        "fromY": 425.1467672771852,
+        "toY": 345.1467672771852,
+        "x0": -878,
+        "x1": -244.2,
+        "blockerCount": 1,
+        "blockers": [
+          {
+            "edgeId": "i-52-jump",
+            "segmentKind": "target-entry",
+            "y": 393.1467672771852,
+            "overlap": 633.8,
+            "dy": 32
+          }
+        ]
+      }
+    ]
+  },
+  "currentProductionFixtureAudit": {
+    "fixtureCount": 24,
+    "diamondLoopReturnCount": 41,
+    "changedCount": 3,
+    "changedFixtures": [
+      {
+        "fixture": "divisor_count",
+        "diamondLoopReturnCount": 6,
+        "changedCount": 1,
+        "changed": [
+          {
+            "edgeId": "i-269-jump",
+            "target": "i-221",
+            "side": "left",
+            "baseApproachY": 16712.1912,
+            "finalApproachY": 16680.1912,
+            "targetBox": {
+              "left": -407.206,
+              "right": -325.206,
+              "top": 16721.1912,
+              "bottom": 16767.1912,
+              "cx": -366.206,
+              "cy": 16744.1912,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "upper-left",
+            "selectedPoint": [
+              -386.706,
+              16732.6912
+            ],
+            "oldTargetPoint": [
+              -407.206,
+              16744.1912
+            ],
+            "newTargetPoint": [
+              -386.706,
+              16732.6912
+            ],
+            "oldFinalSegment": [
+              [
+                -407.206,
+                16680.1912
+              ],
+              [
+                -407.206,
+                16744.1912
+              ]
+            ],
+            "newFinalSegment": [
+              [
+                -407.206,
+                16680.1912
+              ],
+              [
+                -386.706,
+                16732.6912
+              ]
+            ],
+            "changed": true,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "north",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction north; expected west"
+            },
+            "newTargetAttachment": {
+              "portName": "upper-left",
+              "incidentDirection": "north-west",
+              "legal": true,
+              "reason": null
+            },
+            "wholeEdgeLegalBefore": false,
+            "wholeEdgeLegalAfter": false,
+            "unchangedSourceAttachment": {
+              "portName": "left",
+              "incidentDirection": "south",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction south; expected west"
+            }
+          }
+        ],
+        "decisions": [
+          {
+            "edgeId": "i-240-jump",
+            "target": "i-230",
+            "side": "left",
+            "baseApproachY": 17498.8759,
+            "finalApproachY": 17498.8759,
+            "targetBox": {
+              "left": -538.8607,
+              "right": -456.8607,
+              "top": 17475.8759,
+              "bottom": 17521.8759,
+              "cx": -497.8607,
+              "cy": 17498.8759,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -538.8607,
+              17498.8759
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-244-jump",
+            "target": "i-221",
+            "side": "left",
+            "baseApproachY": 16744.1912,
+            "finalApproachY": 16744.1912,
+            "targetBox": {
+              "left": -407.206,
+              "right": -325.206,
+              "top": 16721.1912,
+              "bottom": 16767.1912,
+              "cx": -366.206,
+              "cy": 16744.1912,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -407.206,
+              16744.1912
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-263-jump",
+            "target": "i-253",
+            "side": "left",
+            "baseApproachY": 18398.1326,
+            "finalApproachY": 18398.1326,
+            "targetBox": {
+              "left": -532.16,
+              "right": -450.16,
+              "top": 18375.1326,
+              "bottom": 18421.1326,
+              "cx": -491.16,
+              "cy": 18398.1326,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -532.16,
+              18398.1326
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-269-jump",
+            "target": "i-221",
+            "side": "left",
+            "baseApproachY": 16712.1912,
+            "finalApproachY": 16680.1912,
+            "targetBox": {
+              "left": -407.206,
+              "right": -325.206,
+              "top": 16721.1912,
+              "bottom": 16767.1912,
+              "cx": -366.206,
+              "cy": 16744.1912,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "upper-left",
+            "selectedPoint": [
+              -386.706,
+              16732.6912
+            ],
+            "oldTargetPoint": [
+              -407.206,
+              16744.1912
+            ],
+            "newTargetPoint": [
+              -386.706,
+              16732.6912
+            ],
+            "oldFinalSegment": [
+              [
+                -407.206,
+                16680.1912
+              ],
+              [
+                -407.206,
+                16744.1912
+              ]
+            ],
+            "newFinalSegment": [
+              [
+                -407.206,
+                16680.1912
+              ],
+              [
+                -386.706,
+                16732.6912
+              ]
+            ],
+            "changed": true,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "north",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction north; expected west"
+            },
+            "newTargetAttachment": {
+              "portName": "upper-left",
+              "incidentDirection": "north-west",
+              "legal": true,
+              "reason": null
+            },
+            "wholeEdgeLegalBefore": false,
+            "wholeEdgeLegalAfter": false,
+            "unchangedSourceAttachment": {
+              "portName": "left",
+              "incidentDirection": "south",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction south; expected west"
+            }
+          },
+          {
+            "edgeId": "i-286-jump",
+            "target": "i-283",
+            "side": "left",
+            "baseApproachY": 19457.0378,
+            "finalApproachY": 19457.0378,
+            "targetBox": {
+              "left": -331.16,
+              "right": -249.16,
+              "top": 19434.0378,
+              "bottom": 19480.0378,
+              "cx": -290.16,
+              "cy": 19457.0378,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -331.16,
+              19457.0378
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-290-jump",
+            "target": "i-57",
+            "side": "left",
+            "baseApproachY": 3188,
+            "finalApproachY": 3188,
+            "targetBox": {
+              "left": -41,
+              "right": 41,
+              "top": 3165,
+              "bottom": 3211,
+              "cx": 0,
+              "cy": 3188,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -41,
+              3188
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          }
+        ],
+        "currentMetrics": {
+          "crossingCount": 1,
+          "edgeOverlapCount": 1,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 1,
+          "edgeOverlapCount": 1,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "characteristic:divides",
+        "diamondLoopReturnCount": 4,
+        "changedCount": 1,
+        "changed": [
+          {
+            "edgeId": "i-52-jump",
+            "target": "i-4",
+            "side": "left",
+            "baseApproachY": 393.1468,
+            "finalApproachY": 361.1468,
+            "targetBox": {
+              "left": -244.2,
+              "right": -162.2,
+              "top": 402.1468,
+              "bottom": 448.1468,
+              "cx": -203.2,
+              "cy": 425.1468,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "upper-left",
+            "selectedPoint": [
+              -223.7,
+              413.6468
+            ],
+            "oldTargetPoint": [
+              -244.2,
+              425.1468
+            ],
+            "newTargetPoint": [
+              -223.7,
+              413.6468
+            ],
+            "oldFinalSegment": [
+              [
+                -244.2,
+                361.1468
+              ],
+              [
+                -244.2,
+                425.1468
+              ]
+            ],
+            "newFinalSegment": [
+              [
+                -244.2,
+                361.1468
+              ],
+              [
+                -223.7,
+                413.6468
+              ]
+            ],
+            "changed": true,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "north",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction north; expected west"
+            },
+            "newTargetAttachment": {
+              "portName": "upper-left",
+              "incidentDirection": "north-west",
+              "legal": true,
+              "reason": null
+            },
+            "wholeEdgeLegalBefore": false,
+            "wholeEdgeLegalAfter": false,
+            "unchangedSourceAttachment": {
+              "portName": "left",
+              "incidentDirection": "south",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction south; expected west"
+            }
+          }
+        ],
+        "decisions": [
+          {
+            "edgeId": "i-23-jump",
+            "target": "i-13",
+            "side": "left",
+            "baseApproachY": 1200.1912,
+            "finalApproachY": 1200.1912,
+            "targetBox": {
+              "left": -407.206,
+              "right": -325.206,
+              "top": 1177.1912,
+              "bottom": 1223.1912,
+              "cx": -366.206,
+              "cy": 1200.1912,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -407.206,
+              1200.1912
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-27-jump",
+            "target": "i-4",
+            "side": "left",
+            "baseApproachY": 425.1468,
+            "finalApproachY": 425.1468,
+            "targetBox": {
+              "left": -244.2,
+              "right": -162.2,
+              "top": 402.1468,
+              "bottom": 448.1468,
+              "cx": -203.2,
+              "cy": 425.1468,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -244.2,
+              425.1468
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-46-jump",
+            "target": "i-36",
+            "side": "left",
+            "baseApproachY": 2119.68,
+            "finalApproachY": 2119.68,
+            "targetBox": {
+              "left": -168.3507,
+              "right": -86.3507,
+              "top": 2096.68,
+              "bottom": 2142.68,
+              "cx": -127.3507,
+              "cy": 2119.68,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -168.3507,
+              2119.68
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-52-jump",
+            "target": "i-4",
+            "side": "left",
+            "baseApproachY": 393.1468,
+            "finalApproachY": 361.1468,
+            "targetBox": {
+              "left": -244.2,
+              "right": -162.2,
+              "top": 402.1468,
+              "bottom": 448.1468,
+              "cx": -203.2,
+              "cy": 425.1468,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "upper-left",
+            "selectedPoint": [
+              -223.7,
+              413.6468
+            ],
+            "oldTargetPoint": [
+              -244.2,
+              425.1468
+            ],
+            "newTargetPoint": [
+              -223.7,
+              413.6468
+            ],
+            "oldFinalSegment": [
+              [
+                -244.2,
+                361.1468
+              ],
+              [
+                -244.2,
+                425.1468
+              ]
+            ],
+            "newFinalSegment": [
+              [
+                -244.2,
+                361.1468
+              ],
+              [
+                -223.7,
+                413.6468
+              ]
+            ],
+            "changed": true,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "north",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction north; expected west"
+            },
+            "newTargetAttachment": {
+              "portName": "upper-left",
+              "incidentDirection": "north-west",
+              "legal": true,
+              "reason": null
+            },
+            "wholeEdgeLegalBefore": false,
+            "wholeEdgeLegalAfter": false,
+            "unchangedSourceAttachment": {
+              "portName": "left",
+              "incidentDirection": "south",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction south; expected west"
+            }
+          }
+        ],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 1,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 1,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "subst:diagonal_divides",
+        "diamondLoopReturnCount": 4,
+        "changedCount": 1,
+        "changed": [
+          {
+            "edgeId": "i-79-jump",
+            "target": "i-31",
+            "side": "left",
+            "baseApproachY": 1851.1468,
+            "finalApproachY": 1819.1468,
+            "targetBox": {
+              "left": -244.2,
+              "right": -162.2,
+              "top": 1860.1468,
+              "bottom": 1906.1468,
+              "cx": -203.2,
+              "cy": 1883.1468,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "upper-left",
+            "selectedPoint": [
+              -223.7,
+              1871.6468
+            ],
+            "oldTargetPoint": [
+              -244.2,
+              1883.1468
+            ],
+            "newTargetPoint": [
+              -223.7,
+              1871.6468
+            ],
+            "oldFinalSegment": [
+              [
+                -244.2,
+                1819.1468
+              ],
+              [
+                -244.2,
+                1883.1468
+              ]
+            ],
+            "newFinalSegment": [
+              [
+                -244.2,
+                1819.1468
+              ],
+              [
+                -223.7,
+                1871.6468
+              ]
+            ],
+            "changed": true,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "north",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction north; expected west"
+            },
+            "newTargetAttachment": {
+              "portName": "upper-left",
+              "incidentDirection": "north-west",
+              "legal": true,
+              "reason": null
+            },
+            "wholeEdgeLegalBefore": false,
+            "wholeEdgeLegalAfter": false,
+            "unchangedSourceAttachment": {
+              "portName": "left",
+              "incidentDirection": "south",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction south; expected west"
+            }
+          }
+        ],
+        "decisions": [
+          {
+            "edgeId": "i-50-jump",
+            "target": "i-40",
+            "side": "left",
+            "baseApproachY": 2658.1912,
+            "finalApproachY": 2658.1912,
+            "targetBox": {
+              "left": -407.206,
+              "right": -325.206,
+              "top": 2635.1912,
+              "bottom": 2681.1912,
+              "cx": -366.206,
+              "cy": 2658.1912,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -407.206,
+              2658.1912
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-54-jump",
+            "target": "i-31",
+            "side": "left",
+            "baseApproachY": 1883.1468,
+            "finalApproachY": 1883.1468,
+            "targetBox": {
+              "left": -244.2,
+              "right": -162.2,
+              "top": 1860.1468,
+              "bottom": 1906.1468,
+              "cx": -203.2,
+              "cy": 1883.1468,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -244.2,
+              1883.1468
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-73-jump",
+            "target": "i-63",
+            "side": "left",
+            "baseApproachY": 3577.68,
+            "finalApproachY": 3577.68,
+            "targetBox": {
+              "left": -382.752,
+              "right": -300.752,
+              "top": 3554.68,
+              "bottom": 3600.68,
+              "cx": -341.752,
+              "cy": 3577.68,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -382.752,
+              3577.68
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-79-jump",
+            "target": "i-31",
+            "side": "left",
+            "baseApproachY": 1851.1468,
+            "finalApproachY": 1819.1468,
+            "targetBox": {
+              "left": -244.2,
+              "right": -162.2,
+              "top": 1860.1468,
+              "bottom": 1906.1468,
+              "cx": -203.2,
+              "cy": 1883.1468,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "upper-left",
+            "selectedPoint": [
+              -223.7,
+              1871.6468
+            ],
+            "oldTargetPoint": [
+              -244.2,
+              1883.1468
+            ],
+            "newTargetPoint": [
+              -223.7,
+              1871.6468
+            ],
+            "oldFinalSegment": [
+              [
+                -244.2,
+                1819.1468
+              ],
+              [
+                -244.2,
+                1883.1468
+              ]
+            ],
+            "newFinalSegment": [
+              [
+                -244.2,
+                1819.1468
+              ],
+              [
+                -223.7,
+                1871.6468
+              ]
+            ],
+            "changed": true,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "north",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction north; expected west"
+            },
+            "newTargetAttachment": {
+              "portName": "upper-left",
+              "incidentDirection": "north-west",
+              "legal": true,
+              "reason": null
+            },
+            "wholeEdgeLegalBefore": false,
+            "wholeEdgeLegalAfter": false,
+            "unchangedSourceAttachment": {
+              "portName": "left",
+              "incidentDirection": "south",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction south; expected west"
+            }
+          }
+        ],
+        "currentMetrics": {
+          "crossingCount": 1,
+          "edgeOverlapCount": 3,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 1,
+          "edgeOverlapCount": 3,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      }
+    ],
+    "allFixtures": [
+      {
+        "fixture": "zero",
+        "diamondLoopReturnCount": 0,
+        "changedCount": 0,
+        "changed": [],
+        "decisions": [],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "successor",
+        "diamondLoopReturnCount": 0,
+        "changedCount": 0,
+        "changed": [],
+        "decisions": [],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "predecessor",
+        "diamondLoopReturnCount": 1,
+        "changedCount": 0,
+        "changed": [],
+        "decisions": [
+          {
+            "edgeId": "i-5-jump",
+            "target": "i-2",
+            "side": "left",
+            "baseApproachY": 246,
+            "finalApproachY": 246,
+            "targetBox": {
+              "left": -41,
+              "right": 41,
+              "top": 223,
+              "bottom": 269,
+              "cx": 0,
+              "cy": 246,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -41,
+              246
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          }
+        ],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "constant(3)",
+        "diamondLoopReturnCount": 0,
+        "changedCount": 0,
+        "changed": [],
+        "decisions": [],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "projection(1,2)",
+        "diamondLoopReturnCount": 0,
+        "changedCount": 0,
+        "changed": [],
+        "decisions": [],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "add",
+        "diamondLoopReturnCount": 1,
+        "changedCount": 0,
+        "changed": [],
+        "decisions": [
+          {
+            "edgeId": "i-4-jump",
+            "target": "i-1",
+            "side": "left",
+            "baseApproachY": 164,
+            "finalApproachY": 164,
+            "targetBox": {
+              "left": -41,
+              "right": 41,
+              "top": 141,
+              "bottom": 187,
+              "cx": 0,
+              "cy": 164,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -41,
+              164
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          }
+        ],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "bounded_sub",
+        "diamondLoopReturnCount": 1,
+        "changedCount": 0,
+        "changed": [],
+        "decisions": [
+          {
+            "edgeId": "i-11-jump",
+            "target": "i-1",
+            "side": "left",
+            "baseApproachY": 164,
+            "finalApproachY": 164,
+            "targetBox": {
+              "left": -41,
+              "right": 41,
+              "top": 141,
+              "bottom": 187,
+              "cx": 0,
+              "cy": 164,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -41,
+              164
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          }
+        ],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "multiplication",
+        "diamondLoopReturnCount": 2,
+        "changedCount": 0,
+        "changed": [],
+        "decisions": [
+          {
+            "edgeId": "i-15-jump",
+            "target": "i-12",
+            "side": "left",
+            "baseApproachY": 1017.1468,
+            "finalApproachY": 1017.1468,
+            "targetBox": {
+              "left": -244.2,
+              "right": -162.2,
+              "top": 994.1468,
+              "bottom": 1040.1468,
+              "cx": -203.2,
+              "cy": 1017.1468,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -244.2,
+              1017.1468
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-18-jump",
+            "target": "i-5",
+            "side": "left",
+            "baseApproachY": 380,
+            "finalApproachY": 380,
+            "targetBox": {
+              "left": -41,
+              "right": 41,
+              "top": 357,
+              "bottom": 403,
+              "cx": 0,
+              "cy": 380,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -41,
+              380
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          }
+        ],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "exponentiation",
+        "diamondLoopReturnCount": 3,
+        "changedCount": 0,
+        "changed": [],
+        "decisions": [
+          {
+            "edgeId": "i-32-jump",
+            "target": "i-29",
+            "side": "left",
+            "baseApproachY": 2420.1912,
+            "finalApproachY": 2420.1912,
+            "targetBox": {
+              "left": -407.206,
+              "right": -325.206,
+              "top": 2397.1912,
+              "bottom": 2443.1912,
+              "cx": -366.206,
+              "cy": 2420.1912,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -407.206,
+              2420.1912
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-35-jump",
+            "target": "i-22",
+            "side": "left",
+            "baseApproachY": 1809.1468,
+            "finalApproachY": 1809.1468,
+            "targetBox": {
+              "left": -244.2,
+              "right": -162.2,
+              "top": 1786.1468,
+              "bottom": 1832.1468,
+              "cx": -203.2,
+              "cy": 1809.1468,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -244.2,
+              1809.1468
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-39-jump",
+            "target": "i-6",
+            "side": "left",
+            "baseApproachY": 434,
+            "finalApproachY": 434,
+            "targetBox": {
+              "left": -41,
+              "right": 41,
+              "top": 411,
+              "bottom": 457,
+              "cx": 0,
+              "cy": 434,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -41,
+              434
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          }
+        ],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "factorial",
+        "diamondLoopReturnCount": 3,
+        "changedCount": 0,
+        "changed": [],
+        "decisions": [
+          {
+            "edgeId": "i-32-jump",
+            "target": "i-29",
+            "side": "left",
+            "baseApproachY": 2420.1912,
+            "finalApproachY": 2420.1912,
+            "targetBox": {
+              "left": -407.206,
+              "right": -325.206,
+              "top": 2397.1912,
+              "bottom": 2443.1912,
+              "cx": -366.206,
+              "cy": 2420.1912,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -407.206,
+              2420.1912
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-35-jump",
+            "target": "i-22",
+            "side": "left",
+            "baseApproachY": 1809.1468,
+            "finalApproachY": 1809.1468,
+            "targetBox": {
+              "left": -244.2,
+              "right": -162.2,
+              "top": 1786.1468,
+              "bottom": 1832.1468,
+              "cx": -203.2,
+              "cy": 1809.1468,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -244.2,
+              1809.1468
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-39-jump",
+            "target": "i-6",
+            "side": "left",
+            "baseApproachY": 434,
+            "finalApproachY": 434,
+            "targetBox": {
+              "left": -41,
+              "right": 41,
+              "top": 411,
+              "bottom": 457,
+              "cx": 0,
+              "cy": 434,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -41,
+              434
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          }
+        ],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "geometric_sum",
+        "diamondLoopReturnCount": 5,
+        "changedCount": 0,
+        "changed": [],
+        "decisions": [
+          {
+            "edgeId": "i-182-jump",
+            "target": "i-179",
+            "side": "left",
+            "baseApproachY": 14736.8759,
+            "finalApproachY": 14736.8759,
+            "targetBox": {
+              "left": -538.8607,
+              "right": -456.8607,
+              "top": 14713.8759,
+              "bottom": 14759.8759,
+              "cx": -497.8607,
+              "cy": 14736.8759,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -538.8607,
+              14736.8759
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-185-jump",
+            "target": "i-172",
+            "side": "left",
+            "baseApproachY": 14146.1912,
+            "finalApproachY": 14146.1912,
+            "targetBox": {
+              "left": -407.206,
+              "right": -325.206,
+              "top": 14123.1912,
+              "bottom": 14169.1912,
+              "cx": -366.206,
+              "cy": 14146.1912,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -407.206,
+              14146.1912
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-189-jump",
+            "target": "i-156",
+            "side": "left",
+            "baseApproachY": 12797.1468,
+            "finalApproachY": 12797.1468,
+            "targetBox": {
+              "left": -244.2,
+              "right": -162.2,
+              "top": 12774.1468,
+              "bottom": 12820.1468,
+              "cx": -203.2,
+              "cy": 12797.1468,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -244.2,
+              12797.1468
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-202-jump",
+            "target": "i-199",
+            "side": "left",
+            "baseApproachY": 13654.1912,
+            "finalApproachY": 13654.1912,
+            "targetBox": {
+              "left": -81.194,
+              "right": 0.806,
+              "top": 13631.1912,
+              "bottom": 13677.1912,
+              "cx": -40.194,
+              "cy": 13654.1912,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -81.194,
+              13654.1912
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-206-jump",
+            "target": "i-6",
+            "side": "left",
+            "baseApproachY": 434,
+            "finalApproachY": 434,
+            "targetBox": {
+              "left": -41,
+              "right": 41,
+              "top": 411,
+              "bottom": 457,
+              "cx": 0,
+              "cy": 434,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -41,
+              434
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          }
+        ],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "divisor_count",
+        "diamondLoopReturnCount": 6,
+        "changedCount": 1,
+        "changed": [
+          {
+            "edgeId": "i-269-jump",
+            "target": "i-221",
+            "side": "left",
+            "baseApproachY": 16712.1912,
+            "finalApproachY": 16680.1912,
+            "targetBox": {
+              "left": -407.206,
+              "right": -325.206,
+              "top": 16721.1912,
+              "bottom": 16767.1912,
+              "cx": -366.206,
+              "cy": 16744.1912,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "upper-left",
+            "selectedPoint": [
+              -386.706,
+              16732.6912
+            ],
+            "oldTargetPoint": [
+              -407.206,
+              16744.1912
+            ],
+            "newTargetPoint": [
+              -386.706,
+              16732.6912
+            ],
+            "oldFinalSegment": [
+              [
+                -407.206,
+                16680.1912
+              ],
+              [
+                -407.206,
+                16744.1912
+              ]
+            ],
+            "newFinalSegment": [
+              [
+                -407.206,
+                16680.1912
+              ],
+              [
+                -386.706,
+                16732.6912
+              ]
+            ],
+            "changed": true,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "north",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction north; expected west"
+            },
+            "newTargetAttachment": {
+              "portName": "upper-left",
+              "incidentDirection": "north-west",
+              "legal": true,
+              "reason": null
+            },
+            "wholeEdgeLegalBefore": false,
+            "wholeEdgeLegalAfter": false,
+            "unchangedSourceAttachment": {
+              "portName": "left",
+              "incidentDirection": "south",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction south; expected west"
+            }
+          }
+        ],
+        "decisions": [
+          {
+            "edgeId": "i-240-jump",
+            "target": "i-230",
+            "side": "left",
+            "baseApproachY": 17498.8759,
+            "finalApproachY": 17498.8759,
+            "targetBox": {
+              "left": -538.8607,
+              "right": -456.8607,
+              "top": 17475.8759,
+              "bottom": 17521.8759,
+              "cx": -497.8607,
+              "cy": 17498.8759,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -538.8607,
+              17498.8759
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-244-jump",
+            "target": "i-221",
+            "side": "left",
+            "baseApproachY": 16744.1912,
+            "finalApproachY": 16744.1912,
+            "targetBox": {
+              "left": -407.206,
+              "right": -325.206,
+              "top": 16721.1912,
+              "bottom": 16767.1912,
+              "cx": -366.206,
+              "cy": 16744.1912,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -407.206,
+              16744.1912
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-263-jump",
+            "target": "i-253",
+            "side": "left",
+            "baseApproachY": 18398.1326,
+            "finalApproachY": 18398.1326,
+            "targetBox": {
+              "left": -532.16,
+              "right": -450.16,
+              "top": 18375.1326,
+              "bottom": 18421.1326,
+              "cx": -491.16,
+              "cy": 18398.1326,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -532.16,
+              18398.1326
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-269-jump",
+            "target": "i-221",
+            "side": "left",
+            "baseApproachY": 16712.1912,
+            "finalApproachY": 16680.1912,
+            "targetBox": {
+              "left": -407.206,
+              "right": -325.206,
+              "top": 16721.1912,
+              "bottom": 16767.1912,
+              "cx": -366.206,
+              "cy": 16744.1912,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "upper-left",
+            "selectedPoint": [
+              -386.706,
+              16732.6912
+            ],
+            "oldTargetPoint": [
+              -407.206,
+              16744.1912
+            ],
+            "newTargetPoint": [
+              -386.706,
+              16732.6912
+            ],
+            "oldFinalSegment": [
+              [
+                -407.206,
+                16680.1912
+              ],
+              [
+                -407.206,
+                16744.1912
+              ]
+            ],
+            "newFinalSegment": [
+              [
+                -407.206,
+                16680.1912
+              ],
+              [
+                -386.706,
+                16732.6912
+              ]
+            ],
+            "changed": true,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "north",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction north; expected west"
+            },
+            "newTargetAttachment": {
+              "portName": "upper-left",
+              "incidentDirection": "north-west",
+              "legal": true,
+              "reason": null
+            },
+            "wholeEdgeLegalBefore": false,
+            "wholeEdgeLegalAfter": false,
+            "unchangedSourceAttachment": {
+              "portName": "left",
+              "incidentDirection": "south",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction south; expected west"
+            }
+          },
+          {
+            "edgeId": "i-286-jump",
+            "target": "i-283",
+            "side": "left",
+            "baseApproachY": 19457.0378,
+            "finalApproachY": 19457.0378,
+            "targetBox": {
+              "left": -331.16,
+              "right": -249.16,
+              "top": 19434.0378,
+              "bottom": 19480.0378,
+              "cx": -290.16,
+              "cy": 19457.0378,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -331.16,
+              19457.0378
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-290-jump",
+            "target": "i-57",
+            "side": "left",
+            "baseApproachY": 3188,
+            "finalApproachY": 3188,
+            "targetBox": {
+              "left": -41,
+              "right": 41,
+              "top": 3165,
+              "bottom": 3211,
+              "cx": 0,
+              "cy": 3188,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -41,
+              3188
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          }
+        ],
+        "currentMetrics": {
+          "crossingCount": 1,
+          "edgeOverlapCount": 1,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 1,
+          "edgeOverlapCount": 1,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "characteristic:leq",
+        "diamondLoopReturnCount": 1,
+        "changedCount": 0,
+        "changed": [],
+        "decisions": [
+          {
+            "edgeId": "i-19-jump",
+            "target": "i-9",
+            "side": "left",
+            "baseApproachY": 596,
+            "finalApproachY": 596,
+            "targetBox": {
+              "left": -41,
+              "right": 41,
+              "top": 573,
+              "bottom": 619,
+              "cx": 0,
+              "cy": 596,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -41,
+              596
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          }
+        ],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "characteristic:lt",
+        "diamondLoopReturnCount": 1,
+        "changedCount": 0,
+        "changed": [],
+        "decisions": [
+          {
+            "edgeId": "i-21-jump",
+            "target": "i-11",
+            "side": "left",
+            "baseApproachY": 704,
+            "finalApproachY": 704,
+            "targetBox": {
+              "left": -41,
+              "right": 41,
+              "top": 681,
+              "bottom": 727,
+              "cx": 0,
+              "cy": 704,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -41,
+              704
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          }
+        ],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "characteristic:eq",
+        "diamondLoopReturnCount": 2,
+        "changedCount": 0,
+        "changed": [],
+        "decisions": [
+          {
+            "edgeId": "i-19-jump",
+            "target": "i-9",
+            "side": "left",
+            "baseApproachY": 596,
+            "finalApproachY": 596,
+            "targetBox": {
+              "left": -41,
+              "right": 41,
+              "top": 573,
+              "bottom": 619,
+              "cx": 0,
+              "cy": 596,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -41,
+              596
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-39-jump",
+            "target": "i-29",
+            "side": "left",
+            "baseApproachY": 1479.1468,
+            "finalApproachY": 1479.1468,
+            "targetBox": {
+              "left": 162.2,
+              "right": 244.2,
+              "top": 1456.1468,
+              "bottom": 1502.1468,
+              "cx": 203.2,
+              "cy": 1479.1468,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              162.2,
+              1479.1468
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          }
+        ],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 1,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 1,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "characteristic:divides",
+        "diamondLoopReturnCount": 4,
+        "changedCount": 1,
+        "changed": [
+          {
+            "edgeId": "i-52-jump",
+            "target": "i-4",
+            "side": "left",
+            "baseApproachY": 393.1468,
+            "finalApproachY": 361.1468,
+            "targetBox": {
+              "left": -244.2,
+              "right": -162.2,
+              "top": 402.1468,
+              "bottom": 448.1468,
+              "cx": -203.2,
+              "cy": 425.1468,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "upper-left",
+            "selectedPoint": [
+              -223.7,
+              413.6468
+            ],
+            "oldTargetPoint": [
+              -244.2,
+              425.1468
+            ],
+            "newTargetPoint": [
+              -223.7,
+              413.6468
+            ],
+            "oldFinalSegment": [
+              [
+                -244.2,
+                361.1468
+              ],
+              [
+                -244.2,
+                425.1468
+              ]
+            ],
+            "newFinalSegment": [
+              [
+                -244.2,
+                361.1468
+              ],
+              [
+                -223.7,
+                413.6468
+              ]
+            ],
+            "changed": true,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "north",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction north; expected west"
+            },
+            "newTargetAttachment": {
+              "portName": "upper-left",
+              "incidentDirection": "north-west",
+              "legal": true,
+              "reason": null
+            },
+            "wholeEdgeLegalBefore": false,
+            "wholeEdgeLegalAfter": false,
+            "unchangedSourceAttachment": {
+              "portName": "left",
+              "incidentDirection": "south",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction south; expected west"
+            }
+          }
+        ],
+        "decisions": [
+          {
+            "edgeId": "i-23-jump",
+            "target": "i-13",
+            "side": "left",
+            "baseApproachY": 1200.1912,
+            "finalApproachY": 1200.1912,
+            "targetBox": {
+              "left": -407.206,
+              "right": -325.206,
+              "top": 1177.1912,
+              "bottom": 1223.1912,
+              "cx": -366.206,
+              "cy": 1200.1912,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -407.206,
+              1200.1912
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-27-jump",
+            "target": "i-4",
+            "side": "left",
+            "baseApproachY": 425.1468,
+            "finalApproachY": 425.1468,
+            "targetBox": {
+              "left": -244.2,
+              "right": -162.2,
+              "top": 402.1468,
+              "bottom": 448.1468,
+              "cx": -203.2,
+              "cy": 425.1468,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -244.2,
+              425.1468
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-46-jump",
+            "target": "i-36",
+            "side": "left",
+            "baseApproachY": 2119.68,
+            "finalApproachY": 2119.68,
+            "targetBox": {
+              "left": -168.3507,
+              "right": -86.3507,
+              "top": 2096.68,
+              "bottom": 2142.68,
+              "cx": -127.3507,
+              "cy": 2119.68,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -168.3507,
+              2119.68
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-52-jump",
+            "target": "i-4",
+            "side": "left",
+            "baseApproachY": 393.1468,
+            "finalApproachY": 361.1468,
+            "targetBox": {
+              "left": -244.2,
+              "right": -162.2,
+              "top": 402.1468,
+              "bottom": 448.1468,
+              "cx": -203.2,
+              "cy": 425.1468,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "upper-left",
+            "selectedPoint": [
+              -223.7,
+              413.6468
+            ],
+            "oldTargetPoint": [
+              -244.2,
+              425.1468
+            ],
+            "newTargetPoint": [
+              -223.7,
+              413.6468
+            ],
+            "oldFinalSegment": [
+              [
+                -244.2,
+                361.1468
+              ],
+              [
+                -244.2,
+                425.1468
+              ]
+            ],
+            "newFinalSegment": [
+              [
+                -244.2,
+                361.1468
+              ],
+              [
+                -223.7,
+                413.6468
+              ]
+            ],
+            "changed": true,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "north",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction north; expected west"
+            },
+            "newTargetAttachment": {
+              "portName": "upper-left",
+              "incidentDirection": "north-west",
+              "legal": true,
+              "reason": null
+            },
+            "wholeEdgeLegalBefore": false,
+            "wholeEdgeLegalAfter": false,
+            "unchangedSourceAttachment": {
+              "portName": "left",
+              "incidentDirection": "south",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction south; expected west"
+            }
+          }
+        ],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 1,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 1,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "compose(succ,succ)",
+        "diamondLoopReturnCount": 0,
+        "changedCount": 0,
+        "changed": [],
+        "decisions": [],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "primrec(zero,succ)",
+        "diamondLoopReturnCount": 1,
+        "changedCount": 0,
+        "changed": [],
+        "decisions": [
+          {
+            "edgeId": "i-13-jump",
+            "target": "i-5",
+            "side": "left",
+            "baseApproachY": 380,
+            "finalApproachY": 380,
+            "targetBox": {
+              "left": -41,
+              "right": 41,
+              "top": 357,
+              "bottom": 403,
+              "cx": 0,
+              "cy": 380,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -41,
+              380
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          }
+        ],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "minimization(add)",
+        "diamondLoopReturnCount": 1,
+        "changedCount": 0,
+        "changed": [],
+        "decisions": [
+          {
+            "edgeId": "i-11-jump",
+            "target": "i-8",
+            "side": "right",
+            "baseApproachY": 542,
+            "finalApproachY": 542,
+            "targetBox": {
+              "left": -41,
+              "right": 41,
+              "top": 519,
+              "bottom": 565,
+              "cx": 0,
+              "cy": 542,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "right",
+            "selectedPoint": [
+              41,
+              542
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "right",
+              "incidentDirection": "east",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          }
+        ],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "subst:double",
+        "diamondLoopReturnCount": 1,
+        "changedCount": 0,
+        "changed": [],
+        "decisions": [
+          {
+            "edgeId": "i-17-jump",
+            "target": "i-14",
+            "side": "left",
+            "baseApproachY": 866,
+            "finalApproachY": 866,
+            "targetBox": {
+              "left": -41,
+              "right": 41,
+              "top": 843,
+              "bottom": 889,
+              "cx": 0,
+              "cy": 866,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -41,
+              866
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          }
+        ],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "subst:square",
+        "diamondLoopReturnCount": 2,
+        "changedCount": 0,
+        "changed": [],
+        "decisions": [
+          {
+            "edgeId": "i-33-jump",
+            "target": "i-30",
+            "side": "left",
+            "baseApproachY": 1989.1468,
+            "finalApproachY": 1989.1468,
+            "targetBox": {
+              "left": -244.2,
+              "right": -162.2,
+              "top": 1966.1468,
+              "bottom": 2012.1468,
+              "cx": -203.2,
+              "cy": 1989.1468,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -244.2,
+              1989.1468
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-36-jump",
+            "target": "i-23",
+            "side": "left",
+            "baseApproachY": 1352,
+            "finalApproachY": 1352,
+            "targetBox": {
+              "left": -41,
+              "right": 41,
+              "top": 1329,
+              "bottom": 1375,
+              "cx": 0,
+              "cy": 1352,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -41,
+              1352
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          }
+        ],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "subst:diagonal_divides",
+        "diamondLoopReturnCount": 4,
+        "changedCount": 1,
+        "changed": [
+          {
+            "edgeId": "i-79-jump",
+            "target": "i-31",
+            "side": "left",
+            "baseApproachY": 1851.1468,
+            "finalApproachY": 1819.1468,
+            "targetBox": {
+              "left": -244.2,
+              "right": -162.2,
+              "top": 1860.1468,
+              "bottom": 1906.1468,
+              "cx": -203.2,
+              "cy": 1883.1468,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "upper-left",
+            "selectedPoint": [
+              -223.7,
+              1871.6468
+            ],
+            "oldTargetPoint": [
+              -244.2,
+              1883.1468
+            ],
+            "newTargetPoint": [
+              -223.7,
+              1871.6468
+            ],
+            "oldFinalSegment": [
+              [
+                -244.2,
+                1819.1468
+              ],
+              [
+                -244.2,
+                1883.1468
+              ]
+            ],
+            "newFinalSegment": [
+              [
+                -244.2,
+                1819.1468
+              ],
+              [
+                -223.7,
+                1871.6468
+              ]
+            ],
+            "changed": true,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "north",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction north; expected west"
+            },
+            "newTargetAttachment": {
+              "portName": "upper-left",
+              "incidentDirection": "north-west",
+              "legal": true,
+              "reason": null
+            },
+            "wholeEdgeLegalBefore": false,
+            "wholeEdgeLegalAfter": false,
+            "unchangedSourceAttachment": {
+              "portName": "left",
+              "incidentDirection": "south",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction south; expected west"
+            }
+          }
+        ],
+        "decisions": [
+          {
+            "edgeId": "i-50-jump",
+            "target": "i-40",
+            "side": "left",
+            "baseApproachY": 2658.1912,
+            "finalApproachY": 2658.1912,
+            "targetBox": {
+              "left": -407.206,
+              "right": -325.206,
+              "top": 2635.1912,
+              "bottom": 2681.1912,
+              "cx": -366.206,
+              "cy": 2658.1912,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -407.206,
+              2658.1912
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-54-jump",
+            "target": "i-31",
+            "side": "left",
+            "baseApproachY": 1883.1468,
+            "finalApproachY": 1883.1468,
+            "targetBox": {
+              "left": -244.2,
+              "right": -162.2,
+              "top": 1860.1468,
+              "bottom": 1906.1468,
+              "cx": -203.2,
+              "cy": 1883.1468,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -244.2,
+              1883.1468
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-73-jump",
+            "target": "i-63",
+            "side": "left",
+            "baseApproachY": 3577.68,
+            "finalApproachY": 3577.68,
+            "targetBox": {
+              "left": -382.752,
+              "right": -300.752,
+              "top": 3554.68,
+              "bottom": 3600.68,
+              "cx": -341.752,
+              "cy": 3577.68,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -382.752,
+              3577.68
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          },
+          {
+            "edgeId": "i-79-jump",
+            "target": "i-31",
+            "side": "left",
+            "baseApproachY": 1851.1468,
+            "finalApproachY": 1819.1468,
+            "targetBox": {
+              "left": -244.2,
+              "right": -162.2,
+              "top": 1860.1468,
+              "bottom": 1906.1468,
+              "cx": -203.2,
+              "cy": 1883.1468,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "upper-left",
+            "selectedPoint": [
+              -223.7,
+              1871.6468
+            ],
+            "oldTargetPoint": [
+              -244.2,
+              1883.1468
+            ],
+            "newTargetPoint": [
+              -223.7,
+              1871.6468
+            ],
+            "oldFinalSegment": [
+              [
+                -244.2,
+                1819.1468
+              ],
+              [
+                -244.2,
+                1883.1468
+              ]
+            ],
+            "newFinalSegment": [
+              [
+                -244.2,
+                1819.1468
+              ],
+              [
+                -223.7,
+                1871.6468
+              ]
+            ],
+            "changed": true,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "north",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction north; expected west"
+            },
+            "newTargetAttachment": {
+              "portName": "upper-left",
+              "incidentDirection": "north-west",
+              "legal": true,
+              "reason": null
+            },
+            "wholeEdgeLegalBefore": false,
+            "wholeEdgeLegalAfter": false,
+            "unchangedSourceAttachment": {
+              "portName": "left",
+              "incidentDirection": "south",
+              "legal": false,
+              "reason": "legal port left, illegal incident direction south; expected west"
+            }
+          }
+        ],
+        "currentMetrics": {
+          "crossingCount": 1,
+          "edgeOverlapCount": 3,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 1,
+          "edgeOverlapCount": 3,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "subst:add_succ",
+        "diamondLoopReturnCount": 1,
+        "changedCount": 0,
+        "changed": [],
+        "decisions": [
+          {
+            "edgeId": "i-35-jump",
+            "target": "i-32",
+            "side": "left",
+            "baseApproachY": 1838,
+            "finalApproachY": 1838,
+            "targetBox": {
+              "left": -41,
+              "right": 41,
+              "top": 1815,
+              "bottom": 1861,
+              "cx": 0,
+              "cy": 1838,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -41,
+              1838
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          }
+        ],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      },
+      {
+        "fixture": "subst:succ_add",
+        "diamondLoopReturnCount": 1,
+        "changedCount": 0,
+        "changed": [],
+        "decisions": [
+          {
+            "edgeId": "i-9-jump",
+            "target": "i-6",
+            "side": "left",
+            "baseApproachY": 434,
+            "finalApproachY": 434,
+            "targetBox": {
+              "left": -41,
+              "right": 41,
+              "top": 411,
+              "bottom": 457,
+              "cx": 0,
+              "cy": 434,
+              "w": 82,
+              "h": 46
+            },
+            "selectedPort": "left",
+            "selectedPoint": [
+              -41,
+              434
+            ],
+            "changed": false,
+            "oldTargetAttachment": {
+              "portName": "left",
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "newTargetAttachment": null,
+            "unchangedSourceAttachment": null
+          }
+        ],
+        "currentMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "candidateMetrics": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        },
+        "metricDelta": {
+          "crossingCount": 0,
+          "edgeOverlapCount": 0,
+          "nodeOverlapCount": 0,
+          "nodeEdgeIntrusionCount": 0
+        }
+      }
+    ],
+    "note": "Enumeration uses current production SketchV4 placements/routes at the fixed selected orientation. It does not feed the diagnostic candidate back into orientation selection."
+  }
+}

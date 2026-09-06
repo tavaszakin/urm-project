@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SketchV4 experiment history</title>
+  <style>
+    :root { color-scheme: light; font: 14px/1.5 system-ui, sans-serif; color: #172033; background: #eef2f7; }
+    body { max-width: 900px; margin: 32px auto; padding: 0 20px; }
+    main { padding: 24px 28px; background: #fff; border: 1px solid #cad3df; border-radius: 8px; }
+    h1 { margin-top: 0; }
+    code { background: #f1f5f9; padding: 2px 5px; border-radius: 3px; }
+    li { margin: 6px 0; }
+    a { color: #2457a6; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>SketchV4 experiment history</h1>
+    <p>This page is intentionally static: it imports no geometry code and parses no reports.</p>
+    <p>The complete byte-preserved workspace snapshot and experiment index are outside the Vite frontend tree at <code>experiments/sketchv4/archive-2026-09-05/</code>.</p>
+    <ul>
+      <li><code>INDEX.md</code> — hypotheses, commits, results, status, geometry hashes, and artifact paths.</li>
+      <li><code>flow-layout-probes/</code> — all completed probe modules, reports, overlays, historical viewer, and checkpoint manifests.</li>
+      <li><code>programs.json</code> — fixture input snapshot needed to reproduce the archived probes.</li>
+    </ul>
+    <p>Historical execution is opt-in: follow <code>README.md</code> in the archive to restore a probe into an isolated checkpoint worktree.</p>
+    <p><a href="./ordinary_halt_experiment.html">Return to the current checkpoint viewer</a></p>
+  </main>
+</body>
+</html>

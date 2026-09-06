@@ -1,0 +1,2995 @@
+{
+  "experiment": "bounded_sub i-22 forced-flip single-variable comparison",
+  "checkpoint": {
+    "commit": "9f166f24721e7125ec9c0105e8960c6273d8d932",
+    "expectedBaselineSha256": "3730839d2267f10d1878cf1404da003b08e345cb049f3ed48144cce1142efb65"
+  },
+  "freeze": {
+    "productionFilesChanged": false,
+    "orientationScoringChanged": false,
+    "explicitOrientationChange": [
+      {
+        "id": "i-22",
+        "before": "default",
+        "after": "flipped"
+      }
+    ],
+    "ordinaryHaltRetained": true,
+    "composedLoopEndpointGrammarRetained": true,
+    "adaptiveBranchRaysRetained": true,
+    "routingAndPortsRerunWithoutRuleChanges": true,
+    "automaticRepairUsed": false
+  },
+  "normalOrientationEvaluationForI22": {
+    "forkId": "i-22",
+    "bottomUpEvaluationOrder": [
+      "i-15",
+      "i-12",
+      "i-22",
+      "i-10"
+    ],
+    "row": {
+      "realForkId": "i-22",
+      "defaultBit": "default",
+      "v4AssignedBit": "default",
+      "isPinned": false,
+      "costDefault": 0,
+      "costFlipped": 0,
+      "chosenCost": 0,
+      "tieBreakReason": "tie -> default",
+      "strictImprovement": false,
+      "parentRealFork": "i-10",
+      "childRealForks": []
+    },
+    "costDefinition": "node-node overlaps + proper edge-edge crossings",
+    "unrelatedNodeEdgeIntrusionsScored": false,
+    "defaultCandidate": {
+      "orientation": {
+        "i-10": {
+          "no": "left",
+          "yes": "right"
+        },
+        "i-12": {
+          "no": "left",
+          "yes": "right"
+        },
+        "i-15": {
+          "no": "left",
+          "yes": "right"
+        },
+        "i-22": {
+          "no": "left",
+          "yes": "right"
+        }
+      },
+      "productionCost": 0,
+      "productionDefects": [],
+      "diagnostics": {
+        "productionDefects": [],
+        "crossings": [],
+        "edgeOverlaps": [],
+        "nodeOverlaps": [],
+        "unrelatedNodeEdgeIntrusions": [
+          {
+            "nodeId": "i-26",
+            "edgeId": "i-24-jump",
+            "nodeBox": {
+              "left": 322.206,
+              "right": 410.206,
+              "top": 1063.1912457533895,
+              "bottom": 1093.1912457533895
+            },
+            "segmentIndex": 0,
+            "segmentStart": [
+              84.19399999999999,
+              1078.1912457533895
+            ],
+            "segmentEnd": [
+              450,
+              1078.1912457533895
+            ],
+            "orientation": "horizontal",
+            "intersectionInterval": [
+              [
+                322.206,
+                1078.1912457533895
+              ],
+              [
+                410.206,
+                1078.1912457533895
+              ]
+            ],
+            "parameterInterval": [
+              0.650650891456127,
+              0.8912155623472552
+            ],
+            "crossesCompletelyThrough": true,
+            "penetrationKind": "crosses-completely-through"
+          }
+        ],
+        "illegalAttachments": [
+          {
+            "edgeId": "i-10-yes",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-10",
+              "portName": "lower-right",
+              "portPoint": [
+                20.5,
+                661.5
+              ],
+              "incidentDirection": "south-east",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-21",
+              "portName": "top",
+              "portPoint": [
+                203.2,
+                780.1467672771852
+              ],
+              "incidentDirection": "north-west",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-west; expected north"
+            }
+          },
+          {
+            "edgeId": "i-10-no",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-10",
+              "portName": "lower-left",
+              "portPoint": [
+                -20.5,
+                661.5
+              ],
+              "incidentDirection": "south-west",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-11",
+              "portName": "top",
+              "portPoint": [
+                -203.2,
+                780.1467672771852
+              ],
+              "incidentDirection": "north-east",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-east; expected north"
+            }
+          },
+          {
+            "edgeId": "i-12-no",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-12",
+              "portName": "lower-left",
+              "portPoint": [
+                -223.7,
+                888.6467672771852
+              ],
+              "incidentDirection": "south-west",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-13",
+              "portName": "top",
+              "portPoint": [
+                -366.206,
+                981.1912457533896
+              ],
+              "incidentDirection": "north-east",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-east; expected north"
+            }
+          },
+          {
+            "edgeId": "i-15-yes",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-15",
+              "portName": "lower-right",
+              "portPoint": [
+                -345.706,
+                1171.6912457533895
+              ],
+              "incidentDirection": "south-east",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-18",
+              "portName": "top",
+              "portPoint": [
+                -234.55132000000003,
+                1243.875938964829
+              ],
+              "incidentDirection": "north-west",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-west; expected north"
+            }
+          },
+          {
+            "edgeId": "i-15-no",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-15",
+              "portName": "lower-left",
+              "portPoint": [
+                -386.706,
+                1171.6912457533895
+              ],
+              "incidentDirection": "south-west",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-16",
+              "portName": "top",
+              "portPoint": [
+                -497.86068,
+                1243.875938964829
+              ],
+              "incidentDirection": "north-east",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-east; expected north"
+            }
+          },
+          {
+            "edgeId": "i-22-yes",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-22",
+              "portName": "lower-right",
+              "portPoint": [
+                223.7,
+                888.6467672771852
+              ],
+              "incidentDirection": "south-east",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-25",
+              "portName": "top",
+              "portPoint": [
+                366.206,
+                981.1912457533896
+              ],
+              "incidentDirection": "north-west",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-west; expected north"
+            }
+          },
+          {
+            "edgeId": "i-22-no",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-22",
+              "portName": "lower-left",
+              "portPoint": [
+                182.7,
+                888.6467672771852
+              ],
+              "incidentDirection": "south-west",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-23",
+              "portName": "top",
+              "portPoint": [
+                40.19399999999999,
+                981.1912457533896
+              ],
+              "incidentDirection": "north-east",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-east; expected north"
+            }
+          }
+        ]
+      },
+      "attachmentLegality": {
+        "edgeCount": 31,
+        "legalEdgeCount": 24,
+        "illegalEdgeCount": 7,
+        "illegalEdges": [
+          {
+            "edgeId": "i-10-yes",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-10",
+              "portName": "lower-right",
+              "portPoint": [
+                20.5,
+                661.5
+              ],
+              "incidentDirection": "south-east",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-21",
+              "portName": "top",
+              "portPoint": [
+                203.2,
+                780.1467672771852
+              ],
+              "incidentDirection": "north-west",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-west; expected north"
+            }
+          },
+          {
+            "edgeId": "i-10-no",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-10",
+              "portName": "lower-left",
+              "portPoint": [
+                -20.5,
+                661.5
+              ],
+              "incidentDirection": "south-west",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-11",
+              "portName": "top",
+              "portPoint": [
+                -203.2,
+                780.1467672771852
+              ],
+              "incidentDirection": "north-east",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-east; expected north"
+            }
+          },
+          {
+            "edgeId": "i-12-no",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-12",
+              "portName": "lower-left",
+              "portPoint": [
+                -223.7,
+                888.6467672771852
+              ],
+              "incidentDirection": "south-west",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-13",
+              "portName": "top",
+              "portPoint": [
+                -366.206,
+                981.1912457533896
+              ],
+              "incidentDirection": "north-east",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-east; expected north"
+            }
+          },
+          {
+            "edgeId": "i-15-yes",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-15",
+              "portName": "lower-right",
+              "portPoint": [
+                -345.706,
+                1171.6912457533895
+              ],
+              "incidentDirection": "south-east",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-18",
+              "portName": "top",
+              "portPoint": [
+                -234.55132000000003,
+                1243.875938964829
+              ],
+              "incidentDirection": "north-west",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-west; expected north"
+            }
+          },
+          {
+            "edgeId": "i-15-no",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-15",
+              "portName": "lower-left",
+              "portPoint": [
+                -386.706,
+                1171.6912457533895
+              ],
+              "incidentDirection": "south-west",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-16",
+              "portName": "top",
+              "portPoint": [
+                -497.86068,
+                1243.875938964829
+              ],
+              "incidentDirection": "north-east",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-east; expected north"
+            }
+          },
+          {
+            "edgeId": "i-22-yes",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-22",
+              "portName": "lower-right",
+              "portPoint": [
+                223.7,
+                888.6467672771852
+              ],
+              "incidentDirection": "south-east",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-25",
+              "portName": "top",
+              "portPoint": [
+                366.206,
+                981.1912457533896
+              ],
+              "incidentDirection": "north-west",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-west; expected north"
+            }
+          },
+          {
+            "edgeId": "i-22-no",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-22",
+              "portName": "lower-left",
+              "portPoint": [
+                182.7,
+                888.6467672771852
+              ],
+              "incidentDirection": "south-west",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-23",
+              "portName": "top",
+              "portPoint": [
+                40.19399999999999,
+                981.1912457533896
+              ],
+              "incidentDirection": "north-east",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-east; expected north"
+            }
+          }
+        ],
+        "loopReturnEdgeCount": 3,
+        "legalLoopReturnEdgeCount": 3,
+        "loopReturnEdges": [
+          {
+            "edgeId": "i-17-jump",
+            "edgeRole": "loop-return",
+            "routeFamily": "loop-return",
+            "legal": true,
+            "source": {
+              "nodeId": "i-17",
+              "portName": "left",
+              "portPoint": [
+                -541.86068,
+                1340.875938964829
+              ],
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-13",
+              "portName": "left",
+              "portPoint": [
+                -410.206,
+                996.1912457533896
+              ],
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            }
+          },
+          {
+            "edgeId": "i-20-jump",
+            "edgeRole": "loop-return",
+            "routeFamily": "loop-return",
+            "legal": true,
+            "source": {
+              "nodeId": "i-20",
+              "portName": "left",
+              "portPoint": [
+                -278.55132000000003,
+                1422.875938964829
+              ],
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-10",
+              "portName": "left",
+              "portPoint": [
+                -41,
+                650
+              ],
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            }
+          },
+          {
+            "edgeId": "i-24-jump",
+            "edgeRole": "loop-return",
+            "routeFamily": "loop-return",
+            "legal": true,
+            "source": {
+              "nodeId": "i-24",
+              "portName": "right",
+              "portPoint": [
+                84.19399999999999,
+                1078.1912457533895
+              ],
+              "incidentDirection": "east",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-2",
+              "portName": "right",
+              "portPoint": [
+                44,
+                190
+              ],
+              "incidentDirection": "east",
+              "legal": true,
+              "reason": null
+            }
+          }
+        ]
+      },
+      "focusGeometry": {
+        "i24JumpRoute": {
+          "edgeId": "i-24-jump",
+          "source": "i-24",
+          "target": "i-2",
+          "edgeRole": "loop-return",
+          "routeFamily": "loop-return",
+          "connectorKind": null,
+          "portPolicyCase": "loop-return",
+          "sourcePort": [
+            84.19399999999999,
+            1078.1912457533895
+          ],
+          "targetPort": [
+            44,
+            190
+          ],
+          "points": [
+            [
+              84.19399999999999,
+              1078.1912457533895
+            ],
+            [
+              450,
+              1078.1912457533895
+            ],
+            [
+              450,
+              190
+            ],
+            [
+              44,
+              190
+            ]
+          ]
+        },
+        "i26Box": {
+          "nodeId": "i-26",
+          "left": 322.206,
+          "right": 410.206,
+          "top": 1063.1912457533895,
+          "bottom": 1093.1912457533895,
+          "cx": 366.206,
+          "cy": 1078.1912457533895,
+          "w": 88,
+          "h": 30
+        }
+      }
+    },
+    "flippedCandidate": {
+      "orientation": {
+        "i-10": {
+          "no": "left",
+          "yes": "right"
+        },
+        "i-12": {
+          "no": "left",
+          "yes": "right"
+        },
+        "i-15": {
+          "no": "left",
+          "yes": "right"
+        },
+        "i-22": {
+          "no": "right",
+          "yes": "left"
+        }
+      },
+      "productionCost": 0,
+      "productionDefects": [],
+      "diagnostics": {
+        "productionDefects": [],
+        "crossings": [],
+        "edgeOverlaps": [],
+        "nodeOverlaps": [],
+        "unrelatedNodeEdgeIntrusions": [],
+        "illegalAttachments": [
+          {
+            "edgeId": "i-10-yes",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-10",
+              "portName": "lower-right",
+              "portPoint": [
+                20.5,
+                661.5
+              ],
+              "incidentDirection": "south-east",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-21",
+              "portName": "top",
+              "portPoint": [
+                203.2,
+                780.1467672771852
+              ],
+              "incidentDirection": "north-west",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-west; expected north"
+            }
+          },
+          {
+            "edgeId": "i-10-no",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-10",
+              "portName": "lower-left",
+              "portPoint": [
+                -20.5,
+                661.5
+              ],
+              "incidentDirection": "south-west",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-11",
+              "portName": "top",
+              "portPoint": [
+                -203.2,
+                780.1467672771852
+              ],
+              "incidentDirection": "north-east",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-east; expected north"
+            }
+          },
+          {
+            "edgeId": "i-12-no",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-12",
+              "portName": "lower-left",
+              "portPoint": [
+                -223.7,
+                888.6467672771852
+              ],
+              "incidentDirection": "south-west",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-13",
+              "portName": "top",
+              "portPoint": [
+                -366.206,
+                981.1912457533896
+              ],
+              "incidentDirection": "north-east",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-east; expected north"
+            }
+          },
+          {
+            "edgeId": "i-15-yes",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-15",
+              "portName": "lower-right",
+              "portPoint": [
+                -345.706,
+                1171.6912457533895
+              ],
+              "incidentDirection": "south-east",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-18",
+              "portName": "top",
+              "portPoint": [
+                -234.55132000000003,
+                1243.875938964829
+              ],
+              "incidentDirection": "north-west",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-west; expected north"
+            }
+          },
+          {
+            "edgeId": "i-15-no",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-15",
+              "portName": "lower-left",
+              "portPoint": [
+                -386.706,
+                1171.6912457533895
+              ],
+              "incidentDirection": "south-west",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-16",
+              "portName": "top",
+              "portPoint": [
+                -497.86068,
+                1243.875938964829
+              ],
+              "incidentDirection": "north-east",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-east; expected north"
+            }
+          },
+          {
+            "edgeId": "i-22-yes",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-22",
+              "portName": "lower-left",
+              "portPoint": [
+                182.7,
+                888.6467672771852
+              ],
+              "incidentDirection": "south-west",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-25",
+              "portName": "top",
+              "portPoint": [
+                40.19399999999999,
+                981.1912457533896
+              ],
+              "incidentDirection": "north-east",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-east; expected north"
+            }
+          },
+          {
+            "edgeId": "i-22-no",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-22",
+              "portName": "lower-right",
+              "portPoint": [
+                223.7,
+                888.6467672771852
+              ],
+              "incidentDirection": "south-east",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-23",
+              "portName": "top",
+              "portPoint": [
+                366.206,
+                981.1912457533896
+              ],
+              "incidentDirection": "north-west",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-west; expected north"
+            }
+          }
+        ]
+      },
+      "attachmentLegality": {
+        "edgeCount": 31,
+        "legalEdgeCount": 24,
+        "illegalEdgeCount": 7,
+        "illegalEdges": [
+          {
+            "edgeId": "i-10-yes",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-10",
+              "portName": "lower-right",
+              "portPoint": [
+                20.5,
+                661.5
+              ],
+              "incidentDirection": "south-east",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-21",
+              "portName": "top",
+              "portPoint": [
+                203.2,
+                780.1467672771852
+              ],
+              "incidentDirection": "north-west",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-west; expected north"
+            }
+          },
+          {
+            "edgeId": "i-10-no",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-10",
+              "portName": "lower-left",
+              "portPoint": [
+                -20.5,
+                661.5
+              ],
+              "incidentDirection": "south-west",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-11",
+              "portName": "top",
+              "portPoint": [
+                -203.2,
+                780.1467672771852
+              ],
+              "incidentDirection": "north-east",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-east; expected north"
+            }
+          },
+          {
+            "edgeId": "i-12-no",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-12",
+              "portName": "lower-left",
+              "portPoint": [
+                -223.7,
+                888.6467672771852
+              ],
+              "incidentDirection": "south-west",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-13",
+              "portName": "top",
+              "portPoint": [
+                -366.206,
+                981.1912457533896
+              ],
+              "incidentDirection": "north-east",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-east; expected north"
+            }
+          },
+          {
+            "edgeId": "i-15-yes",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-15",
+              "portName": "lower-right",
+              "portPoint": [
+                -345.706,
+                1171.6912457533895
+              ],
+              "incidentDirection": "south-east",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-18",
+              "portName": "top",
+              "portPoint": [
+                -234.55132000000003,
+                1243.875938964829
+              ],
+              "incidentDirection": "north-west",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-west; expected north"
+            }
+          },
+          {
+            "edgeId": "i-15-no",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-15",
+              "portName": "lower-left",
+              "portPoint": [
+                -386.706,
+                1171.6912457533895
+              ],
+              "incidentDirection": "south-west",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-16",
+              "portName": "top",
+              "portPoint": [
+                -497.86068,
+                1243.875938964829
+              ],
+              "incidentDirection": "north-east",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-east; expected north"
+            }
+          },
+          {
+            "edgeId": "i-22-yes",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-22",
+              "portName": "lower-left",
+              "portPoint": [
+                182.7,
+                888.6467672771852
+              ],
+              "incidentDirection": "south-west",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-25",
+              "portName": "top",
+              "portPoint": [
+                40.19399999999999,
+                981.1912457533896
+              ],
+              "incidentDirection": "north-east",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-east; expected north"
+            }
+          },
+          {
+            "edgeId": "i-22-no",
+            "edgeRole": "branch-exit",
+            "routeFamily": "branch-exit",
+            "legal": false,
+            "source": {
+              "nodeId": "i-22",
+              "portName": "lower-right",
+              "portPoint": [
+                223.7,
+                888.6467672771852
+              ],
+              "incidentDirection": "south-east",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-23",
+              "portName": "top",
+              "portPoint": [
+                366.206,
+                981.1912457533896
+              ],
+              "incidentDirection": "north-west",
+              "legal": false,
+              "reason": "legal port top, illegal incident direction north-west; expected north"
+            }
+          }
+        ],
+        "loopReturnEdgeCount": 3,
+        "legalLoopReturnEdgeCount": 3,
+        "loopReturnEdges": [
+          {
+            "edgeId": "i-17-jump",
+            "edgeRole": "loop-return",
+            "routeFamily": "loop-return",
+            "legal": true,
+            "source": {
+              "nodeId": "i-17",
+              "portName": "left",
+              "portPoint": [
+                -541.86068,
+                1340.875938964829
+              ],
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-13",
+              "portName": "left",
+              "portPoint": [
+                -410.206,
+                996.1912457533896
+              ],
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            }
+          },
+          {
+            "edgeId": "i-20-jump",
+            "edgeRole": "loop-return",
+            "routeFamily": "loop-return",
+            "legal": true,
+            "source": {
+              "nodeId": "i-20",
+              "portName": "left",
+              "portPoint": [
+                -278.55132000000003,
+                1422.875938964829
+              ],
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-10",
+              "portName": "left",
+              "portPoint": [
+                -41,
+                650
+              ],
+              "incidentDirection": "west",
+              "legal": true,
+              "reason": null
+            }
+          },
+          {
+            "edgeId": "i-24-jump",
+            "edgeRole": "loop-return",
+            "routeFamily": "loop-return",
+            "legal": true,
+            "source": {
+              "nodeId": "i-24",
+              "portName": "right",
+              "portPoint": [
+                410.206,
+                1078.1912457533895
+              ],
+              "incidentDirection": "east",
+              "legal": true,
+              "reason": null
+            },
+            "target": {
+              "nodeId": "i-2",
+              "portName": "right",
+              "portPoint": [
+                44,
+                190
+              ],
+              "incidentDirection": "east",
+              "legal": true,
+              "reason": null
+            }
+          }
+        ]
+      },
+      "focusGeometry": {
+        "i24JumpRoute": {
+          "edgeId": "i-24-jump",
+          "source": "i-24",
+          "target": "i-2",
+          "edgeRole": "loop-return",
+          "routeFamily": "loop-return",
+          "connectorKind": null,
+          "portPolicyCase": "loop-return",
+          "sourcePort": [
+            410.206,
+            1078.1912457533895
+          ],
+          "targetPort": [
+            44,
+            190
+          ],
+          "points": [
+            [
+              410.206,
+              1078.1912457533895
+            ],
+            [
+              450,
+              1078.1912457533895
+            ],
+            [
+              450,
+              190
+            ],
+            [
+              44,
+              190
+            ]
+          ]
+        },
+        "i26Box": {
+          "nodeId": "i-26",
+          "left": -3.8060000000000116,
+          "right": 84.19399999999999,
+          "top": 1063.1912457533895,
+          "bottom": 1093.1912457533895,
+          "cx": 40.19399999999999,
+          "cy": 1078.1912457533895,
+          "w": 88,
+          "h": 30
+        }
+      }
+    }
+  },
+  "baseline": {
+    "label": "A. Current checkpoint baseline — i-22 normal default",
+    "geometryDigest": {
+      "canonicalBytes": 6052,
+      "sha256": "3730839d2267f10d1878cf1404da003b08e345cb049f3ed48144cce1142efb65"
+    },
+    "orientation": {
+      "i-10": {
+        "no": "left",
+        "yes": "right"
+      },
+      "i-12": {
+        "no": "left",
+        "yes": "right"
+      },
+      "i-15": {
+        "no": "left",
+        "yes": "right"
+      },
+      "i-22": {
+        "no": "left",
+        "yes": "right"
+      }
+    },
+    "productionOrientationCost": 0,
+    "productionDefects": [],
+    "crossings": [],
+    "edgeOverlaps": [],
+    "nodeOverlaps": [],
+    "unrelatedNodeEdgeIntrusions": [
+      {
+        "nodeId": "i-26",
+        "edgeId": "i-24-jump",
+        "nodeBox": {
+          "left": 322.206,
+          "right": 410.206,
+          "top": 1063.1912457533895,
+          "bottom": 1093.1912457533895
+        },
+        "segmentIndex": 0,
+        "segmentStart": [
+          84.19399999999999,
+          1078.1912457533895
+        ],
+        "segmentEnd": [
+          450,
+          1078.1912457533895
+        ],
+        "orientation": "horizontal",
+        "intersectionInterval": [
+          [
+            322.206,
+            1078.1912457533895
+          ],
+          [
+            410.206,
+            1078.1912457533895
+          ]
+        ],
+        "parameterInterval": [
+          0.650650891456127,
+          0.8912155623472552
+        ],
+        "crossesCompletelyThrough": true,
+        "penetrationKind": "crosses-completely-through"
+      }
+    ],
+    "attachmentLegality": {
+      "edgeCount": 31,
+      "legalEdgeCount": 24,
+      "illegalEdgeCount": 7,
+      "illegalEdges": [
+        {
+          "edgeId": "i-10-yes",
+          "edgeRole": "branch-exit",
+          "routeFamily": "branch-exit",
+          "legal": false,
+          "source": {
+            "nodeId": "i-10",
+            "portName": "lower-right",
+            "portPoint": [
+              20.5,
+              661.5
+            ],
+            "incidentDirection": "south-east",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-21",
+            "portName": "top",
+            "portPoint": [
+              203.2,
+              780.1467672771852
+            ],
+            "incidentDirection": "north-west",
+            "legal": false,
+            "reason": "legal port top, illegal incident direction north-west; expected north"
+          }
+        },
+        {
+          "edgeId": "i-10-no",
+          "edgeRole": "branch-exit",
+          "routeFamily": "branch-exit",
+          "legal": false,
+          "source": {
+            "nodeId": "i-10",
+            "portName": "lower-left",
+            "portPoint": [
+              -20.5,
+              661.5
+            ],
+            "incidentDirection": "south-west",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-11",
+            "portName": "top",
+            "portPoint": [
+              -203.2,
+              780.1467672771852
+            ],
+            "incidentDirection": "north-east",
+            "legal": false,
+            "reason": "legal port top, illegal incident direction north-east; expected north"
+          }
+        },
+        {
+          "edgeId": "i-12-no",
+          "edgeRole": "branch-exit",
+          "routeFamily": "branch-exit",
+          "legal": false,
+          "source": {
+            "nodeId": "i-12",
+            "portName": "lower-left",
+            "portPoint": [
+              -223.7,
+              888.6467672771852
+            ],
+            "incidentDirection": "south-west",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-13",
+            "portName": "top",
+            "portPoint": [
+              -366.206,
+              981.1912457533896
+            ],
+            "incidentDirection": "north-east",
+            "legal": false,
+            "reason": "legal port top, illegal incident direction north-east; expected north"
+          }
+        },
+        {
+          "edgeId": "i-15-yes",
+          "edgeRole": "branch-exit",
+          "routeFamily": "branch-exit",
+          "legal": false,
+          "source": {
+            "nodeId": "i-15",
+            "portName": "lower-right",
+            "portPoint": [
+              -345.706,
+              1171.6912457533895
+            ],
+            "incidentDirection": "south-east",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-18",
+            "portName": "top",
+            "portPoint": [
+              -234.55132000000003,
+              1243.875938964829
+            ],
+            "incidentDirection": "north-west",
+            "legal": false,
+            "reason": "legal port top, illegal incident direction north-west; expected north"
+          }
+        },
+        {
+          "edgeId": "i-15-no",
+          "edgeRole": "branch-exit",
+          "routeFamily": "branch-exit",
+          "legal": false,
+          "source": {
+            "nodeId": "i-15",
+            "portName": "lower-left",
+            "portPoint": [
+              -386.706,
+              1171.6912457533895
+            ],
+            "incidentDirection": "south-west",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-16",
+            "portName": "top",
+            "portPoint": [
+              -497.86068,
+              1243.875938964829
+            ],
+            "incidentDirection": "north-east",
+            "legal": false,
+            "reason": "legal port top, illegal incident direction north-east; expected north"
+          }
+        },
+        {
+          "edgeId": "i-22-yes",
+          "edgeRole": "branch-exit",
+          "routeFamily": "branch-exit",
+          "legal": false,
+          "source": {
+            "nodeId": "i-22",
+            "portName": "lower-right",
+            "portPoint": [
+              223.7,
+              888.6467672771852
+            ],
+            "incidentDirection": "south-east",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-25",
+            "portName": "top",
+            "portPoint": [
+              366.206,
+              981.1912457533896
+            ],
+            "incidentDirection": "north-west",
+            "legal": false,
+            "reason": "legal port top, illegal incident direction north-west; expected north"
+          }
+        },
+        {
+          "edgeId": "i-22-no",
+          "edgeRole": "branch-exit",
+          "routeFamily": "branch-exit",
+          "legal": false,
+          "source": {
+            "nodeId": "i-22",
+            "portName": "lower-left",
+            "portPoint": [
+              182.7,
+              888.6467672771852
+            ],
+            "incidentDirection": "south-west",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-23",
+            "portName": "top",
+            "portPoint": [
+              40.19399999999999,
+              981.1912457533896
+            ],
+            "incidentDirection": "north-east",
+            "legal": false,
+            "reason": "legal port top, illegal incident direction north-east; expected north"
+          }
+        }
+      ],
+      "loopReturnEdgeCount": 3,
+      "legalLoopReturnEdgeCount": 3,
+      "loopReturnEdges": [
+        {
+          "edgeId": "i-17-jump",
+          "edgeRole": "loop-return",
+          "routeFamily": "loop-return",
+          "legal": true,
+          "source": {
+            "nodeId": "i-17",
+            "portName": "left",
+            "portPoint": [
+              -541.86068,
+              1340.875938964829
+            ],
+            "incidentDirection": "west",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-13",
+            "portName": "left",
+            "portPoint": [
+              -410.206,
+              996.1912457533896
+            ],
+            "incidentDirection": "west",
+            "legal": true,
+            "reason": null
+          }
+        },
+        {
+          "edgeId": "i-20-jump",
+          "edgeRole": "loop-return",
+          "routeFamily": "loop-return",
+          "legal": true,
+          "source": {
+            "nodeId": "i-20",
+            "portName": "left",
+            "portPoint": [
+              -278.55132000000003,
+              1422.875938964829
+            ],
+            "incidentDirection": "west",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-10",
+            "portName": "left",
+            "portPoint": [
+              -41,
+              650
+            ],
+            "incidentDirection": "west",
+            "legal": true,
+            "reason": null
+          }
+        },
+        {
+          "edgeId": "i-24-jump",
+          "edgeRole": "loop-return",
+          "routeFamily": "loop-return",
+          "legal": true,
+          "source": {
+            "nodeId": "i-24",
+            "portName": "right",
+            "portPoint": [
+              84.19399999999999,
+              1078.1912457533895
+            ],
+            "incidentDirection": "east",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-2",
+            "portName": "right",
+            "portPoint": [
+              44,
+              190
+            ],
+            "incidentDirection": "east",
+            "legal": true,
+            "reason": null
+          }
+        }
+      ],
+      "focusedEdge": {
+        "edgeId": "i-24-jump",
+        "edgeRole": "loop-return",
+        "routeFamily": "loop-return",
+        "legal": true,
+        "source": {
+          "nodeId": "i-24",
+          "portName": "right",
+          "portPoint": [
+            84.19399999999999,
+            1078.1912457533895
+          ],
+          "incidentDirection": "east",
+          "legal": true,
+          "reason": null
+        },
+        "target": {
+          "nodeId": "i-2",
+          "portName": "right",
+          "portPoint": [
+            44,
+            190
+          ],
+          "incidentDirection": "east",
+          "legal": true,
+          "reason": null
+        }
+      }
+    },
+    "focusGeometry": {
+      "forkId": "i-22",
+      "forkOrientation": "default",
+      "i24JumpRoute": {
+        "edgeId": "i-24-jump",
+        "source": "i-24",
+        "target": "i-2",
+        "edgeRole": "loop-return",
+        "routeFamily": "loop-return",
+        "connectorKind": null,
+        "portPolicyCase": "loop-return",
+        "sourcePort": [
+          84.19399999999999,
+          1078.1912457533895
+        ],
+        "targetPort": [
+          44,
+          190
+        ],
+        "points": [
+          [
+            84.19399999999999,
+            1078.1912457533895
+          ],
+          [
+            450,
+            1078.1912457533895
+          ],
+          [
+            450,
+            190
+          ],
+          [
+            44,
+            190
+          ]
+        ]
+      },
+      "i26Box": {
+        "nodeId": "i-26",
+        "left": 322.206,
+        "right": 410.206,
+        "top": 1063.1912457533895,
+        "bottom": 1093.1912457533895,
+        "cx": 366.206,
+        "cy": 1078.1912457533895,
+        "w": 88,
+        "h": 30
+      }
+    },
+    "warnings": {
+      "cfg": [],
+      "roles": [],
+      "skeleton": [],
+      "lanes": [],
+      "routing": []
+    },
+    "fallbackOrRejectionFired": false
+  },
+  "forcedFlipped": {
+    "label": "B. Checkpoint baseline + i-22 forced flipped",
+    "geometryDigest": {
+      "canonicalBytes": 6032,
+      "sha256": "e49dd79e4a06ecec0363046dde45f738912cfc851f921a109f5800fb28e10ea2"
+    },
+    "orientation": {
+      "i-10": {
+        "no": "left",
+        "yes": "right"
+      },
+      "i-12": {
+        "no": "left",
+        "yes": "right"
+      },
+      "i-15": {
+        "no": "left",
+        "yes": "right"
+      },
+      "i-22": {
+        "no": "right",
+        "yes": "left"
+      }
+    },
+    "productionOrientationCost": 0,
+    "productionDefects": [],
+    "crossings": [],
+    "edgeOverlaps": [],
+    "nodeOverlaps": [],
+    "unrelatedNodeEdgeIntrusions": [],
+    "attachmentLegality": {
+      "edgeCount": 31,
+      "legalEdgeCount": 24,
+      "illegalEdgeCount": 7,
+      "illegalEdges": [
+        {
+          "edgeId": "i-10-yes",
+          "edgeRole": "branch-exit",
+          "routeFamily": "branch-exit",
+          "legal": false,
+          "source": {
+            "nodeId": "i-10",
+            "portName": "lower-right",
+            "portPoint": [
+              20.5,
+              661.5
+            ],
+            "incidentDirection": "south-east",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-21",
+            "portName": "top",
+            "portPoint": [
+              203.2,
+              780.1467672771852
+            ],
+            "incidentDirection": "north-west",
+            "legal": false,
+            "reason": "legal port top, illegal incident direction north-west; expected north"
+          }
+        },
+        {
+          "edgeId": "i-10-no",
+          "edgeRole": "branch-exit",
+          "routeFamily": "branch-exit",
+          "legal": false,
+          "source": {
+            "nodeId": "i-10",
+            "portName": "lower-left",
+            "portPoint": [
+              -20.5,
+              661.5
+            ],
+            "incidentDirection": "south-west",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-11",
+            "portName": "top",
+            "portPoint": [
+              -203.2,
+              780.1467672771852
+            ],
+            "incidentDirection": "north-east",
+            "legal": false,
+            "reason": "legal port top, illegal incident direction north-east; expected north"
+          }
+        },
+        {
+          "edgeId": "i-12-no",
+          "edgeRole": "branch-exit",
+          "routeFamily": "branch-exit",
+          "legal": false,
+          "source": {
+            "nodeId": "i-12",
+            "portName": "lower-left",
+            "portPoint": [
+              -223.7,
+              888.6467672771852
+            ],
+            "incidentDirection": "south-west",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-13",
+            "portName": "top",
+            "portPoint": [
+              -366.206,
+              981.1912457533896
+            ],
+            "incidentDirection": "north-east",
+            "legal": false,
+            "reason": "legal port top, illegal incident direction north-east; expected north"
+          }
+        },
+        {
+          "edgeId": "i-15-yes",
+          "edgeRole": "branch-exit",
+          "routeFamily": "branch-exit",
+          "legal": false,
+          "source": {
+            "nodeId": "i-15",
+            "portName": "lower-right",
+            "portPoint": [
+              -345.706,
+              1171.6912457533895
+            ],
+            "incidentDirection": "south-east",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-18",
+            "portName": "top",
+            "portPoint": [
+              -234.55132000000003,
+              1243.875938964829
+            ],
+            "incidentDirection": "north-west",
+            "legal": false,
+            "reason": "legal port top, illegal incident direction north-west; expected north"
+          }
+        },
+        {
+          "edgeId": "i-15-no",
+          "edgeRole": "branch-exit",
+          "routeFamily": "branch-exit",
+          "legal": false,
+          "source": {
+            "nodeId": "i-15",
+            "portName": "lower-left",
+            "portPoint": [
+              -386.706,
+              1171.6912457533895
+            ],
+            "incidentDirection": "south-west",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-16",
+            "portName": "top",
+            "portPoint": [
+              -497.86068,
+              1243.875938964829
+            ],
+            "incidentDirection": "north-east",
+            "legal": false,
+            "reason": "legal port top, illegal incident direction north-east; expected north"
+          }
+        },
+        {
+          "edgeId": "i-22-yes",
+          "edgeRole": "branch-exit",
+          "routeFamily": "branch-exit",
+          "legal": false,
+          "source": {
+            "nodeId": "i-22",
+            "portName": "lower-left",
+            "portPoint": [
+              182.7,
+              888.6467672771852
+            ],
+            "incidentDirection": "south-west",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-25",
+            "portName": "top",
+            "portPoint": [
+              40.19399999999999,
+              981.1912457533896
+            ],
+            "incidentDirection": "north-east",
+            "legal": false,
+            "reason": "legal port top, illegal incident direction north-east; expected north"
+          }
+        },
+        {
+          "edgeId": "i-22-no",
+          "edgeRole": "branch-exit",
+          "routeFamily": "branch-exit",
+          "legal": false,
+          "source": {
+            "nodeId": "i-22",
+            "portName": "lower-right",
+            "portPoint": [
+              223.7,
+              888.6467672771852
+            ],
+            "incidentDirection": "south-east",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-23",
+            "portName": "top",
+            "portPoint": [
+              366.206,
+              981.1912457533896
+            ],
+            "incidentDirection": "north-west",
+            "legal": false,
+            "reason": "legal port top, illegal incident direction north-west; expected north"
+          }
+        }
+      ],
+      "loopReturnEdgeCount": 3,
+      "legalLoopReturnEdgeCount": 3,
+      "loopReturnEdges": [
+        {
+          "edgeId": "i-17-jump",
+          "edgeRole": "loop-return",
+          "routeFamily": "loop-return",
+          "legal": true,
+          "source": {
+            "nodeId": "i-17",
+            "portName": "left",
+            "portPoint": [
+              -541.86068,
+              1340.875938964829
+            ],
+            "incidentDirection": "west",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-13",
+            "portName": "left",
+            "portPoint": [
+              -410.206,
+              996.1912457533896
+            ],
+            "incidentDirection": "west",
+            "legal": true,
+            "reason": null
+          }
+        },
+        {
+          "edgeId": "i-20-jump",
+          "edgeRole": "loop-return",
+          "routeFamily": "loop-return",
+          "legal": true,
+          "source": {
+            "nodeId": "i-20",
+            "portName": "left",
+            "portPoint": [
+              -278.55132000000003,
+              1422.875938964829
+            ],
+            "incidentDirection": "west",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-10",
+            "portName": "left",
+            "portPoint": [
+              -41,
+              650
+            ],
+            "incidentDirection": "west",
+            "legal": true,
+            "reason": null
+          }
+        },
+        {
+          "edgeId": "i-24-jump",
+          "edgeRole": "loop-return",
+          "routeFamily": "loop-return",
+          "legal": true,
+          "source": {
+            "nodeId": "i-24",
+            "portName": "right",
+            "portPoint": [
+              410.206,
+              1078.1912457533895
+            ],
+            "incidentDirection": "east",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-2",
+            "portName": "right",
+            "portPoint": [
+              44,
+              190
+            ],
+            "incidentDirection": "east",
+            "legal": true,
+            "reason": null
+          }
+        }
+      ],
+      "focusedEdge": {
+        "edgeId": "i-24-jump",
+        "edgeRole": "loop-return",
+        "routeFamily": "loop-return",
+        "legal": true,
+        "source": {
+          "nodeId": "i-24",
+          "portName": "right",
+          "portPoint": [
+            410.206,
+            1078.1912457533895
+          ],
+          "incidentDirection": "east",
+          "legal": true,
+          "reason": null
+        },
+        "target": {
+          "nodeId": "i-2",
+          "portName": "right",
+          "portPoint": [
+            44,
+            190
+          ],
+          "incidentDirection": "east",
+          "legal": true,
+          "reason": null
+        }
+      }
+    },
+    "focusGeometry": {
+      "forkId": "i-22",
+      "forkOrientation": "flipped",
+      "i24JumpRoute": {
+        "edgeId": "i-24-jump",
+        "source": "i-24",
+        "target": "i-2",
+        "edgeRole": "loop-return",
+        "routeFamily": "loop-return",
+        "connectorKind": null,
+        "portPolicyCase": "loop-return",
+        "sourcePort": [
+          410.206,
+          1078.1912457533895
+        ],
+        "targetPort": [
+          44,
+          190
+        ],
+        "points": [
+          [
+            410.206,
+            1078.1912457533895
+          ],
+          [
+            450,
+            1078.1912457533895
+          ],
+          [
+            450,
+            190
+          ],
+          [
+            44,
+            190
+          ]
+        ]
+      },
+      "i26Box": {
+        "nodeId": "i-26",
+        "left": -3.8060000000000116,
+        "right": 84.19399999999999,
+        "top": 1063.1912457533895,
+        "bottom": 1093.1912457533895,
+        "cx": 40.19399999999999,
+        "cy": 1078.1912457533895,
+        "w": 88,
+        "h": 30
+      }
+    },
+    "warnings": {
+      "cfg": [],
+      "roles": [],
+      "skeleton": [],
+      "lanes": [],
+      "routing": []
+    },
+    "fallbackOrRejectionFired": false
+  },
+  "geometryDelta": {
+    "orientationChanges": [
+      {
+        "id": "i-22",
+        "before": "default",
+        "after": "flipped"
+      }
+    ],
+    "i22OwnedNodeIds": [
+      "i-23",
+      "i-24",
+      "i-25",
+      "i-26"
+    ],
+    "changedNodePositionCount": 4,
+    "changedNodePositions": [
+      {
+        "nodeId": "i-23",
+        "before": {
+          "nodeId": "i-23",
+          "left": -3.8060000000000116,
+          "right": 84.19399999999999,
+          "top": 981.1912457533896,
+          "bottom": 1011.1912457533896,
+          "cx": 40.19399999999999,
+          "cy": 996.1912457533896,
+          "w": 88,
+          "h": 30
+        },
+        "after": {
+          "nodeId": "i-23",
+          "left": 322.206,
+          "right": 410.206,
+          "top": 981.1912457533896,
+          "bottom": 1011.1912457533896,
+          "cx": 366.206,
+          "cy": 996.1912457533896,
+          "w": 88,
+          "h": 30
+        }
+      },
+      {
+        "nodeId": "i-24",
+        "before": {
+          "nodeId": "i-24",
+          "left": -3.8060000000000116,
+          "right": 84.19399999999999,
+          "top": 1063.1912457533895,
+          "bottom": 1093.1912457533895,
+          "cx": 40.19399999999999,
+          "cy": 1078.1912457533895,
+          "w": 88,
+          "h": 30
+        },
+        "after": {
+          "nodeId": "i-24",
+          "left": 322.206,
+          "right": 410.206,
+          "top": 1063.1912457533895,
+          "bottom": 1093.1912457533895,
+          "cx": 366.206,
+          "cy": 1078.1912457533895,
+          "w": 88,
+          "h": 30
+        }
+      },
+      {
+        "nodeId": "i-25",
+        "before": {
+          "nodeId": "i-25",
+          "left": 322.206,
+          "right": 410.206,
+          "top": 981.1912457533896,
+          "bottom": 1011.1912457533896,
+          "cx": 366.206,
+          "cy": 996.1912457533896,
+          "w": 88,
+          "h": 30
+        },
+        "after": {
+          "nodeId": "i-25",
+          "left": -3.8060000000000116,
+          "right": 84.19399999999999,
+          "top": 981.1912457533896,
+          "bottom": 1011.1912457533896,
+          "cx": 40.19399999999999,
+          "cy": 996.1912457533896,
+          "w": 88,
+          "h": 30
+        }
+      },
+      {
+        "nodeId": "i-26",
+        "before": {
+          "nodeId": "i-26",
+          "left": 322.206,
+          "right": 410.206,
+          "top": 1063.1912457533895,
+          "bottom": 1093.1912457533895,
+          "cx": 366.206,
+          "cy": 1078.1912457533895,
+          "w": 88,
+          "h": 30
+        },
+        "after": {
+          "nodeId": "i-26",
+          "left": -3.8060000000000116,
+          "right": 84.19399999999999,
+          "top": 1063.1912457533895,
+          "bottom": 1093.1912457533895,
+          "cx": 40.19399999999999,
+          "cy": 1078.1912457533895,
+          "w": 88,
+          "h": 30
+        }
+      }
+    ],
+    "changedRouteCount": 5,
+    "changedRoutes": [
+      {
+        "edgeId": "i-22-no",
+        "before": {
+          "edgeId": "i-22-no",
+          "source": "i-22",
+          "target": "i-23",
+          "edgeRole": "branch-exit",
+          "routeFamily": "branch-exit",
+          "connectorKind": null,
+          "portPolicyCase": "branch-exit",
+          "sourcePort": [
+            182.7,
+            888.6467672771852
+          ],
+          "targetPort": [
+            40.19399999999999,
+            981.1912457533896
+          ],
+          "points": [
+            [
+              182.7,
+              888.6467672771852
+            ],
+            [
+              40.19399999999999,
+              981.1912457533896
+            ]
+          ]
+        },
+        "after": {
+          "edgeId": "i-22-no",
+          "source": "i-22",
+          "target": "i-23",
+          "edgeRole": "branch-exit",
+          "routeFamily": "branch-exit",
+          "connectorKind": null,
+          "portPolicyCase": "branch-exit",
+          "sourcePort": [
+            223.7,
+            888.6467672771852
+          ],
+          "targetPort": [
+            366.206,
+            981.1912457533896
+          ],
+          "points": [
+            [
+              223.7,
+              888.6467672771852
+            ],
+            [
+              366.206,
+              981.1912457533896
+            ]
+          ]
+        }
+      },
+      {
+        "edgeId": "i-22-yes",
+        "before": {
+          "edgeId": "i-22-yes",
+          "source": "i-22",
+          "target": "i-25",
+          "edgeRole": "branch-exit",
+          "routeFamily": "branch-exit",
+          "connectorKind": null,
+          "portPolicyCase": "branch-exit",
+          "sourcePort": [
+            223.7,
+            888.6467672771852
+          ],
+          "targetPort": [
+            366.206,
+            981.1912457533896
+          ],
+          "points": [
+            [
+              223.7,
+              888.6467672771852
+            ],
+            [
+              366.206,
+              981.1912457533896
+            ]
+          ]
+        },
+        "after": {
+          "edgeId": "i-22-yes",
+          "source": "i-22",
+          "target": "i-25",
+          "edgeRole": "branch-exit",
+          "routeFamily": "branch-exit",
+          "connectorKind": null,
+          "portPolicyCase": "branch-exit",
+          "sourcePort": [
+            182.7,
+            888.6467672771852
+          ],
+          "targetPort": [
+            40.19399999999999,
+            981.1912457533896
+          ],
+          "points": [
+            [
+              182.7,
+              888.6467672771852
+            ],
+            [
+              40.19399999999999,
+              981.1912457533896
+            ]
+          ]
+        }
+      },
+      {
+        "edgeId": "i-23-cont",
+        "before": {
+          "edgeId": "i-23-cont",
+          "source": "i-23",
+          "target": "i-24",
+          "edgeRole": "spine-continuation",
+          "routeFamily": "spine",
+          "connectorKind": null,
+          "portPolicyCase": "spine-continuation",
+          "sourcePort": [
+            40.19399999999999,
+            1011.1912457533896
+          ],
+          "targetPort": [
+            40.19399999999999,
+            1063.1912457533895
+          ],
+          "points": [
+            [
+              40.19399999999999,
+              1011.1912457533896
+            ],
+            [
+              40.19399999999999,
+              1063.1912457533895
+            ]
+          ]
+        },
+        "after": {
+          "edgeId": "i-23-cont",
+          "source": "i-23",
+          "target": "i-24",
+          "edgeRole": "spine-continuation",
+          "routeFamily": "spine",
+          "connectorKind": null,
+          "portPolicyCase": "spine-continuation",
+          "sourcePort": [
+            366.206,
+            1011.1912457533896
+          ],
+          "targetPort": [
+            366.206,
+            1063.1912457533895
+          ],
+          "points": [
+            [
+              366.206,
+              1011.1912457533896
+            ],
+            [
+              366.206,
+              1063.1912457533895
+            ]
+          ]
+        }
+      },
+      {
+        "edgeId": "i-24-jump",
+        "before": {
+          "edgeId": "i-24-jump",
+          "source": "i-24",
+          "target": "i-2",
+          "edgeRole": "loop-return",
+          "routeFamily": "loop-return",
+          "connectorKind": null,
+          "portPolicyCase": "loop-return",
+          "sourcePort": [
+            84.19399999999999,
+            1078.1912457533895
+          ],
+          "targetPort": [
+            44,
+            190
+          ],
+          "points": [
+            [
+              84.19399999999999,
+              1078.1912457533895
+            ],
+            [
+              450,
+              1078.1912457533895
+            ],
+            [
+              450,
+              190
+            ],
+            [
+              44,
+              190
+            ]
+          ]
+        },
+        "after": {
+          "edgeId": "i-24-jump",
+          "source": "i-24",
+          "target": "i-2",
+          "edgeRole": "loop-return",
+          "routeFamily": "loop-return",
+          "connectorKind": null,
+          "portPolicyCase": "loop-return",
+          "sourcePort": [
+            410.206,
+            1078.1912457533895
+          ],
+          "targetPort": [
+            44,
+            190
+          ],
+          "points": [
+            [
+              410.206,
+              1078.1912457533895
+            ],
+            [
+              450,
+              1078.1912457533895
+            ],
+            [
+              450,
+              190
+            ],
+            [
+              44,
+              190
+            ]
+          ]
+        }
+      },
+      {
+        "edgeId": "i-25-cont",
+        "before": {
+          "edgeId": "i-25-cont",
+          "source": "i-25",
+          "target": "i-26",
+          "edgeRole": "spine-continuation",
+          "routeFamily": "spine",
+          "connectorKind": null,
+          "portPolicyCase": "spine-continuation",
+          "sourcePort": [
+            366.206,
+            1011.1912457533896
+          ],
+          "targetPort": [
+            366.206,
+            1063.1912457533895
+          ],
+          "points": [
+            [
+              366.206,
+              1011.1912457533896
+            ],
+            [
+              366.206,
+              1063.1912457533895
+            ]
+          ]
+        },
+        "after": {
+          "edgeId": "i-25-cont",
+          "source": "i-25",
+          "target": "i-26",
+          "edgeRole": "spine-continuation",
+          "routeFamily": "spine",
+          "connectorKind": null,
+          "portPolicyCase": "spine-continuation",
+          "sourcePort": [
+            40.19399999999999,
+            1011.1912457533896
+          ],
+          "targetPort": [
+            40.19399999999999,
+            1063.1912457533895
+          ],
+          "points": [
+            [
+              40.19399999999999,
+              1011.1912457533896
+            ],
+            [
+              40.19399999999999,
+              1063.1912457533895
+            ]
+          ]
+        }
+      }
+    ],
+    "unexpectedChangedNodeIds": [],
+    "unexpectedChangedRouteIds": [],
+    "unchangedNodeCount": 24,
+    "unchangedRouteCount": 26,
+    "attachmentChanges": [
+      {
+        "edgeId": "i-22-yes",
+        "before": {
+          "edgeId": "i-22-yes",
+          "edgeRole": "branch-exit",
+          "routeFamily": "branch-exit",
+          "source": {
+            "nodeId": "i-22",
+            "nodeType": "conditionalJump",
+            "nodeShape": "diamond",
+            "portName": "lower-right",
+            "portPoint": [
+              223.7,
+              888.6467672771852
+            ],
+            "adjacentPoint": [
+              366.206,
+              981.1912457533896
+            ],
+            "incidentDirection": "south-east",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-25",
+            "nodeType": "action",
+            "nodeShape": "rectangle",
+            "portName": "top",
+            "portPoint": [
+              366.206,
+              981.1912457533896
+            ],
+            "adjacentPoint": [
+              223.7,
+              888.6467672771852
+            ],
+            "incidentDirection": "north-west",
+            "legal": false,
+            "reason": "legal port top, illegal incident direction north-west; expected north"
+          },
+          "legal": false
+        },
+        "after": {
+          "edgeId": "i-22-yes",
+          "edgeRole": "branch-exit",
+          "routeFamily": "branch-exit",
+          "source": {
+            "nodeId": "i-22",
+            "nodeType": "conditionalJump",
+            "nodeShape": "diamond",
+            "portName": "lower-left",
+            "portPoint": [
+              182.7,
+              888.6467672771852
+            ],
+            "adjacentPoint": [
+              40.19399999999999,
+              981.1912457533896
+            ],
+            "incidentDirection": "south-west",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-25",
+            "nodeType": "action",
+            "nodeShape": "rectangle",
+            "portName": "top",
+            "portPoint": [
+              40.19399999999999,
+              981.1912457533896
+            ],
+            "adjacentPoint": [
+              182.7,
+              888.6467672771852
+            ],
+            "incidentDirection": "north-east",
+            "legal": false,
+            "reason": "legal port top, illegal incident direction north-east; expected north"
+          },
+          "legal": false
+        }
+      },
+      {
+        "edgeId": "i-22-no",
+        "before": {
+          "edgeId": "i-22-no",
+          "edgeRole": "branch-exit",
+          "routeFamily": "branch-exit",
+          "source": {
+            "nodeId": "i-22",
+            "nodeType": "conditionalJump",
+            "nodeShape": "diamond",
+            "portName": "lower-left",
+            "portPoint": [
+              182.7,
+              888.6467672771852
+            ],
+            "adjacentPoint": [
+              40.19399999999999,
+              981.1912457533896
+            ],
+            "incidentDirection": "south-west",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-23",
+            "nodeType": "action",
+            "nodeShape": "rectangle",
+            "portName": "top",
+            "portPoint": [
+              40.19399999999999,
+              981.1912457533896
+            ],
+            "adjacentPoint": [
+              182.7,
+              888.6467672771852
+            ],
+            "incidentDirection": "north-east",
+            "legal": false,
+            "reason": "legal port top, illegal incident direction north-east; expected north"
+          },
+          "legal": false
+        },
+        "after": {
+          "edgeId": "i-22-no",
+          "edgeRole": "branch-exit",
+          "routeFamily": "branch-exit",
+          "source": {
+            "nodeId": "i-22",
+            "nodeType": "conditionalJump",
+            "nodeShape": "diamond",
+            "portName": "lower-right",
+            "portPoint": [
+              223.7,
+              888.6467672771852
+            ],
+            "adjacentPoint": [
+              366.206,
+              981.1912457533896
+            ],
+            "incidentDirection": "south-east",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-23",
+            "nodeType": "action",
+            "nodeShape": "rectangle",
+            "portName": "top",
+            "portPoint": [
+              366.206,
+              981.1912457533896
+            ],
+            "adjacentPoint": [
+              223.7,
+              888.6467672771852
+            ],
+            "incidentDirection": "north-west",
+            "legal": false,
+            "reason": "legal port top, illegal incident direction north-west; expected north"
+          },
+          "legal": false
+        }
+      },
+      {
+        "edgeId": "i-23-cont",
+        "before": {
+          "edgeId": "i-23-cont",
+          "edgeRole": "spine-continuation",
+          "routeFamily": "spine",
+          "source": {
+            "nodeId": "i-23",
+            "nodeType": "action",
+            "nodeShape": "rectangle",
+            "portName": "bottom",
+            "portPoint": [
+              40.19399999999999,
+              1011.1912457533896
+            ],
+            "adjacentPoint": [
+              40.19399999999999,
+              1063.1912457533895
+            ],
+            "incidentDirection": "south",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-24",
+            "nodeType": "unconditionalJump",
+            "nodeShape": "rectangle",
+            "portName": "top",
+            "portPoint": [
+              40.19399999999999,
+              1063.1912457533895
+            ],
+            "adjacentPoint": [
+              40.19399999999999,
+              1011.1912457533896
+            ],
+            "incidentDirection": "north",
+            "legal": true,
+            "reason": null
+          },
+          "legal": true
+        },
+        "after": {
+          "edgeId": "i-23-cont",
+          "edgeRole": "spine-continuation",
+          "routeFamily": "spine",
+          "source": {
+            "nodeId": "i-23",
+            "nodeType": "action",
+            "nodeShape": "rectangle",
+            "portName": "bottom",
+            "portPoint": [
+              366.206,
+              1011.1912457533896
+            ],
+            "adjacentPoint": [
+              366.206,
+              1063.1912457533895
+            ],
+            "incidentDirection": "south",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-24",
+            "nodeType": "unconditionalJump",
+            "nodeShape": "rectangle",
+            "portName": "top",
+            "portPoint": [
+              366.206,
+              1063.1912457533895
+            ],
+            "adjacentPoint": [
+              366.206,
+              1011.1912457533896
+            ],
+            "incidentDirection": "north",
+            "legal": true,
+            "reason": null
+          },
+          "legal": true
+        }
+      },
+      {
+        "edgeId": "i-24-jump",
+        "before": {
+          "edgeId": "i-24-jump",
+          "edgeRole": "loop-return",
+          "routeFamily": "loop-return",
+          "source": {
+            "nodeId": "i-24",
+            "nodeType": "unconditionalJump",
+            "nodeShape": "rectangle",
+            "portName": "right",
+            "portPoint": [
+              84.19399999999999,
+              1078.1912457533895
+            ],
+            "adjacentPoint": [
+              450,
+              1078.1912457533895
+            ],
+            "incidentDirection": "east",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-2",
+            "nodeType": "action",
+            "nodeShape": "rectangle",
+            "portName": "right",
+            "portPoint": [
+              44,
+              190
+            ],
+            "adjacentPoint": [
+              450,
+              190
+            ],
+            "incidentDirection": "east",
+            "legal": true,
+            "reason": null
+          },
+          "legal": true
+        },
+        "after": {
+          "edgeId": "i-24-jump",
+          "edgeRole": "loop-return",
+          "routeFamily": "loop-return",
+          "source": {
+            "nodeId": "i-24",
+            "nodeType": "unconditionalJump",
+            "nodeShape": "rectangle",
+            "portName": "right",
+            "portPoint": [
+              410.206,
+              1078.1912457533895
+            ],
+            "adjacentPoint": [
+              450,
+              1078.1912457533895
+            ],
+            "incidentDirection": "east",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-2",
+            "nodeType": "action",
+            "nodeShape": "rectangle",
+            "portName": "right",
+            "portPoint": [
+              44,
+              190
+            ],
+            "adjacentPoint": [
+              450,
+              190
+            ],
+            "incidentDirection": "east",
+            "legal": true,
+            "reason": null
+          },
+          "legal": true
+        }
+      },
+      {
+        "edgeId": "i-25-cont",
+        "before": {
+          "edgeId": "i-25-cont",
+          "edgeRole": "spine-continuation",
+          "routeFamily": "spine",
+          "source": {
+            "nodeId": "i-25",
+            "nodeType": "action",
+            "nodeShape": "rectangle",
+            "portName": "bottom",
+            "portPoint": [
+              366.206,
+              1011.1912457533896
+            ],
+            "adjacentPoint": [
+              366.206,
+              1063.1912457533895
+            ],
+            "incidentDirection": "south",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-26",
+            "nodeType": "action",
+            "nodeShape": "rectangle",
+            "portName": "top",
+            "portPoint": [
+              366.206,
+              1063.1912457533895
+            ],
+            "adjacentPoint": [
+              366.206,
+              1011.1912457533896
+            ],
+            "incidentDirection": "north",
+            "legal": true,
+            "reason": null
+          },
+          "legal": true
+        },
+        "after": {
+          "edgeId": "i-25-cont",
+          "edgeRole": "spine-continuation",
+          "routeFamily": "spine",
+          "source": {
+            "nodeId": "i-25",
+            "nodeType": "action",
+            "nodeShape": "rectangle",
+            "portName": "bottom",
+            "portPoint": [
+              40.19399999999999,
+              1011.1912457533896
+            ],
+            "adjacentPoint": [
+              40.19399999999999,
+              1063.1912457533895
+            ],
+            "incidentDirection": "south",
+            "legal": true,
+            "reason": null
+          },
+          "target": {
+            "nodeId": "i-26",
+            "nodeType": "action",
+            "nodeShape": "rectangle",
+            "portName": "top",
+            "portPoint": [
+              40.19399999999999,
+              1063.1912457533895
+            ],
+            "adjacentPoint": [
+              40.19399999999999,
+              1011.1912457533896
+            ],
+            "incidentDirection": "north",
+            "legal": true,
+            "reason": null
+          },
+          "legal": true
+        }
+      }
+    ]
+  },
+  "defectDelta": {
+    "productionDefects": {
+      "beforeCount": 0,
+      "afterCount": 0,
+      "removed": [],
+      "added": []
+    },
+    "crossings": {
+      "beforeCount": 0,
+      "afterCount": 0,
+      "removed": [],
+      "added": []
+    },
+    "edgeOverlaps": {
+      "beforeCount": 0,
+      "afterCount": 0,
+      "removed": [],
+      "added": []
+    },
+    "nodeOverlaps": {
+      "beforeCount": 0,
+      "afterCount": 0,
+      "removed": [],
+      "added": []
+    },
+    "unrelatedNodeEdgeIntrusions": {
+      "beforeCount": 1,
+      "afterCount": 0,
+      "removed": [
+        {
+          "nodeId": "i-26",
+          "edgeId": "i-24-jump",
+          "nodeBox": {
+            "left": 322.206,
+            "right": 410.206,
+            "top": 1063.1912457533895,
+            "bottom": 1093.1912457533895
+          },
+          "segmentIndex": 0,
+          "segmentStart": [
+            84.19399999999999,
+            1078.1912457533895
+          ],
+          "segmentEnd": [
+            450,
+            1078.1912457533895
+          ],
+          "orientation": "horizontal",
+          "intersectionInterval": [
+            [
+              322.206,
+              1078.1912457533895
+            ],
+            [
+              410.206,
+              1078.1912457533895
+            ]
+          ],
+          "parameterInterval": [
+            0.650650891456127,
+            0.8912155623472552
+          ],
+          "crossesCompletelyThrough": true,
+          "penetrationKind": "crosses-completely-through"
+        }
+      ],
+      "added": []
+    },
+    "illegalAttachments": {
+      "beforeCount": 7,
+      "afterCount": 7,
+      "removed": [],
+      "added": []
+    }
+  },
+  "conclusion": {
+    "hypothesisConfirmed": true,
+    "removedIntrusion": "i-24-jump × i-26",
+    "newScoredOrSeparateDefects": 0,
+    "productionCostDistinguishesCandidates": false,
+    "moreSeriousVisualDefectCreated": false,
+    "unrelatedGeometryChangedUnexpectedly": false
+  }
+}

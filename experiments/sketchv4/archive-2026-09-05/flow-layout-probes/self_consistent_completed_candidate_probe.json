@@ -1,0 +1,2448 @@
+{
+  "experiment": "self-consistent recursive completed-candidate orientation",
+  "checkpoint": {
+    "commit": "9f166f24721e7125ec9c0105e8960c6273d8d932",
+    "expectedBaselineHashes": {
+      "minimization:bounded_sub": "3730839d2267f10d1878cf1404da003b08e345cb049f3ed48144cce1142efb65",
+      "characteristic:divides": "72995a166e8ed11f62d9cad0d9d6fea364b7bc9080cf2eceb7b53f630b234efd",
+      "characteristic:eq": "0dead3046499c21957c0cf59cd0950f83d6af903bd04307c72f154ca8ca07990",
+      "primrec:basic": "e06058db84d418002da1194801c561efd33708c894213fe00a6db6830495536f",
+      "predecessor": "167acfeec41d4523bd623f3450151b219a17b443f8a082143ab93dea2cd65926"
+    }
+  },
+  "policy": {
+    "finalCandidateCost": "node overlaps + proper crossings + segment-level unrelated node-edge intrusions",
+    "weights": {
+      "nodeOverlap": 1,
+      "properCrossing": 1,
+      "unrelatedNodeEdgeIntrusion": 1
+    },
+    "strictImprovement": true,
+    "tieBreak": "default",
+    "suffixCompletionPolicy": "same recursive completed-candidate policy",
+    "oldProductionCompletionUsed": false,
+    "memoizationBehaviorPreserving": true,
+    "pruningOrApproximation": false,
+    "pins": []
+  },
+  "fixtureReports": [
+    {
+      "fixture": "minimization:bounded_sub",
+      "orientationMaps": {
+        "checkpoint": {
+          "i-10": "default",
+          "i-12": "default",
+          "i-15": "default",
+          "i-22": "default"
+        },
+        "provisional": {
+          "i-10": "default",
+          "i-12": "default",
+          "i-15": "default",
+          "i-22": "flipped"
+        },
+        "oneStep": {
+          "i-10": "default",
+          "i-12": "default",
+          "i-15": "default",
+          "i-22": "flipped"
+        },
+        "recursive": {
+          "i-10": "default",
+          "i-12": "default",
+          "i-15": "default",
+          "i-22": "flipped"
+        }
+      },
+      "changedFromCheckpoint": [
+        "i-22"
+      ],
+      "changedFromOneStep": [],
+      "recursiveForkEvaluations": [
+        {
+          "realForkId": "i-15",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-10": "default",
+            "i-12": "default",
+            "i-15": "default",
+            "i-22": "flipped"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-10": "flipped",
+            "i-12": "flipped",
+            "i-15": "flipped",
+            "i-22": "default"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed tie -> default",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        },
+        {
+          "realForkId": "i-12",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 1,
+            "nodeEdgeIntrusionCount": 1,
+            "experimentalCost": 2
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-10": "default",
+            "i-12": "default",
+            "i-15": "default",
+            "i-22": "flipped"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-10": "flipped",
+            "i-12": "flipped",
+            "i-15": "default",
+            "i-22": "default"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed default candidate strictly better",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        },
+        {
+          "realForkId": "i-22",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 1,
+            "experimentalCost": 1
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-10": "default",
+            "i-12": "default",
+            "i-15": "default",
+            "i-22": "default"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-10": "default",
+            "i-12": "default",
+            "i-15": "default",
+            "i-22": "flipped"
+          },
+          "finalDecision": "flipped",
+          "tieBreakReason": "recursively completed flipped candidate strictly better",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        },
+        {
+          "realForkId": "i-10",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 2,
+            "properCrossingCount": 2,
+            "nodeEdgeIntrusionCount": 1,
+            "experimentalCost": 5
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-10": "default",
+            "i-12": "default",
+            "i-15": "default",
+            "i-22": "flipped"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-10": "flipped",
+            "i-12": "default",
+            "i-15": "default",
+            "i-22": "flipped"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed default candidate strictly better",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        }
+      ],
+      "selectedCompletionMismatchCount": 0,
+      "final": {
+        "checkpoint": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 0,
+            "edgeOverlaps": [],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 1,
+            "nodeEdgeIntrusions": [
+              {
+                "nodeId": "i-26",
+                "edgeId": "i-24-jump",
+                "nodeBox": {
+                  "left": 322.206,
+                  "right": 410.206,
+                  "top": 1063.1912457533895,
+                  "bottom": 1093.1912457533895
+                },
+                "segmentIndex": 0,
+                "segmentStart": [
+                  84.19399999999999,
+                  1078.1912457533895
+                ],
+                "segmentEnd": [
+                  450,
+                  1078.1912457533895
+                ],
+                "orientation": "horizontal",
+                "intersectionInterval": [
+                  [
+                    322.206,
+                    1078.1912457533895
+                  ],
+                  [
+                    410.206,
+                    1078.1912457533895
+                  ]
+                ],
+                "parameterInterval": [
+                  0.650650891456127,
+                  0.8912155623472552
+                ],
+                "crossesCompletelyThrough": true,
+                "penetrationKind": "crosses-completely-through"
+              }
+            ],
+            "experimentalCost": 1,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 6052,
+            "sha256": "3730839d2267f10d1878cf1404da003b08e345cb049f3ed48144cce1142efb65"
+          }
+        },
+        "provisional": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 0,
+            "edgeOverlaps": [],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 6032,
+            "sha256": "e49dd79e4a06ecec0363046dde45f738912cfc851f921a109f5800fb28e10ea2"
+          }
+        },
+        "oneStep": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 0,
+            "edgeOverlaps": [],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 6032,
+            "sha256": "e49dd79e4a06ecec0363046dde45f738912cfc851f921a109f5800fb28e10ea2"
+          }
+        },
+        "recursive": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 0,
+            "edgeOverlaps": [],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 6032,
+            "sha256": "e49dd79e4a06ecec0363046dde45f738912cfc851f921a109f5800fb28e10ea2"
+          }
+        }
+      },
+      "exhaustiveOracle": {
+        "diagnosticOnly": true,
+        "usedForSelection": false,
+        "orientationOrder": [
+          "i-15",
+          "i-12",
+          "i-22",
+          "i-10"
+        ],
+        "keyLegend": "0=default, 1=flipped, ordered by orientationOrder",
+        "enumeratedMapCount": 16,
+        "minimumAchievableCost": 0,
+        "minimizingMapCount": 2,
+        "minimumComponentTriples": [
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "recursiveSelectedCost": 0,
+        "recursiveSelectedKey": "0010",
+        "recursiveSelectedMap": {
+          "i-10": "default",
+          "i-12": "default",
+          "i-15": "default",
+          "i-22": "flipped"
+        },
+        "recursiveReachesGlobalMinimum": true,
+        "recursiveSelectedMapIsUniqueMinimum": false,
+        "selectedIsDefaultLexicographicMinimumAmongGlobalMinima": true,
+        "tieBehavior": "recursive strict-improvement/default-tie policy chooses the lexicographically first minimum in bottom-up order (default before flipped)",
+        "minimizingKeys": [
+          "0010",
+          "1101"
+        ],
+        "minimizingMapSample": [
+          {
+            "key": "0010",
+            "orientationMap": {
+              "i-15": "default",
+              "i-12": "default",
+              "i-22": "flipped",
+              "i-10": "default"
+            }
+          },
+          {
+            "key": "1101",
+            "orientationMap": {
+              "i-15": "flipped",
+              "i-12": "flipped",
+              "i-22": "default",
+              "i-10": "flipped"
+            }
+          }
+        ],
+        "minimizingMapsOmittedAfterSample": 0
+      },
+      "evaluationCache": {
+        "uniqueFinalMapsRealized": 16,
+        "cacheMisses": 16,
+        "cacheHits": 16,
+        "expectedCompleteMapCount": 16
+      }
+    },
+    {
+      "fixture": "characteristic:divides",
+      "orientationMaps": {
+        "checkpoint": {
+          "i-3": "default",
+          "i-4": "default",
+          "i-13": "default",
+          "i-15": "default",
+          "i-18": "default",
+          "i-25": "default",
+          "i-36": "default",
+          "i-38": "default",
+          "i-41": "default",
+          "i-48": "flipped",
+          "i-53": "flipped"
+        },
+        "provisional": {
+          "i-3": "default",
+          "i-4": "default",
+          "i-13": "default",
+          "i-15": "default",
+          "i-18": "default",
+          "i-25": "flipped",
+          "i-36": "default",
+          "i-38": "default",
+          "i-41": "default",
+          "i-48": "flipped",
+          "i-53": "flipped"
+        },
+        "oneStep": {
+          "i-3": "default",
+          "i-4": "default",
+          "i-13": "default",
+          "i-15": "default",
+          "i-18": "default",
+          "i-25": "default",
+          "i-36": "default",
+          "i-38": "default",
+          "i-41": "default",
+          "i-48": "flipped",
+          "i-53": "flipped"
+        },
+        "recursive": {
+          "i-3": "default",
+          "i-4": "default",
+          "i-13": "default",
+          "i-15": "default",
+          "i-18": "default",
+          "i-25": "default",
+          "i-36": "default",
+          "i-38": "default",
+          "i-41": "default",
+          "i-48": "flipped",
+          "i-53": "flipped"
+        }
+      },
+      "changedFromCheckpoint": [],
+      "changedFromOneStep": [],
+      "recursiveForkEvaluations": [
+        {
+          "realForkId": "i-41",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 1,
+            "nodeEdgeIntrusionCount": 5,
+            "experimentalCost": 6
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "flipped",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed default candidate strictly better",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        },
+        {
+          "realForkId": "i-38",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 2,
+            "properCrossingCount": 3,
+            "nodeEdgeIntrusionCount": 2,
+            "experimentalCost": 7
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "flipped",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed default candidate strictly better",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        },
+        {
+          "realForkId": "i-48",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 2,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 2
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "default",
+            "i-53": "flipped"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "finalDecision": "flipped",
+          "tieBreakReason": "recursively completed flipped candidate strictly better",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        },
+        {
+          "realForkId": "i-18",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 1,
+            "nodeEdgeIntrusionCount": 1,
+            "experimentalCost": 2
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "flipped",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed default candidate strictly better",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        },
+        {
+          "realForkId": "i-36",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 3,
+            "properCrossingCount": 5,
+            "nodeEdgeIntrusionCount": 6,
+            "experimentalCost": 14
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "flipped",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed default candidate strictly better",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        },
+        {
+          "realForkId": "i-15",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 2,
+            "nodeEdgeIntrusionCount": 1,
+            "experimentalCost": 3
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "flipped",
+            "i-15": "flipped",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed default candidate strictly better",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        },
+        {
+          "realForkId": "i-25",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 1,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 1
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "flipped",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed default candidate strictly better",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        },
+        {
+          "realForkId": "i-13",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 5,
+            "properCrossingCount": 1,
+            "nodeEdgeIntrusionCount": 2,
+            "experimentalCost": 8
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "flipped",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed default candidate strictly better",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        },
+        {
+          "realForkId": "i-4",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 5,
+            "nodeEdgeIntrusionCount": 4,
+            "experimentalCost": 9
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-3": "flipped",
+            "i-4": "flipped",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "default"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed default candidate strictly better",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        },
+        {
+          "realForkId": "i-53",
+          "completedDefault": {
+            "nodeOverlapCount": 2,
+            "properCrossingCount": 1,
+            "nodeEdgeIntrusionCount": 4,
+            "experimentalCost": 7
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "default"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "finalDecision": "flipped",
+          "tieBreakReason": "recursively completed flipped candidate strictly better",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        },
+        {
+          "realForkId": "i-3",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 2,
+            "properCrossingCount": 9,
+            "nodeEdgeIntrusionCount": 4,
+            "experimentalCost": 15
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-3": "flipped",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed default candidate strictly better",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        }
+      ],
+      "selectedCompletionMismatchCount": 0,
+      "final": {
+        "checkpoint": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 1,
+            "edgeOverlaps": [
+              {
+                "edgeA": "i-55-jump",
+                "edgeB": "i-57-cont",
+                "segmentA": 1,
+                "segmentB": 2,
+                "interval": [
+                  [
+                    117.64933039999997,
+                    2522.5852145813533
+                  ],
+                  [
+                    133.64933039999997,
+                    2522.5852145813533
+                  ]
+                ]
+              }
+            ],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 19215,
+            "sha256": "72995a166e8ed11f62d9cad0d9d6fea364b7bc9080cf2eceb7b53f630b234efd"
+          }
+        },
+        "provisional": {
+          "diagnostics": {
+            "properCrossingCount": 1,
+            "properCrossings": [
+              {
+                "edgeA": "i-27-jump",
+                "edgeB": "i-33-cont",
+                "segmentA": 1,
+                "segmentB": 0,
+                "point": [
+                  -341.7519704,
+                  1934.1326071255528
+                ]
+              }
+            ],
+            "edgeOverlapCount": 1,
+            "edgeOverlaps": [
+              {
+                "edgeA": "i-55-jump",
+                "edgeB": "i-57-cont",
+                "segmentA": 1,
+                "segmentB": 2,
+                "interval": [
+                  [
+                    -96.7519704,
+                    2522.5852145813533
+                  ],
+                  [
+                    19.80600000000004,
+                    2522.5852145813533
+                  ]
+                ]
+              }
+            ],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "experimentalCost": 1,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 17957,
+            "sha256": "a8820c298dcbd3f29f2c2e3b269963bb5fb1cd76c9408d9f3bb77ea8d9fde1eb"
+          }
+        },
+        "oneStep": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 1,
+            "edgeOverlaps": [
+              {
+                "edgeA": "i-55-jump",
+                "edgeB": "i-57-cont",
+                "segmentA": 1,
+                "segmentB": 2,
+                "interval": [
+                  [
+                    117.64933039999997,
+                    2522.5852145813533
+                  ],
+                  [
+                    133.64933039999997,
+                    2522.5852145813533
+                  ]
+                ]
+              }
+            ],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 19215,
+            "sha256": "72995a166e8ed11f62d9cad0d9d6fea364b7bc9080cf2eceb7b53f630b234efd"
+          }
+        },
+        "recursive": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 1,
+            "edgeOverlaps": [
+              {
+                "edgeA": "i-55-jump",
+                "edgeB": "i-57-cont",
+                "segmentA": 1,
+                "segmentB": 2,
+                "interval": [
+                  [
+                    117.64933039999997,
+                    2522.5852145813533
+                  ],
+                  [
+                    133.64933039999997,
+                    2522.5852145813533
+                  ]
+                ]
+              }
+            ],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 19215,
+            "sha256": "72995a166e8ed11f62d9cad0d9d6fea364b7bc9080cf2eceb7b53f630b234efd"
+          }
+        }
+      },
+      "exhaustiveOracle": {
+        "diagnosticOnly": true,
+        "usedForSelection": false,
+        "orientationOrder": [
+          "i-41",
+          "i-38",
+          "i-48",
+          "i-18",
+          "i-36",
+          "i-15",
+          "i-25",
+          "i-13",
+          "i-4",
+          "i-53",
+          "i-3"
+        ],
+        "keyLegend": "0=default, 1=flipped, ordered by orientationOrder",
+        "enumeratedMapCount": 2048,
+        "minimumAchievableCost": 0,
+        "minimizingMapCount": 1,
+        "minimumComponentTriples": [
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "recursiveSelectedCost": 0,
+        "recursiveSelectedKey": "00100000010",
+        "recursiveSelectedMap": {
+          "i-3": "default",
+          "i-4": "default",
+          "i-13": "default",
+          "i-15": "default",
+          "i-18": "default",
+          "i-25": "default",
+          "i-36": "default",
+          "i-38": "default",
+          "i-41": "default",
+          "i-48": "flipped",
+          "i-53": "flipped"
+        },
+        "recursiveReachesGlobalMinimum": true,
+        "recursiveSelectedMapIsUniqueMinimum": true,
+        "selectedIsDefaultLexicographicMinimumAmongGlobalMinima": true,
+        "tieBehavior": "global minimum is unique",
+        "minimizingKeys": [
+          "00100000010"
+        ],
+        "minimizingMapSample": [
+          {
+            "key": "00100000010",
+            "orientationMap": {
+              "i-41": "default",
+              "i-38": "default",
+              "i-48": "flipped",
+              "i-18": "default",
+              "i-36": "default",
+              "i-15": "default",
+              "i-25": "default",
+              "i-13": "default",
+              "i-4": "default",
+              "i-53": "flipped",
+              "i-3": "default"
+            }
+          }
+        ],
+        "minimizingMapsOmittedAfterSample": 0
+      },
+      "evaluationCache": {
+        "uniqueFinalMapsRealized": 2048,
+        "cacheMisses": 2048,
+        "cacheHits": 2048,
+        "expectedCompleteMapCount": 2048
+      }
+    },
+    {
+      "fixture": "characteristic:eq",
+      "orientationMaps": {
+        "checkpoint": {
+          "i-9": "default",
+          "i-11": "default",
+          "i-14": "default",
+          "i-29": "default",
+          "i-31": "default",
+          "i-34": "default",
+          "i-43": "default",
+          "i-46": "default"
+        },
+        "provisional": {
+          "i-9": "default",
+          "i-11": "default",
+          "i-14": "default",
+          "i-29": "default",
+          "i-31": "default",
+          "i-34": "default",
+          "i-43": "default",
+          "i-46": "default"
+        },
+        "oneStep": {
+          "i-9": "default",
+          "i-11": "default",
+          "i-14": "default",
+          "i-29": "default",
+          "i-31": "default",
+          "i-34": "default",
+          "i-43": "default",
+          "i-46": "default"
+        },
+        "recursive": {
+          "i-9": "default",
+          "i-11": "default",
+          "i-14": "default",
+          "i-29": "default",
+          "i-31": "default",
+          "i-34": "default",
+          "i-43": "default",
+          "i-46": "default"
+        }
+      },
+      "changedFromCheckpoint": [],
+      "changedFromOneStep": [],
+      "recursiveForkEvaluations": [
+        {
+          "realForkId": "i-34",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-9": "default",
+            "i-11": "default",
+            "i-14": "default",
+            "i-29": "default",
+            "i-31": "default",
+            "i-34": "default",
+            "i-43": "default",
+            "i-46": "default"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-9": "default",
+            "i-11": "default",
+            "i-14": "default",
+            "i-29": "flipped",
+            "i-31": "flipped",
+            "i-34": "flipped",
+            "i-43": "flipped",
+            "i-46": "default"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed tie -> default",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        },
+        {
+          "realForkId": "i-46",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-9": "default",
+            "i-11": "default",
+            "i-14": "default",
+            "i-29": "default",
+            "i-31": "default",
+            "i-34": "default",
+            "i-43": "default",
+            "i-46": "default"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-9": "default",
+            "i-11": "default",
+            "i-14": "default",
+            "i-29": "default",
+            "i-31": "default",
+            "i-34": "default",
+            "i-43": "default",
+            "i-46": "flipped"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed tie -> default",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        },
+        {
+          "realForkId": "i-14",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-9": "default",
+            "i-11": "default",
+            "i-14": "default",
+            "i-29": "default",
+            "i-31": "default",
+            "i-34": "default",
+            "i-43": "default",
+            "i-46": "default"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-9": "flipped",
+            "i-11": "flipped",
+            "i-14": "flipped",
+            "i-29": "default",
+            "i-31": "default",
+            "i-34": "default",
+            "i-43": "default",
+            "i-46": "default"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed tie -> default",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        },
+        {
+          "realForkId": "i-31",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 1,
+            "nodeEdgeIntrusionCount": 1,
+            "experimentalCost": 2
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-9": "default",
+            "i-11": "default",
+            "i-14": "default",
+            "i-29": "default",
+            "i-31": "default",
+            "i-34": "default",
+            "i-43": "default",
+            "i-46": "default"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-9": "default",
+            "i-11": "default",
+            "i-14": "default",
+            "i-29": "flipped",
+            "i-31": "flipped",
+            "i-34": "default",
+            "i-43": "flipped",
+            "i-46": "default"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed default candidate strictly better",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        },
+        {
+          "realForkId": "i-43",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-9": "default",
+            "i-11": "default",
+            "i-14": "default",
+            "i-29": "default",
+            "i-31": "default",
+            "i-34": "default",
+            "i-43": "default",
+            "i-46": "default"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-9": "default",
+            "i-11": "default",
+            "i-14": "default",
+            "i-29": "default",
+            "i-31": "default",
+            "i-34": "default",
+            "i-43": "flipped",
+            "i-46": "default"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed tie -> default",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        },
+        {
+          "realForkId": "i-11",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 1,
+            "nodeEdgeIntrusionCount": 1,
+            "experimentalCost": 2
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-9": "default",
+            "i-11": "default",
+            "i-14": "default",
+            "i-29": "default",
+            "i-31": "default",
+            "i-34": "default",
+            "i-43": "default",
+            "i-46": "default"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-9": "flipped",
+            "i-11": "flipped",
+            "i-14": "default",
+            "i-29": "default",
+            "i-31": "default",
+            "i-34": "default",
+            "i-43": "default",
+            "i-46": "default"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed default candidate strictly better",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        },
+        {
+          "realForkId": "i-29",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 2,
+            "properCrossingCount": 4,
+            "nodeEdgeIntrusionCount": 5,
+            "experimentalCost": 11
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-9": "default",
+            "i-11": "default",
+            "i-14": "default",
+            "i-29": "default",
+            "i-31": "default",
+            "i-34": "default",
+            "i-43": "default",
+            "i-46": "default"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-9": "default",
+            "i-11": "default",
+            "i-14": "default",
+            "i-29": "flipped",
+            "i-31": "default",
+            "i-34": "default",
+            "i-43": "default",
+            "i-46": "default"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed default candidate strictly better",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        },
+        {
+          "realForkId": "i-9",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 1,
+            "nodeEdgeIntrusionCount": 4,
+            "experimentalCost": 5
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-9": "default",
+            "i-11": "default",
+            "i-14": "default",
+            "i-29": "default",
+            "i-31": "default",
+            "i-34": "default",
+            "i-43": "default",
+            "i-46": "default"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-9": "flipped",
+            "i-11": "default",
+            "i-14": "default",
+            "i-29": "default",
+            "i-31": "default",
+            "i-34": "default",
+            "i-43": "default",
+            "i-46": "default"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed default candidate strictly better",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        }
+      ],
+      "selectedCompletionMismatchCount": 0,
+      "final": {
+        "checkpoint": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 1,
+            "edgeOverlaps": [
+              {
+                "edgeA": "i-46-yes",
+                "edgeB": "i-47-cont",
+                "segmentA": 2,
+                "segmentB": 1,
+                "interval": [
+                  [
+                    278.55132000000003,
+                    2106.875938964829
+                  ],
+                  [
+                    390.66002960000003,
+                    2106.875938964829
+                  ]
+                ]
+              }
+            ],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 13261,
+            "sha256": "0dead3046499c21957c0cf59cd0950f83d6af903bd04307c72f154ca8ca07990"
+          }
+        },
+        "provisional": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 1,
+            "edgeOverlaps": [
+              {
+                "edgeA": "i-46-yes",
+                "edgeB": "i-47-cont",
+                "segmentA": 2,
+                "segmentB": 1,
+                "interval": [
+                  [
+                    278.55132000000003,
+                    2106.875938964829
+                  ],
+                  [
+                    390.66002960000003,
+                    2106.875938964829
+                  ]
+                ]
+              }
+            ],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 13261,
+            "sha256": "0dead3046499c21957c0cf59cd0950f83d6af903bd04307c72f154ca8ca07990"
+          }
+        },
+        "oneStep": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 1,
+            "edgeOverlaps": [
+              {
+                "edgeA": "i-46-yes",
+                "edgeB": "i-47-cont",
+                "segmentA": 2,
+                "segmentB": 1,
+                "interval": [
+                  [
+                    278.55132000000003,
+                    2106.875938964829
+                  ],
+                  [
+                    390.66002960000003,
+                    2106.875938964829
+                  ]
+                ]
+              }
+            ],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 13261,
+            "sha256": "0dead3046499c21957c0cf59cd0950f83d6af903bd04307c72f154ca8ca07990"
+          }
+        },
+        "recursive": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 1,
+            "edgeOverlaps": [
+              {
+                "edgeA": "i-46-yes",
+                "edgeB": "i-47-cont",
+                "segmentA": 2,
+                "segmentB": 1,
+                "interval": [
+                  [
+                    278.55132000000003,
+                    2106.875938964829
+                  ],
+                  [
+                    390.66002960000003,
+                    2106.875938964829
+                  ]
+                ]
+              }
+            ],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 13261,
+            "sha256": "0dead3046499c21957c0cf59cd0950f83d6af903bd04307c72f154ca8ca07990"
+          }
+        }
+      },
+      "exhaustiveOracle": {
+        "diagnosticOnly": true,
+        "usedForSelection": false,
+        "orientationOrder": [
+          "i-34",
+          "i-46",
+          "i-14",
+          "i-31",
+          "i-43",
+          "i-11",
+          "i-29",
+          "i-9"
+        ],
+        "keyLegend": "0=default, 1=flipped, ordered by orientationOrder",
+        "enumeratedMapCount": 256,
+        "minimumAchievableCost": 0,
+        "minimizingMapCount": 12,
+        "minimumComponentTriples": [
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "recursiveSelectedCost": 0,
+        "recursiveSelectedKey": "00000000",
+        "recursiveSelectedMap": {
+          "i-9": "default",
+          "i-11": "default",
+          "i-14": "default",
+          "i-29": "default",
+          "i-31": "default",
+          "i-34": "default",
+          "i-43": "default",
+          "i-46": "default"
+        },
+        "recursiveReachesGlobalMinimum": true,
+        "recursiveSelectedMapIsUniqueMinimum": false,
+        "selectedIsDefaultLexicographicMinimumAmongGlobalMinima": true,
+        "tieBehavior": "recursive strict-improvement/default-tie policy chooses the lexicographically first minimum in bottom-up order (default before flipped)",
+        "minimizingKeys": [
+          "00000000",
+          "00001000",
+          "00100101",
+          "00101101",
+          "01000000",
+          "01100101",
+          "10011010",
+          "10111111",
+          "11010010",
+          "11011010",
+          "11110111",
+          "11111111"
+        ],
+        "minimizingMapSample": [
+          {
+            "key": "00000000",
+            "orientationMap": {
+              "i-34": "default",
+              "i-46": "default",
+              "i-14": "default",
+              "i-31": "default",
+              "i-43": "default",
+              "i-11": "default",
+              "i-29": "default",
+              "i-9": "default"
+            }
+          },
+          {
+            "key": "00001000",
+            "orientationMap": {
+              "i-34": "default",
+              "i-46": "default",
+              "i-14": "default",
+              "i-31": "default",
+              "i-43": "flipped",
+              "i-11": "default",
+              "i-29": "default",
+              "i-9": "default"
+            }
+          },
+          {
+            "key": "00100101",
+            "orientationMap": {
+              "i-34": "default",
+              "i-46": "default",
+              "i-14": "flipped",
+              "i-31": "default",
+              "i-43": "default",
+              "i-11": "flipped",
+              "i-29": "default",
+              "i-9": "flipped"
+            }
+          },
+          {
+            "key": "00101101",
+            "orientationMap": {
+              "i-34": "default",
+              "i-46": "default",
+              "i-14": "flipped",
+              "i-31": "default",
+              "i-43": "flipped",
+              "i-11": "flipped",
+              "i-29": "default",
+              "i-9": "flipped"
+            }
+          },
+          {
+            "key": "01000000",
+            "orientationMap": {
+              "i-34": "default",
+              "i-46": "flipped",
+              "i-14": "default",
+              "i-31": "default",
+              "i-43": "default",
+              "i-11": "default",
+              "i-29": "default",
+              "i-9": "default"
+            }
+          },
+          {
+            "key": "01100101",
+            "orientationMap": {
+              "i-34": "default",
+              "i-46": "flipped",
+              "i-14": "flipped",
+              "i-31": "default",
+              "i-43": "default",
+              "i-11": "flipped",
+              "i-29": "default",
+              "i-9": "flipped"
+            }
+          },
+          {
+            "key": "10011010",
+            "orientationMap": {
+              "i-34": "flipped",
+              "i-46": "default",
+              "i-14": "default",
+              "i-31": "flipped",
+              "i-43": "flipped",
+              "i-11": "default",
+              "i-29": "flipped",
+              "i-9": "default"
+            }
+          },
+          {
+            "key": "10111111",
+            "orientationMap": {
+              "i-34": "flipped",
+              "i-46": "default",
+              "i-14": "flipped",
+              "i-31": "flipped",
+              "i-43": "flipped",
+              "i-11": "flipped",
+              "i-29": "flipped",
+              "i-9": "flipped"
+            }
+          },
+          {
+            "key": "11010010",
+            "orientationMap": {
+              "i-34": "flipped",
+              "i-46": "flipped",
+              "i-14": "default",
+              "i-31": "flipped",
+              "i-43": "default",
+              "i-11": "default",
+              "i-29": "flipped",
+              "i-9": "default"
+            }
+          },
+          {
+            "key": "11011010",
+            "orientationMap": {
+              "i-34": "flipped",
+              "i-46": "flipped",
+              "i-14": "default",
+              "i-31": "flipped",
+              "i-43": "flipped",
+              "i-11": "default",
+              "i-29": "flipped",
+              "i-9": "default"
+            }
+          },
+          {
+            "key": "11110111",
+            "orientationMap": {
+              "i-34": "flipped",
+              "i-46": "flipped",
+              "i-14": "flipped",
+              "i-31": "flipped",
+              "i-43": "default",
+              "i-11": "flipped",
+              "i-29": "flipped",
+              "i-9": "flipped"
+            }
+          },
+          {
+            "key": "11111111",
+            "orientationMap": {
+              "i-34": "flipped",
+              "i-46": "flipped",
+              "i-14": "flipped",
+              "i-31": "flipped",
+              "i-43": "flipped",
+              "i-11": "flipped",
+              "i-29": "flipped",
+              "i-9": "flipped"
+            }
+          }
+        ],
+        "minimizingMapsOmittedAfterSample": 0
+      },
+      "evaluationCache": {
+        "uniqueFinalMapsRealized": 256,
+        "cacheMisses": 256,
+        "cacheHits": 256,
+        "expectedCompleteMapCount": 256
+      }
+    },
+    {
+      "fixture": "primrec:basic",
+      "orientationMaps": {
+        "checkpoint": {
+          "i-5": "default",
+          "i-13": "default"
+        },
+        "provisional": {
+          "i-5": "default",
+          "i-13": "default"
+        },
+        "oneStep": {
+          "i-5": "default",
+          "i-13": "default"
+        },
+        "recursive": {
+          "i-5": "default",
+          "i-13": "default"
+        }
+      },
+      "changedFromCheckpoint": [],
+      "changedFromOneStep": [],
+      "recursiveForkEvaluations": [
+        {
+          "realForkId": "i-13",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-5": "default",
+            "i-13": "default"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-5": "default",
+            "i-13": "flipped"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed tie -> default",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        },
+        {
+          "realForkId": "i-5",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-5": "default",
+            "i-13": "default"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-5": "flipped",
+            "i-13": "default"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed tie -> default",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        }
+      ],
+      "selectedCompletionMismatchCount": 0,
+      "final": {
+        "checkpoint": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 0,
+            "edgeOverlaps": [],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 4938,
+            "sha256": "e06058db84d418002da1194801c561efd33708c894213fe00a6db6830495536f"
+          }
+        },
+        "provisional": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 0,
+            "edgeOverlaps": [],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 4938,
+            "sha256": "e06058db84d418002da1194801c561efd33708c894213fe00a6db6830495536f"
+          }
+        },
+        "oneStep": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 0,
+            "edgeOverlaps": [],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 4938,
+            "sha256": "e06058db84d418002da1194801c561efd33708c894213fe00a6db6830495536f"
+          }
+        },
+        "recursive": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 0,
+            "edgeOverlaps": [],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 4938,
+            "sha256": "e06058db84d418002da1194801c561efd33708c894213fe00a6db6830495536f"
+          }
+        }
+      },
+      "exhaustiveOracle": {
+        "diagnosticOnly": true,
+        "usedForSelection": false,
+        "orientationOrder": [
+          "i-13",
+          "i-5"
+        ],
+        "keyLegend": "0=default, 1=flipped, ordered by orientationOrder",
+        "enumeratedMapCount": 4,
+        "minimumAchievableCost": 0,
+        "minimizingMapCount": 4,
+        "minimumComponentTriples": [
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "recursiveSelectedCost": 0,
+        "recursiveSelectedKey": "00",
+        "recursiveSelectedMap": {
+          "i-5": "default",
+          "i-13": "default"
+        },
+        "recursiveReachesGlobalMinimum": true,
+        "recursiveSelectedMapIsUniqueMinimum": false,
+        "selectedIsDefaultLexicographicMinimumAmongGlobalMinima": true,
+        "tieBehavior": "recursive strict-improvement/default-tie policy chooses the lexicographically first minimum in bottom-up order (default before flipped)",
+        "minimizingKeys": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ],
+        "minimizingMapSample": [
+          {
+            "key": "00",
+            "orientationMap": {
+              "i-13": "default",
+              "i-5": "default"
+            }
+          },
+          {
+            "key": "01",
+            "orientationMap": {
+              "i-13": "default",
+              "i-5": "flipped"
+            }
+          },
+          {
+            "key": "10",
+            "orientationMap": {
+              "i-13": "flipped",
+              "i-5": "default"
+            }
+          },
+          {
+            "key": "11",
+            "orientationMap": {
+              "i-13": "flipped",
+              "i-5": "flipped"
+            }
+          }
+        ],
+        "minimizingMapsOmittedAfterSample": 0
+      },
+      "evaluationCache": {
+        "uniqueFinalMapsRealized": 4,
+        "cacheMisses": 4,
+        "cacheHits": 4,
+        "expectedCompleteMapCount": 4
+      }
+    },
+    {
+      "fixture": "predecessor",
+      "orientationMaps": {
+        "checkpoint": {
+          "i-0": "default",
+          "i-2": "default"
+        },
+        "provisional": {
+          "i-0": "default",
+          "i-2": "default"
+        },
+        "oneStep": {
+          "i-0": "default",
+          "i-2": "default"
+        },
+        "recursive": {
+          "i-0": "default",
+          "i-2": "default"
+        }
+      },
+      "changedFromCheckpoint": [],
+      "changedFromOneStep": [],
+      "recursiveForkEvaluations": [
+        {
+          "realForkId": "i-2",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-0": "default",
+            "i-2": "default"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-0": "flipped",
+            "i-2": "flipped"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed tie -> default",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        },
+        {
+          "realForkId": "i-0",
+          "completedDefault": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 0,
+            "nodeEdgeIntrusionCount": 0,
+            "experimentalCost": 0
+          },
+          "completedFlipped": {
+            "nodeOverlapCount": 0,
+            "properCrossingCount": 1,
+            "nodeEdgeIntrusionCount": 1,
+            "experimentalCost": 2
+          },
+          "recursiveCompletionDefaultOrientationMap": {
+            "i-0": "default",
+            "i-2": "default"
+          },
+          "recursiveCompletionFlippedOrientationMap": {
+            "i-0": "flipped",
+            "i-2": "default"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "recursively completed default candidate strictly better",
+          "selectedCompletionMatchesActuallySelectedSuffix": true,
+          "selectedCompletionDifferences": []
+        }
+      ],
+      "selectedCompletionMismatchCount": 0,
+      "final": {
+        "checkpoint": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 0,
+            "edgeOverlaps": [],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 2324,
+            "sha256": "167acfeec41d4523bd623f3450151b219a17b443f8a082143ab93dea2cd65926"
+          }
+        },
+        "provisional": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 0,
+            "edgeOverlaps": [],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 2324,
+            "sha256": "167acfeec41d4523bd623f3450151b219a17b443f8a082143ab93dea2cd65926"
+          }
+        },
+        "oneStep": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 0,
+            "edgeOverlaps": [],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 2324,
+            "sha256": "167acfeec41d4523bd623f3450151b219a17b443f8a082143ab93dea2cd65926"
+          }
+        },
+        "recursive": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 0,
+            "edgeOverlaps": [],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 2324,
+            "sha256": "167acfeec41d4523bd623f3450151b219a17b443f8a082143ab93dea2cd65926"
+          }
+        }
+      },
+      "exhaustiveOracle": {
+        "diagnosticOnly": true,
+        "usedForSelection": false,
+        "orientationOrder": [
+          "i-2",
+          "i-0"
+        ],
+        "keyLegend": "0=default, 1=flipped, ordered by orientationOrder",
+        "enumeratedMapCount": 4,
+        "minimumAchievableCost": 0,
+        "minimizingMapCount": 2,
+        "minimumComponentTriples": [
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "recursiveSelectedCost": 0,
+        "recursiveSelectedKey": "00",
+        "recursiveSelectedMap": {
+          "i-0": "default",
+          "i-2": "default"
+        },
+        "recursiveReachesGlobalMinimum": true,
+        "recursiveSelectedMapIsUniqueMinimum": false,
+        "selectedIsDefaultLexicographicMinimumAmongGlobalMinima": true,
+        "tieBehavior": "recursive strict-improvement/default-tie policy chooses the lexicographically first minimum in bottom-up order (default before flipped)",
+        "minimizingKeys": [
+          "00",
+          "11"
+        ],
+        "minimizingMapSample": [
+          {
+            "key": "00",
+            "orientationMap": {
+              "i-2": "default",
+              "i-0": "default"
+            }
+          },
+          {
+            "key": "11",
+            "orientationMap": {
+              "i-2": "flipped",
+              "i-0": "flipped"
+            }
+          }
+        ],
+        "minimizingMapsOmittedAfterSample": 0
+      },
+      "evaluationCache": {
+        "uniqueFinalMapsRealized": 4,
+        "cacheMisses": 4,
+        "cacheHits": 4,
+        "expectedCompleteMapCount": 4
+      }
+    }
+  ],
+  "completionConsistencyAudit": {
+    "selectedCandidateMismatchCount": 0,
+    "previousRolloutMismatchesRevisited": [
+      {
+        "fixture": "minimization:bounded_sub",
+        "realForkId": "i-15",
+        "oneStepCosts": {
+          "default": 1,
+          "flipped": 3
+        },
+        "recursiveCosts": {
+          "default": 0,
+          "flipped": 0
+        },
+        "oneStepDecision": "default",
+        "recursiveDecision": "default",
+        "decisionChanged": false,
+        "selectedCompletionMatchesActuallySelectedSuffix": true
+      },
+      {
+        "fixture": "minimization:bounded_sub",
+        "realForkId": "i-12",
+        "oneStepCosts": {
+          "default": 1,
+          "flipped": 2
+        },
+        "recursiveCosts": {
+          "default": 0,
+          "flipped": 2
+        },
+        "oneStepDecision": "default",
+        "recursiveDecision": "default",
+        "decisionChanged": false,
+        "selectedCompletionMatchesActuallySelectedSuffix": true
+      },
+      {
+        "fixture": "characteristic:divides",
+        "realForkId": "i-38",
+        "oneStepCosts": {
+          "default": 0,
+          "flipped": 10
+        },
+        "recursiveCosts": {
+          "default": 0,
+          "flipped": 7
+        },
+        "oneStepDecision": "default",
+        "recursiveDecision": "default",
+        "decisionChanged": false,
+        "selectedCompletionMatchesActuallySelectedSuffix": true
+      },
+      {
+        "fixture": "characteristic:divides",
+        "realForkId": "i-15",
+        "oneStepCosts": {
+          "default": 0,
+          "flipped": 3
+        },
+        "recursiveCosts": {
+          "default": 0,
+          "flipped": 3
+        },
+        "oneStepDecision": "default",
+        "recursiveDecision": "default",
+        "decisionChanged": false,
+        "selectedCompletionMatchesActuallySelectedSuffix": true
+      },
+      {
+        "fixture": "characteristic:eq",
+        "realForkId": "i-31",
+        "oneStepCosts": {
+          "default": 0,
+          "flipped": 2
+        },
+        "recursiveCosts": {
+          "default": 0,
+          "flipped": 2
+        },
+        "oneStepDecision": "default",
+        "recursiveDecision": "default",
+        "decisionChanged": false,
+        "selectedCompletionMatchesActuallySelectedSuffix": true
+      },
+      {
+        "fixture": "characteristic:eq",
+        "realForkId": "i-11",
+        "oneStepCosts": {
+          "default": 0,
+          "flipped": 2
+        },
+        "recursiveCosts": {
+          "default": 0,
+          "flipped": 2
+        },
+        "oneStepDecision": "default",
+        "recursiveDecision": "default",
+        "decisionChanged": false,
+        "selectedCompletionMatchesActuallySelectedSuffix": true
+      },
+      {
+        "fixture": "predecessor",
+        "realForkId": "i-2",
+        "oneStepCosts": {
+          "default": 0,
+          "flipped": 0
+        },
+        "recursiveCosts": {
+          "default": 0,
+          "flipped": 0
+        },
+        "oneStepDecision": "default",
+        "recursiveDecision": "default",
+        "decisionChanged": false,
+        "selectedCompletionMatchesActuallySelectedSuffix": true
+      }
+    ]
+  },
+  "exhaustiveOracleConclusion": {
+    "everyRecursiveResultIsGlobalMinimum": true,
+    "explanation": "The recursion explores both branches through every remaining fork and chooses the lower final scalar, so it is exact global N/C/I optimization. Default-on-tie makes the selected global minimum lexicographically default-first in the existing bottom-up order."
+  },
+  "freeze": {
+    "productionFilesChanged": false,
+    "geometryChanged": false,
+    "routingChanged": false,
+    "portsChanged": false,
+    "placementChanged": false,
+    "haltChanged": false,
+    "adaptiveMergeRaysChanged": false,
+    "loopEndpointRulesChanged": false,
+    "i57ReentryChanged": false,
+    "defectDefinitionsChanged": false,
+    "segmentLevelIntrusionCountingChanged": false,
+    "edgeOverlapScored": false,
+    "repairApplied": false,
+    "resultPromoted": false,
+    "resultCheckpointed": false
+  }
+}

@@ -1,0 +1,185 @@
+{
+ "meta": {
+  "date": "2026-07-01",
+  "engine": "sketchV4 buildLayout v4Assigned",
+  "outDir": ".flow-layout-probes/overlays"
+ },
+ "fixtures": {
+  "predecessor": {
+   "defectsTotal": 0,
+   "illegalAttachmentEndpoints": 2,
+   "illegalReasonHistogram": {
+    "branch-exit|target|north-west": 1,
+    "branch-exit|target|north-east": 1
+   },
+   "portJamCount": 0,
+   "mergeBoxClips": 0,
+   "labelMaxDist": 266,
+   "labelDriftedOver140": 1,
+   "branchLabelCount": 4,
+   "ancestryUntintableNodes": 0,
+   "overlayIsBasePlusLayers": true,
+   "geometryMatchesC3Probe": true,
+   "missingData": [],
+   "files": [
+    "predecessor_base.svg",
+    "predecessor_overlay.svg"
+   ]
+  },
+  "bounded_sub": {
+   "defectsTotal": 0,
+   "illegalAttachmentEndpoints": 3,
+   "illegalReasonHistogram": {
+    "branch-exit|target|north-east": 2,
+    "branch-exit|target|north-west": 1
+   },
+   "portJamCount": 0,
+   "mergeBoxClips": 0,
+   "labelMaxDist": 225,
+   "labelDriftedOver140": 1,
+   "branchLabelCount": 6,
+   "ancestryUntintableNodes": 0,
+   "overlayIsBasePlusLayers": true,
+   "geometryMatchesC3Probe": true,
+   "missingData": [],
+   "files": [
+    "bounded_sub_base.svg",
+    "bounded_sub_overlay.svg"
+   ]
+  },
+  "characteristic:leq": {
+   "defectsTotal": 0,
+   "illegalAttachmentEndpoints": 6,
+   "illegalReasonHistogram": {
+    "branch-exit|target|north-west": 2,
+    "branch-exit|target|north-east": 4
+   },
+   "portJamCount": 0,
+   "mergeBoxClips": 0,
+   "labelMaxDist": 225,
+   "labelDriftedOver140": 1,
+   "branchLabelCount": 8,
+   "ancestryUntintableNodes": 0,
+   "overlayIsBasePlusLayers": true,
+   "geometryMatchesC3Probe": true,
+   "missingData": [],
+   "files": [
+    "characteristic_leq_base.svg",
+    "characteristic_leq_overlay.svg"
+   ]
+  },
+  "characteristic:lt": {
+   "defectsTotal": 0,
+   "illegalAttachmentEndpoints": 6,
+   "illegalReasonHistogram": {
+    "branch-exit|target|north-west": 2,
+    "branch-exit|target|north-east": 4
+   },
+   "portJamCount": 0,
+   "mergeBoxClips": 0,
+   "labelMaxDist": 225,
+   "labelDriftedOver140": 1,
+   "branchLabelCount": 8,
+   "ancestryUntintableNodes": 0,
+   "overlayIsBasePlusLayers": true,
+   "geometryMatchesC3Probe": true,
+   "missingData": [],
+   "files": [
+    "characteristic_lt_base.svg",
+    "characteristic_lt_overlay.svg"
+   ]
+  },
+  "characteristic:eq": {
+   "defectsTotal": 0,
+   "illegalAttachmentEndpoints": 14,
+   "illegalReasonHistogram": {
+    "branch-exit|target|north-west": 5,
+    "branch-exit|target|north-east": 8,
+    "halt|source|south": 1
+   },
+   "portJamCount": 0,
+   "mergeBoxClips": 0,
+   "labelMaxDist": 225,
+   "labelDriftedOver140": 2,
+   "branchLabelCount": 16,
+   "ancestryUntintableNodes": 0,
+   "overlayIsBasePlusLayers": true,
+   "geometryMatchesC3Probe": true,
+   "missingData": [],
+   "files": [
+    "characteristic_eq_base.svg",
+    "characteristic_eq_overlay.svg"
+   ]
+  },
+  "characteristic:divides": {
+   "defectsTotal": 0,
+   "illegalAttachmentEndpoints": 23,
+   "illegalReasonHistogram": {
+    "branch-exit|target|north-west": 9,
+    "branch-exit|target|north-east": 10,
+    "loop-return|source|south": 2,
+    "loop-return|target|north": 1,
+    "halt|source|south": 1
+   },
+   "portJamCount": 2,
+   "mergeBoxClips": 0,
+   "labelMaxDist": 209,
+   "labelDriftedOver140": 2,
+   "branchLabelCount": 22,
+   "ancestryUntintableNodes": 0,
+   "overlayIsBasePlusLayers": true,
+   "geometryMatchesC3Probe": true,
+   "missingData": [],
+   "files": [
+    "characteristic_divides_base.svg",
+    "characteristic_divides_overlay.svg"
+   ]
+  },
+  "divisor_count": {
+   "defectsTotal": 1,
+   "illegalAttachmentEndpoints": 26,
+   "illegalReasonHistogram": {
+    "branch-exit|target|north-west": 11,
+    "branch-exit|target|north-east": 12,
+    "loop-return|source|south": 2,
+    "loop-return|target|north": 1
+   },
+   "portJamCount": 4,
+   "mergeBoxClips": 0,
+   "labelMaxDist": 165,
+   "labelDriftedOver140": 2,
+   "branchLabelCount": 26,
+   "ancestryUntintableNodes": 0,
+   "overlayIsBasePlusLayers": true,
+   "geometryMatchesC3Probe": true,
+   "missingData": [],
+   "files": [
+    "divisor_count_base.svg",
+    "divisor_count_overlay.svg"
+   ]
+  },
+  "subst:diagonal_divides": {
+   "defectsTotal": 1,
+   "illegalAttachmentEndpoints": 22,
+   "illegalReasonHistogram": {
+    "branch-exit|target|north-west": 9,
+    "branch-exit|target|north-east": 10,
+    "loop-return|source|south": 2,
+    "loop-return|target|north": 1
+   },
+   "portJamCount": 3,
+   "mergeBoxClips": 0,
+   "labelMaxDist": 209,
+   "labelDriftedOver140": 2,
+   "branchLabelCount": 22,
+   "ancestryUntintableNodes": 0,
+   "overlayIsBasePlusLayers": true,
+   "geometryMatchesC3Probe": true,
+   "missingData": [],
+   "files": [
+    "subst_diagonal_divides_base.svg",
+    "subst_diagonal_divides_overlay.svg"
+   ]
+  }
+ }
+}

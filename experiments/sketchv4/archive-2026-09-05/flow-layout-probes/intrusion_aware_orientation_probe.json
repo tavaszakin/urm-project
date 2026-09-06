@@ -1,0 +1,3741 @@
+{
+  "experiment": "intrusion-aware real-fork orientation cost",
+  "checkpoint": {
+    "commit": "9f166f24721e7125ec9c0105e8960c6273d8d932",
+    "expectedBaselineHashes": {
+      "minimization:bounded_sub": "3730839d2267f10d1878cf1404da003b08e345cb049f3ed48144cce1142efb65",
+      "characteristic:divides": "72995a166e8ed11f62d9cad0d9d6fea364b7bc9080cf2eceb7b53f630b234efd",
+      "characteristic:eq": "0dead3046499c21957c0cf59cd0950f83d6af903bd04307c72f154ca8ca07990",
+      "primrec:basic": "e06058db84d418002da1194801c561efd33708c894213fe00a6db6830495536f",
+      "predecessor": "167acfeec41d4523bd623f3450151b219a17b443f8a082143ab93dea2cd65926"
+    }
+  },
+  "experimentalVariable": {
+    "baselineCost": "nodeOverlapCount + properCrossingCount",
+    "experimentalCost": "nodeOverlapCount + properCrossingCount + unrelatedNodeEdgeIntrusionCount",
+    "weights": {
+      "nodeOverlap": 1,
+      "properCrossing": 1,
+      "unrelatedNodeEdgeIntrusion": 1
+    },
+    "edgeOverlapScored": false,
+    "attachmentLegalityScored": false
+  },
+  "freeze": {
+    "productionFilesChanged": false,
+    "geometryConstructionChanged": false,
+    "routingChanged": false,
+    "portsChanged": false,
+    "loopGrammarChanged": false,
+    "adaptiveRayChanged": false,
+    "haltChanged": false,
+    "nodePlacementChanged": false,
+    "defectDefinitionsChanged": false,
+    "rareRepairBehaviorChanged": false,
+    "pins": [],
+    "postSelectionRepairApplied": false
+  },
+  "fixtureReports": [
+    {
+      "fixture": "minimization:bounded_sub",
+      "baseline": {
+        "orientationMap": {
+          "i-10": "default",
+          "i-12": "default",
+          "i-15": "default",
+          "i-22": "default"
+        },
+        "finalDiagnostics": {
+          "nodeOverlapCount": 0,
+          "nodeOverlaps": [],
+          "properCrossingCount": 0,
+          "properCrossings": [],
+          "edgeOverlapCount": 0,
+          "edgeOverlaps": [],
+          "unrelatedNodeEdgeIntrusionCount": 1,
+          "unrelatedNodeEdgeIntrusions": [
+            {
+              "nodeId": "i-26",
+              "edgeId": "i-24-jump",
+              "nodeBox": {
+                "left": 322.206,
+                "right": 410.206,
+                "top": 1063.1912457533895,
+                "bottom": 1093.1912457533895
+              },
+              "segmentIndex": 0,
+              "segmentStart": [
+                84.19399999999999,
+                1078.1912457533895
+              ],
+              "segmentEnd": [
+                450,
+                1078.1912457533895
+              ],
+              "orientation": "horizontal",
+              "intersectionInterval": [
+                [
+                  322.206,
+                  1078.1912457533895
+                ],
+                [
+                  410.206,
+                  1078.1912457533895
+                ]
+              ],
+              "parameterInterval": [
+                0.650650891456127,
+                0.8912155623472552
+              ],
+              "crossesCompletelyThrough": true,
+              "penetrationKind": "crosses-completely-through"
+            }
+          ],
+          "oldProductionCost": 0,
+          "intrusionAwareCost": 1,
+          "warnings": {
+            "cfg": [],
+            "roles": [],
+            "skeleton": [],
+            "lanes": [],
+            "routing": []
+          },
+          "fallbackOrRejectionFired": false
+        },
+        "geometryDigest": {
+          "canonicalBytes": 6052,
+          "sha256": "3730839d2267f10d1878cf1404da003b08e345cb049f3ed48144cce1142efb65"
+        },
+        "rareRepairCandidates": []
+      },
+      "experimental": {
+        "orientationMap": {
+          "i-10": "default",
+          "i-12": "default",
+          "i-15": "default",
+          "i-22": "flipped"
+        },
+        "finalDiagnostics": {
+          "nodeOverlapCount": 0,
+          "nodeOverlaps": [],
+          "properCrossingCount": 0,
+          "properCrossings": [],
+          "edgeOverlapCount": 0,
+          "edgeOverlaps": [],
+          "unrelatedNodeEdgeIntrusionCount": 0,
+          "unrelatedNodeEdgeIntrusions": [],
+          "oldProductionCost": 0,
+          "intrusionAwareCost": 0,
+          "warnings": {
+            "cfg": [],
+            "roles": [],
+            "skeleton": [],
+            "lanes": [],
+            "routing": []
+          },
+          "fallbackOrRejectionFired": false
+        },
+        "geometryDigest": {
+          "canonicalBytes": 6032,
+          "sha256": "e49dd79e4a06ecec0363046dde45f738912cfc851f921a109f5800fb28e10ea2"
+        },
+        "rareRepairCandidates": [],
+        "rareRepairApplied": false
+      },
+      "changedForkIds": [
+        "i-22"
+      ],
+      "changedForks": [
+        {
+          "realForkId": "i-22",
+          "baselineDecision": "default",
+          "experimentalDecision": "flipped",
+          "decisionChanged": true,
+          "baselineMarginFlippedMinusDefault": 0,
+          "experimentalMarginFlippedMinusDefault": -1,
+          "marginChanged": true,
+          "tieChanged": true,
+          "baselineEvaluation": {
+            "realForkId": "i-22",
+            "scoreKind": "production",
+            "default": {
+              "nodeOverlapCount": 0,
+              "nodeOverlaps": [],
+              "properCrossingCount": 0,
+              "properCrossings": [],
+              "nodeEdgeIntrusionCount": 1,
+              "nodeEdgeIntrusions": [
+                {
+                  "nodeId": "i-26",
+                  "edgeId": "i-24-jump",
+                  "nodeBox": {
+                    "left": 322.206,
+                    "right": 410.206,
+                    "top": 1063.1912457533895,
+                    "bottom": 1093.1912457533895
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    84.19399999999999,
+                    1078.1912457533895
+                  ],
+                  "segmentEnd": [
+                    450,
+                    1078.1912457533895
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      322.206,
+                      1078.1912457533895
+                    ],
+                    [
+                      410.206,
+                      1078.1912457533895
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.650650891456127,
+                    0.8912155623472552
+                  ],
+                  "crossesCompletelyThrough": true,
+                  "penetrationKind": "crosses-completely-through"
+                }
+              ],
+              "oldProductionCost": 0,
+              "experimentalCost": 1
+            },
+            "flipped": {
+              "nodeOverlapCount": 0,
+              "nodeOverlaps": [],
+              "properCrossingCount": 0,
+              "properCrossings": [],
+              "nodeEdgeIntrusionCount": 0,
+              "nodeEdgeIntrusions": [],
+              "oldProductionCost": 0,
+              "experimentalCost": 0
+            },
+            "finalDecision": "default",
+            "tieBreakReason": "tie -> default",
+            "strictImprovement": false,
+            "parentRealFork": "i-10",
+            "childRealForks": []
+          },
+          "experimentalEvaluation": {
+            "realForkId": "i-22",
+            "scoreKind": "intrusion-aware",
+            "default": {
+              "nodeOverlapCount": 0,
+              "nodeOverlaps": [],
+              "properCrossingCount": 0,
+              "properCrossings": [],
+              "nodeEdgeIntrusionCount": 1,
+              "nodeEdgeIntrusions": [
+                {
+                  "nodeId": "i-26",
+                  "edgeId": "i-24-jump",
+                  "nodeBox": {
+                    "left": 322.206,
+                    "right": 410.206,
+                    "top": 1063.1912457533895,
+                    "bottom": 1093.1912457533895
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    84.19399999999999,
+                    1078.1912457533895
+                  ],
+                  "segmentEnd": [
+                    450,
+                    1078.1912457533895
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      322.206,
+                      1078.1912457533895
+                    ],
+                    [
+                      410.206,
+                      1078.1912457533895
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.650650891456127,
+                    0.8912155623472552
+                  ],
+                  "crossesCompletelyThrough": true,
+                  "penetrationKind": "crosses-completely-through"
+                }
+              ],
+              "oldProductionCost": 0,
+              "experimentalCost": 1
+            },
+            "flipped": {
+              "nodeOverlapCount": 0,
+              "nodeOverlaps": [],
+              "properCrossingCount": 0,
+              "properCrossings": [],
+              "nodeEdgeIntrusionCount": 0,
+              "nodeEdgeIntrusions": [],
+              "oldProductionCost": 0,
+              "experimentalCost": 0
+            },
+            "finalDecision": "flipped",
+            "tieBreakReason": "flip strictly reduces total defects",
+            "strictImprovement": true,
+            "parentRealFork": "i-10",
+            "childRealForks": []
+          }
+        }
+      ],
+      "materialUnchangedForks": [
+        {
+          "realForkId": "i-10",
+          "baselineDecision": "default",
+          "experimentalDecision": "default",
+          "baselineMarginFlippedMinusDefault": 3,
+          "experimentalMarginFlippedMinusDefault": 5,
+          "tieChanged": false,
+          "baselineCosts": {
+            "default": 0,
+            "flipped": 3
+          },
+          "experimentalCosts": {
+            "default": 0,
+            "flipped": 5
+          }
+        },
+        {
+          "realForkId": "i-12",
+          "baselineDecision": "default",
+          "experimentalDecision": "default",
+          "baselineMarginFlippedMinusDefault": 4,
+          "experimentalMarginFlippedMinusDefault": 5,
+          "tieChanged": false,
+          "baselineCosts": {
+            "default": 0,
+            "flipped": 4
+          },
+          "experimentalCosts": {
+            "default": 1,
+            "flipped": 6
+          }
+        },
+        {
+          "realForkId": "i-15",
+          "baselineDecision": "default",
+          "experimentalDecision": "default",
+          "baselineMarginFlippedMinusDefault": 1,
+          "experimentalMarginFlippedMinusDefault": 2,
+          "tieChanged": false,
+          "baselineCosts": {
+            "default": 0,
+            "flipped": 1
+          },
+          "experimentalCosts": {
+            "default": 1,
+            "flipped": 3
+          }
+        }
+      ],
+      "spotlight": {
+        "i-22": {
+          "realForkId": "i-22",
+          "baselineDecision": "default",
+          "experimentalDecision": "flipped",
+          "decisionChanged": true,
+          "baselineMarginFlippedMinusDefault": 0,
+          "experimentalMarginFlippedMinusDefault": -1,
+          "marginChanged": true,
+          "tieChanged": true,
+          "baselineEvaluation": {
+            "realForkId": "i-22",
+            "scoreKind": "production",
+            "default": {
+              "nodeOverlapCount": 0,
+              "nodeOverlaps": [],
+              "properCrossingCount": 0,
+              "properCrossings": [],
+              "nodeEdgeIntrusionCount": 1,
+              "nodeEdgeIntrusions": [
+                {
+                  "nodeId": "i-26",
+                  "edgeId": "i-24-jump",
+                  "nodeBox": {
+                    "left": 322.206,
+                    "right": 410.206,
+                    "top": 1063.1912457533895,
+                    "bottom": 1093.1912457533895
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    84.19399999999999,
+                    1078.1912457533895
+                  ],
+                  "segmentEnd": [
+                    450,
+                    1078.1912457533895
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      322.206,
+                      1078.1912457533895
+                    ],
+                    [
+                      410.206,
+                      1078.1912457533895
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.650650891456127,
+                    0.8912155623472552
+                  ],
+                  "crossesCompletelyThrough": true,
+                  "penetrationKind": "crosses-completely-through"
+                }
+              ],
+              "oldProductionCost": 0,
+              "experimentalCost": 1
+            },
+            "flipped": {
+              "nodeOverlapCount": 0,
+              "nodeOverlaps": [],
+              "properCrossingCount": 0,
+              "properCrossings": [],
+              "nodeEdgeIntrusionCount": 0,
+              "nodeEdgeIntrusions": [],
+              "oldProductionCost": 0,
+              "experimentalCost": 0
+            },
+            "finalDecision": "default",
+            "tieBreakReason": "tie -> default",
+            "strictImprovement": false,
+            "parentRealFork": "i-10",
+            "childRealForks": []
+          },
+          "experimentalEvaluation": {
+            "realForkId": "i-22",
+            "scoreKind": "intrusion-aware",
+            "default": {
+              "nodeOverlapCount": 0,
+              "nodeOverlaps": [],
+              "properCrossingCount": 0,
+              "properCrossings": [],
+              "nodeEdgeIntrusionCount": 1,
+              "nodeEdgeIntrusions": [
+                {
+                  "nodeId": "i-26",
+                  "edgeId": "i-24-jump",
+                  "nodeBox": {
+                    "left": 322.206,
+                    "right": 410.206,
+                    "top": 1063.1912457533895,
+                    "bottom": 1093.1912457533895
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    84.19399999999999,
+                    1078.1912457533895
+                  ],
+                  "segmentEnd": [
+                    450,
+                    1078.1912457533895
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      322.206,
+                      1078.1912457533895
+                    ],
+                    [
+                      410.206,
+                      1078.1912457533895
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.650650891456127,
+                    0.8912155623472552
+                  ],
+                  "crossesCompletelyThrough": true,
+                  "penetrationKind": "crosses-completely-through"
+                }
+              ],
+              "oldProductionCost": 0,
+              "experimentalCost": 1
+            },
+            "flipped": {
+              "nodeOverlapCount": 0,
+              "nodeOverlaps": [],
+              "properCrossingCount": 0,
+              "properCrossings": [],
+              "nodeEdgeIntrusionCount": 0,
+              "nodeEdgeIntrusions": [],
+              "oldProductionCost": 0,
+              "experimentalCost": 0
+            },
+            "finalDecision": "flipped",
+            "tieBreakReason": "flip strictly reduces total defects",
+            "strictImprovement": true,
+            "parentRealFork": "i-10",
+            "childRealForks": []
+          }
+        }
+      }
+    },
+    {
+      "fixture": "characteristic:divides",
+      "baseline": {
+        "orientationMap": {
+          "i-3": "default",
+          "i-4": "default",
+          "i-13": "default",
+          "i-15": "default",
+          "i-18": "default",
+          "i-25": "default",
+          "i-36": "default",
+          "i-38": "default",
+          "i-41": "default",
+          "i-48": "flipped",
+          "i-53": "flipped"
+        },
+        "finalDiagnostics": {
+          "nodeOverlapCount": 0,
+          "nodeOverlaps": [],
+          "properCrossingCount": 0,
+          "properCrossings": [],
+          "edgeOverlapCount": 1,
+          "edgeOverlaps": [
+            {
+              "edgeA": "i-55-jump",
+              "edgeB": "i-57-cont",
+              "segmentA": 1,
+              "segmentB": 2,
+              "interval": [
+                [
+                  117.64933039999997,
+                  2522.5852145813533
+                ],
+                [
+                  133.64933039999997,
+                  2522.5852145813533
+                ]
+              ]
+            }
+          ],
+          "unrelatedNodeEdgeIntrusionCount": 0,
+          "unrelatedNodeEdgeIntrusions": [],
+          "oldProductionCost": 0,
+          "intrusionAwareCost": 0,
+          "warnings": {
+            "cfg": [],
+            "roles": [],
+            "skeleton": [],
+            "lanes": [],
+            "routing": []
+          },
+          "fallbackOrRejectionFired": false
+        },
+        "geometryDigest": {
+          "canonicalBytes": 19215,
+          "sha256": "72995a166e8ed11f62d9cad0d9d6fea364b7bc9080cf2eceb7b53f630b234efd"
+        },
+        "rareRepairCandidates": []
+      },
+      "experimental": {
+        "orientationMap": {
+          "i-3": "default",
+          "i-4": "default",
+          "i-13": "default",
+          "i-15": "default",
+          "i-18": "default",
+          "i-25": "flipped",
+          "i-36": "default",
+          "i-38": "default",
+          "i-41": "default",
+          "i-48": "flipped",
+          "i-53": "flipped"
+        },
+        "finalDiagnostics": {
+          "nodeOverlapCount": 0,
+          "nodeOverlaps": [],
+          "properCrossingCount": 1,
+          "properCrossings": [
+            {
+              "edgeA": "i-27-jump",
+              "edgeB": "i-33-cont",
+              "segmentA": 1,
+              "segmentB": 0,
+              "point": [
+                -341.7519704,
+                1934.1326071255528
+              ]
+            }
+          ],
+          "edgeOverlapCount": 1,
+          "edgeOverlaps": [
+            {
+              "edgeA": "i-55-jump",
+              "edgeB": "i-57-cont",
+              "segmentA": 1,
+              "segmentB": 2,
+              "interval": [
+                [
+                  -96.7519704,
+                  2522.5852145813533
+                ],
+                [
+                  19.80600000000004,
+                  2522.5852145813533
+                ]
+              ]
+            }
+          ],
+          "unrelatedNodeEdgeIntrusionCount": 0,
+          "unrelatedNodeEdgeIntrusions": [],
+          "oldProductionCost": 1,
+          "intrusionAwareCost": 1,
+          "warnings": {
+            "cfg": [],
+            "roles": [],
+            "skeleton": [],
+            "lanes": [],
+            "routing": []
+          },
+          "fallbackOrRejectionFired": false
+        },
+        "geometryDigest": {
+          "canonicalBytes": 17957,
+          "sha256": "a8820c298dcbd3f29f2c2e3b269963bb5fb1cd76c9408d9f3bb77ea8d9fde1eb"
+        },
+        "rareRepairCandidates": [
+          {
+            "realForkId": "i-25",
+            "from": "flipped",
+            "to": "default",
+            "baseTotal": 1,
+            "repairedTotal": 0
+          }
+        ],
+        "rareRepairApplied": false
+      },
+      "changedForkIds": [
+        "i-25"
+      ],
+      "changedForks": [
+        {
+          "realForkId": "i-25",
+          "baselineDecision": "default",
+          "experimentalDecision": "flipped",
+          "decisionChanged": true,
+          "baselineMarginFlippedMinusDefault": 0,
+          "experimentalMarginFlippedMinusDefault": -1,
+          "marginChanged": true,
+          "tieChanged": true,
+          "baselineEvaluation": {
+            "realForkId": "i-25",
+            "scoreKind": "production",
+            "default": {
+              "nodeOverlapCount": 2,
+              "nodeOverlaps": [
+                {
+                  "nodeA": "i-56",
+                  "nodeB": "i-54",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                },
+                {
+                  "nodeA": "i-57",
+                  "nodeB": "i-55",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                }
+              ],
+              "properCrossingCount": 1,
+              "properCrossings": [
+                {
+                  "edgeA": "i-48-no",
+                  "edgeB": "i-55-jump",
+                  "segmentA": 0,
+                  "segmentB": 0,
+                  "point": [
+                    40.19399999999998,
+                    2321.859068986662
+                  ]
+                }
+              ],
+              "nodeEdgeIntrusionCount": 4,
+              "nodeEdgeIntrusions": [
+                {
+                  "nodeId": "i-54",
+                  "edgeId": "i-53-yes",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 529.1912457533896,
+                    "bottom": 559.1912457533896
+                  },
+                  "segmentIndex": 2,
+                  "segmentStart": [
+                    366.206,
+                    544.1912457533896
+                  ],
+                  "segmentEnd": [
+                    3.8060000000000116,
+                    544.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      84.19399999999996,
+                      544.1912457533896
+                    ],
+                    [
+                      3.80600000000004,
+                      544.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.7781788079470201,
+                    1
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                },
+                {
+                  "nodeId": "i-49",
+                  "edgeId": "i-55-jump",
+                  "nodeBox": {
+                    "left": 29.649330399999968,
+                    "right": 117.64933039999997,
+                    "top": 2343.5852145813533,
+                    "bottom": 2373.5852145813533
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    40.19399999999999,
+                    641.1912457533896
+                  ],
+                  "segmentEnd": [
+                    40.19399999999999,
+                    2491.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      40.19399999999999,
+                      2343.5852145813533
+                    ],
+                    [
+                      40.19399999999999,
+                      2373.5852145813533
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.9200170328626055,
+                    0.9362297964715368
+                  ],
+                  "crossesCompletelyThrough": true,
+                  "penetrationKind": "crosses-completely-through"
+                },
+                {
+                  "nodeId": "i-50",
+                  "edgeId": "i-55-jump",
+                  "nodeBox": {
+                    "left": 29.649330399999968,
+                    "right": 117.64933039999997,
+                    "top": 2425.5852145813533,
+                    "bottom": 2455.5852145813533
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    40.19399999999999,
+                    641.1912457533896
+                  ],
+                  "segmentEnd": [
+                    40.19399999999999,
+                    2491.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      40.19399999999999,
+                      2425.5852145813533
+                    ],
+                    [
+                      40.19399999999999,
+                      2455.5852145813533
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.9643319200603511,
+                    0.9805446836692824
+                  ],
+                  "crossesCompletelyThrough": true,
+                  "penetrationKind": "crosses-completely-through"
+                },
+                {
+                  "nodeId": "i-55",
+                  "edgeId": "i-57-cont",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 611.1912457533896,
+                    "bottom": 641.1912457533896
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    3.8060000000000116,
+                    626.1912457533896
+                  ],
+                  "segmentEnd": [
+                    133.64933039999997,
+                    626.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    [
+                      84.19399999999999,
+                      626.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0,
+                    0.6191153581193108
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                }
+              ],
+              "oldProductionCost": 3,
+              "experimentalCost": 7
+            },
+            "flipped": {
+              "nodeOverlapCount": 2,
+              "nodeOverlaps": [
+                {
+                  "nodeA": "i-56",
+                  "nodeB": "i-54",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                },
+                {
+                  "nodeA": "i-57",
+                  "nodeB": "i-55",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                }
+              ],
+              "properCrossingCount": 1,
+              "properCrossings": [
+                {
+                  "edgeA": "i-27-jump",
+                  "edgeB": "i-33-cont",
+                  "segmentA": 1,
+                  "segmentB": 0,
+                  "point": [
+                    -341.7519704,
+                    1934.1326071255528
+                  ]
+                }
+              ],
+              "nodeEdgeIntrusionCount": 3,
+              "nodeEdgeIntrusions": [
+                {
+                  "nodeId": "i-54",
+                  "edgeId": "i-53-yes",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 529.1912457533896,
+                    "bottom": 559.1912457533896
+                  },
+                  "segmentIndex": 2,
+                  "segmentStart": [
+                    366.206,
+                    544.1912457533896
+                  ],
+                  "segmentEnd": [
+                    3.8060000000000116,
+                    544.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      84.19399999999996,
+                      544.1912457533896
+                    ],
+                    [
+                      3.80600000000004,
+                      544.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.7781788079470201,
+                    1
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                },
+                {
+                  "nodeId": "i-55",
+                  "edgeId": "i-57-cont",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 611.1912457533896,
+                    "bottom": 641.1912457533896
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    3.8060000000000116,
+                    626.1912457533896
+                  ],
+                  "segmentEnd": [
+                    19.80600000000001,
+                    626.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    [
+                      19.80600000000001,
+                      626.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0,
+                    1
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "segment-contained-inside"
+                },
+                {
+                  "nodeId": "i-55",
+                  "edgeId": "i-57-cont",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 611.1912457533896,
+                    "bottom": 641.1912457533896
+                  },
+                  "segmentIndex": 1,
+                  "segmentStart": [
+                    19.80600000000001,
+                    626.1912457533896
+                  ],
+                  "segmentEnd": [
+                    19.80600000000001,
+                    2522.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      19.80600000000001,
+                      626.1912457533896
+                    ],
+                    [
+                      19.80600000000001,
+                      641.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0,
+                    0.007909748842573314
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                }
+              ],
+              "oldProductionCost": 3,
+              "experimentalCost": 6
+            },
+            "finalDecision": "default",
+            "tieBreakReason": "tie -> default",
+            "strictImprovement": false,
+            "parentRealFork": "i-13",
+            "childRealForks": [
+              "i-36"
+            ]
+          },
+          "experimentalEvaluation": {
+            "realForkId": "i-25",
+            "scoreKind": "intrusion-aware",
+            "default": {
+              "nodeOverlapCount": 2,
+              "nodeOverlaps": [
+                {
+                  "nodeA": "i-56",
+                  "nodeB": "i-54",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                },
+                {
+                  "nodeA": "i-57",
+                  "nodeB": "i-55",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                }
+              ],
+              "properCrossingCount": 1,
+              "properCrossings": [
+                {
+                  "edgeA": "i-48-no",
+                  "edgeB": "i-55-jump",
+                  "segmentA": 0,
+                  "segmentB": 0,
+                  "point": [
+                    40.19399999999998,
+                    2321.859068986662
+                  ]
+                }
+              ],
+              "nodeEdgeIntrusionCount": 4,
+              "nodeEdgeIntrusions": [
+                {
+                  "nodeId": "i-54",
+                  "edgeId": "i-53-yes",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 529.1912457533896,
+                    "bottom": 559.1912457533896
+                  },
+                  "segmentIndex": 2,
+                  "segmentStart": [
+                    366.206,
+                    544.1912457533896
+                  ],
+                  "segmentEnd": [
+                    3.8060000000000116,
+                    544.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      84.19399999999996,
+                      544.1912457533896
+                    ],
+                    [
+                      3.80600000000004,
+                      544.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.7781788079470201,
+                    1
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                },
+                {
+                  "nodeId": "i-49",
+                  "edgeId": "i-55-jump",
+                  "nodeBox": {
+                    "left": 29.649330399999968,
+                    "right": 117.64933039999997,
+                    "top": 2343.5852145813533,
+                    "bottom": 2373.5852145813533
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    40.19399999999999,
+                    641.1912457533896
+                  ],
+                  "segmentEnd": [
+                    40.19399999999999,
+                    2491.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      40.19399999999999,
+                      2343.5852145813533
+                    ],
+                    [
+                      40.19399999999999,
+                      2373.5852145813533
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.9200170328626055,
+                    0.9362297964715368
+                  ],
+                  "crossesCompletelyThrough": true,
+                  "penetrationKind": "crosses-completely-through"
+                },
+                {
+                  "nodeId": "i-50",
+                  "edgeId": "i-55-jump",
+                  "nodeBox": {
+                    "left": 29.649330399999968,
+                    "right": 117.64933039999997,
+                    "top": 2425.5852145813533,
+                    "bottom": 2455.5852145813533
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    40.19399999999999,
+                    641.1912457533896
+                  ],
+                  "segmentEnd": [
+                    40.19399999999999,
+                    2491.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      40.19399999999999,
+                      2425.5852145813533
+                    ],
+                    [
+                      40.19399999999999,
+                      2455.5852145813533
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.9643319200603511,
+                    0.9805446836692824
+                  ],
+                  "crossesCompletelyThrough": true,
+                  "penetrationKind": "crosses-completely-through"
+                },
+                {
+                  "nodeId": "i-55",
+                  "edgeId": "i-57-cont",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 611.1912457533896,
+                    "bottom": 641.1912457533896
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    3.8060000000000116,
+                    626.1912457533896
+                  ],
+                  "segmentEnd": [
+                    133.64933039999997,
+                    626.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    [
+                      84.19399999999999,
+                      626.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0,
+                    0.6191153581193108
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                }
+              ],
+              "oldProductionCost": 3,
+              "experimentalCost": 7
+            },
+            "flipped": {
+              "nodeOverlapCount": 2,
+              "nodeOverlaps": [
+                {
+                  "nodeA": "i-56",
+                  "nodeB": "i-54",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                },
+                {
+                  "nodeA": "i-57",
+                  "nodeB": "i-55",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                }
+              ],
+              "properCrossingCount": 1,
+              "properCrossings": [
+                {
+                  "edgeA": "i-27-jump",
+                  "edgeB": "i-33-cont",
+                  "segmentA": 1,
+                  "segmentB": 0,
+                  "point": [
+                    -341.7519704,
+                    1934.1326071255528
+                  ]
+                }
+              ],
+              "nodeEdgeIntrusionCount": 3,
+              "nodeEdgeIntrusions": [
+                {
+                  "nodeId": "i-54",
+                  "edgeId": "i-53-yes",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 529.1912457533896,
+                    "bottom": 559.1912457533896
+                  },
+                  "segmentIndex": 2,
+                  "segmentStart": [
+                    366.206,
+                    544.1912457533896
+                  ],
+                  "segmentEnd": [
+                    3.8060000000000116,
+                    544.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      84.19399999999996,
+                      544.1912457533896
+                    ],
+                    [
+                      3.80600000000004,
+                      544.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.7781788079470201,
+                    1
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                },
+                {
+                  "nodeId": "i-55",
+                  "edgeId": "i-57-cont",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 611.1912457533896,
+                    "bottom": 641.1912457533896
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    3.8060000000000116,
+                    626.1912457533896
+                  ],
+                  "segmentEnd": [
+                    19.80600000000001,
+                    626.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    [
+                      19.80600000000001,
+                      626.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0,
+                    1
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "segment-contained-inside"
+                },
+                {
+                  "nodeId": "i-55",
+                  "edgeId": "i-57-cont",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 611.1912457533896,
+                    "bottom": 641.1912457533896
+                  },
+                  "segmentIndex": 1,
+                  "segmentStart": [
+                    19.80600000000001,
+                    626.1912457533896
+                  ],
+                  "segmentEnd": [
+                    19.80600000000001,
+                    2522.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      19.80600000000001,
+                      626.1912457533896
+                    ],
+                    [
+                      19.80600000000001,
+                      641.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0,
+                    0.007909748842573314
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                }
+              ],
+              "oldProductionCost": 3,
+              "experimentalCost": 6
+            },
+            "finalDecision": "flipped",
+            "tieBreakReason": "flip strictly reduces total defects",
+            "strictImprovement": true,
+            "parentRealFork": "i-13",
+            "childRealForks": [
+              "i-36"
+            ]
+          }
+        }
+      ],
+      "materialUnchangedForks": [
+        {
+          "realForkId": "i-3",
+          "baselineDecision": "default",
+          "experimentalDecision": "default",
+          "baselineMarginFlippedMinusDefault": 11,
+          "experimentalMarginFlippedMinusDefault": 15,
+          "tieChanged": false,
+          "baselineCosts": {
+            "default": 0,
+            "flipped": 11
+          },
+          "experimentalCosts": {
+            "default": 1,
+            "flipped": 16
+          }
+        },
+        {
+          "realForkId": "i-4",
+          "baselineDecision": "default",
+          "experimentalDecision": "default",
+          "baselineMarginFlippedMinusDefault": 8,
+          "experimentalMarginFlippedMinusDefault": 12,
+          "tieChanged": false,
+          "baselineCosts": {
+            "default": 3,
+            "flipped": 11
+          },
+          "experimentalCosts": {
+            "default": 6,
+            "flipped": 18
+          }
+        },
+        {
+          "realForkId": "i-15",
+          "baselineDecision": "default",
+          "experimentalDecision": "default",
+          "baselineMarginFlippedMinusDefault": 7,
+          "experimentalMarginFlippedMinusDefault": 8,
+          "tieChanged": false,
+          "baselineCosts": {
+            "default": 3,
+            "flipped": 10
+          },
+          "experimentalCosts": {
+            "default": 7,
+            "flipped": 15
+          }
+        },
+        {
+          "realForkId": "i-18",
+          "baselineDecision": "default",
+          "experimentalDecision": "default",
+          "baselineMarginFlippedMinusDefault": 1,
+          "experimentalMarginFlippedMinusDefault": 2,
+          "tieChanged": false,
+          "baselineCosts": {
+            "default": 3,
+            "flipped": 4
+          },
+          "experimentalCosts": {
+            "default": 7,
+            "flipped": 9
+          }
+        },
+        {
+          "realForkId": "i-36",
+          "baselineDecision": "default",
+          "experimentalDecision": "default",
+          "baselineMarginFlippedMinusDefault": 7,
+          "experimentalMarginFlippedMinusDefault": 12,
+          "tieChanged": false,
+          "baselineCosts": {
+            "default": 3,
+            "flipped": 10
+          },
+          "experimentalCosts": {
+            "default": 7,
+            "flipped": 19
+          }
+        },
+        {
+          "realForkId": "i-38",
+          "baselineDecision": "default",
+          "experimentalDecision": "default",
+          "baselineMarginFlippedMinusDefault": 4,
+          "experimentalMarginFlippedMinusDefault": 8,
+          "tieChanged": false,
+          "baselineCosts": {
+            "default": 4,
+            "flipped": 8
+          },
+          "experimentalCosts": {
+            "default": 9,
+            "flipped": 17
+          }
+        },
+        {
+          "realForkId": "i-41",
+          "baselineDecision": "default",
+          "experimentalDecision": "default",
+          "baselineMarginFlippedMinusDefault": 1,
+          "experimentalMarginFlippedMinusDefault": 7,
+          "tieChanged": false,
+          "baselineCosts": {
+            "default": 4,
+            "flipped": 5
+          },
+          "experimentalCosts": {
+            "default": 9,
+            "flipped": 16
+          }
+        },
+        {
+          "realForkId": "i-48",
+          "baselineDecision": "flipped",
+          "experimentalDecision": "flipped",
+          "baselineMarginFlippedMinusDefault": -1,
+          "experimentalMarginFlippedMinusDefault": -2,
+          "tieChanged": false,
+          "baselineCosts": {
+            "default": 4,
+            "flipped": 3
+          },
+          "experimentalCosts": {
+            "default": 9,
+            "flipped": 7
+          }
+        },
+        {
+          "realForkId": "i-53",
+          "baselineDecision": "flipped",
+          "experimentalDecision": "flipped",
+          "baselineMarginFlippedMinusDefault": -3,
+          "experimentalMarginFlippedMinusDefault": -5,
+          "tieChanged": false,
+          "baselineCosts": {
+            "default": 3,
+            "flipped": 0
+          },
+          "experimentalCosts": {
+            "default": 6,
+            "flipped": 1
+          }
+        }
+      ],
+      "spotlight": {
+        "i-25": {
+          "realForkId": "i-25",
+          "baselineDecision": "default",
+          "experimentalDecision": "flipped",
+          "decisionChanged": true,
+          "baselineMarginFlippedMinusDefault": 0,
+          "experimentalMarginFlippedMinusDefault": -1,
+          "marginChanged": true,
+          "tieChanged": true,
+          "baselineEvaluation": {
+            "realForkId": "i-25",
+            "scoreKind": "production",
+            "default": {
+              "nodeOverlapCount": 2,
+              "nodeOverlaps": [
+                {
+                  "nodeA": "i-56",
+                  "nodeB": "i-54",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                },
+                {
+                  "nodeA": "i-57",
+                  "nodeB": "i-55",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                }
+              ],
+              "properCrossingCount": 1,
+              "properCrossings": [
+                {
+                  "edgeA": "i-48-no",
+                  "edgeB": "i-55-jump",
+                  "segmentA": 0,
+                  "segmentB": 0,
+                  "point": [
+                    40.19399999999998,
+                    2321.859068986662
+                  ]
+                }
+              ],
+              "nodeEdgeIntrusionCount": 4,
+              "nodeEdgeIntrusions": [
+                {
+                  "nodeId": "i-54",
+                  "edgeId": "i-53-yes",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 529.1912457533896,
+                    "bottom": 559.1912457533896
+                  },
+                  "segmentIndex": 2,
+                  "segmentStart": [
+                    366.206,
+                    544.1912457533896
+                  ],
+                  "segmentEnd": [
+                    3.8060000000000116,
+                    544.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      84.19399999999996,
+                      544.1912457533896
+                    ],
+                    [
+                      3.80600000000004,
+                      544.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.7781788079470201,
+                    1
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                },
+                {
+                  "nodeId": "i-49",
+                  "edgeId": "i-55-jump",
+                  "nodeBox": {
+                    "left": 29.649330399999968,
+                    "right": 117.64933039999997,
+                    "top": 2343.5852145813533,
+                    "bottom": 2373.5852145813533
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    40.19399999999999,
+                    641.1912457533896
+                  ],
+                  "segmentEnd": [
+                    40.19399999999999,
+                    2491.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      40.19399999999999,
+                      2343.5852145813533
+                    ],
+                    [
+                      40.19399999999999,
+                      2373.5852145813533
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.9200170328626055,
+                    0.9362297964715368
+                  ],
+                  "crossesCompletelyThrough": true,
+                  "penetrationKind": "crosses-completely-through"
+                },
+                {
+                  "nodeId": "i-50",
+                  "edgeId": "i-55-jump",
+                  "nodeBox": {
+                    "left": 29.649330399999968,
+                    "right": 117.64933039999997,
+                    "top": 2425.5852145813533,
+                    "bottom": 2455.5852145813533
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    40.19399999999999,
+                    641.1912457533896
+                  ],
+                  "segmentEnd": [
+                    40.19399999999999,
+                    2491.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      40.19399999999999,
+                      2425.5852145813533
+                    ],
+                    [
+                      40.19399999999999,
+                      2455.5852145813533
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.9643319200603511,
+                    0.9805446836692824
+                  ],
+                  "crossesCompletelyThrough": true,
+                  "penetrationKind": "crosses-completely-through"
+                },
+                {
+                  "nodeId": "i-55",
+                  "edgeId": "i-57-cont",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 611.1912457533896,
+                    "bottom": 641.1912457533896
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    3.8060000000000116,
+                    626.1912457533896
+                  ],
+                  "segmentEnd": [
+                    133.64933039999997,
+                    626.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    [
+                      84.19399999999999,
+                      626.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0,
+                    0.6191153581193108
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                }
+              ],
+              "oldProductionCost": 3,
+              "experimentalCost": 7
+            },
+            "flipped": {
+              "nodeOverlapCount": 2,
+              "nodeOverlaps": [
+                {
+                  "nodeA": "i-56",
+                  "nodeB": "i-54",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                },
+                {
+                  "nodeA": "i-57",
+                  "nodeB": "i-55",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                }
+              ],
+              "properCrossingCount": 1,
+              "properCrossings": [
+                {
+                  "edgeA": "i-27-jump",
+                  "edgeB": "i-33-cont",
+                  "segmentA": 1,
+                  "segmentB": 0,
+                  "point": [
+                    -341.7519704,
+                    1934.1326071255528
+                  ]
+                }
+              ],
+              "nodeEdgeIntrusionCount": 3,
+              "nodeEdgeIntrusions": [
+                {
+                  "nodeId": "i-54",
+                  "edgeId": "i-53-yes",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 529.1912457533896,
+                    "bottom": 559.1912457533896
+                  },
+                  "segmentIndex": 2,
+                  "segmentStart": [
+                    366.206,
+                    544.1912457533896
+                  ],
+                  "segmentEnd": [
+                    3.8060000000000116,
+                    544.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      84.19399999999996,
+                      544.1912457533896
+                    ],
+                    [
+                      3.80600000000004,
+                      544.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.7781788079470201,
+                    1
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                },
+                {
+                  "nodeId": "i-55",
+                  "edgeId": "i-57-cont",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 611.1912457533896,
+                    "bottom": 641.1912457533896
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    3.8060000000000116,
+                    626.1912457533896
+                  ],
+                  "segmentEnd": [
+                    19.80600000000001,
+                    626.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    [
+                      19.80600000000001,
+                      626.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0,
+                    1
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "segment-contained-inside"
+                },
+                {
+                  "nodeId": "i-55",
+                  "edgeId": "i-57-cont",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 611.1912457533896,
+                    "bottom": 641.1912457533896
+                  },
+                  "segmentIndex": 1,
+                  "segmentStart": [
+                    19.80600000000001,
+                    626.1912457533896
+                  ],
+                  "segmentEnd": [
+                    19.80600000000001,
+                    2522.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      19.80600000000001,
+                      626.1912457533896
+                    ],
+                    [
+                      19.80600000000001,
+                      641.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0,
+                    0.007909748842573314
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                }
+              ],
+              "oldProductionCost": 3,
+              "experimentalCost": 6
+            },
+            "finalDecision": "default",
+            "tieBreakReason": "tie -> default",
+            "strictImprovement": false,
+            "parentRealFork": "i-13",
+            "childRealForks": [
+              "i-36"
+            ]
+          },
+          "experimentalEvaluation": {
+            "realForkId": "i-25",
+            "scoreKind": "intrusion-aware",
+            "default": {
+              "nodeOverlapCount": 2,
+              "nodeOverlaps": [
+                {
+                  "nodeA": "i-56",
+                  "nodeB": "i-54",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                },
+                {
+                  "nodeA": "i-57",
+                  "nodeB": "i-55",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                }
+              ],
+              "properCrossingCount": 1,
+              "properCrossings": [
+                {
+                  "edgeA": "i-48-no",
+                  "edgeB": "i-55-jump",
+                  "segmentA": 0,
+                  "segmentB": 0,
+                  "point": [
+                    40.19399999999998,
+                    2321.859068986662
+                  ]
+                }
+              ],
+              "nodeEdgeIntrusionCount": 4,
+              "nodeEdgeIntrusions": [
+                {
+                  "nodeId": "i-54",
+                  "edgeId": "i-53-yes",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 529.1912457533896,
+                    "bottom": 559.1912457533896
+                  },
+                  "segmentIndex": 2,
+                  "segmentStart": [
+                    366.206,
+                    544.1912457533896
+                  ],
+                  "segmentEnd": [
+                    3.8060000000000116,
+                    544.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      84.19399999999996,
+                      544.1912457533896
+                    ],
+                    [
+                      3.80600000000004,
+                      544.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.7781788079470201,
+                    1
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                },
+                {
+                  "nodeId": "i-49",
+                  "edgeId": "i-55-jump",
+                  "nodeBox": {
+                    "left": 29.649330399999968,
+                    "right": 117.64933039999997,
+                    "top": 2343.5852145813533,
+                    "bottom": 2373.5852145813533
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    40.19399999999999,
+                    641.1912457533896
+                  ],
+                  "segmentEnd": [
+                    40.19399999999999,
+                    2491.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      40.19399999999999,
+                      2343.5852145813533
+                    ],
+                    [
+                      40.19399999999999,
+                      2373.5852145813533
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.9200170328626055,
+                    0.9362297964715368
+                  ],
+                  "crossesCompletelyThrough": true,
+                  "penetrationKind": "crosses-completely-through"
+                },
+                {
+                  "nodeId": "i-50",
+                  "edgeId": "i-55-jump",
+                  "nodeBox": {
+                    "left": 29.649330399999968,
+                    "right": 117.64933039999997,
+                    "top": 2425.5852145813533,
+                    "bottom": 2455.5852145813533
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    40.19399999999999,
+                    641.1912457533896
+                  ],
+                  "segmentEnd": [
+                    40.19399999999999,
+                    2491.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      40.19399999999999,
+                      2425.5852145813533
+                    ],
+                    [
+                      40.19399999999999,
+                      2455.5852145813533
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.9643319200603511,
+                    0.9805446836692824
+                  ],
+                  "crossesCompletelyThrough": true,
+                  "penetrationKind": "crosses-completely-through"
+                },
+                {
+                  "nodeId": "i-55",
+                  "edgeId": "i-57-cont",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 611.1912457533896,
+                    "bottom": 641.1912457533896
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    3.8060000000000116,
+                    626.1912457533896
+                  ],
+                  "segmentEnd": [
+                    133.64933039999997,
+                    626.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    [
+                      84.19399999999999,
+                      626.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0,
+                    0.6191153581193108
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                }
+              ],
+              "oldProductionCost": 3,
+              "experimentalCost": 7
+            },
+            "flipped": {
+              "nodeOverlapCount": 2,
+              "nodeOverlaps": [
+                {
+                  "nodeA": "i-56",
+                  "nodeB": "i-54",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                },
+                {
+                  "nodeA": "i-57",
+                  "nodeB": "i-55",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                }
+              ],
+              "properCrossingCount": 1,
+              "properCrossings": [
+                {
+                  "edgeA": "i-27-jump",
+                  "edgeB": "i-33-cont",
+                  "segmentA": 1,
+                  "segmentB": 0,
+                  "point": [
+                    -341.7519704,
+                    1934.1326071255528
+                  ]
+                }
+              ],
+              "nodeEdgeIntrusionCount": 3,
+              "nodeEdgeIntrusions": [
+                {
+                  "nodeId": "i-54",
+                  "edgeId": "i-53-yes",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 529.1912457533896,
+                    "bottom": 559.1912457533896
+                  },
+                  "segmentIndex": 2,
+                  "segmentStart": [
+                    366.206,
+                    544.1912457533896
+                  ],
+                  "segmentEnd": [
+                    3.8060000000000116,
+                    544.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      84.19399999999996,
+                      544.1912457533896
+                    ],
+                    [
+                      3.80600000000004,
+                      544.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.7781788079470201,
+                    1
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                },
+                {
+                  "nodeId": "i-55",
+                  "edgeId": "i-57-cont",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 611.1912457533896,
+                    "bottom": 641.1912457533896
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    3.8060000000000116,
+                    626.1912457533896
+                  ],
+                  "segmentEnd": [
+                    19.80600000000001,
+                    626.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    [
+                      19.80600000000001,
+                      626.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0,
+                    1
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "segment-contained-inside"
+                },
+                {
+                  "nodeId": "i-55",
+                  "edgeId": "i-57-cont",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 611.1912457533896,
+                    "bottom": 641.1912457533896
+                  },
+                  "segmentIndex": 1,
+                  "segmentStart": [
+                    19.80600000000001,
+                    626.1912457533896
+                  ],
+                  "segmentEnd": [
+                    19.80600000000001,
+                    2522.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      19.80600000000001,
+                      626.1912457533896
+                    ],
+                    [
+                      19.80600000000001,
+                      641.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0,
+                    0.007909748842573314
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                }
+              ],
+              "oldProductionCost": 3,
+              "experimentalCost": 6
+            },
+            "finalDecision": "flipped",
+            "tieBreakReason": "flip strictly reduces total defects",
+            "strictImprovement": true,
+            "parentRealFork": "i-13",
+            "childRealForks": [
+              "i-36"
+            ]
+          }
+        },
+        "i-48": {
+          "realForkId": "i-48",
+          "baselineDecision": "flipped",
+          "experimentalDecision": "flipped",
+          "decisionChanged": false,
+          "baselineMarginFlippedMinusDefault": -1,
+          "experimentalMarginFlippedMinusDefault": -2,
+          "marginChanged": true,
+          "tieChanged": false,
+          "baselineEvaluation": {
+            "realForkId": "i-48",
+            "scoreKind": "production",
+            "default": {
+              "nodeOverlapCount": 2,
+              "nodeOverlaps": [
+                {
+                  "nodeA": "i-56",
+                  "nodeB": "i-54",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                },
+                {
+                  "nodeA": "i-57",
+                  "nodeB": "i-55",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                }
+              ],
+              "properCrossingCount": 2,
+              "properCrossings": [
+                {
+                  "edgeA": "i-48-yes",
+                  "edgeB": "i-55-jump",
+                  "segmentA": 0,
+                  "segmentB": 0,
+                  "point": [
+                    40.19399999999998,
+                    2321.859068986662
+                  ]
+                },
+                {
+                  "edgeA": "i-48-yes",
+                  "edgeB": "i-57-cont",
+                  "segmentA": 0,
+                  "segmentB": 1,
+                  "point": [
+                    19.80600000000001,
+                    2308.618946976551
+                  ]
+                }
+              ],
+              "nodeEdgeIntrusionCount": 5,
+              "nodeEdgeIntrusions": [
+                {
+                  "nodeId": "i-54",
+                  "edgeId": "i-53-yes",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 529.1912457533896,
+                    "bottom": 559.1912457533896
+                  },
+                  "segmentIndex": 2,
+                  "segmentStart": [
+                    366.206,
+                    544.1912457533896
+                  ],
+                  "segmentEnd": [
+                    3.8060000000000116,
+                    544.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      84.19399999999996,
+                      544.1912457533896
+                    ],
+                    [
+                      3.80600000000004,
+                      544.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.7781788079470201,
+                    1
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                },
+                {
+                  "nodeId": "i-51",
+                  "edgeId": "i-55-jump",
+                  "nodeBox": {
+                    "left": 29.649330399999968,
+                    "right": 117.64933039999997,
+                    "top": 2343.5852145813533,
+                    "bottom": 2373.5852145813533
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    40.19399999999999,
+                    641.1912457533896
+                  ],
+                  "segmentEnd": [
+                    40.19399999999999,
+                    2522.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      40.19399999999999,
+                      2343.5852145813533
+                    ],
+                    [
+                      40.19399999999999,
+                      2373.5852145813533
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.904857779409429,
+                    0.9208034029720945
+                  ],
+                  "crossesCompletelyThrough": true,
+                  "penetrationKind": "crosses-completely-through"
+                },
+                {
+                  "nodeId": "i-52",
+                  "edgeId": "i-55-jump",
+                  "nodeBox": {
+                    "left": 29.649330399999968,
+                    "right": 117.64933039999997,
+                    "top": 2425.5852145813533,
+                    "bottom": 2455.5852145813533
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    40.19399999999999,
+                    641.1912457533896
+                  ],
+                  "segmentEnd": [
+                    40.19399999999999,
+                    2522.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      40.19399999999999,
+                      2425.5852145813533
+                    ],
+                    [
+                      40.19399999999999,
+                      2455.5852145813533
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.9484424838140482,
+                    0.9643881073767137
+                  ],
+                  "crossesCompletelyThrough": true,
+                  "penetrationKind": "crosses-completely-through"
+                },
+                {
+                  "nodeId": "i-55",
+                  "edgeId": "i-57-cont",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 611.1912457533896,
+                    "bottom": 641.1912457533896
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    3.8060000000000116,
+                    626.1912457533896
+                  ],
+                  "segmentEnd": [
+                    19.80600000000001,
+                    626.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    [
+                      19.80600000000001,
+                      626.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0,
+                    1
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "segment-contained-inside"
+                },
+                {
+                  "nodeId": "i-55",
+                  "edgeId": "i-57-cont",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 611.1912457533896,
+                    "bottom": 641.1912457533896
+                  },
+                  "segmentIndex": 1,
+                  "segmentStart": [
+                    19.80600000000001,
+                    626.1912457533896
+                  ],
+                  "segmentEnd": [
+                    19.80600000000001,
+                    2522.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      19.80600000000001,
+                      626.1912457533896
+                    ],
+                    [
+                      19.80600000000001,
+                      641.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0,
+                    0.007909748842573314
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                }
+              ],
+              "oldProductionCost": 4,
+              "experimentalCost": 9
+            },
+            "flipped": {
+              "nodeOverlapCount": 2,
+              "nodeOverlaps": [
+                {
+                  "nodeA": "i-56",
+                  "nodeB": "i-54",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                },
+                {
+                  "nodeA": "i-57",
+                  "nodeB": "i-55",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                }
+              ],
+              "properCrossingCount": 1,
+              "properCrossings": [
+                {
+                  "edgeA": "i-48-no",
+                  "edgeB": "i-55-jump",
+                  "segmentA": 0,
+                  "segmentB": 0,
+                  "point": [
+                    40.19399999999998,
+                    2321.859068986662
+                  ]
+                }
+              ],
+              "nodeEdgeIntrusionCount": 4,
+              "nodeEdgeIntrusions": [
+                {
+                  "nodeId": "i-54",
+                  "edgeId": "i-53-yes",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 529.1912457533896,
+                    "bottom": 559.1912457533896
+                  },
+                  "segmentIndex": 2,
+                  "segmentStart": [
+                    366.206,
+                    544.1912457533896
+                  ],
+                  "segmentEnd": [
+                    3.8060000000000116,
+                    544.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      84.19399999999996,
+                      544.1912457533896
+                    ],
+                    [
+                      3.80600000000004,
+                      544.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.7781788079470201,
+                    1
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                },
+                {
+                  "nodeId": "i-49",
+                  "edgeId": "i-55-jump",
+                  "nodeBox": {
+                    "left": 29.649330399999968,
+                    "right": 117.64933039999997,
+                    "top": 2343.5852145813533,
+                    "bottom": 2373.5852145813533
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    40.19399999999999,
+                    641.1912457533896
+                  ],
+                  "segmentEnd": [
+                    40.19399999999999,
+                    2491.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      40.19399999999999,
+                      2343.5852145813533
+                    ],
+                    [
+                      40.19399999999999,
+                      2373.5852145813533
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.9200170328626055,
+                    0.9362297964715368
+                  ],
+                  "crossesCompletelyThrough": true,
+                  "penetrationKind": "crosses-completely-through"
+                },
+                {
+                  "nodeId": "i-50",
+                  "edgeId": "i-55-jump",
+                  "nodeBox": {
+                    "left": 29.649330399999968,
+                    "right": 117.64933039999997,
+                    "top": 2425.5852145813533,
+                    "bottom": 2455.5852145813533
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    40.19399999999999,
+                    641.1912457533896
+                  ],
+                  "segmentEnd": [
+                    40.19399999999999,
+                    2491.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      40.19399999999999,
+                      2425.5852145813533
+                    ],
+                    [
+                      40.19399999999999,
+                      2455.5852145813533
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.9643319200603511,
+                    0.9805446836692824
+                  ],
+                  "crossesCompletelyThrough": true,
+                  "penetrationKind": "crosses-completely-through"
+                },
+                {
+                  "nodeId": "i-55",
+                  "edgeId": "i-57-cont",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 611.1912457533896,
+                    "bottom": 641.1912457533896
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    3.8060000000000116,
+                    626.1912457533896
+                  ],
+                  "segmentEnd": [
+                    133.64933039999997,
+                    626.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    [
+                      84.19399999999999,
+                      626.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0,
+                    0.6191153581193108
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                }
+              ],
+              "oldProductionCost": 3,
+              "experimentalCost": 7
+            },
+            "finalDecision": "flipped",
+            "tieBreakReason": "flip strictly reduces total defects",
+            "strictImprovement": true,
+            "parentRealFork": "i-36",
+            "childRealForks": []
+          },
+          "experimentalEvaluation": {
+            "realForkId": "i-48",
+            "scoreKind": "intrusion-aware",
+            "default": {
+              "nodeOverlapCount": 2,
+              "nodeOverlaps": [
+                {
+                  "nodeA": "i-56",
+                  "nodeB": "i-54",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                },
+                {
+                  "nodeA": "i-57",
+                  "nodeB": "i-55",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                }
+              ],
+              "properCrossingCount": 2,
+              "properCrossings": [
+                {
+                  "edgeA": "i-48-yes",
+                  "edgeB": "i-55-jump",
+                  "segmentA": 0,
+                  "segmentB": 0,
+                  "point": [
+                    40.19399999999998,
+                    2321.859068986662
+                  ]
+                },
+                {
+                  "edgeA": "i-48-yes",
+                  "edgeB": "i-57-cont",
+                  "segmentA": 0,
+                  "segmentB": 1,
+                  "point": [
+                    19.80600000000001,
+                    2308.618946976551
+                  ]
+                }
+              ],
+              "nodeEdgeIntrusionCount": 5,
+              "nodeEdgeIntrusions": [
+                {
+                  "nodeId": "i-54",
+                  "edgeId": "i-53-yes",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 529.1912457533896,
+                    "bottom": 559.1912457533896
+                  },
+                  "segmentIndex": 2,
+                  "segmentStart": [
+                    366.206,
+                    544.1912457533896
+                  ],
+                  "segmentEnd": [
+                    3.8060000000000116,
+                    544.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      84.19399999999996,
+                      544.1912457533896
+                    ],
+                    [
+                      3.80600000000004,
+                      544.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.7781788079470201,
+                    1
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                },
+                {
+                  "nodeId": "i-51",
+                  "edgeId": "i-55-jump",
+                  "nodeBox": {
+                    "left": 29.649330399999968,
+                    "right": 117.64933039999997,
+                    "top": 2343.5852145813533,
+                    "bottom": 2373.5852145813533
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    40.19399999999999,
+                    641.1912457533896
+                  ],
+                  "segmentEnd": [
+                    40.19399999999999,
+                    2522.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      40.19399999999999,
+                      2343.5852145813533
+                    ],
+                    [
+                      40.19399999999999,
+                      2373.5852145813533
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.904857779409429,
+                    0.9208034029720945
+                  ],
+                  "crossesCompletelyThrough": true,
+                  "penetrationKind": "crosses-completely-through"
+                },
+                {
+                  "nodeId": "i-52",
+                  "edgeId": "i-55-jump",
+                  "nodeBox": {
+                    "left": 29.649330399999968,
+                    "right": 117.64933039999997,
+                    "top": 2425.5852145813533,
+                    "bottom": 2455.5852145813533
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    40.19399999999999,
+                    641.1912457533896
+                  ],
+                  "segmentEnd": [
+                    40.19399999999999,
+                    2522.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      40.19399999999999,
+                      2425.5852145813533
+                    ],
+                    [
+                      40.19399999999999,
+                      2455.5852145813533
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.9484424838140482,
+                    0.9643881073767137
+                  ],
+                  "crossesCompletelyThrough": true,
+                  "penetrationKind": "crosses-completely-through"
+                },
+                {
+                  "nodeId": "i-55",
+                  "edgeId": "i-57-cont",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 611.1912457533896,
+                    "bottom": 641.1912457533896
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    3.8060000000000116,
+                    626.1912457533896
+                  ],
+                  "segmentEnd": [
+                    19.80600000000001,
+                    626.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    [
+                      19.80600000000001,
+                      626.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0,
+                    1
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "segment-contained-inside"
+                },
+                {
+                  "nodeId": "i-55",
+                  "edgeId": "i-57-cont",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 611.1912457533896,
+                    "bottom": 641.1912457533896
+                  },
+                  "segmentIndex": 1,
+                  "segmentStart": [
+                    19.80600000000001,
+                    626.1912457533896
+                  ],
+                  "segmentEnd": [
+                    19.80600000000001,
+                    2522.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      19.80600000000001,
+                      626.1912457533896
+                    ],
+                    [
+                      19.80600000000001,
+                      641.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0,
+                    0.007909748842573314
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                }
+              ],
+              "oldProductionCost": 4,
+              "experimentalCost": 9
+            },
+            "flipped": {
+              "nodeOverlapCount": 2,
+              "nodeOverlaps": [
+                {
+                  "nodeA": "i-56",
+                  "nodeB": "i-54",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                },
+                {
+                  "nodeA": "i-57",
+                  "nodeB": "i-55",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                }
+              ],
+              "properCrossingCount": 1,
+              "properCrossings": [
+                {
+                  "edgeA": "i-48-no",
+                  "edgeB": "i-55-jump",
+                  "segmentA": 0,
+                  "segmentB": 0,
+                  "point": [
+                    40.19399999999998,
+                    2321.859068986662
+                  ]
+                }
+              ],
+              "nodeEdgeIntrusionCount": 4,
+              "nodeEdgeIntrusions": [
+                {
+                  "nodeId": "i-54",
+                  "edgeId": "i-53-yes",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 529.1912457533896,
+                    "bottom": 559.1912457533896
+                  },
+                  "segmentIndex": 2,
+                  "segmentStart": [
+                    366.206,
+                    544.1912457533896
+                  ],
+                  "segmentEnd": [
+                    3.8060000000000116,
+                    544.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      84.19399999999996,
+                      544.1912457533896
+                    ],
+                    [
+                      3.80600000000004,
+                      544.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.7781788079470201,
+                    1
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                },
+                {
+                  "nodeId": "i-49",
+                  "edgeId": "i-55-jump",
+                  "nodeBox": {
+                    "left": 29.649330399999968,
+                    "right": 117.64933039999997,
+                    "top": 2343.5852145813533,
+                    "bottom": 2373.5852145813533
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    40.19399999999999,
+                    641.1912457533896
+                  ],
+                  "segmentEnd": [
+                    40.19399999999999,
+                    2491.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      40.19399999999999,
+                      2343.5852145813533
+                    ],
+                    [
+                      40.19399999999999,
+                      2373.5852145813533
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.9200170328626055,
+                    0.9362297964715368
+                  ],
+                  "crossesCompletelyThrough": true,
+                  "penetrationKind": "crosses-completely-through"
+                },
+                {
+                  "nodeId": "i-50",
+                  "edgeId": "i-55-jump",
+                  "nodeBox": {
+                    "left": 29.649330399999968,
+                    "right": 117.64933039999997,
+                    "top": 2425.5852145813533,
+                    "bottom": 2455.5852145813533
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    40.19399999999999,
+                    641.1912457533896
+                  ],
+                  "segmentEnd": [
+                    40.19399999999999,
+                    2491.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      40.19399999999999,
+                      2425.5852145813533
+                    ],
+                    [
+                      40.19399999999999,
+                      2455.5852145813533
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.9643319200603511,
+                    0.9805446836692824
+                  ],
+                  "crossesCompletelyThrough": true,
+                  "penetrationKind": "crosses-completely-through"
+                },
+                {
+                  "nodeId": "i-55",
+                  "edgeId": "i-57-cont",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 611.1912457533896,
+                    "bottom": 641.1912457533896
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    3.8060000000000116,
+                    626.1912457533896
+                  ],
+                  "segmentEnd": [
+                    133.64933039999997,
+                    626.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    [
+                      84.19399999999999,
+                      626.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0,
+                    0.6191153581193108
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                }
+              ],
+              "oldProductionCost": 3,
+              "experimentalCost": 7
+            },
+            "finalDecision": "flipped",
+            "tieBreakReason": "flip strictly reduces total defects",
+            "strictImprovement": true,
+            "parentRealFork": "i-36",
+            "childRealForks": []
+          }
+        },
+        "i-53": {
+          "realForkId": "i-53",
+          "baselineDecision": "flipped",
+          "experimentalDecision": "flipped",
+          "decisionChanged": false,
+          "baselineMarginFlippedMinusDefault": -3,
+          "experimentalMarginFlippedMinusDefault": -5,
+          "marginChanged": true,
+          "tieChanged": false,
+          "baselineEvaluation": {
+            "realForkId": "i-53",
+            "scoreKind": "production",
+            "default": {
+              "nodeOverlapCount": 2,
+              "nodeOverlaps": [
+                {
+                  "nodeA": "i-56",
+                  "nodeB": "i-54",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                },
+                {
+                  "nodeA": "i-57",
+                  "nodeB": "i-55",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                }
+              ],
+              "properCrossingCount": 1,
+              "properCrossings": [
+                {
+                  "edgeA": "i-48-no",
+                  "edgeB": "i-55-jump",
+                  "segmentA": 0,
+                  "segmentB": 0,
+                  "point": [
+                    40.19399999999998,
+                    2321.859068986662
+                  ]
+                }
+              ],
+              "nodeEdgeIntrusionCount": 4,
+              "nodeEdgeIntrusions": [
+                {
+                  "nodeId": "i-54",
+                  "edgeId": "i-53-yes",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 529.1912457533896,
+                    "bottom": 559.1912457533896
+                  },
+                  "segmentIndex": 2,
+                  "segmentStart": [
+                    366.206,
+                    544.1912457533896
+                  ],
+                  "segmentEnd": [
+                    3.8060000000000116,
+                    544.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      84.19399999999996,
+                      544.1912457533896
+                    ],
+                    [
+                      3.80600000000004,
+                      544.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.7781788079470201,
+                    1
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                },
+                {
+                  "nodeId": "i-49",
+                  "edgeId": "i-55-jump",
+                  "nodeBox": {
+                    "left": 29.649330399999968,
+                    "right": 117.64933039999997,
+                    "top": 2343.5852145813533,
+                    "bottom": 2373.5852145813533
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    40.19399999999999,
+                    641.1912457533896
+                  ],
+                  "segmentEnd": [
+                    40.19399999999999,
+                    2491.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      40.19399999999999,
+                      2343.5852145813533
+                    ],
+                    [
+                      40.19399999999999,
+                      2373.5852145813533
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.9200170328626055,
+                    0.9362297964715368
+                  ],
+                  "crossesCompletelyThrough": true,
+                  "penetrationKind": "crosses-completely-through"
+                },
+                {
+                  "nodeId": "i-50",
+                  "edgeId": "i-55-jump",
+                  "nodeBox": {
+                    "left": 29.649330399999968,
+                    "right": 117.64933039999997,
+                    "top": 2425.5852145813533,
+                    "bottom": 2455.5852145813533
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    40.19399999999999,
+                    641.1912457533896
+                  ],
+                  "segmentEnd": [
+                    40.19399999999999,
+                    2491.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      40.19399999999999,
+                      2425.5852145813533
+                    ],
+                    [
+                      40.19399999999999,
+                      2455.5852145813533
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.9643319200603511,
+                    0.9805446836692824
+                  ],
+                  "crossesCompletelyThrough": true,
+                  "penetrationKind": "crosses-completely-through"
+                },
+                {
+                  "nodeId": "i-55",
+                  "edgeId": "i-57-cont",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 611.1912457533896,
+                    "bottom": 641.1912457533896
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    3.8060000000000116,
+                    626.1912457533896
+                  ],
+                  "segmentEnd": [
+                    133.64933039999997,
+                    626.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    [
+                      84.19399999999999,
+                      626.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0,
+                    0.6191153581193108
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                }
+              ],
+              "oldProductionCost": 3,
+              "experimentalCost": 7
+            },
+            "flipped": {
+              "nodeOverlapCount": 0,
+              "nodeOverlaps": [],
+              "properCrossingCount": 0,
+              "properCrossings": [],
+              "nodeEdgeIntrusionCount": 0,
+              "nodeEdgeIntrusions": [],
+              "oldProductionCost": 0,
+              "experimentalCost": 0
+            },
+            "finalDecision": "flipped",
+            "tieBreakReason": "flip strictly reduces total defects",
+            "strictImprovement": true,
+            "parentRealFork": "i-3",
+            "childRealForks": []
+          },
+          "experimentalEvaluation": {
+            "realForkId": "i-53",
+            "scoreKind": "intrusion-aware",
+            "default": {
+              "nodeOverlapCount": 2,
+              "nodeOverlaps": [
+                {
+                  "nodeA": "i-56",
+                  "nodeB": "i-54",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                },
+                {
+                  "nodeA": "i-57",
+                  "nodeB": "i-55",
+                  "overlapX": 7.612000000000023,
+                  "overlapY": 30
+                }
+              ],
+              "properCrossingCount": 1,
+              "properCrossings": [
+                {
+                  "edgeA": "i-27-jump",
+                  "edgeB": "i-33-cont",
+                  "segmentA": 1,
+                  "segmentB": 0,
+                  "point": [
+                    -341.7519704,
+                    1934.1326071255528
+                  ]
+                }
+              ],
+              "nodeEdgeIntrusionCount": 3,
+              "nodeEdgeIntrusions": [
+                {
+                  "nodeId": "i-54",
+                  "edgeId": "i-53-yes",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 529.1912457533896,
+                    "bottom": 559.1912457533896
+                  },
+                  "segmentIndex": 2,
+                  "segmentStart": [
+                    366.206,
+                    544.1912457533896
+                  ],
+                  "segmentEnd": [
+                    3.8060000000000116,
+                    544.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      84.19399999999996,
+                      544.1912457533896
+                    ],
+                    [
+                      3.80600000000004,
+                      544.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0.7781788079470201,
+                    1
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                },
+                {
+                  "nodeId": "i-55",
+                  "edgeId": "i-57-cont",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 611.1912457533896,
+                    "bottom": 641.1912457533896
+                  },
+                  "segmentIndex": 0,
+                  "segmentStart": [
+                    3.8060000000000116,
+                    626.1912457533896
+                  ],
+                  "segmentEnd": [
+                    19.80600000000001,
+                    626.1912457533896
+                  ],
+                  "orientation": "horizontal",
+                  "intersectionInterval": [
+                    [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    [
+                      19.80600000000001,
+                      626.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0,
+                    1
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "segment-contained-inside"
+                },
+                {
+                  "nodeId": "i-55",
+                  "edgeId": "i-57-cont",
+                  "nodeBox": {
+                    "left": -3.8060000000000116,
+                    "right": 84.19399999999999,
+                    "top": 611.1912457533896,
+                    "bottom": 641.1912457533896
+                  },
+                  "segmentIndex": 1,
+                  "segmentStart": [
+                    19.80600000000001,
+                    626.1912457533896
+                  ],
+                  "segmentEnd": [
+                    19.80600000000001,
+                    2522.5852145813533
+                  ],
+                  "orientation": "vertical",
+                  "intersectionInterval": [
+                    [
+                      19.80600000000001,
+                      626.1912457533896
+                    ],
+                    [
+                      19.80600000000001,
+                      641.1912457533896
+                    ]
+                  ],
+                  "parameterInterval": [
+                    0,
+                    0.007909748842573314
+                  ],
+                  "crossesCompletelyThrough": false,
+                  "penetrationKind": "enters-partway"
+                }
+              ],
+              "oldProductionCost": 3,
+              "experimentalCost": 6
+            },
+            "flipped": {
+              "nodeOverlapCount": 0,
+              "nodeOverlaps": [],
+              "properCrossingCount": 1,
+              "properCrossings": [
+                {
+                  "edgeA": "i-27-jump",
+                  "edgeB": "i-33-cont",
+                  "segmentA": 1,
+                  "segmentB": 0,
+                  "point": [
+                    -341.7519704,
+                    1934.1326071255528
+                  ]
+                }
+              ],
+              "nodeEdgeIntrusionCount": 0,
+              "nodeEdgeIntrusions": [],
+              "oldProductionCost": 1,
+              "experimentalCost": 1
+            },
+            "finalDecision": "flipped",
+            "tieBreakReason": "flip strictly reduces total defects",
+            "strictImprovement": true,
+            "parentRealFork": "i-3",
+            "childRealForks": []
+          }
+        }
+      }
+    },
+    {
+      "fixture": "characteristic:eq",
+      "baseline": {
+        "orientationMap": {
+          "i-9": "default",
+          "i-11": "default",
+          "i-14": "default",
+          "i-29": "default",
+          "i-31": "default",
+          "i-34": "default",
+          "i-43": "default",
+          "i-46": "default"
+        },
+        "finalDiagnostics": {
+          "nodeOverlapCount": 0,
+          "nodeOverlaps": [],
+          "properCrossingCount": 0,
+          "properCrossings": [],
+          "edgeOverlapCount": 1,
+          "edgeOverlaps": [
+            {
+              "edgeA": "i-46-yes",
+              "edgeB": "i-47-cont",
+              "segmentA": 2,
+              "segmentB": 1,
+              "interval": [
+                [
+                  278.55132000000003,
+                  2106.875938964829
+                ],
+                [
+                  390.66002960000003,
+                  2106.875938964829
+                ]
+              ]
+            }
+          ],
+          "unrelatedNodeEdgeIntrusionCount": 0,
+          "unrelatedNodeEdgeIntrusions": [],
+          "oldProductionCost": 0,
+          "intrusionAwareCost": 0,
+          "warnings": {
+            "cfg": [],
+            "roles": [],
+            "skeleton": [],
+            "lanes": [],
+            "routing": []
+          },
+          "fallbackOrRejectionFired": false
+        },
+        "geometryDigest": {
+          "canonicalBytes": 13261,
+          "sha256": "0dead3046499c21957c0cf59cd0950f83d6af903bd04307c72f154ca8ca07990"
+        },
+        "rareRepairCandidates": []
+      },
+      "experimental": {
+        "orientationMap": {
+          "i-9": "default",
+          "i-11": "default",
+          "i-14": "default",
+          "i-29": "default",
+          "i-31": "default",
+          "i-34": "default",
+          "i-43": "default",
+          "i-46": "default"
+        },
+        "finalDiagnostics": {
+          "nodeOverlapCount": 0,
+          "nodeOverlaps": [],
+          "properCrossingCount": 0,
+          "properCrossings": [],
+          "edgeOverlapCount": 1,
+          "edgeOverlaps": [
+            {
+              "edgeA": "i-46-yes",
+              "edgeB": "i-47-cont",
+              "segmentA": 2,
+              "segmentB": 1,
+              "interval": [
+                [
+                  278.55132000000003,
+                  2106.875938964829
+                ],
+                [
+                  390.66002960000003,
+                  2106.875938964829
+                ]
+              ]
+            }
+          ],
+          "unrelatedNodeEdgeIntrusionCount": 0,
+          "unrelatedNodeEdgeIntrusions": [],
+          "oldProductionCost": 0,
+          "intrusionAwareCost": 0,
+          "warnings": {
+            "cfg": [],
+            "roles": [],
+            "skeleton": [],
+            "lanes": [],
+            "routing": []
+          },
+          "fallbackOrRejectionFired": false
+        },
+        "geometryDigest": {
+          "canonicalBytes": 13261,
+          "sha256": "0dead3046499c21957c0cf59cd0950f83d6af903bd04307c72f154ca8ca07990"
+        },
+        "rareRepairCandidates": [],
+        "rareRepairApplied": false
+      },
+      "changedForkIds": [],
+      "changedForks": [],
+      "materialUnchangedForks": [
+        {
+          "realForkId": "i-9",
+          "baselineDecision": "default",
+          "experimentalDecision": "default",
+          "baselineMarginFlippedMinusDefault": 1,
+          "experimentalMarginFlippedMinusDefault": 5,
+          "tieChanged": false,
+          "baselineCosts": {
+            "default": 0,
+            "flipped": 1
+          },
+          "experimentalCosts": {
+            "default": 0,
+            "flipped": 5
+          }
+        },
+        {
+          "realForkId": "i-11",
+          "baselineDecision": "default",
+          "experimentalDecision": "default",
+          "baselineMarginFlippedMinusDefault": 2,
+          "experimentalMarginFlippedMinusDefault": 3,
+          "tieChanged": false,
+          "baselineCosts": {
+            "default": 0,
+            "flipped": 2
+          },
+          "experimentalCosts": {
+            "default": 0,
+            "flipped": 3
+          }
+        },
+        {
+          "realForkId": "i-14",
+          "baselineDecision": "default",
+          "experimentalDecision": "default",
+          "baselineMarginFlippedMinusDefault": 1,
+          "experimentalMarginFlippedMinusDefault": 2,
+          "tieChanged": false,
+          "baselineCosts": {
+            "default": 0,
+            "flipped": 1
+          },
+          "experimentalCosts": {
+            "default": 0,
+            "flipped": 2
+          }
+        },
+        {
+          "realForkId": "i-29",
+          "baselineDecision": "default",
+          "experimentalDecision": "default",
+          "baselineMarginFlippedMinusDefault": 6,
+          "experimentalMarginFlippedMinusDefault": 11,
+          "tieChanged": false,
+          "baselineCosts": {
+            "default": 0,
+            "flipped": 6
+          },
+          "experimentalCosts": {
+            "default": 0,
+            "flipped": 11
+          }
+        },
+        {
+          "realForkId": "i-31",
+          "baselineDecision": "default",
+          "experimentalDecision": "default",
+          "baselineMarginFlippedMinusDefault": 6,
+          "experimentalMarginFlippedMinusDefault": 12,
+          "tieChanged": false,
+          "baselineCosts": {
+            "default": 0,
+            "flipped": 6
+          },
+          "experimentalCosts": {
+            "default": 0,
+            "flipped": 12
+          }
+        },
+        {
+          "realForkId": "i-34",
+          "baselineDecision": "default",
+          "experimentalDecision": "default",
+          "baselineMarginFlippedMinusDefault": 1,
+          "experimentalMarginFlippedMinusDefault": 2,
+          "tieChanged": false,
+          "baselineCosts": {
+            "default": 0,
+            "flipped": 1
+          },
+          "experimentalCosts": {
+            "default": 0,
+            "flipped": 2
+          }
+        }
+      ],
+      "spotlight": {}
+    },
+    {
+      "fixture": "primrec:basic",
+      "baseline": {
+        "orientationMap": {
+          "i-5": "default",
+          "i-13": "default"
+        },
+        "finalDiagnostics": {
+          "nodeOverlapCount": 0,
+          "nodeOverlaps": [],
+          "properCrossingCount": 0,
+          "properCrossings": [],
+          "edgeOverlapCount": 0,
+          "edgeOverlaps": [],
+          "unrelatedNodeEdgeIntrusionCount": 0,
+          "unrelatedNodeEdgeIntrusions": [],
+          "oldProductionCost": 0,
+          "intrusionAwareCost": 0,
+          "warnings": {
+            "cfg": [],
+            "roles": [],
+            "skeleton": [],
+            "lanes": [],
+            "routing": []
+          },
+          "fallbackOrRejectionFired": false
+        },
+        "geometryDigest": {
+          "canonicalBytes": 4938,
+          "sha256": "e06058db84d418002da1194801c561efd33708c894213fe00a6db6830495536f"
+        },
+        "rareRepairCandidates": []
+      },
+      "experimental": {
+        "orientationMap": {
+          "i-5": "default",
+          "i-13": "default"
+        },
+        "finalDiagnostics": {
+          "nodeOverlapCount": 0,
+          "nodeOverlaps": [],
+          "properCrossingCount": 0,
+          "properCrossings": [],
+          "edgeOverlapCount": 0,
+          "edgeOverlaps": [],
+          "unrelatedNodeEdgeIntrusionCount": 0,
+          "unrelatedNodeEdgeIntrusions": [],
+          "oldProductionCost": 0,
+          "intrusionAwareCost": 0,
+          "warnings": {
+            "cfg": [],
+            "roles": [],
+            "skeleton": [],
+            "lanes": [],
+            "routing": []
+          },
+          "fallbackOrRejectionFired": false
+        },
+        "geometryDigest": {
+          "canonicalBytes": 4938,
+          "sha256": "e06058db84d418002da1194801c561efd33708c894213fe00a6db6830495536f"
+        },
+        "rareRepairCandidates": [],
+        "rareRepairApplied": false
+      },
+      "changedForkIds": [],
+      "changedForks": [],
+      "materialUnchangedForks": [],
+      "spotlight": {}
+    },
+    {
+      "fixture": "predecessor",
+      "baseline": {
+        "orientationMap": {
+          "i-0": "default",
+          "i-2": "default"
+        },
+        "finalDiagnostics": {
+          "nodeOverlapCount": 0,
+          "nodeOverlaps": [],
+          "properCrossingCount": 0,
+          "properCrossings": [],
+          "edgeOverlapCount": 0,
+          "edgeOverlaps": [],
+          "unrelatedNodeEdgeIntrusionCount": 0,
+          "unrelatedNodeEdgeIntrusions": [],
+          "oldProductionCost": 0,
+          "intrusionAwareCost": 0,
+          "warnings": {
+            "cfg": [],
+            "roles": [],
+            "skeleton": [],
+            "lanes": [],
+            "routing": []
+          },
+          "fallbackOrRejectionFired": false
+        },
+        "geometryDigest": {
+          "canonicalBytes": 2324,
+          "sha256": "167acfeec41d4523bd623f3450151b219a17b443f8a082143ab93dea2cd65926"
+        },
+        "rareRepairCandidates": []
+      },
+      "experimental": {
+        "orientationMap": {
+          "i-0": "default",
+          "i-2": "default"
+        },
+        "finalDiagnostics": {
+          "nodeOverlapCount": 0,
+          "nodeOverlaps": [],
+          "properCrossingCount": 0,
+          "properCrossings": [],
+          "edgeOverlapCount": 0,
+          "edgeOverlaps": [],
+          "unrelatedNodeEdgeIntrusionCount": 0,
+          "unrelatedNodeEdgeIntrusions": [],
+          "oldProductionCost": 0,
+          "intrusionAwareCost": 0,
+          "warnings": {
+            "cfg": [],
+            "roles": [],
+            "skeleton": [],
+            "lanes": [],
+            "routing": []
+          },
+          "fallbackOrRejectionFired": false
+        },
+        "geometryDigest": {
+          "canonicalBytes": 2324,
+          "sha256": "167acfeec41d4523bd623f3450151b219a17b443f8a082143ab93dea2cd65926"
+        },
+        "rareRepairCandidates": [],
+        "rareRepairApplied": false
+      },
+      "changedForkIds": [],
+      "changedForks": [],
+      "materialUnchangedForks": [
+        {
+          "realForkId": "i-0",
+          "baselineDecision": "default",
+          "experimentalDecision": "default",
+          "baselineMarginFlippedMinusDefault": 1,
+          "experimentalMarginFlippedMinusDefault": 2,
+          "tieChanged": false,
+          "baselineCosts": {
+            "default": 0,
+            "flipped": 1
+          },
+          "experimentalCosts": {
+            "default": 0,
+            "flipped": 2
+          }
+        },
+        {
+          "realForkId": "i-2",
+          "baselineDecision": "default",
+          "experimentalDecision": "default",
+          "baselineMarginFlippedMinusDefault": 1,
+          "experimentalMarginFlippedMinusDefault": 2,
+          "tieChanged": false,
+          "baselineCosts": {
+            "default": 0,
+            "flipped": 1
+          },
+          "experimentalCosts": {
+            "default": 0,
+            "flipped": 2
+          }
+        }
+      ],
+      "spotlight": {}
+    }
+  ],
+  "conclusion": {
+    "boundedSubHypothesisConfirmed": true,
+    "boundedSubFinalIntrusionRemoved": true,
+    "counterexampleFound": true,
+    "counterexample": "characteristic:divides i-25 changes from a 3/3 production tie to a 7/6 intrusion-aware flip, leaving one final proper crossing; the unchanged rare-repair diagnostic identifies flipped→default as 1→0 but does not apply it",
+    "resultPromoted": false,
+    "resultCheckpointed": false
+  }
+}

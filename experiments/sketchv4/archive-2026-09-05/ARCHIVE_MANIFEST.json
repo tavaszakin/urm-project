@@ -1,0 +1,23 @@
+{
+  "archive": "SketchV4 completed flow-layout investigations",
+  "archivedOn": "2026-09-05",
+  "originalPath": "urmwebpage/frontend/.flow-layout-probes",
+  "archivePath": "experiments/sketchv4/archive-2026-09-05/flow-layout-probes",
+  "viteRoot": "urmwebpage/frontend",
+  "outsideActiveViteTree": true,
+  "originalFileCount": 35,
+  "originalByteCount": 2059991,
+  "originalContentSetSha256": "2c5a07b33abc61a758ec7017c825389d065c0e73902a2a92a67cb74ce115a833",
+  "contentSetDigestDefinition": "SHA-256 of the sorted, path-normalized SHA-256 listing for the 35 original files",
+  "addedCheckpointManifestCount": 3,
+  "fixtureSnapshot": {
+    "path": "programs.json",
+    "sha256": "e77a35d377920b7546b406eaa9d7f6e788a7208d8433ea2e798f6d740d7120f5"
+  },
+  "durableCheckpoint": {
+    "commit": "9f166f24721e7125ec9c0105e8960c6273d8d932",
+    "branch": "checkpoint/sketchv4-loop-endpoints-composed",
+    "tag": "sketchv4-loop-endpoints-composed-checkpoint",
+    "tagObject": "295b899c7f2ef93e0ab30dbddd22debbe9f3094a"
+  }
+}

@@ -1,0 +1,1328 @@
+{
+  "experiment": "one-step completed-candidate orientation scoring",
+  "checkpoint": {
+    "commit": "9f166f24721e7125ec9c0105e8960c6273d8d932",
+    "expectedBaselineHashes": {
+      "minimization:bounded_sub": "3730839d2267f10d1878cf1404da003b08e345cb049f3ed48144cce1142efb65",
+      "characteristic:divides": "72995a166e8ed11f62d9cad0d9d6fea364b7bc9080cf2eceb7b53f630b234efd",
+      "characteristic:eq": "0dead3046499c21957c0cf59cd0950f83d6af903bd04307c72f154ca8ca07990",
+      "primrec:basic": "e06058db84d418002da1194801c561efd33708c894213fe00a6db6830495536f",
+      "predecessor": "167acfeec41d4523bd623f3450151b219a17b443f8a082143ab93dea2cd65926"
+    }
+  },
+  "policy": {
+    "outerCandidateScore": "completed node overlaps + proper crossings + segment-level unrelated node-edge intrusions",
+    "weights": {
+      "nodeOverlap": 1,
+      "properCrossing": 1,
+      "unrelatedNodeEdgeIntrusion": 1
+    },
+    "temporaryCompletionPolicy": "production node overlaps + proper crossings",
+    "strictImprovement": true,
+    "tieBreak": "default",
+    "recursiveCompletedCandidateRule": false,
+    "pins": []
+  },
+  "fixtureReports": [
+    {
+      "fixture": "minimization:bounded_sub",
+      "orientationMaps": {
+        "checkpoint": {
+          "i-10": "default",
+          "i-12": "default",
+          "i-15": "default",
+          "i-22": "default"
+        },
+        "provisionalIntrusionAware": {
+          "i-10": "default",
+          "i-12": "default",
+          "i-15": "default",
+          "i-22": "flipped"
+        },
+        "completedCandidate": {
+          "i-10": "default",
+          "i-12": "default",
+          "i-15": "default",
+          "i-22": "flipped"
+        }
+      },
+      "changedFromCheckpoint": [
+        "i-22"
+      ],
+      "changedFromProvisional": [],
+      "changedForkDetails": [
+        {
+          "realForkId": "i-22",
+          "checkpointDecision": "default",
+          "provisionalSelectorDecision": "flipped",
+          "completedCandidateDecision": "flipped",
+          "provisional": {
+            "default": {
+              "nodeOverlapCount": 0,
+              "properCrossingCount": 0,
+              "nodeEdgeIntrusionCount": 1,
+              "productionCost": 0,
+              "experimentalCost": 1
+            },
+            "flipped": {
+              "nodeOverlapCount": 0,
+              "properCrossingCount": 0,
+              "nodeEdgeIntrusionCount": 0,
+              "productionCost": 0,
+              "experimentalCost": 0
+            }
+          },
+          "completed": {
+            "default": {
+              "nodeOverlapCount": 0,
+              "properCrossingCount": 0,
+              "nodeEdgeIntrusionCount": 1,
+              "productionCost": 0,
+              "experimentalCost": 1
+            },
+            "flipped": {
+              "nodeOverlapCount": 0,
+              "properCrossingCount": 0,
+              "nodeEdgeIntrusionCount": 0,
+              "productionCost": 0,
+              "experimentalCost": 0
+            }
+          },
+          "temporaryCompletionDefaultOrientationMap": {
+            "i-10": "default",
+            "i-12": "default",
+            "i-15": "default",
+            "i-22": "default"
+          },
+          "temporaryCompletionFlippedOrientationMap": {
+            "i-10": "default",
+            "i-12": "default",
+            "i-15": "default",
+            "i-22": "flipped"
+          },
+          "finalDecision": "flipped",
+          "tieBreakReason": "completed flipped candidate strictly reduces experimental defects"
+        }
+      ],
+      "final": {
+        "checkpoint": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 0,
+            "edgeOverlaps": [],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 1,
+            "nodeEdgeIntrusions": [
+              {
+                "nodeId": "i-26",
+                "edgeId": "i-24-jump",
+                "nodeBox": {
+                  "left": 322.206,
+                  "right": 410.206,
+                  "top": 1063.1912457533895,
+                  "bottom": 1093.1912457533895
+                },
+                "segmentIndex": 0,
+                "segmentStart": [
+                  84.19399999999999,
+                  1078.1912457533895
+                ],
+                "segmentEnd": [
+                  450,
+                  1078.1912457533895
+                ],
+                "orientation": "horizontal",
+                "intersectionInterval": [
+                  [
+                    322.206,
+                    1078.1912457533895
+                  ],
+                  [
+                    410.206,
+                    1078.1912457533895
+                  ]
+                ],
+                "parameterInterval": [
+                  0.650650891456127,
+                  0.8912155623472552
+                ],
+                "crossesCompletelyThrough": true,
+                "penetrationKind": "crosses-completely-through"
+              }
+            ],
+            "productionCost": 0,
+            "experimentalCost": 1,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 6052,
+            "sha256": "3730839d2267f10d1878cf1404da003b08e345cb049f3ed48144cce1142efb65"
+          }
+        },
+        "provisionalIntrusionAware": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 0,
+            "edgeOverlaps": [],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "productionCost": 0,
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 6032,
+            "sha256": "e49dd79e4a06ecec0363046dde45f738912cfc851f921a109f5800fb28e10ea2"
+          }
+        },
+        "completedCandidate": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 0,
+            "edgeOverlaps": [],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "productionCost": 0,
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 6032,
+            "sha256": "e49dd79e4a06ecec0363046dde45f738912cfc851f921a109f5800fb28e10ea2"
+          }
+        }
+      },
+      "materiallyChangedUnchangedForks": [
+        {
+          "realForkId": "i-12",
+          "checkpointDecision": "default",
+          "completedCandidateDecision": "default",
+          "provisionalSelectorMarginFlippedMinusDefault": 5,
+          "completedCandidateMarginFlippedMinusDefault": 1
+        }
+      ],
+      "spotlight": {
+        "i-22": {
+          "realForkId": "i-22",
+          "checkpointDecision": "default",
+          "provisionalSelectorDecision": "flipped",
+          "completedCandidateDecision": "flipped",
+          "provisional": {
+            "default": {
+              "nodeOverlapCount": 0,
+              "properCrossingCount": 0,
+              "nodeEdgeIntrusionCount": 1,
+              "productionCost": 0,
+              "experimentalCost": 1
+            },
+            "flipped": {
+              "nodeOverlapCount": 0,
+              "properCrossingCount": 0,
+              "nodeEdgeIntrusionCount": 0,
+              "productionCost": 0,
+              "experimentalCost": 0
+            }
+          },
+          "completed": {
+            "default": {
+              "nodeOverlapCount": 0,
+              "properCrossingCount": 0,
+              "nodeEdgeIntrusionCount": 1,
+              "productionCost": 0,
+              "experimentalCost": 1
+            },
+            "flipped": {
+              "nodeOverlapCount": 0,
+              "properCrossingCount": 0,
+              "nodeEdgeIntrusionCount": 0,
+              "productionCost": 0,
+              "experimentalCost": 0
+            }
+          },
+          "temporaryCompletionDefaultOrientationMap": {
+            "i-10": "default",
+            "i-12": "default",
+            "i-15": "default",
+            "i-22": "default"
+          },
+          "temporaryCompletionFlippedOrientationMap": {
+            "i-10": "default",
+            "i-12": "default",
+            "i-15": "default",
+            "i-22": "flipped"
+          },
+          "finalDecision": "flipped",
+          "tieBreakReason": "completed flipped candidate strictly reduces experimental defects"
+        }
+      },
+      "rolloutSuffixDivergences": [
+        {
+          "realForkId": "i-15",
+          "rolloutCosts": {
+            "default": 1,
+            "flipped": 3
+          },
+          "eventualOuterSuffixCosts": {
+            "default": 0,
+            "flipped": 2
+          },
+          "rolloutDecision": "default",
+          "decisionUnderEventualOuterSuffix": "default",
+          "misleadingDecision": false,
+          "defaultCandidateSuffixDifferences": [
+            {
+              "realForkId": "i-22",
+              "temporaryCompletion": "default",
+              "eventualOuterSweep": "flipped"
+            }
+          ],
+          "flippedCandidateSuffixDifferences": [
+            {
+              "realForkId": "i-22",
+              "temporaryCompletion": "default",
+              "eventualOuterSweep": "flipped"
+            }
+          ],
+          "chosenCandidateSuffixDifferences": [
+            {
+              "realForkId": "i-22",
+              "temporaryCompletion": "default",
+              "eventualOuterSweep": "flipped"
+            }
+          ]
+        },
+        {
+          "realForkId": "i-12",
+          "rolloutCosts": {
+            "default": 1,
+            "flipped": 2
+          },
+          "eventualOuterSuffixCosts": {
+            "default": 0,
+            "flipped": 5
+          },
+          "rolloutDecision": "default",
+          "decisionUnderEventualOuterSuffix": "default",
+          "misleadingDecision": false,
+          "defaultCandidateSuffixDifferences": [
+            {
+              "realForkId": "i-22",
+              "temporaryCompletion": "default",
+              "eventualOuterSweep": "flipped"
+            }
+          ],
+          "flippedCandidateSuffixDifferences": [
+            {
+              "realForkId": "i-22",
+              "temporaryCompletion": "default",
+              "eventualOuterSweep": "flipped"
+            },
+            {
+              "realForkId": "i-10",
+              "temporaryCompletion": "flipped",
+              "eventualOuterSweep": "default"
+            }
+          ],
+          "chosenCandidateSuffixDifferences": [
+            {
+              "realForkId": "i-22",
+              "temporaryCompletion": "default",
+              "eventualOuterSweep": "flipped"
+            }
+          ]
+        }
+      ],
+      "misleadingCompletedScoreCounterexamples": []
+    },
+    {
+      "fixture": "characteristic:divides",
+      "orientationMaps": {
+        "checkpoint": {
+          "i-3": "default",
+          "i-4": "default",
+          "i-13": "default",
+          "i-15": "default",
+          "i-18": "default",
+          "i-25": "default",
+          "i-36": "default",
+          "i-38": "default",
+          "i-41": "default",
+          "i-48": "flipped",
+          "i-53": "flipped"
+        },
+        "provisionalIntrusionAware": {
+          "i-3": "default",
+          "i-4": "default",
+          "i-13": "default",
+          "i-15": "default",
+          "i-18": "default",
+          "i-25": "flipped",
+          "i-36": "default",
+          "i-38": "default",
+          "i-41": "default",
+          "i-48": "flipped",
+          "i-53": "flipped"
+        },
+        "completedCandidate": {
+          "i-3": "default",
+          "i-4": "default",
+          "i-13": "default",
+          "i-15": "default",
+          "i-18": "default",
+          "i-25": "default",
+          "i-36": "default",
+          "i-38": "default",
+          "i-41": "default",
+          "i-48": "flipped",
+          "i-53": "flipped"
+        }
+      },
+      "changedFromCheckpoint": [],
+      "changedFromProvisional": [
+        "i-25"
+      ],
+      "changedForkDetails": [
+        {
+          "realForkId": "i-25",
+          "checkpointDecision": "default",
+          "provisionalSelectorDecision": "flipped",
+          "completedCandidateDecision": "default",
+          "provisional": {
+            "default": {
+              "nodeOverlapCount": 2,
+              "properCrossingCount": 1,
+              "nodeEdgeIntrusionCount": 4,
+              "productionCost": 3,
+              "experimentalCost": 7
+            },
+            "flipped": {
+              "nodeOverlapCount": 2,
+              "properCrossingCount": 1,
+              "nodeEdgeIntrusionCount": 3,
+              "productionCost": 3,
+              "experimentalCost": 6
+            }
+          },
+          "completed": {
+            "default": {
+              "nodeOverlapCount": 0,
+              "properCrossingCount": 0,
+              "nodeEdgeIntrusionCount": 0,
+              "productionCost": 0,
+              "experimentalCost": 0
+            },
+            "flipped": {
+              "nodeOverlapCount": 0,
+              "properCrossingCount": 1,
+              "nodeEdgeIntrusionCount": 0,
+              "productionCost": 1,
+              "experimentalCost": 1
+            }
+          },
+          "temporaryCompletionDefaultOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "temporaryCompletionFlippedOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "flipped",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "completed default candidate strictly better"
+        }
+      ],
+      "final": {
+        "checkpoint": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 1,
+            "edgeOverlaps": [
+              {
+                "edgeA": "i-55-jump",
+                "edgeB": "i-57-cont",
+                "segmentA": 1,
+                "segmentB": 2,
+                "interval": [
+                  [
+                    117.64933039999997,
+                    2522.5852145813533
+                  ],
+                  [
+                    133.64933039999997,
+                    2522.5852145813533
+                  ]
+                ]
+              }
+            ],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "productionCost": 0,
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 19215,
+            "sha256": "72995a166e8ed11f62d9cad0d9d6fea364b7bc9080cf2eceb7b53f630b234efd"
+          }
+        },
+        "provisionalIntrusionAware": {
+          "diagnostics": {
+            "properCrossingCount": 1,
+            "properCrossings": [
+              {
+                "edgeA": "i-27-jump",
+                "edgeB": "i-33-cont",
+                "segmentA": 1,
+                "segmentB": 0,
+                "point": [
+                  -341.7519704,
+                  1934.1326071255528
+                ]
+              }
+            ],
+            "edgeOverlapCount": 1,
+            "edgeOverlaps": [
+              {
+                "edgeA": "i-55-jump",
+                "edgeB": "i-57-cont",
+                "segmentA": 1,
+                "segmentB": 2,
+                "interval": [
+                  [
+                    -96.7519704,
+                    2522.5852145813533
+                  ],
+                  [
+                    19.80600000000004,
+                    2522.5852145813533
+                  ]
+                ]
+              }
+            ],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "productionCost": 1,
+            "experimentalCost": 1,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 17957,
+            "sha256": "a8820c298dcbd3f29f2c2e3b269963bb5fb1cd76c9408d9f3bb77ea8d9fde1eb"
+          }
+        },
+        "completedCandidate": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 1,
+            "edgeOverlaps": [
+              {
+                "edgeA": "i-55-jump",
+                "edgeB": "i-57-cont",
+                "segmentA": 1,
+                "segmentB": 2,
+                "interval": [
+                  [
+                    117.64933039999997,
+                    2522.5852145813533
+                  ],
+                  [
+                    133.64933039999997,
+                    2522.5852145813533
+                  ]
+                ]
+              }
+            ],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "productionCost": 0,
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 19215,
+            "sha256": "72995a166e8ed11f62d9cad0d9d6fea364b7bc9080cf2eceb7b53f630b234efd"
+          }
+        }
+      },
+      "materiallyChangedUnchangedForks": [
+        {
+          "realForkId": "i-41",
+          "checkpointDecision": "default",
+          "completedCandidateDecision": "default",
+          "provisionalSelectorMarginFlippedMinusDefault": 7,
+          "completedCandidateMarginFlippedMinusDefault": 6
+        },
+        {
+          "realForkId": "i-38",
+          "checkpointDecision": "default",
+          "completedCandidateDecision": "default",
+          "provisionalSelectorMarginFlippedMinusDefault": 8,
+          "completedCandidateMarginFlippedMinusDefault": 10
+        },
+        {
+          "realForkId": "i-36",
+          "checkpointDecision": "default",
+          "completedCandidateDecision": "default",
+          "provisionalSelectorMarginFlippedMinusDefault": 12,
+          "completedCandidateMarginFlippedMinusDefault": 14
+        },
+        {
+          "realForkId": "i-15",
+          "checkpointDecision": "default",
+          "completedCandidateDecision": "default",
+          "provisionalSelectorMarginFlippedMinusDefault": 8,
+          "completedCandidateMarginFlippedMinusDefault": 3
+        },
+        {
+          "realForkId": "i-25",
+          "checkpointDecision": "default",
+          "completedCandidateDecision": "default",
+          "provisionalSelectorMarginFlippedMinusDefault": -1,
+          "completedCandidateMarginFlippedMinusDefault": 1
+        },
+        {
+          "realForkId": "i-13",
+          "checkpointDecision": "default",
+          "completedCandidateDecision": "default",
+          "provisionalSelectorMarginFlippedMinusDefault": 5,
+          "completedCandidateMarginFlippedMinusDefault": 8
+        },
+        {
+          "realForkId": "i-4",
+          "checkpointDecision": "default",
+          "completedCandidateDecision": "default",
+          "provisionalSelectorMarginFlippedMinusDefault": 12,
+          "completedCandidateMarginFlippedMinusDefault": 14
+        },
+        {
+          "realForkId": "i-53",
+          "checkpointDecision": "flipped",
+          "completedCandidateDecision": "flipped",
+          "provisionalSelectorMarginFlippedMinusDefault": -5,
+          "completedCandidateMarginFlippedMinusDefault": -7
+        }
+      ],
+      "spotlight": {
+        "i-25": {
+          "realForkId": "i-25",
+          "checkpointDecision": "default",
+          "provisionalSelectorDecision": "flipped",
+          "completedCandidateDecision": "default",
+          "provisional": {
+            "default": {
+              "nodeOverlapCount": 2,
+              "properCrossingCount": 1,
+              "nodeEdgeIntrusionCount": 4,
+              "productionCost": 3,
+              "experimentalCost": 7
+            },
+            "flipped": {
+              "nodeOverlapCount": 2,
+              "properCrossingCount": 1,
+              "nodeEdgeIntrusionCount": 3,
+              "productionCost": 3,
+              "experimentalCost": 6
+            }
+          },
+          "completed": {
+            "default": {
+              "nodeOverlapCount": 0,
+              "properCrossingCount": 0,
+              "nodeEdgeIntrusionCount": 0,
+              "productionCost": 0,
+              "experimentalCost": 0
+            },
+            "flipped": {
+              "nodeOverlapCount": 0,
+              "properCrossingCount": 1,
+              "nodeEdgeIntrusionCount": 0,
+              "productionCost": 1,
+              "experimentalCost": 1
+            }
+          },
+          "temporaryCompletionDefaultOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "temporaryCompletionFlippedOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "flipped",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "finalDecision": "default",
+          "tieBreakReason": "completed default candidate strictly better"
+        },
+        "i-48": {
+          "realForkId": "i-48",
+          "checkpointDecision": "flipped",
+          "provisionalSelectorDecision": "flipped",
+          "completedCandidateDecision": "flipped",
+          "provisional": {
+            "default": {
+              "nodeOverlapCount": 2,
+              "properCrossingCount": 2,
+              "nodeEdgeIntrusionCount": 5,
+              "productionCost": 4,
+              "experimentalCost": 9
+            },
+            "flipped": {
+              "nodeOverlapCount": 2,
+              "properCrossingCount": 1,
+              "nodeEdgeIntrusionCount": 4,
+              "productionCost": 3,
+              "experimentalCost": 7
+            }
+          },
+          "completed": {
+            "default": {
+              "nodeOverlapCount": 0,
+              "properCrossingCount": 2,
+              "nodeEdgeIntrusionCount": 0,
+              "productionCost": 2,
+              "experimentalCost": 2
+            },
+            "flipped": {
+              "nodeOverlapCount": 0,
+              "properCrossingCount": 0,
+              "nodeEdgeIntrusionCount": 0,
+              "productionCost": 0,
+              "experimentalCost": 0
+            }
+          },
+          "temporaryCompletionDefaultOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "default",
+            "i-53": "flipped"
+          },
+          "temporaryCompletionFlippedOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "finalDecision": "flipped",
+          "tieBreakReason": "completed flipped candidate strictly reduces experimental defects"
+        },
+        "i-53": {
+          "realForkId": "i-53",
+          "checkpointDecision": "flipped",
+          "provisionalSelectorDecision": "flipped",
+          "completedCandidateDecision": "flipped",
+          "provisional": {
+            "default": {
+              "nodeOverlapCount": 2,
+              "properCrossingCount": 1,
+              "nodeEdgeIntrusionCount": 4,
+              "productionCost": 3,
+              "experimentalCost": 7
+            },
+            "flipped": {
+              "nodeOverlapCount": 0,
+              "properCrossingCount": 0,
+              "nodeEdgeIntrusionCount": 0,
+              "productionCost": 0,
+              "experimentalCost": 0
+            }
+          },
+          "completed": {
+            "default": {
+              "nodeOverlapCount": 2,
+              "properCrossingCount": 1,
+              "nodeEdgeIntrusionCount": 4,
+              "productionCost": 3,
+              "experimentalCost": 7
+            },
+            "flipped": {
+              "nodeOverlapCount": 0,
+              "properCrossingCount": 0,
+              "nodeEdgeIntrusionCount": 0,
+              "productionCost": 0,
+              "experimentalCost": 0
+            }
+          },
+          "temporaryCompletionDefaultOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "default"
+          },
+          "temporaryCompletionFlippedOrientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "finalDecision": "flipped",
+          "tieBreakReason": "completed flipped candidate strictly reduces experimental defects"
+        }
+      },
+      "rolloutSuffixDivergences": [
+        {
+          "realForkId": "i-38",
+          "rolloutCosts": {
+            "default": 0,
+            "flipped": 10
+          },
+          "eventualOuterSuffixCosts": {
+            "default": 0,
+            "flipped": 7
+          },
+          "rolloutDecision": "default",
+          "decisionUnderEventualOuterSuffix": "default",
+          "misleadingDecision": false,
+          "defaultCandidateSuffixDifferences": [],
+          "flippedCandidateSuffixDifferences": [
+            {
+              "realForkId": "i-48",
+              "temporaryCompletion": "default",
+              "eventualOuterSweep": "flipped"
+            }
+          ],
+          "chosenCandidateSuffixDifferences": []
+        },
+        {
+          "realForkId": "i-15",
+          "rolloutCosts": {
+            "default": 0,
+            "flipped": 3
+          },
+          "eventualOuterSuffixCosts": {
+            "default": 0,
+            "flipped": 8
+          },
+          "rolloutDecision": "default",
+          "decisionUnderEventualOuterSuffix": "default",
+          "misleadingDecision": false,
+          "defaultCandidateSuffixDifferences": [],
+          "flippedCandidateSuffixDifferences": [
+            {
+              "realForkId": "i-13",
+              "temporaryCompletion": "flipped",
+              "eventualOuterSweep": "default"
+            }
+          ],
+          "chosenCandidateSuffixDifferences": []
+        }
+      ],
+      "misleadingCompletedScoreCounterexamples": []
+    },
+    {
+      "fixture": "characteristic:eq",
+      "orientationMaps": {
+        "checkpoint": {
+          "i-9": "default",
+          "i-11": "default",
+          "i-14": "default",
+          "i-29": "default",
+          "i-31": "default",
+          "i-34": "default",
+          "i-43": "default",
+          "i-46": "default"
+        },
+        "provisionalIntrusionAware": {
+          "i-9": "default",
+          "i-11": "default",
+          "i-14": "default",
+          "i-29": "default",
+          "i-31": "default",
+          "i-34": "default",
+          "i-43": "default",
+          "i-46": "default"
+        },
+        "completedCandidate": {
+          "i-9": "default",
+          "i-11": "default",
+          "i-14": "default",
+          "i-29": "default",
+          "i-31": "default",
+          "i-34": "default",
+          "i-43": "default",
+          "i-46": "default"
+        }
+      },
+      "changedFromCheckpoint": [],
+      "changedFromProvisional": [],
+      "changedForkDetails": [],
+      "final": {
+        "checkpoint": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 1,
+            "edgeOverlaps": [
+              {
+                "edgeA": "i-46-yes",
+                "edgeB": "i-47-cont",
+                "segmentA": 2,
+                "segmentB": 1,
+                "interval": [
+                  [
+                    278.55132000000003,
+                    2106.875938964829
+                  ],
+                  [
+                    390.66002960000003,
+                    2106.875938964829
+                  ]
+                ]
+              }
+            ],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "productionCost": 0,
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 13261,
+            "sha256": "0dead3046499c21957c0cf59cd0950f83d6af903bd04307c72f154ca8ca07990"
+          }
+        },
+        "provisionalIntrusionAware": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 1,
+            "edgeOverlaps": [
+              {
+                "edgeA": "i-46-yes",
+                "edgeB": "i-47-cont",
+                "segmentA": 2,
+                "segmentB": 1,
+                "interval": [
+                  [
+                    278.55132000000003,
+                    2106.875938964829
+                  ],
+                  [
+                    390.66002960000003,
+                    2106.875938964829
+                  ]
+                ]
+              }
+            ],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "productionCost": 0,
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 13261,
+            "sha256": "0dead3046499c21957c0cf59cd0950f83d6af903bd04307c72f154ca8ca07990"
+          }
+        },
+        "completedCandidate": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 1,
+            "edgeOverlaps": [
+              {
+                "edgeA": "i-46-yes",
+                "edgeB": "i-47-cont",
+                "segmentA": 2,
+                "segmentB": 1,
+                "interval": [
+                  [
+                    278.55132000000003,
+                    2106.875938964829
+                  ],
+                  [
+                    390.66002960000003,
+                    2106.875938964829
+                  ]
+                ]
+              }
+            ],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "productionCost": 0,
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 13261,
+            "sha256": "0dead3046499c21957c0cf59cd0950f83d6af903bd04307c72f154ca8ca07990"
+          }
+        }
+      },
+      "materiallyChangedUnchangedForks": [
+        {
+          "realForkId": "i-31",
+          "checkpointDecision": "default",
+          "completedCandidateDecision": "default",
+          "provisionalSelectorMarginFlippedMinusDefault": 12,
+          "completedCandidateMarginFlippedMinusDefault": 2
+        },
+        {
+          "realForkId": "i-11",
+          "checkpointDecision": "default",
+          "completedCandidateDecision": "default",
+          "provisionalSelectorMarginFlippedMinusDefault": 3,
+          "completedCandidateMarginFlippedMinusDefault": 2
+        }
+      ],
+      "spotlight": {},
+      "rolloutSuffixDivergences": [
+        {
+          "realForkId": "i-31",
+          "rolloutCosts": {
+            "default": 0,
+            "flipped": 2
+          },
+          "eventualOuterSuffixCosts": {
+            "default": 0,
+            "flipped": 12
+          },
+          "rolloutDecision": "default",
+          "decisionUnderEventualOuterSuffix": "default",
+          "misleadingDecision": false,
+          "defaultCandidateSuffixDifferences": [],
+          "flippedCandidateSuffixDifferences": [
+            {
+              "realForkId": "i-43",
+              "temporaryCompletion": "flipped",
+              "eventualOuterSweep": "default"
+            },
+            {
+              "realForkId": "i-29",
+              "temporaryCompletion": "flipped",
+              "eventualOuterSweep": "default"
+            }
+          ],
+          "chosenCandidateSuffixDifferences": []
+        },
+        {
+          "realForkId": "i-11",
+          "rolloutCosts": {
+            "default": 0,
+            "flipped": 2
+          },
+          "eventualOuterSuffixCosts": {
+            "default": 0,
+            "flipped": 3
+          },
+          "rolloutDecision": "default",
+          "decisionUnderEventualOuterSuffix": "default",
+          "misleadingDecision": false,
+          "defaultCandidateSuffixDifferences": [],
+          "flippedCandidateSuffixDifferences": [
+            {
+              "realForkId": "i-9",
+              "temporaryCompletion": "flipped",
+              "eventualOuterSweep": "default"
+            }
+          ],
+          "chosenCandidateSuffixDifferences": []
+        }
+      ],
+      "misleadingCompletedScoreCounterexamples": []
+    },
+    {
+      "fixture": "primrec:basic",
+      "orientationMaps": {
+        "checkpoint": {
+          "i-5": "default",
+          "i-13": "default"
+        },
+        "provisionalIntrusionAware": {
+          "i-5": "default",
+          "i-13": "default"
+        },
+        "completedCandidate": {
+          "i-5": "default",
+          "i-13": "default"
+        }
+      },
+      "changedFromCheckpoint": [],
+      "changedFromProvisional": [],
+      "changedForkDetails": [],
+      "final": {
+        "checkpoint": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 0,
+            "edgeOverlaps": [],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "productionCost": 0,
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 4938,
+            "sha256": "e06058db84d418002da1194801c561efd33708c894213fe00a6db6830495536f"
+          }
+        },
+        "provisionalIntrusionAware": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 0,
+            "edgeOverlaps": [],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "productionCost": 0,
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 4938,
+            "sha256": "e06058db84d418002da1194801c561efd33708c894213fe00a6db6830495536f"
+          }
+        },
+        "completedCandidate": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 0,
+            "edgeOverlaps": [],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "productionCost": 0,
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 4938,
+            "sha256": "e06058db84d418002da1194801c561efd33708c894213fe00a6db6830495536f"
+          }
+        }
+      },
+      "materiallyChangedUnchangedForks": [],
+      "spotlight": {},
+      "rolloutSuffixDivergences": [],
+      "misleadingCompletedScoreCounterexamples": []
+    },
+    {
+      "fixture": "predecessor",
+      "orientationMaps": {
+        "checkpoint": {
+          "i-0": "default",
+          "i-2": "default"
+        },
+        "provisionalIntrusionAware": {
+          "i-0": "default",
+          "i-2": "default"
+        },
+        "completedCandidate": {
+          "i-0": "default",
+          "i-2": "default"
+        }
+      },
+      "changedFromCheckpoint": [],
+      "changedFromProvisional": [],
+      "changedForkDetails": [],
+      "final": {
+        "checkpoint": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 0,
+            "edgeOverlaps": [],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "productionCost": 0,
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 2324,
+            "sha256": "167acfeec41d4523bd623f3450151b219a17b443f8a082143ab93dea2cd65926"
+          }
+        },
+        "provisionalIntrusionAware": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 0,
+            "edgeOverlaps": [],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "productionCost": 0,
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 2324,
+            "sha256": "167acfeec41d4523bd623f3450151b219a17b443f8a082143ab93dea2cd65926"
+          }
+        },
+        "completedCandidate": {
+          "diagnostics": {
+            "properCrossingCount": 0,
+            "properCrossings": [],
+            "edgeOverlapCount": 0,
+            "edgeOverlaps": [],
+            "nodeOverlapCount": 0,
+            "nodeOverlaps": [],
+            "nodeEdgeIntrusionCount": 0,
+            "nodeEdgeIntrusions": [],
+            "productionCost": 0,
+            "experimentalCost": 0,
+            "fallbackOrRejectionFired": false
+          },
+          "geometryDigest": {
+            "canonicalBytes": 2324,
+            "sha256": "167acfeec41d4523bd623f3450151b219a17b443f8a082143ab93dea2cd65926"
+          }
+        }
+      },
+      "materiallyChangedUnchangedForks": [
+        {
+          "realForkId": "i-2",
+          "checkpointDecision": "default",
+          "completedCandidateDecision": "default",
+          "provisionalSelectorMarginFlippedMinusDefault": 2,
+          "completedCandidateMarginFlippedMinusDefault": 0
+        }
+      ],
+      "spotlight": {},
+      "rolloutSuffixDivergences": [
+        {
+          "realForkId": "i-2",
+          "rolloutCosts": {
+            "default": 0,
+            "flipped": 0
+          },
+          "eventualOuterSuffixCosts": {
+            "default": 0,
+            "flipped": 2
+          },
+          "rolloutDecision": "default",
+          "decisionUnderEventualOuterSuffix": "default",
+          "misleadingDecision": false,
+          "defaultCandidateSuffixDifferences": [],
+          "flippedCandidateSuffixDifferences": [
+            {
+              "realForkId": "i-0",
+              "temporaryCompletion": "flipped",
+              "eventualOuterSweep": "default"
+            }
+          ],
+          "chosenCandidateSuffixDifferences": []
+        }
+      ],
+      "misleadingCompletedScoreCounterexamples": []
+    }
+  ],
+  "importantDiagnostic": {
+    "rolloutSuffixDivergenceCount": 7,
+    "decisionReversalCount": 0,
+    "conclusion": "Temporary production completions differ from the eventual experimental suffix at seven early forks and therefore distort some numerical completed scores, but none reverses a fork decision in these five fixtures."
+  },
+  "freeze": {
+    "productionFilesChanged": false,
+    "geometryChanged": false,
+    "routingChanged": false,
+    "portsChanged": false,
+    "placementChanged": false,
+    "loopGrammarChanged": false,
+    "haltBehaviorChanged": false,
+    "defectDefinitionsChanged": false,
+    "intrusionWeightsChanged": false,
+    "segmentLevelIntrusionsDeduplicated": false,
+    "edgeOverlapScored": false,
+    "repairApplied": false,
+    "resultPromoted": false,
+    "resultCheckpointed": false
+  }
+}

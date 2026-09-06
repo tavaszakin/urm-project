@@ -1,0 +1,3551 @@
+{
+  "experiment": "provisional-versus-completed intrusion-aware orientation candidates",
+  "checkpoint": "9f166f24721e7125ec9c0105e8960c6273d8d932",
+  "fixedScore": "nodeOverlapCount + properCrossingCount + unrelatedNodeEdgeIntrusionCount",
+  "fixtureReports": [
+    {
+      "fixture": "minimization:bounded_sub",
+      "focusFork": "i-22",
+      "costFormulaHeldConstant": "nodeOverlapCount + properCrossingCount + unrelatedNodeEdgeIntrusionCount",
+      "bottomUpEvaluationOrder": [
+        "i-15",
+        "i-12",
+        "i-22",
+        "i-10"
+      ],
+      "alreadyProcessedBeforeFocus": [
+        {
+          "realForkId": "i-15",
+          "decision": "default"
+        },
+        {
+          "realForkId": "i-12",
+          "decision": "default"
+        }
+      ],
+      "unresolvedAfterFocus": [
+        "i-10"
+      ],
+      "defaultCandidate": {
+        "focusDecision": "default",
+        "provisional": {
+          "orientationMap": {
+            "i-10": "default",
+            "i-12": "default",
+            "i-15": "default",
+            "i-22": "default"
+          },
+          "nodeOverlapCount": 0,
+          "nodeOverlaps": [],
+          "properCrossingCount": 0,
+          "properCrossings": [],
+          "nodeEdgeIntrusionCount": 1,
+          "nodeEdgeIntrusions": [
+            {
+              "nodeId": "i-26",
+              "edgeId": "i-24-jump",
+              "nodeBox": {
+                "left": 322.206,
+                "right": 410.206,
+                "top": 1063.1912457533895,
+                "bottom": 1093.1912457533895
+              },
+              "segmentIndex": 0,
+              "segmentStart": [
+                84.19399999999999,
+                1078.1912457533895
+              ],
+              "segmentEnd": [
+                450,
+                1078.1912457533895
+              ],
+              "orientation": "horizontal",
+              "intersectionInterval": [
+                [
+                  322.206,
+                  1078.1912457533895
+                ],
+                [
+                  410.206,
+                  1078.1912457533895
+                ]
+              ],
+              "parameterInterval": [
+                0.650650891456127,
+                0.8912155623472552
+              ],
+              "crossesCompletelyThrough": true,
+              "penetrationKind": "crosses-completely-through"
+            }
+          ]
+        },
+        "provisionalIntrusionTraces": [
+          {
+            "intrusionId": "i-24-jump × i-26 [segment 0] #1",
+            "provisional": {
+              "nodeId": "i-26",
+              "edgeId": "i-24-jump",
+              "nodeBox": {
+                "left": 322.206,
+                "right": 410.206,
+                "top": 1063.1912457533895,
+                "bottom": 1093.1912457533895
+              },
+              "segmentIndex": 0,
+              "segmentStart": [
+                84.19399999999999,
+                1078.1912457533895
+              ],
+              "segmentEnd": [
+                450,
+                1078.1912457533895
+              ],
+              "orientation": "horizontal",
+              "intersectionInterval": [
+                [
+                  322.206,
+                  1078.1912457533895
+                ],
+                [
+                  410.206,
+                  1078.1912457533895
+                ]
+              ],
+              "parameterInterval": [
+                0.650650891456127,
+                0.8912155623472552
+              ],
+              "crossesCompletelyThrough": true,
+              "penetrationKind": "crosses-completely-through"
+            },
+            "edgePath": {
+              "edgeId": "i-24-jump",
+              "source": "i-24",
+              "target": "i-2",
+              "semanticBranch": null,
+              "edgeRole": "loop-return",
+              "routeFamily": "loop-return",
+              "sourcePath": {
+                "nodeId": "i-24",
+                "branchPath": [
+                  "i-10-yes",
+                  "i-22-no"
+                ],
+                "realForkPath": [
+                  "i-10",
+                  "i-22"
+                ],
+                "owner": {
+                  "fork": "i-22",
+                  "side": "no",
+                  "depthInPath": 1
+                }
+              },
+              "targetPath": {
+                "nodeId": "i-2",
+                "branchPath": [],
+                "realForkPath": [],
+                "owner": null
+              },
+              "nearestCommonBranchPrefix": []
+            },
+            "nodePath": {
+              "nodeId": "i-26",
+              "branchPath": [
+                "i-10-yes",
+                "i-22-yes"
+              ],
+              "realForkPath": [
+                "i-10",
+                "i-22"
+              ],
+              "owner": {
+                "fork": "i-22",
+                "side": "yes",
+                "depthInPath": 1
+              }
+            },
+            "empiricallyAffectingRealForks": [
+              {
+                "realForkId": "i-10",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": true
+              },
+              {
+                "realForkId": "i-22",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "focus-candidate",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": true
+              }
+            ],
+            "outcome": "survives-unchanged",
+            "firstGeometryChange": null,
+            "firstRemoval": null,
+            "lifecycle": [
+              {
+                "stage": "provisional",
+                "afterFork": null,
+                "decision": "default",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-26",
+                    "edgeId": "i-24-jump",
+                    "nodeBox": {
+                      "left": 322.206,
+                      "right": 410.206,
+                      "top": 1063.1912457533895,
+                      "bottom": 1093.1912457533895
+                    },
+                    "segmentIndex": 0,
+                    "segmentStart": [
+                      84.19399999999999,
+                      1078.1912457533895
+                    ],
+                    "segmentEnd": [
+                      450,
+                      1078.1912457533895
+                    ],
+                    "orientation": "horizontal",
+                    "intersectionInterval": [
+                      [
+                        322.206,
+                        1078.1912457533895
+                      ],
+                      [
+                        410.206,
+                        1078.1912457533895
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0.650650891456127,
+                      0.8912155623472552
+                    ],
+                    "crossesCompletelyThrough": true,
+                    "penetrationKind": "crosses-completely-through"
+                  }
+                ]
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-10",
+                "decision": "default",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-26",
+                    "edgeId": "i-24-jump",
+                    "nodeBox": {
+                      "left": 322.206,
+                      "right": 410.206,
+                      "top": 1063.1912457533895,
+                      "bottom": 1093.1912457533895
+                    },
+                    "segmentIndex": 0,
+                    "segmentStart": [
+                      84.19399999999999,
+                      1078.1912457533895
+                    ],
+                    "segmentEnd": [
+                      450,
+                      1078.1912457533895
+                    ],
+                    "orientation": "horizontal",
+                    "intersectionInterval": [
+                      [
+                        322.206,
+                        1078.1912457533895
+                      ],
+                      [
+                        410.206,
+                        1078.1912457533895
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0.650650891456127,
+                      0.8912155623472552
+                    ],
+                    "crossesCompletelyThrough": true,
+                    "penetrationKind": "crosses-completely-through"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "laterOrientationRows": [
+          {
+            "realForkId": "i-10",
+            "default": {
+              "nodeOverlapCount": 0,
+              "properCrossingCount": 0,
+              "nodeEdgeIntrusionCount": 1,
+              "oldProductionCost": 0,
+              "experimentalCost": 1
+            },
+            "flipped": {
+              "nodeOverlapCount": 2,
+              "properCrossingCount": 1,
+              "nodeEdgeIntrusionCount": 1,
+              "oldProductionCost": 3,
+              "experimentalCost": 4
+            },
+            "finalDecision": "default",
+            "tieBreakReason": "default strictly better"
+          }
+        ],
+        "final": {
+          "orientationMap": {
+            "i-10": "default",
+            "i-12": "default",
+            "i-15": "default",
+            "i-22": "default"
+          },
+          "nodeOverlapCount": 0,
+          "nodeOverlaps": [],
+          "properCrossingCount": 0,
+          "properCrossings": [],
+          "edgeOverlapCount": 0,
+          "edgeOverlaps": [],
+          "nodeEdgeIntrusionCount": 1,
+          "nodeEdgeIntrusions": [
+            {
+              "nodeId": "i-26",
+              "edgeId": "i-24-jump",
+              "nodeBox": {
+                "left": 322.206,
+                "right": 410.206,
+                "top": 1063.1912457533895,
+                "bottom": 1093.1912457533895
+              },
+              "segmentIndex": 0,
+              "segmentStart": [
+                84.19399999999999,
+                1078.1912457533895
+              ],
+              "segmentEnd": [
+                450,
+                1078.1912457533895
+              ],
+              "orientation": "horizontal",
+              "intersectionInterval": [
+                [
+                  322.206,
+                  1078.1912457533895
+                ],
+                [
+                  410.206,
+                  1078.1912457533895
+                ]
+              ],
+              "parameterInterval": [
+                0.650650891456127,
+                0.8912155623472552
+              ],
+              "crossesCompletelyThrough": true,
+              "penetrationKind": "crosses-completely-through"
+            }
+          ]
+        }
+      },
+      "flippedCandidate": {
+        "focusDecision": "flipped",
+        "provisional": {
+          "orientationMap": {
+            "i-10": "default",
+            "i-12": "default",
+            "i-15": "default",
+            "i-22": "flipped"
+          },
+          "nodeOverlapCount": 0,
+          "nodeOverlaps": [],
+          "properCrossingCount": 0,
+          "properCrossings": [],
+          "nodeEdgeIntrusionCount": 0,
+          "nodeEdgeIntrusions": []
+        },
+        "provisionalIntrusionTraces": [],
+        "laterOrientationRows": [
+          {
+            "realForkId": "i-10",
+            "default": {
+              "nodeOverlapCount": 0,
+              "properCrossingCount": 0,
+              "nodeEdgeIntrusionCount": 0,
+              "oldProductionCost": 0,
+              "experimentalCost": 0
+            },
+            "flipped": {
+              "nodeOverlapCount": 2,
+              "properCrossingCount": 2,
+              "nodeEdgeIntrusionCount": 1,
+              "oldProductionCost": 4,
+              "experimentalCost": 5
+            },
+            "finalDecision": "default",
+            "tieBreakReason": "default strictly better"
+          }
+        ],
+        "final": {
+          "orientationMap": {
+            "i-10": "default",
+            "i-12": "default",
+            "i-15": "default",
+            "i-22": "flipped"
+          },
+          "nodeOverlapCount": 0,
+          "nodeOverlaps": [],
+          "properCrossingCount": 0,
+          "properCrossings": [],
+          "edgeOverlapCount": 0,
+          "edgeOverlaps": [],
+          "nodeEdgeIntrusionCount": 0,
+          "nodeEdgeIntrusions": []
+        }
+      },
+      "laterChoiceDifferences": [],
+      "laterForkChoicesDependOnCandidate": false,
+      "intervention": {
+        "productionFilesChanged": false,
+        "metricChanged": false,
+        "weightsChanged": false,
+        "lookaheadImplemented": false,
+        "repairApplied": false,
+        "defectsFiltered": false
+      },
+      "geometryDigests": {
+        "provisionalDefault": {
+          "canonicalBytes": 6052,
+          "sha256": "3730839d2267f10d1878cf1404da003b08e345cb049f3ed48144cce1142efb65"
+        },
+        "completedDefault": {
+          "canonicalBytes": 6052,
+          "sha256": "3730839d2267f10d1878cf1404da003b08e345cb049f3ed48144cce1142efb65"
+        },
+        "provisionalFlipped": {
+          "canonicalBytes": 6032,
+          "sha256": "e49dd79e4a06ecec0363046dde45f738912cfc851f921a109f5800fb28e10ea2"
+        },
+        "completedFlipped": {
+          "canonicalBytes": 6032,
+          "sha256": "e49dd79e4a06ecec0363046dde45f738912cfc851f921a109f5800fb28e10ea2"
+        }
+      }
+    },
+    {
+      "fixture": "characteristic:divides",
+      "focusFork": "i-25",
+      "costFormulaHeldConstant": "nodeOverlapCount + properCrossingCount + unrelatedNodeEdgeIntrusionCount",
+      "bottomUpEvaluationOrder": [
+        "i-41",
+        "i-38",
+        "i-48",
+        "i-18",
+        "i-36",
+        "i-15",
+        "i-25",
+        "i-13",
+        "i-4",
+        "i-53",
+        "i-3"
+      ],
+      "alreadyProcessedBeforeFocus": [
+        {
+          "realForkId": "i-41",
+          "decision": "default"
+        },
+        {
+          "realForkId": "i-38",
+          "decision": "default"
+        },
+        {
+          "realForkId": "i-48",
+          "decision": "flipped"
+        },
+        {
+          "realForkId": "i-18",
+          "decision": "default"
+        },
+        {
+          "realForkId": "i-36",
+          "decision": "default"
+        },
+        {
+          "realForkId": "i-15",
+          "decision": "default"
+        }
+      ],
+      "unresolvedAfterFocus": [
+        "i-13",
+        "i-4",
+        "i-53",
+        "i-3"
+      ],
+      "defaultCandidate": {
+        "focusDecision": "default",
+        "provisional": {
+          "orientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "default"
+          },
+          "nodeOverlapCount": 2,
+          "nodeOverlaps": [
+            {
+              "nodeA": "i-56",
+              "nodeB": "i-54",
+              "overlapX": 7.612000000000023,
+              "overlapY": 30
+            },
+            {
+              "nodeA": "i-57",
+              "nodeB": "i-55",
+              "overlapX": 7.612000000000023,
+              "overlapY": 30
+            }
+          ],
+          "properCrossingCount": 1,
+          "properCrossings": [
+            {
+              "edgeA": "i-48-no",
+              "edgeB": "i-55-jump",
+              "segmentA": 0,
+              "segmentB": 0,
+              "point": [
+                40.19399999999998,
+                2321.859068986662
+              ]
+            }
+          ],
+          "nodeEdgeIntrusionCount": 4,
+          "nodeEdgeIntrusions": [
+            {
+              "nodeId": "i-54",
+              "edgeId": "i-53-yes",
+              "nodeBox": {
+                "left": -3.8060000000000116,
+                "right": 84.19399999999999,
+                "top": 529.1912457533896,
+                "bottom": 559.1912457533896
+              },
+              "segmentIndex": 2,
+              "segmentStart": [
+                366.206,
+                544.1912457533896
+              ],
+              "segmentEnd": [
+                3.8060000000000116,
+                544.1912457533896
+              ],
+              "orientation": "horizontal",
+              "intersectionInterval": [
+                [
+                  84.19399999999996,
+                  544.1912457533896
+                ],
+                [
+                  3.80600000000004,
+                  544.1912457533896
+                ]
+              ],
+              "parameterInterval": [
+                0.7781788079470201,
+                1
+              ],
+              "crossesCompletelyThrough": false,
+              "penetrationKind": "enters-partway"
+            },
+            {
+              "nodeId": "i-49",
+              "edgeId": "i-55-jump",
+              "nodeBox": {
+                "left": 29.649330399999968,
+                "right": 117.64933039999997,
+                "top": 2343.5852145813533,
+                "bottom": 2373.5852145813533
+              },
+              "segmentIndex": 0,
+              "segmentStart": [
+                40.19399999999999,
+                641.1912457533896
+              ],
+              "segmentEnd": [
+                40.19399999999999,
+                2491.5852145813533
+              ],
+              "orientation": "vertical",
+              "intersectionInterval": [
+                [
+                  40.19399999999999,
+                  2343.5852145813533
+                ],
+                [
+                  40.19399999999999,
+                  2373.5852145813533
+                ]
+              ],
+              "parameterInterval": [
+                0.9200170328626055,
+                0.9362297964715368
+              ],
+              "crossesCompletelyThrough": true,
+              "penetrationKind": "crosses-completely-through"
+            },
+            {
+              "nodeId": "i-50",
+              "edgeId": "i-55-jump",
+              "nodeBox": {
+                "left": 29.649330399999968,
+                "right": 117.64933039999997,
+                "top": 2425.5852145813533,
+                "bottom": 2455.5852145813533
+              },
+              "segmentIndex": 0,
+              "segmentStart": [
+                40.19399999999999,
+                641.1912457533896
+              ],
+              "segmentEnd": [
+                40.19399999999999,
+                2491.5852145813533
+              ],
+              "orientation": "vertical",
+              "intersectionInterval": [
+                [
+                  40.19399999999999,
+                  2425.5852145813533
+                ],
+                [
+                  40.19399999999999,
+                  2455.5852145813533
+                ]
+              ],
+              "parameterInterval": [
+                0.9643319200603511,
+                0.9805446836692824
+              ],
+              "crossesCompletelyThrough": true,
+              "penetrationKind": "crosses-completely-through"
+            },
+            {
+              "nodeId": "i-55",
+              "edgeId": "i-57-cont",
+              "nodeBox": {
+                "left": -3.8060000000000116,
+                "right": 84.19399999999999,
+                "top": 611.1912457533896,
+                "bottom": 641.1912457533896
+              },
+              "segmentIndex": 0,
+              "segmentStart": [
+                3.8060000000000116,
+                626.1912457533896
+              ],
+              "segmentEnd": [
+                133.64933039999997,
+                626.1912457533896
+              ],
+              "orientation": "horizontal",
+              "intersectionInterval": [
+                [
+                  3.8060000000000116,
+                  626.1912457533896
+                ],
+                [
+                  84.19399999999999,
+                  626.1912457533896
+                ]
+              ],
+              "parameterInterval": [
+                0,
+                0.6191153581193108
+              ],
+              "crossesCompletelyThrough": false,
+              "penetrationKind": "enters-partway"
+            }
+          ]
+        },
+        "provisionalIntrusionTraces": [
+          {
+            "intrusionId": "i-53-yes × i-54 [segment 2] #1",
+            "provisional": {
+              "nodeId": "i-54",
+              "edgeId": "i-53-yes",
+              "nodeBox": {
+                "left": -3.8060000000000116,
+                "right": 84.19399999999999,
+                "top": 529.1912457533896,
+                "bottom": 559.1912457533896
+              },
+              "segmentIndex": 2,
+              "segmentStart": [
+                366.206,
+                544.1912457533896
+              ],
+              "segmentEnd": [
+                3.8060000000000116,
+                544.1912457533896
+              ],
+              "orientation": "horizontal",
+              "intersectionInterval": [
+                [
+                  84.19399999999996,
+                  544.1912457533896
+                ],
+                [
+                  3.80600000000004,
+                  544.1912457533896
+                ]
+              ],
+              "parameterInterval": [
+                0.7781788079470201,
+                1
+              ],
+              "crossesCompletelyThrough": false,
+              "penetrationKind": "enters-partway"
+            },
+            "edgePath": {
+              "edgeId": "i-53-yes",
+              "source": "i-53",
+              "target": "i-56",
+              "semanticBranch": "yes",
+              "edgeRole": "merge-connector",
+              "routeFamily": "merge-connector",
+              "sourcePath": {
+                "nodeId": "i-53",
+                "branchPath": [
+                  "i-3-yes"
+                ],
+                "realForkPath": [
+                  "i-3"
+                ],
+                "owner": {
+                  "fork": "i-3",
+                  "side": "yes",
+                  "depthInPath": 0
+                }
+              },
+              "targetPath": {
+                "nodeId": "i-56",
+                "branchPath": [
+                  "i-3-no",
+                  "i-4-yes"
+                ],
+                "realForkPath": [
+                  "i-3",
+                  "i-4"
+                ],
+                "owner": {
+                  "fork": "i-4",
+                  "side": "yes",
+                  "depthInPath": 1
+                }
+              },
+              "nearestCommonBranchPrefix": []
+            },
+            "nodePath": {
+              "nodeId": "i-54",
+              "branchPath": [
+                "i-3-yes",
+                "i-53-no"
+              ],
+              "realForkPath": [
+                "i-3",
+                "i-53"
+              ],
+              "owner": {
+                "fork": "i-53",
+                "side": "no",
+                "depthInPath": 1
+              }
+            },
+            "empiricallyAffectingRealForks": [
+              {
+                "realForkId": "i-3",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": true
+              },
+              {
+                "realForkId": "i-4",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": false
+              },
+              {
+                "realForkId": "i-53",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": true
+              }
+            ],
+            "outcome": "disappears",
+            "firstGeometryChange": {
+              "afterFork": "i-53",
+              "decision": "flipped",
+              "pairStillPresent": false,
+              "replacementPairIntrusions": []
+            },
+            "firstRemoval": {
+              "afterFork": "i-53",
+              "decision": "flipped"
+            },
+            "lifecycle": [
+              {
+                "stage": "provisional",
+                "afterFork": null,
+                "decision": "default",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-54",
+                    "edgeId": "i-53-yes",
+                    "nodeBox": {
+                      "left": -3.8060000000000116,
+                      "right": 84.19399999999999,
+                      "top": 529.1912457533896,
+                      "bottom": 559.1912457533896
+                    },
+                    "segmentIndex": 2,
+                    "segmentStart": [
+                      366.206,
+                      544.1912457533896
+                    ],
+                    "segmentEnd": [
+                      3.8060000000000116,
+                      544.1912457533896
+                    ],
+                    "orientation": "horizontal",
+                    "intersectionInterval": [
+                      [
+                        84.19399999999996,
+                        544.1912457533896
+                      ],
+                      [
+                        3.80600000000004,
+                        544.1912457533896
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0.7781788079470201,
+                      1
+                    ],
+                    "crossesCompletelyThrough": false,
+                    "penetrationKind": "enters-partway"
+                  }
+                ]
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-13",
+                "decision": "default",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-54",
+                    "edgeId": "i-53-yes",
+                    "nodeBox": {
+                      "left": -3.8060000000000116,
+                      "right": 84.19399999999999,
+                      "top": 529.1912457533896,
+                      "bottom": 559.1912457533896
+                    },
+                    "segmentIndex": 2,
+                    "segmentStart": [
+                      366.206,
+                      544.1912457533896
+                    ],
+                    "segmentEnd": [
+                      3.8060000000000116,
+                      544.1912457533896
+                    ],
+                    "orientation": "horizontal",
+                    "intersectionInterval": [
+                      [
+                        84.19399999999996,
+                        544.1912457533896
+                      ],
+                      [
+                        3.80600000000004,
+                        544.1912457533896
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0.7781788079470201,
+                      1
+                    ],
+                    "crossesCompletelyThrough": false,
+                    "penetrationKind": "enters-partway"
+                  }
+                ]
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-4",
+                "decision": "default",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-54",
+                    "edgeId": "i-53-yes",
+                    "nodeBox": {
+                      "left": -3.8060000000000116,
+                      "right": 84.19399999999999,
+                      "top": 529.1912457533896,
+                      "bottom": 559.1912457533896
+                    },
+                    "segmentIndex": 2,
+                    "segmentStart": [
+                      366.206,
+                      544.1912457533896
+                    ],
+                    "segmentEnd": [
+                      3.8060000000000116,
+                      544.1912457533896
+                    ],
+                    "orientation": "horizontal",
+                    "intersectionInterval": [
+                      [
+                        84.19399999999996,
+                        544.1912457533896
+                      ],
+                      [
+                        3.80600000000004,
+                        544.1912457533896
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0.7781788079470201,
+                      1
+                    ],
+                    "crossesCompletelyThrough": false,
+                    "penetrationKind": "enters-partway"
+                  }
+                ]
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-53",
+                "decision": "flipped",
+                "pairPresent": false,
+                "exactProvisionalSegmentPresent": false,
+                "pairIntrusions": []
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-3",
+                "decision": "default",
+                "pairPresent": false,
+                "exactProvisionalSegmentPresent": false,
+                "pairIntrusions": []
+              }
+            ]
+          },
+          {
+            "intrusionId": "i-55-jump × i-49 [segment 0] #2",
+            "provisional": {
+              "nodeId": "i-49",
+              "edgeId": "i-55-jump",
+              "nodeBox": {
+                "left": 29.649330399999968,
+                "right": 117.64933039999997,
+                "top": 2343.5852145813533,
+                "bottom": 2373.5852145813533
+              },
+              "segmentIndex": 0,
+              "segmentStart": [
+                40.19399999999999,
+                641.1912457533896
+              ],
+              "segmentEnd": [
+                40.19399999999999,
+                2491.5852145813533
+              ],
+              "orientation": "vertical",
+              "intersectionInterval": [
+                [
+                  40.19399999999999,
+                  2343.5852145813533
+                ],
+                [
+                  40.19399999999999,
+                  2373.5852145813533
+                ]
+              ],
+              "parameterInterval": [
+                0.9200170328626055,
+                0.9362297964715368
+              ],
+              "crossesCompletelyThrough": true,
+              "penetrationKind": "crosses-completely-through"
+            },
+            "edgePath": {
+              "edgeId": "i-55-jump",
+              "source": "i-55",
+              "target": "i-58",
+              "semanticBranch": null,
+              "edgeRole": "merge-connector",
+              "routeFamily": "merge-connector",
+              "sourcePath": {
+                "nodeId": "i-55",
+                "branchPath": [
+                  "i-3-yes",
+                  "i-53-no"
+                ],
+                "realForkPath": [
+                  "i-3",
+                  "i-53"
+                ],
+                "owner": {
+                  "fork": "i-53",
+                  "side": "no",
+                  "depthInPath": 1
+                }
+              },
+              "targetPath": {
+                "nodeId": "i-58",
+                "branchPath": [
+                  "i-3-no",
+                  "i-4-no",
+                  "i-13-yes",
+                  "i-25-yes",
+                  "i-36-yes",
+                  "i-48-no"
+                ],
+                "realForkPath": [
+                  "i-3",
+                  "i-4",
+                  "i-13",
+                  "i-25",
+                  "i-36",
+                  "i-48"
+                ],
+                "owner": {
+                  "fork": "i-48",
+                  "side": "no",
+                  "depthInPath": 5
+                }
+              },
+              "nearestCommonBranchPrefix": []
+            },
+            "nodePath": {
+              "nodeId": "i-49",
+              "branchPath": [
+                "i-3-no",
+                "i-4-no",
+                "i-13-yes",
+                "i-25-yes",
+                "i-36-yes",
+                "i-48-no"
+              ],
+              "realForkPath": [
+                "i-3",
+                "i-4",
+                "i-13",
+                "i-25",
+                "i-36",
+                "i-48"
+              ],
+              "owner": {
+                "fork": "i-48",
+                "side": "no",
+                "depthInPath": 5
+              }
+            },
+            "empiricallyAffectingRealForks": [
+              {
+                "realForkId": "i-3",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": true
+              },
+              {
+                "realForkId": "i-4",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": true
+              },
+              {
+                "realForkId": "i-13",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": true
+              },
+              {
+                "realForkId": "i-25",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "focus-candidate",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": true
+              },
+              {
+                "realForkId": "i-36",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "fixed-before-focus",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": true
+              },
+              {
+                "realForkId": "i-48",
+                "decisionAtEvaluation": "flipped",
+                "evaluationState": "fixed-before-focus",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": true
+              },
+              {
+                "realForkId": "i-53",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": false
+              }
+            ],
+            "outcome": "disappears",
+            "firstGeometryChange": {
+              "afterFork": "i-53",
+              "decision": "flipped",
+              "pairStillPresent": false,
+              "replacementPairIntrusions": []
+            },
+            "firstRemoval": {
+              "afterFork": "i-53",
+              "decision": "flipped"
+            },
+            "lifecycle": [
+              {
+                "stage": "provisional",
+                "afterFork": null,
+                "decision": "default",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-49",
+                    "edgeId": "i-55-jump",
+                    "nodeBox": {
+                      "left": 29.649330399999968,
+                      "right": 117.64933039999997,
+                      "top": 2343.5852145813533,
+                      "bottom": 2373.5852145813533
+                    },
+                    "segmentIndex": 0,
+                    "segmentStart": [
+                      40.19399999999999,
+                      641.1912457533896
+                    ],
+                    "segmentEnd": [
+                      40.19399999999999,
+                      2491.5852145813533
+                    ],
+                    "orientation": "vertical",
+                    "intersectionInterval": [
+                      [
+                        40.19399999999999,
+                        2343.5852145813533
+                      ],
+                      [
+                        40.19399999999999,
+                        2373.5852145813533
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0.9200170328626055,
+                      0.9362297964715368
+                    ],
+                    "crossesCompletelyThrough": true,
+                    "penetrationKind": "crosses-completely-through"
+                  }
+                ]
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-13",
+                "decision": "default",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-49",
+                    "edgeId": "i-55-jump",
+                    "nodeBox": {
+                      "left": 29.649330399999968,
+                      "right": 117.64933039999997,
+                      "top": 2343.5852145813533,
+                      "bottom": 2373.5852145813533
+                    },
+                    "segmentIndex": 0,
+                    "segmentStart": [
+                      40.19399999999999,
+                      641.1912457533896
+                    ],
+                    "segmentEnd": [
+                      40.19399999999999,
+                      2491.5852145813533
+                    ],
+                    "orientation": "vertical",
+                    "intersectionInterval": [
+                      [
+                        40.19399999999999,
+                        2343.5852145813533
+                      ],
+                      [
+                        40.19399999999999,
+                        2373.5852145813533
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0.9200170328626055,
+                      0.9362297964715368
+                    ],
+                    "crossesCompletelyThrough": true,
+                    "penetrationKind": "crosses-completely-through"
+                  }
+                ]
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-4",
+                "decision": "default",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-49",
+                    "edgeId": "i-55-jump",
+                    "nodeBox": {
+                      "left": 29.649330399999968,
+                      "right": 117.64933039999997,
+                      "top": 2343.5852145813533,
+                      "bottom": 2373.5852145813533
+                    },
+                    "segmentIndex": 0,
+                    "segmentStart": [
+                      40.19399999999999,
+                      641.1912457533896
+                    ],
+                    "segmentEnd": [
+                      40.19399999999999,
+                      2491.5852145813533
+                    ],
+                    "orientation": "vertical",
+                    "intersectionInterval": [
+                      [
+                        40.19399999999999,
+                        2343.5852145813533
+                      ],
+                      [
+                        40.19399999999999,
+                        2373.5852145813533
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0.9200170328626055,
+                      0.9362297964715368
+                    ],
+                    "crossesCompletelyThrough": true,
+                    "penetrationKind": "crosses-completely-through"
+                  }
+                ]
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-53",
+                "decision": "flipped",
+                "pairPresent": false,
+                "exactProvisionalSegmentPresent": false,
+                "pairIntrusions": []
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-3",
+                "decision": "default",
+                "pairPresent": false,
+                "exactProvisionalSegmentPresent": false,
+                "pairIntrusions": []
+              }
+            ]
+          },
+          {
+            "intrusionId": "i-55-jump × i-50 [segment 0] #3",
+            "provisional": {
+              "nodeId": "i-50",
+              "edgeId": "i-55-jump",
+              "nodeBox": {
+                "left": 29.649330399999968,
+                "right": 117.64933039999997,
+                "top": 2425.5852145813533,
+                "bottom": 2455.5852145813533
+              },
+              "segmentIndex": 0,
+              "segmentStart": [
+                40.19399999999999,
+                641.1912457533896
+              ],
+              "segmentEnd": [
+                40.19399999999999,
+                2491.5852145813533
+              ],
+              "orientation": "vertical",
+              "intersectionInterval": [
+                [
+                  40.19399999999999,
+                  2425.5852145813533
+                ],
+                [
+                  40.19399999999999,
+                  2455.5852145813533
+                ]
+              ],
+              "parameterInterval": [
+                0.9643319200603511,
+                0.9805446836692824
+              ],
+              "crossesCompletelyThrough": true,
+              "penetrationKind": "crosses-completely-through"
+            },
+            "edgePath": {
+              "edgeId": "i-55-jump",
+              "source": "i-55",
+              "target": "i-58",
+              "semanticBranch": null,
+              "edgeRole": "merge-connector",
+              "routeFamily": "merge-connector",
+              "sourcePath": {
+                "nodeId": "i-55",
+                "branchPath": [
+                  "i-3-yes",
+                  "i-53-no"
+                ],
+                "realForkPath": [
+                  "i-3",
+                  "i-53"
+                ],
+                "owner": {
+                  "fork": "i-53",
+                  "side": "no",
+                  "depthInPath": 1
+                }
+              },
+              "targetPath": {
+                "nodeId": "i-58",
+                "branchPath": [
+                  "i-3-no",
+                  "i-4-no",
+                  "i-13-yes",
+                  "i-25-yes",
+                  "i-36-yes",
+                  "i-48-no"
+                ],
+                "realForkPath": [
+                  "i-3",
+                  "i-4",
+                  "i-13",
+                  "i-25",
+                  "i-36",
+                  "i-48"
+                ],
+                "owner": {
+                  "fork": "i-48",
+                  "side": "no",
+                  "depthInPath": 5
+                }
+              },
+              "nearestCommonBranchPrefix": []
+            },
+            "nodePath": {
+              "nodeId": "i-50",
+              "branchPath": [
+                "i-3-no",
+                "i-4-no",
+                "i-13-yes",
+                "i-25-yes",
+                "i-36-yes",
+                "i-48-no"
+              ],
+              "realForkPath": [
+                "i-3",
+                "i-4",
+                "i-13",
+                "i-25",
+                "i-36",
+                "i-48"
+              ],
+              "owner": {
+                "fork": "i-48",
+                "side": "no",
+                "depthInPath": 5
+              }
+            },
+            "empiricallyAffectingRealForks": [
+              {
+                "realForkId": "i-3",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": true
+              },
+              {
+                "realForkId": "i-4",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": true
+              },
+              {
+                "realForkId": "i-13",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": true
+              },
+              {
+                "realForkId": "i-25",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "focus-candidate",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": true
+              },
+              {
+                "realForkId": "i-36",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "fixed-before-focus",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": true
+              },
+              {
+                "realForkId": "i-48",
+                "decisionAtEvaluation": "flipped",
+                "evaluationState": "fixed-before-focus",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": true
+              },
+              {
+                "realForkId": "i-53",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": false
+              }
+            ],
+            "outcome": "disappears",
+            "firstGeometryChange": {
+              "afterFork": "i-53",
+              "decision": "flipped",
+              "pairStillPresent": false,
+              "replacementPairIntrusions": []
+            },
+            "firstRemoval": {
+              "afterFork": "i-53",
+              "decision": "flipped"
+            },
+            "lifecycle": [
+              {
+                "stage": "provisional",
+                "afterFork": null,
+                "decision": "default",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-50",
+                    "edgeId": "i-55-jump",
+                    "nodeBox": {
+                      "left": 29.649330399999968,
+                      "right": 117.64933039999997,
+                      "top": 2425.5852145813533,
+                      "bottom": 2455.5852145813533
+                    },
+                    "segmentIndex": 0,
+                    "segmentStart": [
+                      40.19399999999999,
+                      641.1912457533896
+                    ],
+                    "segmentEnd": [
+                      40.19399999999999,
+                      2491.5852145813533
+                    ],
+                    "orientation": "vertical",
+                    "intersectionInterval": [
+                      [
+                        40.19399999999999,
+                        2425.5852145813533
+                      ],
+                      [
+                        40.19399999999999,
+                        2455.5852145813533
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0.9643319200603511,
+                      0.9805446836692824
+                    ],
+                    "crossesCompletelyThrough": true,
+                    "penetrationKind": "crosses-completely-through"
+                  }
+                ]
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-13",
+                "decision": "default",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-50",
+                    "edgeId": "i-55-jump",
+                    "nodeBox": {
+                      "left": 29.649330399999968,
+                      "right": 117.64933039999997,
+                      "top": 2425.5852145813533,
+                      "bottom": 2455.5852145813533
+                    },
+                    "segmentIndex": 0,
+                    "segmentStart": [
+                      40.19399999999999,
+                      641.1912457533896
+                    ],
+                    "segmentEnd": [
+                      40.19399999999999,
+                      2491.5852145813533
+                    ],
+                    "orientation": "vertical",
+                    "intersectionInterval": [
+                      [
+                        40.19399999999999,
+                        2425.5852145813533
+                      ],
+                      [
+                        40.19399999999999,
+                        2455.5852145813533
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0.9643319200603511,
+                      0.9805446836692824
+                    ],
+                    "crossesCompletelyThrough": true,
+                    "penetrationKind": "crosses-completely-through"
+                  }
+                ]
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-4",
+                "decision": "default",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-50",
+                    "edgeId": "i-55-jump",
+                    "nodeBox": {
+                      "left": 29.649330399999968,
+                      "right": 117.64933039999997,
+                      "top": 2425.5852145813533,
+                      "bottom": 2455.5852145813533
+                    },
+                    "segmentIndex": 0,
+                    "segmentStart": [
+                      40.19399999999999,
+                      641.1912457533896
+                    ],
+                    "segmentEnd": [
+                      40.19399999999999,
+                      2491.5852145813533
+                    ],
+                    "orientation": "vertical",
+                    "intersectionInterval": [
+                      [
+                        40.19399999999999,
+                        2425.5852145813533
+                      ],
+                      [
+                        40.19399999999999,
+                        2455.5852145813533
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0.9643319200603511,
+                      0.9805446836692824
+                    ],
+                    "crossesCompletelyThrough": true,
+                    "penetrationKind": "crosses-completely-through"
+                  }
+                ]
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-53",
+                "decision": "flipped",
+                "pairPresent": false,
+                "exactProvisionalSegmentPresent": false,
+                "pairIntrusions": []
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-3",
+                "decision": "default",
+                "pairPresent": false,
+                "exactProvisionalSegmentPresent": false,
+                "pairIntrusions": []
+              }
+            ]
+          },
+          {
+            "intrusionId": "i-57-cont × i-55 [segment 0] #4",
+            "provisional": {
+              "nodeId": "i-55",
+              "edgeId": "i-57-cont",
+              "nodeBox": {
+                "left": -3.8060000000000116,
+                "right": 84.19399999999999,
+                "top": 611.1912457533896,
+                "bottom": 641.1912457533896
+              },
+              "segmentIndex": 0,
+              "segmentStart": [
+                3.8060000000000116,
+                626.1912457533896
+              ],
+              "segmentEnd": [
+                133.64933039999997,
+                626.1912457533896
+              ],
+              "orientation": "horizontal",
+              "intersectionInterval": [
+                [
+                  3.8060000000000116,
+                  626.1912457533896
+                ],
+                [
+                  84.19399999999999,
+                  626.1912457533896
+                ]
+              ],
+              "parameterInterval": [
+                0,
+                0.6191153581193108
+              ],
+              "crossesCompletelyThrough": false,
+              "penetrationKind": "enters-partway"
+            },
+            "edgePath": {
+              "edgeId": "i-57-cont",
+              "source": "i-57",
+              "target": "i-58",
+              "semanticBranch": null,
+              "edgeRole": "merge-connector",
+              "routeFamily": "merge-connector",
+              "sourcePath": {
+                "nodeId": "i-57",
+                "branchPath": [
+                  "i-3-no",
+                  "i-4-yes"
+                ],
+                "realForkPath": [
+                  "i-3",
+                  "i-4"
+                ],
+                "owner": {
+                  "fork": "i-4",
+                  "side": "yes",
+                  "depthInPath": 1
+                }
+              },
+              "targetPath": {
+                "nodeId": "i-58",
+                "branchPath": [
+                  "i-3-no",
+                  "i-4-no",
+                  "i-13-yes",
+                  "i-25-yes",
+                  "i-36-yes",
+                  "i-48-no"
+                ],
+                "realForkPath": [
+                  "i-3",
+                  "i-4",
+                  "i-13",
+                  "i-25",
+                  "i-36",
+                  "i-48"
+                ],
+                "owner": {
+                  "fork": "i-48",
+                  "side": "no",
+                  "depthInPath": 5
+                }
+              },
+              "nearestCommonBranchPrefix": [
+                "i-3-no"
+              ]
+            },
+            "nodePath": {
+              "nodeId": "i-55",
+              "branchPath": [
+                "i-3-yes",
+                "i-53-no"
+              ],
+              "realForkPath": [
+                "i-3",
+                "i-53"
+              ],
+              "owner": {
+                "fork": "i-53",
+                "side": "no",
+                "depthInPath": 1
+              }
+            },
+            "empiricallyAffectingRealForks": [
+              {
+                "realForkId": "i-3",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": true
+              },
+              {
+                "realForkId": "i-4",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": false
+              },
+              {
+                "realForkId": "i-13",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": false
+              },
+              {
+                "realForkId": "i-25",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "focus-candidate",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": false
+              },
+              {
+                "realForkId": "i-36",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "fixed-before-focus",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": false
+              },
+              {
+                "realForkId": "i-48",
+                "decisionAtEvaluation": "flipped",
+                "evaluationState": "fixed-before-focus",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": false
+              },
+              {
+                "realForkId": "i-53",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": false,
+                "nodeBoxChanged": true
+              }
+            ],
+            "outcome": "disappears",
+            "firstGeometryChange": {
+              "afterFork": "i-53",
+              "decision": "flipped",
+              "pairStillPresent": false,
+              "replacementPairIntrusions": []
+            },
+            "firstRemoval": {
+              "afterFork": "i-53",
+              "decision": "flipped"
+            },
+            "lifecycle": [
+              {
+                "stage": "provisional",
+                "afterFork": null,
+                "decision": "default",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-55",
+                    "edgeId": "i-57-cont",
+                    "nodeBox": {
+                      "left": -3.8060000000000116,
+                      "right": 84.19399999999999,
+                      "top": 611.1912457533896,
+                      "bottom": 641.1912457533896
+                    },
+                    "segmentIndex": 0,
+                    "segmentStart": [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    "segmentEnd": [
+                      133.64933039999997,
+                      626.1912457533896
+                    ],
+                    "orientation": "horizontal",
+                    "intersectionInterval": [
+                      [
+                        3.8060000000000116,
+                        626.1912457533896
+                      ],
+                      [
+                        84.19399999999999,
+                        626.1912457533896
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0,
+                      0.6191153581193108
+                    ],
+                    "crossesCompletelyThrough": false,
+                    "penetrationKind": "enters-partway"
+                  }
+                ]
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-13",
+                "decision": "default",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-55",
+                    "edgeId": "i-57-cont",
+                    "nodeBox": {
+                      "left": -3.8060000000000116,
+                      "right": 84.19399999999999,
+                      "top": 611.1912457533896,
+                      "bottom": 641.1912457533896
+                    },
+                    "segmentIndex": 0,
+                    "segmentStart": [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    "segmentEnd": [
+                      133.64933039999997,
+                      626.1912457533896
+                    ],
+                    "orientation": "horizontal",
+                    "intersectionInterval": [
+                      [
+                        3.8060000000000116,
+                        626.1912457533896
+                      ],
+                      [
+                        84.19399999999999,
+                        626.1912457533896
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0,
+                      0.6191153581193108
+                    ],
+                    "crossesCompletelyThrough": false,
+                    "penetrationKind": "enters-partway"
+                  }
+                ]
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-4",
+                "decision": "default",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-55",
+                    "edgeId": "i-57-cont",
+                    "nodeBox": {
+                      "left": -3.8060000000000116,
+                      "right": 84.19399999999999,
+                      "top": 611.1912457533896,
+                      "bottom": 641.1912457533896
+                    },
+                    "segmentIndex": 0,
+                    "segmentStart": [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    "segmentEnd": [
+                      133.64933039999997,
+                      626.1912457533896
+                    ],
+                    "orientation": "horizontal",
+                    "intersectionInterval": [
+                      [
+                        3.8060000000000116,
+                        626.1912457533896
+                      ],
+                      [
+                        84.19399999999999,
+                        626.1912457533896
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0,
+                      0.6191153581193108
+                    ],
+                    "crossesCompletelyThrough": false,
+                    "penetrationKind": "enters-partway"
+                  }
+                ]
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-53",
+                "decision": "flipped",
+                "pairPresent": false,
+                "exactProvisionalSegmentPresent": false,
+                "pairIntrusions": []
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-3",
+                "decision": "default",
+                "pairPresent": false,
+                "exactProvisionalSegmentPresent": false,
+                "pairIntrusions": []
+              }
+            ]
+          }
+        ],
+        "laterOrientationRows": [
+          {
+            "realForkId": "i-13",
+            "default": {
+              "nodeOverlapCount": 2,
+              "properCrossingCount": 1,
+              "nodeEdgeIntrusionCount": 4,
+              "oldProductionCost": 3,
+              "experimentalCost": 7
+            },
+            "flipped": {
+              "nodeOverlapCount": 7,
+              "properCrossingCount": 1,
+              "nodeEdgeIntrusionCount": 5,
+              "oldProductionCost": 8,
+              "experimentalCost": 13
+            },
+            "finalDecision": "default",
+            "tieBreakReason": "default strictly better"
+          },
+          {
+            "realForkId": "i-4",
+            "default": {
+              "nodeOverlapCount": 2,
+              "properCrossingCount": 1,
+              "nodeEdgeIntrusionCount": 4,
+              "oldProductionCost": 3,
+              "experimentalCost": 7
+            },
+            "flipped": {
+              "nodeOverlapCount": 2,
+              "properCrossingCount": 9,
+              "nodeEdgeIntrusionCount": 9,
+              "oldProductionCost": 11,
+              "experimentalCost": 20
+            },
+            "finalDecision": "default",
+            "tieBreakReason": "default strictly better"
+          },
+          {
+            "realForkId": "i-53",
+            "default": {
+              "nodeOverlapCount": 2,
+              "properCrossingCount": 1,
+              "nodeEdgeIntrusionCount": 4,
+              "oldProductionCost": 3,
+              "experimentalCost": 7
+            },
+            "flipped": {
+              "nodeOverlapCount": 0,
+              "properCrossingCount": 0,
+              "nodeEdgeIntrusionCount": 0,
+              "oldProductionCost": 0,
+              "experimentalCost": 0
+            },
+            "finalDecision": "flipped",
+            "tieBreakReason": "flip strictly reduces total defects"
+          },
+          {
+            "realForkId": "i-3",
+            "default": {
+              "nodeOverlapCount": 0,
+              "properCrossingCount": 0,
+              "nodeEdgeIntrusionCount": 0,
+              "oldProductionCost": 0,
+              "experimentalCost": 0
+            },
+            "flipped": {
+              "nodeOverlapCount": 2,
+              "properCrossingCount": 9,
+              "nodeEdgeIntrusionCount": 4,
+              "oldProductionCost": 11,
+              "experimentalCost": 15
+            },
+            "finalDecision": "default",
+            "tieBreakReason": "default strictly better"
+          }
+        ],
+        "final": {
+          "orientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "default",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "nodeOverlapCount": 0,
+          "nodeOverlaps": [],
+          "properCrossingCount": 0,
+          "properCrossings": [],
+          "edgeOverlapCount": 1,
+          "edgeOverlaps": [
+            {
+              "edgeA": "i-55-jump",
+              "edgeB": "i-57-cont",
+              "segmentA": 1,
+              "segmentB": 2,
+              "interval": [
+                [
+                  117.64933039999997,
+                  2522.5852145813533
+                ],
+                [
+                  133.64933039999997,
+                  2522.5852145813533
+                ]
+              ]
+            }
+          ],
+          "nodeEdgeIntrusionCount": 0,
+          "nodeEdgeIntrusions": []
+        }
+      },
+      "flippedCandidate": {
+        "focusDecision": "flipped",
+        "provisional": {
+          "orientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "flipped",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "default"
+          },
+          "nodeOverlapCount": 2,
+          "nodeOverlaps": [
+            {
+              "nodeA": "i-56",
+              "nodeB": "i-54",
+              "overlapX": 7.612000000000023,
+              "overlapY": 30
+            },
+            {
+              "nodeA": "i-57",
+              "nodeB": "i-55",
+              "overlapX": 7.612000000000023,
+              "overlapY": 30
+            }
+          ],
+          "properCrossingCount": 1,
+          "properCrossings": [
+            {
+              "edgeA": "i-27-jump",
+              "edgeB": "i-33-cont",
+              "segmentA": 1,
+              "segmentB": 0,
+              "point": [
+                -341.7519704,
+                1934.1326071255528
+              ]
+            }
+          ],
+          "nodeEdgeIntrusionCount": 3,
+          "nodeEdgeIntrusions": [
+            {
+              "nodeId": "i-54",
+              "edgeId": "i-53-yes",
+              "nodeBox": {
+                "left": -3.8060000000000116,
+                "right": 84.19399999999999,
+                "top": 529.1912457533896,
+                "bottom": 559.1912457533896
+              },
+              "segmentIndex": 2,
+              "segmentStart": [
+                366.206,
+                544.1912457533896
+              ],
+              "segmentEnd": [
+                3.8060000000000116,
+                544.1912457533896
+              ],
+              "orientation": "horizontal",
+              "intersectionInterval": [
+                [
+                  84.19399999999996,
+                  544.1912457533896
+                ],
+                [
+                  3.80600000000004,
+                  544.1912457533896
+                ]
+              ],
+              "parameterInterval": [
+                0.7781788079470201,
+                1
+              ],
+              "crossesCompletelyThrough": false,
+              "penetrationKind": "enters-partway"
+            },
+            {
+              "nodeId": "i-55",
+              "edgeId": "i-57-cont",
+              "nodeBox": {
+                "left": -3.8060000000000116,
+                "right": 84.19399999999999,
+                "top": 611.1912457533896,
+                "bottom": 641.1912457533896
+              },
+              "segmentIndex": 0,
+              "segmentStart": [
+                3.8060000000000116,
+                626.1912457533896
+              ],
+              "segmentEnd": [
+                19.80600000000001,
+                626.1912457533896
+              ],
+              "orientation": "horizontal",
+              "intersectionInterval": [
+                [
+                  3.8060000000000116,
+                  626.1912457533896
+                ],
+                [
+                  19.80600000000001,
+                  626.1912457533896
+                ]
+              ],
+              "parameterInterval": [
+                0,
+                1
+              ],
+              "crossesCompletelyThrough": false,
+              "penetrationKind": "segment-contained-inside"
+            },
+            {
+              "nodeId": "i-55",
+              "edgeId": "i-57-cont",
+              "nodeBox": {
+                "left": -3.8060000000000116,
+                "right": 84.19399999999999,
+                "top": 611.1912457533896,
+                "bottom": 641.1912457533896
+              },
+              "segmentIndex": 1,
+              "segmentStart": [
+                19.80600000000001,
+                626.1912457533896
+              ],
+              "segmentEnd": [
+                19.80600000000001,
+                2522.5852145813533
+              ],
+              "orientation": "vertical",
+              "intersectionInterval": [
+                [
+                  19.80600000000001,
+                  626.1912457533896
+                ],
+                [
+                  19.80600000000001,
+                  641.1912457533896
+                ]
+              ],
+              "parameterInterval": [
+                0,
+                0.007909748842573314
+              ],
+              "crossesCompletelyThrough": false,
+              "penetrationKind": "enters-partway"
+            }
+          ]
+        },
+        "provisionalIntrusionTraces": [
+          {
+            "intrusionId": "i-53-yes × i-54 [segment 2] #1",
+            "provisional": {
+              "nodeId": "i-54",
+              "edgeId": "i-53-yes",
+              "nodeBox": {
+                "left": -3.8060000000000116,
+                "right": 84.19399999999999,
+                "top": 529.1912457533896,
+                "bottom": 559.1912457533896
+              },
+              "segmentIndex": 2,
+              "segmentStart": [
+                366.206,
+                544.1912457533896
+              ],
+              "segmentEnd": [
+                3.8060000000000116,
+                544.1912457533896
+              ],
+              "orientation": "horizontal",
+              "intersectionInterval": [
+                [
+                  84.19399999999996,
+                  544.1912457533896
+                ],
+                [
+                  3.80600000000004,
+                  544.1912457533896
+                ]
+              ],
+              "parameterInterval": [
+                0.7781788079470201,
+                1
+              ],
+              "crossesCompletelyThrough": false,
+              "penetrationKind": "enters-partway"
+            },
+            "edgePath": {
+              "edgeId": "i-53-yes",
+              "source": "i-53",
+              "target": "i-56",
+              "semanticBranch": "yes",
+              "edgeRole": "merge-connector",
+              "routeFamily": "merge-connector",
+              "sourcePath": {
+                "nodeId": "i-53",
+                "branchPath": [
+                  "i-3-yes"
+                ],
+                "realForkPath": [
+                  "i-3"
+                ],
+                "owner": {
+                  "fork": "i-3",
+                  "side": "yes",
+                  "depthInPath": 0
+                }
+              },
+              "targetPath": {
+                "nodeId": "i-56",
+                "branchPath": [
+                  "i-3-no",
+                  "i-4-yes"
+                ],
+                "realForkPath": [
+                  "i-3",
+                  "i-4"
+                ],
+                "owner": {
+                  "fork": "i-4",
+                  "side": "yes",
+                  "depthInPath": 1
+                }
+              },
+              "nearestCommonBranchPrefix": []
+            },
+            "nodePath": {
+              "nodeId": "i-54",
+              "branchPath": [
+                "i-3-yes",
+                "i-53-no"
+              ],
+              "realForkPath": [
+                "i-3",
+                "i-53"
+              ],
+              "owner": {
+                "fork": "i-53",
+                "side": "no",
+                "depthInPath": 1
+              }
+            },
+            "empiricallyAffectingRealForks": [
+              {
+                "realForkId": "i-3",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": true
+              },
+              {
+                "realForkId": "i-4",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": false
+              },
+              {
+                "realForkId": "i-53",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": true
+              }
+            ],
+            "outcome": "disappears",
+            "firstGeometryChange": {
+              "afterFork": "i-53",
+              "decision": "flipped",
+              "pairStillPresent": false,
+              "replacementPairIntrusions": []
+            },
+            "firstRemoval": {
+              "afterFork": "i-53",
+              "decision": "flipped"
+            },
+            "lifecycle": [
+              {
+                "stage": "provisional",
+                "afterFork": null,
+                "decision": "flipped",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-54",
+                    "edgeId": "i-53-yes",
+                    "nodeBox": {
+                      "left": -3.8060000000000116,
+                      "right": 84.19399999999999,
+                      "top": 529.1912457533896,
+                      "bottom": 559.1912457533896
+                    },
+                    "segmentIndex": 2,
+                    "segmentStart": [
+                      366.206,
+                      544.1912457533896
+                    ],
+                    "segmentEnd": [
+                      3.8060000000000116,
+                      544.1912457533896
+                    ],
+                    "orientation": "horizontal",
+                    "intersectionInterval": [
+                      [
+                        84.19399999999996,
+                        544.1912457533896
+                      ],
+                      [
+                        3.80600000000004,
+                        544.1912457533896
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0.7781788079470201,
+                      1
+                    ],
+                    "crossesCompletelyThrough": false,
+                    "penetrationKind": "enters-partway"
+                  }
+                ]
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-13",
+                "decision": "default",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-54",
+                    "edgeId": "i-53-yes",
+                    "nodeBox": {
+                      "left": -3.8060000000000116,
+                      "right": 84.19399999999999,
+                      "top": 529.1912457533896,
+                      "bottom": 559.1912457533896
+                    },
+                    "segmentIndex": 2,
+                    "segmentStart": [
+                      366.206,
+                      544.1912457533896
+                    ],
+                    "segmentEnd": [
+                      3.8060000000000116,
+                      544.1912457533896
+                    ],
+                    "orientation": "horizontal",
+                    "intersectionInterval": [
+                      [
+                        84.19399999999996,
+                        544.1912457533896
+                      ],
+                      [
+                        3.80600000000004,
+                        544.1912457533896
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0.7781788079470201,
+                      1
+                    ],
+                    "crossesCompletelyThrough": false,
+                    "penetrationKind": "enters-partway"
+                  }
+                ]
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-4",
+                "decision": "default",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-54",
+                    "edgeId": "i-53-yes",
+                    "nodeBox": {
+                      "left": -3.8060000000000116,
+                      "right": 84.19399999999999,
+                      "top": 529.1912457533896,
+                      "bottom": 559.1912457533896
+                    },
+                    "segmentIndex": 2,
+                    "segmentStart": [
+                      366.206,
+                      544.1912457533896
+                    ],
+                    "segmentEnd": [
+                      3.8060000000000116,
+                      544.1912457533896
+                    ],
+                    "orientation": "horizontal",
+                    "intersectionInterval": [
+                      [
+                        84.19399999999996,
+                        544.1912457533896
+                      ],
+                      [
+                        3.80600000000004,
+                        544.1912457533896
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0.7781788079470201,
+                      1
+                    ],
+                    "crossesCompletelyThrough": false,
+                    "penetrationKind": "enters-partway"
+                  }
+                ]
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-53",
+                "decision": "flipped",
+                "pairPresent": false,
+                "exactProvisionalSegmentPresent": false,
+                "pairIntrusions": []
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-3",
+                "decision": "default",
+                "pairPresent": false,
+                "exactProvisionalSegmentPresent": false,
+                "pairIntrusions": []
+              }
+            ]
+          },
+          {
+            "intrusionId": "i-57-cont × i-55 [segment 0] #2",
+            "provisional": {
+              "nodeId": "i-55",
+              "edgeId": "i-57-cont",
+              "nodeBox": {
+                "left": -3.8060000000000116,
+                "right": 84.19399999999999,
+                "top": 611.1912457533896,
+                "bottom": 641.1912457533896
+              },
+              "segmentIndex": 0,
+              "segmentStart": [
+                3.8060000000000116,
+                626.1912457533896
+              ],
+              "segmentEnd": [
+                19.80600000000001,
+                626.1912457533896
+              ],
+              "orientation": "horizontal",
+              "intersectionInterval": [
+                [
+                  3.8060000000000116,
+                  626.1912457533896
+                ],
+                [
+                  19.80600000000001,
+                  626.1912457533896
+                ]
+              ],
+              "parameterInterval": [
+                0,
+                1
+              ],
+              "crossesCompletelyThrough": false,
+              "penetrationKind": "segment-contained-inside"
+            },
+            "edgePath": {
+              "edgeId": "i-57-cont",
+              "source": "i-57",
+              "target": "i-58",
+              "semanticBranch": null,
+              "edgeRole": "merge-connector",
+              "routeFamily": "merge-connector",
+              "sourcePath": {
+                "nodeId": "i-57",
+                "branchPath": [
+                  "i-3-no",
+                  "i-4-yes"
+                ],
+                "realForkPath": [
+                  "i-3",
+                  "i-4"
+                ],
+                "owner": {
+                  "fork": "i-4",
+                  "side": "yes",
+                  "depthInPath": 1
+                }
+              },
+              "targetPath": {
+                "nodeId": "i-58",
+                "branchPath": [
+                  "i-3-no",
+                  "i-4-no",
+                  "i-13-yes",
+                  "i-25-yes",
+                  "i-36-yes",
+                  "i-48-no"
+                ],
+                "realForkPath": [
+                  "i-3",
+                  "i-4",
+                  "i-13",
+                  "i-25",
+                  "i-36",
+                  "i-48"
+                ],
+                "owner": {
+                  "fork": "i-48",
+                  "side": "no",
+                  "depthInPath": 5
+                }
+              },
+              "nearestCommonBranchPrefix": [
+                "i-3-no"
+              ]
+            },
+            "nodePath": {
+              "nodeId": "i-55",
+              "branchPath": [
+                "i-3-yes",
+                "i-53-no"
+              ],
+              "realForkPath": [
+                "i-3",
+                "i-53"
+              ],
+              "owner": {
+                "fork": "i-53",
+                "side": "no",
+                "depthInPath": 1
+              }
+            },
+            "empiricallyAffectingRealForks": [
+              {
+                "realForkId": "i-3",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": true
+              },
+              {
+                "realForkId": "i-4",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": false
+              },
+              {
+                "realForkId": "i-13",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": false
+              },
+              {
+                "realForkId": "i-25",
+                "decisionAtEvaluation": "flipped",
+                "evaluationState": "focus-candidate",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": false
+              },
+              {
+                "realForkId": "i-36",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "fixed-before-focus",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": false
+              },
+              {
+                "realForkId": "i-48",
+                "decisionAtEvaluation": "flipped",
+                "evaluationState": "fixed-before-focus",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": false
+              },
+              {
+                "realForkId": "i-53",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": false,
+                "nodeBoxChanged": true
+              }
+            ],
+            "outcome": "disappears",
+            "firstGeometryChange": {
+              "afterFork": "i-53",
+              "decision": "flipped",
+              "pairStillPresent": false,
+              "replacementPairIntrusions": []
+            },
+            "firstRemoval": {
+              "afterFork": "i-53",
+              "decision": "flipped"
+            },
+            "lifecycle": [
+              {
+                "stage": "provisional",
+                "afterFork": null,
+                "decision": "flipped",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-55",
+                    "edgeId": "i-57-cont",
+                    "nodeBox": {
+                      "left": -3.8060000000000116,
+                      "right": 84.19399999999999,
+                      "top": 611.1912457533896,
+                      "bottom": 641.1912457533896
+                    },
+                    "segmentIndex": 0,
+                    "segmentStart": [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    "segmentEnd": [
+                      19.80600000000001,
+                      626.1912457533896
+                    ],
+                    "orientation": "horizontal",
+                    "intersectionInterval": [
+                      [
+                        3.8060000000000116,
+                        626.1912457533896
+                      ],
+                      [
+                        19.80600000000001,
+                        626.1912457533896
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0,
+                      1
+                    ],
+                    "crossesCompletelyThrough": false,
+                    "penetrationKind": "segment-contained-inside"
+                  },
+                  {
+                    "nodeId": "i-55",
+                    "edgeId": "i-57-cont",
+                    "nodeBox": {
+                      "left": -3.8060000000000116,
+                      "right": 84.19399999999999,
+                      "top": 611.1912457533896,
+                      "bottom": 641.1912457533896
+                    },
+                    "segmentIndex": 1,
+                    "segmentStart": [
+                      19.80600000000001,
+                      626.1912457533896
+                    ],
+                    "segmentEnd": [
+                      19.80600000000001,
+                      2522.5852145813533
+                    ],
+                    "orientation": "vertical",
+                    "intersectionInterval": [
+                      [
+                        19.80600000000001,
+                        626.1912457533896
+                      ],
+                      [
+                        19.80600000000001,
+                        641.1912457533896
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0,
+                      0.007909748842573314
+                    ],
+                    "crossesCompletelyThrough": false,
+                    "penetrationKind": "enters-partway"
+                  }
+                ]
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-13",
+                "decision": "default",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-55",
+                    "edgeId": "i-57-cont",
+                    "nodeBox": {
+                      "left": -3.8060000000000116,
+                      "right": 84.19399999999999,
+                      "top": 611.1912457533896,
+                      "bottom": 641.1912457533896
+                    },
+                    "segmentIndex": 0,
+                    "segmentStart": [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    "segmentEnd": [
+                      19.80600000000001,
+                      626.1912457533896
+                    ],
+                    "orientation": "horizontal",
+                    "intersectionInterval": [
+                      [
+                        3.8060000000000116,
+                        626.1912457533896
+                      ],
+                      [
+                        19.80600000000001,
+                        626.1912457533896
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0,
+                      1
+                    ],
+                    "crossesCompletelyThrough": false,
+                    "penetrationKind": "segment-contained-inside"
+                  },
+                  {
+                    "nodeId": "i-55",
+                    "edgeId": "i-57-cont",
+                    "nodeBox": {
+                      "left": -3.8060000000000116,
+                      "right": 84.19399999999999,
+                      "top": 611.1912457533896,
+                      "bottom": 641.1912457533896
+                    },
+                    "segmentIndex": 1,
+                    "segmentStart": [
+                      19.80600000000001,
+                      626.1912457533896
+                    ],
+                    "segmentEnd": [
+                      19.80600000000001,
+                      2522.5852145813533
+                    ],
+                    "orientation": "vertical",
+                    "intersectionInterval": [
+                      [
+                        19.80600000000001,
+                        626.1912457533896
+                      ],
+                      [
+                        19.80600000000001,
+                        641.1912457533896
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0,
+                      0.007909748842573314
+                    ],
+                    "crossesCompletelyThrough": false,
+                    "penetrationKind": "enters-partway"
+                  }
+                ]
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-4",
+                "decision": "default",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-55",
+                    "edgeId": "i-57-cont",
+                    "nodeBox": {
+                      "left": -3.8060000000000116,
+                      "right": 84.19399999999999,
+                      "top": 611.1912457533896,
+                      "bottom": 641.1912457533896
+                    },
+                    "segmentIndex": 0,
+                    "segmentStart": [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    "segmentEnd": [
+                      19.80600000000001,
+                      626.1912457533896
+                    ],
+                    "orientation": "horizontal",
+                    "intersectionInterval": [
+                      [
+                        3.8060000000000116,
+                        626.1912457533896
+                      ],
+                      [
+                        19.80600000000001,
+                        626.1912457533896
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0,
+                      1
+                    ],
+                    "crossesCompletelyThrough": false,
+                    "penetrationKind": "segment-contained-inside"
+                  },
+                  {
+                    "nodeId": "i-55",
+                    "edgeId": "i-57-cont",
+                    "nodeBox": {
+                      "left": -3.8060000000000116,
+                      "right": 84.19399999999999,
+                      "top": 611.1912457533896,
+                      "bottom": 641.1912457533896
+                    },
+                    "segmentIndex": 1,
+                    "segmentStart": [
+                      19.80600000000001,
+                      626.1912457533896
+                    ],
+                    "segmentEnd": [
+                      19.80600000000001,
+                      2522.5852145813533
+                    ],
+                    "orientation": "vertical",
+                    "intersectionInterval": [
+                      [
+                        19.80600000000001,
+                        626.1912457533896
+                      ],
+                      [
+                        19.80600000000001,
+                        641.1912457533896
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0,
+                      0.007909748842573314
+                    ],
+                    "crossesCompletelyThrough": false,
+                    "penetrationKind": "enters-partway"
+                  }
+                ]
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-53",
+                "decision": "flipped",
+                "pairPresent": false,
+                "exactProvisionalSegmentPresent": false,
+                "pairIntrusions": []
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-3",
+                "decision": "default",
+                "pairPresent": false,
+                "exactProvisionalSegmentPresent": false,
+                "pairIntrusions": []
+              }
+            ]
+          },
+          {
+            "intrusionId": "i-57-cont × i-55 [segment 1] #3",
+            "provisional": {
+              "nodeId": "i-55",
+              "edgeId": "i-57-cont",
+              "nodeBox": {
+                "left": -3.8060000000000116,
+                "right": 84.19399999999999,
+                "top": 611.1912457533896,
+                "bottom": 641.1912457533896
+              },
+              "segmentIndex": 1,
+              "segmentStart": [
+                19.80600000000001,
+                626.1912457533896
+              ],
+              "segmentEnd": [
+                19.80600000000001,
+                2522.5852145813533
+              ],
+              "orientation": "vertical",
+              "intersectionInterval": [
+                [
+                  19.80600000000001,
+                  626.1912457533896
+                ],
+                [
+                  19.80600000000001,
+                  641.1912457533896
+                ]
+              ],
+              "parameterInterval": [
+                0,
+                0.007909748842573314
+              ],
+              "crossesCompletelyThrough": false,
+              "penetrationKind": "enters-partway"
+            },
+            "edgePath": {
+              "edgeId": "i-57-cont",
+              "source": "i-57",
+              "target": "i-58",
+              "semanticBranch": null,
+              "edgeRole": "merge-connector",
+              "routeFamily": "merge-connector",
+              "sourcePath": {
+                "nodeId": "i-57",
+                "branchPath": [
+                  "i-3-no",
+                  "i-4-yes"
+                ],
+                "realForkPath": [
+                  "i-3",
+                  "i-4"
+                ],
+                "owner": {
+                  "fork": "i-4",
+                  "side": "yes",
+                  "depthInPath": 1
+                }
+              },
+              "targetPath": {
+                "nodeId": "i-58",
+                "branchPath": [
+                  "i-3-no",
+                  "i-4-no",
+                  "i-13-yes",
+                  "i-25-yes",
+                  "i-36-yes",
+                  "i-48-no"
+                ],
+                "realForkPath": [
+                  "i-3",
+                  "i-4",
+                  "i-13",
+                  "i-25",
+                  "i-36",
+                  "i-48"
+                ],
+                "owner": {
+                  "fork": "i-48",
+                  "side": "no",
+                  "depthInPath": 5
+                }
+              },
+              "nearestCommonBranchPrefix": [
+                "i-3-no"
+              ]
+            },
+            "nodePath": {
+              "nodeId": "i-55",
+              "branchPath": [
+                "i-3-yes",
+                "i-53-no"
+              ],
+              "realForkPath": [
+                "i-3",
+                "i-53"
+              ],
+              "owner": {
+                "fork": "i-53",
+                "side": "no",
+                "depthInPath": 1
+              }
+            },
+            "empiricallyAffectingRealForks": [
+              {
+                "realForkId": "i-3",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": true
+              },
+              {
+                "realForkId": "i-4",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": false
+              },
+              {
+                "realForkId": "i-13",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": false
+              },
+              {
+                "realForkId": "i-25",
+                "decisionAtEvaluation": "flipped",
+                "evaluationState": "focus-candidate",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": false
+              },
+              {
+                "realForkId": "i-36",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "fixed-before-focus",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": false
+              },
+              {
+                "realForkId": "i-48",
+                "decisionAtEvaluation": "flipped",
+                "evaluationState": "fixed-before-focus",
+                "edgeRouteChanged": true,
+                "nodeBoxChanged": false
+              },
+              {
+                "realForkId": "i-53",
+                "decisionAtEvaluation": "default",
+                "evaluationState": "still-unresolved",
+                "edgeRouteChanged": false,
+                "nodeBoxChanged": true
+              }
+            ],
+            "outcome": "disappears",
+            "firstGeometryChange": {
+              "afterFork": "i-53",
+              "decision": "flipped",
+              "pairStillPresent": false,
+              "replacementPairIntrusions": []
+            },
+            "firstRemoval": {
+              "afterFork": "i-53",
+              "decision": "flipped"
+            },
+            "lifecycle": [
+              {
+                "stage": "provisional",
+                "afterFork": null,
+                "decision": "flipped",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-55",
+                    "edgeId": "i-57-cont",
+                    "nodeBox": {
+                      "left": -3.8060000000000116,
+                      "right": 84.19399999999999,
+                      "top": 611.1912457533896,
+                      "bottom": 641.1912457533896
+                    },
+                    "segmentIndex": 0,
+                    "segmentStart": [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    "segmentEnd": [
+                      19.80600000000001,
+                      626.1912457533896
+                    ],
+                    "orientation": "horizontal",
+                    "intersectionInterval": [
+                      [
+                        3.8060000000000116,
+                        626.1912457533896
+                      ],
+                      [
+                        19.80600000000001,
+                        626.1912457533896
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0,
+                      1
+                    ],
+                    "crossesCompletelyThrough": false,
+                    "penetrationKind": "segment-contained-inside"
+                  },
+                  {
+                    "nodeId": "i-55",
+                    "edgeId": "i-57-cont",
+                    "nodeBox": {
+                      "left": -3.8060000000000116,
+                      "right": 84.19399999999999,
+                      "top": 611.1912457533896,
+                      "bottom": 641.1912457533896
+                    },
+                    "segmentIndex": 1,
+                    "segmentStart": [
+                      19.80600000000001,
+                      626.1912457533896
+                    ],
+                    "segmentEnd": [
+                      19.80600000000001,
+                      2522.5852145813533
+                    ],
+                    "orientation": "vertical",
+                    "intersectionInterval": [
+                      [
+                        19.80600000000001,
+                        626.1912457533896
+                      ],
+                      [
+                        19.80600000000001,
+                        641.1912457533896
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0,
+                      0.007909748842573314
+                    ],
+                    "crossesCompletelyThrough": false,
+                    "penetrationKind": "enters-partway"
+                  }
+                ]
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-13",
+                "decision": "default",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-55",
+                    "edgeId": "i-57-cont",
+                    "nodeBox": {
+                      "left": -3.8060000000000116,
+                      "right": 84.19399999999999,
+                      "top": 611.1912457533896,
+                      "bottom": 641.1912457533896
+                    },
+                    "segmentIndex": 0,
+                    "segmentStart": [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    "segmentEnd": [
+                      19.80600000000001,
+                      626.1912457533896
+                    ],
+                    "orientation": "horizontal",
+                    "intersectionInterval": [
+                      [
+                        3.8060000000000116,
+                        626.1912457533896
+                      ],
+                      [
+                        19.80600000000001,
+                        626.1912457533896
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0,
+                      1
+                    ],
+                    "crossesCompletelyThrough": false,
+                    "penetrationKind": "segment-contained-inside"
+                  },
+                  {
+                    "nodeId": "i-55",
+                    "edgeId": "i-57-cont",
+                    "nodeBox": {
+                      "left": -3.8060000000000116,
+                      "right": 84.19399999999999,
+                      "top": 611.1912457533896,
+                      "bottom": 641.1912457533896
+                    },
+                    "segmentIndex": 1,
+                    "segmentStart": [
+                      19.80600000000001,
+                      626.1912457533896
+                    ],
+                    "segmentEnd": [
+                      19.80600000000001,
+                      2522.5852145813533
+                    ],
+                    "orientation": "vertical",
+                    "intersectionInterval": [
+                      [
+                        19.80600000000001,
+                        626.1912457533896
+                      ],
+                      [
+                        19.80600000000001,
+                        641.1912457533896
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0,
+                      0.007909748842573314
+                    ],
+                    "crossesCompletelyThrough": false,
+                    "penetrationKind": "enters-partway"
+                  }
+                ]
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-4",
+                "decision": "default",
+                "pairPresent": true,
+                "exactProvisionalSegmentPresent": true,
+                "pairIntrusions": [
+                  {
+                    "nodeId": "i-55",
+                    "edgeId": "i-57-cont",
+                    "nodeBox": {
+                      "left": -3.8060000000000116,
+                      "right": 84.19399999999999,
+                      "top": 611.1912457533896,
+                      "bottom": 641.1912457533896
+                    },
+                    "segmentIndex": 0,
+                    "segmentStart": [
+                      3.8060000000000116,
+                      626.1912457533896
+                    ],
+                    "segmentEnd": [
+                      19.80600000000001,
+                      626.1912457533896
+                    ],
+                    "orientation": "horizontal",
+                    "intersectionInterval": [
+                      [
+                        3.8060000000000116,
+                        626.1912457533896
+                      ],
+                      [
+                        19.80600000000001,
+                        626.1912457533896
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0,
+                      1
+                    ],
+                    "crossesCompletelyThrough": false,
+                    "penetrationKind": "segment-contained-inside"
+                  },
+                  {
+                    "nodeId": "i-55",
+                    "edgeId": "i-57-cont",
+                    "nodeBox": {
+                      "left": -3.8060000000000116,
+                      "right": 84.19399999999999,
+                      "top": 611.1912457533896,
+                      "bottom": 641.1912457533896
+                    },
+                    "segmentIndex": 1,
+                    "segmentStart": [
+                      19.80600000000001,
+                      626.1912457533896
+                    ],
+                    "segmentEnd": [
+                      19.80600000000001,
+                      2522.5852145813533
+                    ],
+                    "orientation": "vertical",
+                    "intersectionInterval": [
+                      [
+                        19.80600000000001,
+                        626.1912457533896
+                      ],
+                      [
+                        19.80600000000001,
+                        641.1912457533896
+                      ]
+                    ],
+                    "parameterInterval": [
+                      0,
+                      0.007909748842573314
+                    ],
+                    "crossesCompletelyThrough": false,
+                    "penetrationKind": "enters-partway"
+                  }
+                ]
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-53",
+                "decision": "flipped",
+                "pairPresent": false,
+                "exactProvisionalSegmentPresent": false,
+                "pairIntrusions": []
+              },
+              {
+                "stage": "after-later-fork",
+                "afterFork": "i-3",
+                "decision": "default",
+                "pairPresent": false,
+                "exactProvisionalSegmentPresent": false,
+                "pairIntrusions": []
+              }
+            ]
+          }
+        ],
+        "laterOrientationRows": [
+          {
+            "realForkId": "i-13",
+            "default": {
+              "nodeOverlapCount": 2,
+              "properCrossingCount": 1,
+              "nodeEdgeIntrusionCount": 3,
+              "oldProductionCost": 3,
+              "experimentalCost": 6
+            },
+            "flipped": {
+              "nodeOverlapCount": 4,
+              "properCrossingCount": 3,
+              "nodeEdgeIntrusionCount": 4,
+              "oldProductionCost": 7,
+              "experimentalCost": 11
+            },
+            "finalDecision": "default",
+            "tieBreakReason": "default strictly better"
+          },
+          {
+            "realForkId": "i-4",
+            "default": {
+              "nodeOverlapCount": 2,
+              "properCrossingCount": 1,
+              "nodeEdgeIntrusionCount": 3,
+              "oldProductionCost": 3,
+              "experimentalCost": 6
+            },
+            "flipped": {
+              "nodeOverlapCount": 2,
+              "properCrossingCount": 10,
+              "nodeEdgeIntrusionCount": 6,
+              "oldProductionCost": 12,
+              "experimentalCost": 18
+            },
+            "finalDecision": "default",
+            "tieBreakReason": "default strictly better"
+          },
+          {
+            "realForkId": "i-53",
+            "default": {
+              "nodeOverlapCount": 2,
+              "properCrossingCount": 1,
+              "nodeEdgeIntrusionCount": 3,
+              "oldProductionCost": 3,
+              "experimentalCost": 6
+            },
+            "flipped": {
+              "nodeOverlapCount": 0,
+              "properCrossingCount": 1,
+              "nodeEdgeIntrusionCount": 0,
+              "oldProductionCost": 1,
+              "experimentalCost": 1
+            },
+            "finalDecision": "flipped",
+            "tieBreakReason": "flip strictly reduces total defects"
+          },
+          {
+            "realForkId": "i-3",
+            "default": {
+              "nodeOverlapCount": 0,
+              "properCrossingCount": 1,
+              "nodeEdgeIntrusionCount": 0,
+              "oldProductionCost": 1,
+              "experimentalCost": 1
+            },
+            "flipped": {
+              "nodeOverlapCount": 2,
+              "properCrossingCount": 9,
+              "nodeEdgeIntrusionCount": 5,
+              "oldProductionCost": 11,
+              "experimentalCost": 16
+            },
+            "finalDecision": "default",
+            "tieBreakReason": "default strictly better"
+          }
+        ],
+        "final": {
+          "orientationMap": {
+            "i-3": "default",
+            "i-4": "default",
+            "i-13": "default",
+            "i-15": "default",
+            "i-18": "default",
+            "i-25": "flipped",
+            "i-36": "default",
+            "i-38": "default",
+            "i-41": "default",
+            "i-48": "flipped",
+            "i-53": "flipped"
+          },
+          "nodeOverlapCount": 0,
+          "nodeOverlaps": [],
+          "properCrossingCount": 1,
+          "properCrossings": [
+            {
+              "edgeA": "i-27-jump",
+              "edgeB": "i-33-cont",
+              "segmentA": 1,
+              "segmentB": 0,
+              "point": [
+                -341.7519704,
+                1934.1326071255528
+              ]
+            }
+          ],
+          "edgeOverlapCount": 1,
+          "edgeOverlaps": [
+            {
+              "edgeA": "i-55-jump",
+              "edgeB": "i-57-cont",
+              "segmentA": 1,
+              "segmentB": 2,
+              "interval": [
+                [
+                  -96.7519704,
+                  2522.5852145813533
+                ],
+                [
+                  19.80600000000004,
+                  2522.5852145813533
+                ]
+              ]
+            }
+          ],
+          "nodeEdgeIntrusionCount": 0,
+          "nodeEdgeIntrusions": []
+        }
+      },
+      "laterChoiceDifferences": [],
+      "laterForkChoicesDependOnCandidate": false,
+      "intervention": {
+        "productionFilesChanged": false,
+        "metricChanged": false,
+        "weightsChanged": false,
+        "lookaheadImplemented": false,
+        "repairApplied": false,
+        "defectsFiltered": false
+      },
+      "geometryDigests": {
+        "provisionalDefault": {
+          "canonicalBytes": 19429,
+          "sha256": "aa1ae97c0968dfdeeec6a7d79ca2e512da4630233569cc9882b776ead4e9fe49"
+        },
+        "completedDefault": {
+          "canonicalBytes": 19215,
+          "sha256": "72995a166e8ed11f62d9cad0d9d6fea364b7bc9080cf2eceb7b53f630b234efd"
+        },
+        "provisionalFlipped": {
+          "canonicalBytes": 18091,
+          "sha256": "0c2d1594d677e75cc96fef58c40013c7ccd9a7c4a5263d705fcfc29888e3e06b"
+        },
+        "completedFlipped": {
+          "canonicalBytes": 17957,
+          "sha256": "a8820c298dcbd3f29f2c2e3b269963bb5fb1cd76c9408d9f3bb77ea8d9fde1eb"
+        }
+      }
+    }
+  ],
+  "diagnosis": {
+    "dividesI25ProvisionalCountAccounting": {
+      "defaultPairCounts": {
+        "i-53-yes × i-54": 1,
+        "i-55-jump × i-49": 1,
+        "i-55-jump × i-50": 1,
+        "i-57-cont × i-55": 1
+      },
+      "flippedPairCounts": {
+        "i-53-yes × i-54": 1,
+        "i-57-cont × i-55": 2
+      },
+      "explanation": "Both candidates contain i-53-yes × i-54. Default additionally contains i-55-jump × i-49 and i-55-jump × i-50; flipped instead has one extra segment-level i-57-cont × i-55 event (two segments rather than one). The net is 4 versus 3, not a single isolated pair."
+    },
+    "everyDividesProvisionalIntrusionFirstRemovedBy": {
+      "realForkId": "i-53",
+      "decision": "flipped"
+    },
+    "boundedI22IntrusionPersistent": true,
+    "completedPreference": {
+      "boundedI22": "flipped (completed score 0 versus 1)",
+      "dividesI25": "default (completed score 0 versus 1)"
+    },
+    "laterForkChoicesDifferByFocusCandidate": false,
+    "interpretation": "The i-25 signal is transient geometry controlled by unresolved i-53. Candidate completion exposes the correct preference. A blanket unresolved-geometry filter is not supported because i-22's persistent intrusion is also geometrically affected by unresolved i-10; distinguishing persistence would require testing unresolved alternatives."
+  },
+  "freeze": {
+    "productionFilesChanged": false,
+    "orientationMetricChanged": false,
+    "weightsChanged": false,
+    "edgeOverlapScored": false,
+    "lookaheadImplemented": false,
+    "repairApplied": false,
+    "defectsFiltered": false,
+    "laterForkPins": []
+  }
+}
