@@ -1,6 +1,7 @@
 const SKETCH_V3_LAYOUT_MODE = "sketchV3";
 const SKETCH_V3_ANGLE_TOLERANCE = 0.08;
 const SKETCH_V3_LANE_CLEARANCE = 16;
+const SKETCH_V3_PARALLEL_RAIL_CLEARANCE = SKETCH_V3_LANE_CLEARANCE * 3;
 const SKETCH_V3_DIAMOND_OBSTACLE_MARGIN = 24;
 
 const DEFAULT_BRANCH_ORIENTATION = { no: "left", yes: "right" };
@@ -291,6 +292,23 @@ function segmentsOnlyMeetAtNonCollinearEndpoint(left, right) {
 function segmentsAreCollinear(left, right) {
   return Math.abs(segmentOrientation(left.start, left.end, right.start)) < 0.001 &&
     Math.abs(segmentOrientation(left.start, left.end, right.end)) < 0.001;
+}
+
+function getHorizontalSegmentRange(segment) {
+  if (!segment?.start || !segment?.end) return null;
+  const [x0, y0] = segment.start;
+  const [x1, y1] = segment.end;
+  if (Math.abs(y0 - y1) > 0.001 || Math.abs(x0 - x1) <= 0.001) return null;
+  return {
+    y: (y0 + y1) / 2,
+    start: Math.min(x0, x1),
+    end: Math.max(x0, x1),
+  };
+}
+
+function getHorizontalOverlapLength(leftRange, rightRange) {
+  if (!leftRange || !rightRange) return 0;
+  return Math.max(0, Math.min(leftRange.end, rightRange.end) - Math.max(leftRange.start, rightRange.start));
 }
 
 function collinearSegmentOverlapLength(segA, segB) {
@@ -1863,6 +1881,30 @@ function findRouteRejection({
     }
   }
 
+  const parallelRailConflict = findParallelLoopReturnRailConflict({
+    edge,
+    candidateSegments: segments,
+    committedSegments: edgeSegments,
+    edgesById,
+    instructionCount,
+  });
+  if (parallelRailConflict) {
+    return makePlacementRejection({
+      candidateEdgeId: edge.id,
+      rejectionKind: "sketchV3ParallelLoopReturnRailTooCloseRejected",
+      blockingGeometryId: parallelRailConflict.blockingGeometryId,
+      blockingGeometryRole: parallelRailConflict.blockingGeometryRole,
+      clearance: parallelRailConflict.clearance,
+      candidatePoints: route.points,
+      blockingSegmentIndex: parallelRailConflict.blockingSegmentIndex,
+      candidateSegmentIndex: parallelRailConflict.candidateSegmentIndex,
+      overlapLength: parallelRailConflict.overlapLength,
+      candidateY: parallelRailConflict.candidateY,
+      blockingY: parallelRailConflict.blockingY,
+      minClearance: parallelRailConflict.minClearance,
+    });
+  }
+
   // Positive-length collinear overlap checks.
   // The distance-based check above excludes edges connected to the same source/target
   // node (via excludeNodeIds) to avoid false positives at shared ports. That exclusion
@@ -2146,6 +2188,59 @@ function collectRouteBlockingRows({
   };
 }
 
+function findParallelLoopReturnRailConflict({
+  edge,
+  candidateSegments,
+  committedSegments,
+  edgesById,
+  instructionCount,
+  minClearance = SKETCH_V3_PARALLEL_RAIL_CLEARANCE,
+}) {
+  if (!isLoopReturnEdge(edge) || isHaltEdge(edge, instructionCount)) return null;
+
+  let bestConflict = null;
+  for (let candidateIndex = 0; candidateIndex < candidateSegments.length; candidateIndex += 1) {
+    const candidateRange = getHorizontalSegmentRange(candidateSegments[candidateIndex]);
+    if (!candidateRange) continue;
+
+    for (const existing of committedSegments) {
+      const committedEdge = edgesById.get(existing.edgeId) ?? null;
+      if (
+        !committedEdge ||
+        !isLoopReturnEdge(committedEdge) ||
+        isHaltEdge(committedEdge, instructionCount)
+      ) continue;
+
+      const existingRange = getHorizontalSegmentRange(existing);
+      if (!existingRange) continue;
+
+      const overlapLength = getHorizontalOverlapLength(candidateRange, existingRange);
+      if (overlapLength <= Math.max(8, SKETCH_V3_LANE_CLEARANCE / 2)) continue;
+
+      const clearance = Math.abs(candidateRange.y - existingRange.y);
+      if (clearance >= minClearance) continue;
+
+      const conflict = {
+        blockingGeometryId: existing.edgeId,
+        blockingGeometryRole: existing.geometryRole,
+        clearance,
+        overlapLength,
+        candidateSegmentIndex: candidateIndex,
+        blockingSegmentIndex: existing.segmentIndex,
+        candidateY: candidateRange.y,
+        blockingY: existingRange.y,
+        minClearance,
+      };
+
+      if (!bestConflict || conflict.clearance < bestConflict.clearance) {
+        bestConflict = conflict;
+      }
+    }
+  }
+
+  return bestConflict;
+}
+
 function routeClearanceSummary({
   edge,
   points,
@@ -2193,6 +2288,13 @@ function routeClearanceSummary({
     segment.targetNodeId !== targetNodeId
   ));
   const segments = routeSegments(points);
+  const parallelRailConflict = findParallelLoopReturnRailConflict({
+    edge,
+    candidateSegments: segments,
+    committedSegments: existingSegments,
+    edgesById,
+    instructionCount,
+  });
   const nearestEdgeLaneClearance = existingSegments.length === 0 || segments.length === 0
     ? Infinity
     : Math.min(...segments.flatMap((segment) => (
@@ -2237,14 +2339,30 @@ function routeClearanceSummary({
     nearestDiamondClearance,
     nearestSplitExitLaneClearance,
     nearestPendingBranchCorridorClearance,
+    nearestParallelRailClearance: parallelRailConflict?.clearance ?? Infinity,
     nearestPendingBranchCorridorId: pendingCorridorSummary.nearestPendingBranchCorridorId,
     nearestPendingBranchCorridorPart: pendingCorridorSummary.nearestPendingBranchCorridorPart,
+    parallelRailConflict: parallelRailConflict
+      ? {
+          blockingGeometryId: parallelRailConflict.blockingGeometryId,
+          blockingGeometryRole: parallelRailConflict.blockingGeometryRole,
+          clearance: parallelRailConflict.clearance,
+          overlapLength: parallelRailConflict.overlapLength,
+          candidateSegmentIndex: parallelRailConflict.candidateSegmentIndex,
+          blockingSegmentIndex: parallelRailConflict.blockingSegmentIndex,
+          candidateY: parallelRailConflict.candidateY,
+          blockingY: parallelRailConflict.blockingY,
+          minClearance: parallelRailConflict.minClearance,
+        }
+      : null,
     passesThroughExpandedDiamondObstacle:
       nearestDiamondClearance < 0.001,
     overlapsProtectedSplitExitLane:
       nearestSplitExitLaneClearance < SKETCH_V3_LANE_CLEARANCE,
     overlapsUnrelatedEdgeLane:
       nearestEdgeLaneClearance < SKETCH_V3_LANE_CLEARANCE,
+    overlapsParallelLoopReturnRail:
+      Boolean(parallelRailConflict),
     overlapsProtectedPendingBranchCorridor:
       nearestPendingBranchCorridorClearance < SKETCH_V3_LANE_CLEARANCE,
     belowClearanceThreshold:
@@ -2252,6 +2370,7 @@ function routeClearanceSummary({
       nearestNodeClearance < SKETCH_V3_LANE_CLEARANCE ||
       nearestDiamondClearance < SKETCH_V3_LANE_CLEARANCE ||
       nearestSplitExitLaneClearance < SKETCH_V3_LANE_CLEARANCE ||
+      Boolean(parallelRailConflict) ||
       nearestPendingBranchCorridorClearance < SKETCH_V3_LANE_CLEARANCE,
   };
 }
@@ -2273,6 +2392,11 @@ function makeRouteCandidateDiagnostic(candidate, rejection = null, blockerRows =
     sourceExitY: candidate.sourceExitY ?? null,
     sourceExitRank: candidate.sourceExitRank ?? null,
     targetEntry: candidate.targetEntry ?? null,
+    nearestParallelRailClearance: Number.isFinite(candidate.nearestParallelRailClearance)
+      ? candidate.nearestParallelRailClearance
+      : null,
+    overlapsParallelLoopReturnRail: Boolean(candidate.overlapsParallelLoopReturnRail),
+    parallelRailConflict: candidate.parallelRailConflict ?? null,
     finalStyle: candidate.finalStyle ?? null,
     routePoints: clonePoints(points),
     accepted: !rejection,
@@ -3292,6 +3416,11 @@ function makeLoopReturnRoute({
       nearestUnrelatedEdgeLaneClearance: Number.isFinite(accepted.nearestEdgeLaneClearance)
         ? accepted.nearestEdgeLaneClearance
         : null,
+      nearestParallelRailClearance: Number.isFinite(accepted.nearestParallelRailClearance)
+        ? accepted.nearestParallelRailClearance
+        : null,
+      overlapsParallelLoopReturnRail: Boolean(accepted.overlapsParallelLoopReturnRail),
+      parallelRailConflict: accepted.parallelRailConflict ?? null,
       nearestSplitExitLaneClearance: Number.isFinite(accepted.nearestSplitExitLaneClearance)
         ? accepted.nearestSplitExitLaneClearance
         : null,
@@ -7245,6 +7374,8 @@ export function applySketchV3Layout(layoutPlan) {
       loopReturnDiagnostics.filter((row) => row.overlapsProtectedSplitExitLane),
     sketchV3LoopReturnUnrelatedEdgeLaneConflictRows:
       loopReturnDiagnostics.filter((row) => row.overlapsUnrelatedEdgeLane),
+    sketchV3LoopReturnParallelRailConflictRows:
+      loopReturnDiagnostics.filter((row) => row.overlapsParallelLoopReturnRail),
     sketchV3OrdinaryDiamondSplitExitNotStraightFixedAngle:
       diamondDiagnostics.nonStraightRows.length > 0,
     sketchV3OrdinaryDiamondSplitExitLShaped:
@@ -7303,6 +7434,8 @@ export function applySketchV3Layout(layoutPlan) {
         loopReturnDiagnostics.filter((row) => row.overlapsProtectedSplitExitLane),
       sketchV3LoopReturnUnrelatedEdgeLaneConflictRows:
         loopReturnDiagnostics.filter((row) => row.overlapsUnrelatedEdgeLane),
+      sketchV3LoopReturnParallelRailConflictRows:
+        loopReturnDiagnostics.filter((row) => row.overlapsParallelLoopReturnRail),
     } : null),
   };
 
@@ -7396,6 +7529,7 @@ function summarizeSketchV3RunForAutoRepair(diagnostics) {
       diamondObstacle: (diagnostics.sketchV3LoopReturnDiamondObstacleRows ?? []).length,
       splitExitLaneConflict: (diagnostics.sketchV3LoopReturnSplitExitLaneConflictRows ?? []).length,
       unrelatedEdgeLaneConflict: (diagnostics.sketchV3LoopReturnUnrelatedEdgeLaneConflictRows ?? []).length,
+      parallelRailConflict: (diagnostics.sketchV3LoopReturnParallelRailConflictRows ?? []).length,
     },
     bounds: quality.bounds ?? null,
   };
