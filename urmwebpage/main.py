@@ -9,6 +9,8 @@ from compiler import (
     compile_minimization_program,
     compile_function_to_program,
     compile_primitive_recursion_program,
+    expand_builtin_function_spec,
+    function_kind_contract,
     infer_function_arity,
 )
 from execution_models import (
@@ -50,6 +52,12 @@ app.add_middleware(
 @app.get("/")
 def root():
     return {"message": "URM backend running"}
+
+
+@app.get("/function-kinds")
+def function_kinds_endpoint():
+    """Backend's canonical public function-kind contract (kinds + aliases)."""
+    return function_kind_contract()
 
 
 class RunRequest(BaseModel):
@@ -206,6 +214,10 @@ def _normalized_function_kind(spec: FunctionSpec) -> str:
     return spec.kind.strip().lower().replace("-", "_")
 
 
+def _effective_function_spec(spec: FunctionSpec) -> FunctionSpec:
+    return expand_builtin_function_spec(spec)
+
+
 def _is_composed_function(spec: FunctionSpec) -> bool:
     return _normalized_function_kind(spec) == "compose"
 
@@ -317,6 +329,7 @@ def build_primitive_recursion_evaluation(
     sections = compile_metadata["sections"]
     register_layout = compile_metadata["register_layout"]
     result_register = register_layout["result_register"]
+    step_argument_indices = register_layout.get("step_argument_indices")
     steps = result.steps
 
     base_section = sections["base_complete"]
@@ -360,10 +373,21 @@ def build_primitive_recursion_evaluation(
             steps, step_start_index, step_section["start_instruction"], step_section["end_instruction"]
         )
         output_value = _read_register_after_step(result, step_end_index, result_register)
+        canonical_step_inputs = [previous_value, iteration, *remaining_inputs]
+        if isinstance(step_argument_indices, list):
+            step_inputs = [
+                canonical_step_inputs[index]
+                for index in step_argument_indices
+                if isinstance(index, int) and 0 <= index < len(canonical_step_inputs)
+            ]
+        else:
+            step_inputs = canonical_step_inputs
         iterations.append({
             "iteration": iteration,
             "function": spec.step.model_dump() if spec.step is not None else None,
-            "input_registers": [previous_value, iteration, *remaining_inputs],
+            "input_registers": step_inputs,
+            "canonical_input_registers": canonical_step_inputs,
+            "step_argument_indices": list(step_argument_indices) if isinstance(step_argument_indices, list) else None,
             "output_value": output_value,
             "trace_range": _build_trace_range(loop_test_index, step_end_index),
             "program_range": step_section,
@@ -905,26 +929,28 @@ def execute_function_spec(
     max_steps: Optional[int],
     max_candidates: Optional[int] = None,
 ) -> tuple[ExecutionResult, Optional[dict[str, Any]]]:
+    effective_spec = _effective_function_spec(spec)
+
     if (
-        not _is_composed_function(spec)
-        and not _is_primitive_recursive_function(spec)
-        and not _is_minimization_function(spec)
+        not _is_composed_function(effective_spec)
+        and not _is_primitive_recursive_function(effective_spec)
+        and not _is_minimization_function(effective_spec)
     ):
         return execute_program_request(
-            program=compile_function_spec(spec),
+            program=compile_function_spec(effective_spec),
             initial_registers=initial_registers,
             max_steps=max_steps,
         ), None
 
-    if _is_composed_function(spec):
-        if spec.outer is None:
+    if _is_composed_function(effective_spec):
+        if effective_spec.outer is None:
             raise build_bad_request("compose requires `outer`")
 
-        if spec.inner is None:
+        if effective_spec.inner is None:
             raise build_bad_request("compose requires `inner`")
 
         inner_result, inner_evaluation = execute_function_spec(
-            spec=spec.inner,
+            spec=effective_spec.inner,
             initial_registers=initial_registers,
             max_steps=max_steps,
             max_candidates=max_candidates,
@@ -932,7 +958,7 @@ def execute_function_spec(
 
         outer_input_registers = [inner_result.output_value]
         outer_result, outer_evaluation = execute_function_spec(
-            spec=spec.outer,
+            spec=effective_spec.outer,
             initial_registers=outer_input_registers,
             max_steps=max_steps,
             max_candidates=max_candidates,
@@ -943,13 +969,13 @@ def execute_function_spec(
             "mode": "sequential",
             "input_registers": list(initial_registers),
             "inner": build_function_evaluation_node(
-                function_spec=spec.inner,
+                function_spec=effective_spec.inner,
                 input_registers=initial_registers,
                 result=inner_result,
                 evaluation=inner_evaluation,
             ),
             "outer": build_function_evaluation_node(
-                function_spec=spec.outer,
+                function_spec=effective_spec.outer,
                 input_registers=outer_input_registers,
                 result=outer_result,
                 evaluation=outer_evaluation,
@@ -957,9 +983,9 @@ def execute_function_spec(
             "final_output": outer_result.output_value,
         }
 
-    if _is_minimization_function(spec):
+    if _is_minimization_function(effective_spec):
         _, result, evaluation = execute_minimization_function(
-            spec=spec,
+            spec=effective_spec,
             initial_registers=initial_registers,
             max_steps=max_steps,
             max_candidates=max_candidates,
@@ -967,7 +993,7 @@ def execute_function_spec(
         return result, evaluation
 
     _, result, evaluation = execute_primitive_recursive_function(
-        spec=spec,
+        spec=effective_spec,
         initial_registers=initial_registers,
         max_steps=max_steps,
     )
@@ -1132,8 +1158,10 @@ def execute_run_request(run_req: RunRequest) -> ExecutionResult:
 def run_function_request(
     req: RunFunctionRequest,
 ) -> tuple[list[tuple], ExecutionResult, Optional[dict[str, Any]]]:
+    effective_function = _effective_function_spec(req.function)
+
     if req.execution_mode == "flat":
-        program = compile_function_spec(req.function)
+        program = compile_function_spec(effective_function)
         result = execute_program_request(
             program=program,
             initial_registers=req.initial_registers,
@@ -1141,31 +1169,31 @@ def run_function_request(
         )
         return program, result, None
 
-    if _is_composed_function(req.function):
+    if _is_composed_function(effective_function):
         program: list[tuple] = []
         result, evaluation = execute_function_spec(
-            spec=req.function,
+            spec=effective_function,
             initial_registers=req.initial_registers,
             max_steps=req.max_steps,
             max_candidates=req.max_candidates,
         )
         return program, result, evaluation
 
-    if _is_primitive_recursive_function(req.function):
+    if _is_primitive_recursive_function(effective_function):
         return execute_primitive_recursive_function(
-            spec=req.function,
+            spec=effective_function,
             initial_registers=req.initial_registers,
             max_steps=req.max_steps,
         )
 
-    if _is_minimization_function(req.function):
+    if _is_minimization_function(effective_function):
         return execute_minimization_compiled_function(
-            spec=req.function,
+            spec=effective_function,
             initial_registers=req.initial_registers,
             max_steps=req.max_steps,
         )
 
-    program = compile_function_spec(req.function)
+    program = compile_function_spec(effective_function)
     result = execute_program_request(
         program=program,
         initial_registers=req.initial_registers,

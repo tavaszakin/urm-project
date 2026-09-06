@@ -1,4 +1,4 @@
-import { formatProjectionNotation, getProjectionArrayIndex, getProjectionVariableMeaning } from "./utils/mathNotation.jsx";
+import { formatProjectionNotation, getProjectionVariableMeaning } from "./utils/mathNotation.jsx";
 import {
   getCharacteristicRelationMetadata,
   normalizeCharacteristicRelation,
@@ -46,6 +46,41 @@ export const FUNCTION_METADATA = {
     notation: "x + y",
     description: "Adds two numbers.",
     aliases: ["addition"],
+  },
+  multiplication: {
+    display: "Multiplication",
+    shortDisplay: "Multiplication",
+    notation: "x × y",
+    description: "Multiplies two numbers using primitive recursion.",
+    aliases: ["multiply", "mult"],
+  },
+  exponentiation: {
+    display: "Exponentiation",
+    shortDisplay: "Exponentiation",
+    notation: "x^y",
+    description: "Raises one number to another using primitive recursion.",
+    aliases: ["power", "pow"],
+  },
+  factorial: {
+    display: "Factorial",
+    shortDisplay: "Factorial",
+    notation: "n!",
+    description: "Computes n! using primitive recursion.",
+    aliases: ["fact"],
+  },
+  geometric_sum: {
+    display: "Geometric Sum",
+    shortDisplay: "Geometric Sum",
+    notation: "1 + x + … + x^y",
+    description: "Computes 1 + x + x² + … + xʸ using primitive recursion.",
+    aliases: ["geom"],
+  },
+  divisor_count: {
+    display: "Divisor Count",
+    shortDisplay: "Divisor Count",
+    notation: "τ(n)",
+    description: "Counts the positive divisors of n.",
+    aliases: ["num_divisors"],
   },
   bounded_sub: {
     display: "Truncated subtraction",
@@ -101,6 +136,11 @@ export const FUNCTION_ORDER = [
   "constant",
   "projection",
   "add",
+  "multiplication",
+  "exponentiation",
+  "factorial",
+  "geometric_sum",
+  "divisor_count",
   "bounded_sub",
   "characteristic",
   "compose",
@@ -246,6 +286,36 @@ export function renderFunctionExpression(spec, variables = []) {
     }
 
     return wrapFunctionCall("add", [args[0] ?? "x", args[1] ?? "y"]);
+  }
+
+  if (kind === "multiplication") {
+    if (args.length >= 2) {
+      return `${args[0]} × ${args[1]}`;
+    }
+
+    return wrapFunctionCall("multiplication", [args[0] ?? "x", args[1] ?? "y"]);
+  }
+
+  if (kind === "exponentiation") {
+    if (args.length >= 2) {
+      return `${args[0]}^${args[1]}`;
+    }
+
+    return wrapFunctionCall("exponentiation", [args[0] ?? "x", args[1] ?? "y"]);
+  }
+
+  if (kind === "factorial") {
+    return `${args[0] ?? "n"}!`;
+  }
+
+  if (kind === "geometric_sum") {
+    const x = args[0] ?? "x";
+    const y = args[1] ?? "y";
+    return `1 + ${x} + … + ${x}^${y}`;
+  }
+
+  if (kind === "divisor_count") {
+    return `τ(${args[0] ?? "n"})`;
   }
 
   if (kind === "bounded_sub") {

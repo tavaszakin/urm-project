@@ -6,6 +6,9 @@ __pycache__/
 # SketchV3 headless verification harness (local dev tooling)
 .sketchv3-harness/
 
+# Phase 0 fixture-metrics artifact (generated baseline, local dev tooling)
+.fixture-metrics/
+
 # Frontend build output and dependencies
 dist/
 node_modules/

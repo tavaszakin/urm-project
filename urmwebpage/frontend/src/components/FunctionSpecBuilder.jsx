@@ -141,8 +141,12 @@ function isPositiveInteger(value) {
 }
 
 function getDefaultArgumentNodes(kind, spec) {
-  if (kind === "add" || kind === "bounded_sub" || kind === "characteristic") {
+  if (kind === "add" || kind === "multiplication" || kind === "exponentiation" || kind === "bounded_sub" || kind === "characteristic") {
     return [createExpressionText("x"), createExpressionText("y")];
+  }
+
+  if (kind === "divisor_count") {
+    return [createExpressionText("n")];
   }
 
   if (kind === "compose") {
@@ -166,7 +170,8 @@ function getDefaultArgumentNodes(kind, spec) {
 }
 
 function getExpectedArgumentCount(kind, spec) {
-  if (kind === "add" || kind === "bounded_sub" || kind === "characteristic") return 2;
+  if (kind === "add" || kind === "multiplication" || kind === "exponentiation" || kind === "bounded_sub" || kind === "characteristic") return 2;
+  if (kind === "divisor_count") return 1;
   if (kind === "projection") {
     const arity = Number(spec?.arity);
     return Number.isInteger(arity) && arity > 0 ? arity : 2;

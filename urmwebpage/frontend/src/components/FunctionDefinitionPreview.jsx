@@ -35,11 +35,11 @@ function getVariableNames(count) {
 function inferFunctionArity(spec) {
   const kind = normalizeFunctionKind(spec?.kind);
 
-  if (kind === "successor" || kind === "succ" || kind === "predecessor" || kind === "pred" || kind === "truncated_predecessor" || kind === "zero" || kind === "constant" || kind === "const") {
+  if (kind === "successor" || kind === "succ" || kind === "predecessor" || kind === "pred" || kind === "truncated_predecessor" || kind === "zero" || kind === "constant" || kind === "const" || kind === "divisor_count") {
     return 1;
   }
 
-  if (kind === "add" || kind === "addition" || kind === "bounded_sub" || kind === "sub" || kind === "truncated_sub" || kind === "truncated_subtraction") {
+  if (kind === "add" || kind === "addition" || kind === "multiplication" || kind === "exponentiation" || kind === "geometric_sum" || kind === "bounded_sub" || kind === "sub" || kind === "truncated_sub" || kind === "truncated_subtraction") {
     return 2;
   }
 
@@ -122,6 +122,42 @@ function renderMeaningExpression(spec, args = []) {
     return {
       primary: createExpressionText(`${args[0] ?? "x"}+${args[1] ?? "y"}`),
       familiar: null,
+    };
+  }
+
+  if (kind === "multiplication") {
+    return {
+      primary: createExpressionText(`${args[0] ?? "x"}×${args[1] ?? "y"}`),
+      familiar: null,
+    };
+  }
+
+  if (kind === "exponentiation") {
+    return {
+      primary: createExpressionText(`${args[0] ?? "x"}^${args[1] ?? "y"}`),
+      familiar: null,
+    };
+  }
+
+  if (kind === "factorial") {
+    return {
+      primary: createExpressionText(`${args[0] ?? "n"}!`),
+      familiar: null,
+    };
+  }
+
+  if (kind === "geometric_sum") {
+    return {
+      primary: createExpressionText(`1+${args[0] ?? "x"}+\\dots+${args[0] ?? "x"}^{${args[1] ?? "y"}}`),
+      familiar: null,
+    };
+  }
+
+  if (kind === "divisor_count") {
+    const n = args[0] ?? "n";
+    return {
+      primary: createExpressionText(`τ(${n})`),
+      familiar: createExpressionText(`# {d: 1≤d≤${n}, d|${n}}`),
     };
   }
 

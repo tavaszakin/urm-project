@@ -103,7 +103,7 @@ function buildProseMathLine(text, key) {
 }
 
 function isAtomicKind(kind) {
-  return ["zero", "successor", "predecessor", "constant", "projection", "add", "bounded_sub"].includes(kind);
+  return ["zero", "successor", "predecessor", "constant", "projection", "add", "multiplication", "exponentiation", "bounded_sub"].includes(kind);
 }
 
 function renderConcreteCall(spec, args) {
@@ -201,6 +201,22 @@ function renderByHandExpression(spec, args) {
     };
   }
 
+  if (kind === "multiplication") {
+    const expression = createExpressionText(`${argText[0] ?? "x"}×${argText[1] ?? "y"}`);
+    return {
+      expression,
+      key: serializeMathValue(expression),
+    };
+  }
+
+  if (kind === "exponentiation") {
+    const expression = createExpressionText(`${argText[0] ?? "x"}^${argText[1] ?? "y"}`);
+    return {
+      expression,
+      key: serializeMathValue(expression),
+    };
+  }
+
   if (kind === "bounded_sub") {
     const expression = createExpressionText(`${argText[0] ?? "x"}∸${argText[1] ?? "y"}`);
     return {
@@ -265,15 +281,19 @@ function serializeExpression(spec, args) {
 
   const callee = kind === "add"
     ? "addition"
-    : kind === "bounded_sub"
-      ? "truncated_subtraction"
-      : kind === "predecessor"
-        ? "predecessor"
-        : kind === "projection"
-          ? `projection:${spec?.index ?? "?"}:${spec?.arity ?? "?"}`
-          : kind === "constant"
-            ? `constant:${spec?.value ?? 0}`
-            : kind || "function";
+    : kind === "multiplication"
+      ? "multiplication"
+      : kind === "exponentiation"
+        ? "exponentiation"
+        : kind === "bounded_sub"
+          ? "truncated_subtraction"
+          : kind === "predecessor"
+            ? "predecessor"
+            : kind === "projection"
+              ? `projection:${spec?.index ?? "?"}:${spec?.arity ?? "?"}`
+              : kind === "constant"
+                ? `constant:${spec?.value ?? 0}`
+                : kind || "function";
 
   return `${callee}(${args.map((value) => formatValue(value)).join(",")})`;
 }
@@ -300,6 +320,36 @@ function atomicEvaluation(spec, args) {
     const right = Number(args[1] ?? 0);
     const rendered = renderConcreteCall(spec, [left, right]);
     const result = left + right;
+
+    return {
+      kind,
+      expression: rendered.expression,
+      result,
+      mainChains: [buildChain(buildLine(rendered.expression, "", rendered.key), buildLine(String(result), "", String(result)))],
+      detailSections: [],
+    };
+  }
+
+  if (kind === "multiplication") {
+    const left = Number(args[0] ?? 0);
+    const right = Number(args[1] ?? 0);
+    const rendered = renderConcreteCall(spec, [left, right]);
+    const result = left * right;
+
+    return {
+      kind,
+      expression: rendered.expression,
+      result,
+      mainChains: [buildChain(buildLine(rendered.expression, "", rendered.key), buildLine(String(result), "", String(result)))],
+      detailSections: [],
+    };
+  }
+
+  if (kind === "exponentiation") {
+    const left = Number(args[0] ?? 0);
+    const right = Number(args[1] ?? 0);
+    const rendered = renderConcreteCall(spec, [left, right]);
+    const result = left ** right;
 
     return {
       kind,
@@ -445,7 +495,7 @@ function deriveFunctionArityForByHand(spec) {
     return 1;
   }
 
-  if (kind === "add" || kind === "bounded_sub") {
+  if (kind === "add" || kind === "multiplication" || kind === "exponentiation" || kind === "bounded_sub") {
     return 2;
   }
 

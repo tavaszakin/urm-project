@@ -497,6 +497,29 @@ function deriveFunctionArity(spec) {
     return { status: "known", arity: 2, source: "add uses two inputs" };
   }
 
+  if (kind === "multiplication") {
+    return { status: "known", arity: 2, source: "multiplication uses two inputs" };
+  }
+
+  if (kind === "exponentiation") {
+    return { status: "known", arity: 2, source: "exponentiation uses two inputs" };
+  }
+
+  if (kind === "factorial" || kind === "fact") {
+    // The compiled spec is binary fact(n, _) due to the non-nullary base-arity
+    // floor, but only the recursion input n matters; the trailing carried dummy
+    // defaults to 0. Present factorial as a single-input function.
+    return { status: "known", arity: 1, source: "factorial uses one input register" };
+  }
+
+  if (kind === "geometric_sum" || kind === "geom") {
+    return { status: "known", arity: 2, source: "geometric sum uses two inputs (base x and exponent bound y)" };
+  }
+
+  if (kind === "divisor_count") {
+    return { status: "known", arity: 1, source: "divisor count uses one input register" };
+  }
+
   if (kind === "bounded_sub" || kind === "sub" || kind === "truncated_sub" || kind === "truncated_subtraction") {
     return { status: "known", arity: 2, source: "bounded subtraction uses two inputs" };
   }
@@ -1176,8 +1199,18 @@ export default function FunctionRunner({
 
     setFunctionSpec(nextSpec);
 
-    if (normalizeFunctionKind(nextKind) === "characteristic") {
+    const normalizedNextKind = normalizeFunctionKind(nextKind);
+    if (normalizedNextKind === "characteristic") {
       setRegisterValues([2, 3]);
+    }
+    if (normalizedNextKind === "multiplication") {
+      setRegisterValues([2, 3]);
+    }
+    if (normalizedNextKind === "exponentiation") {
+      setRegisterValues([2, 3]);
+    }
+    if (normalizedNextKind === "divisor_count") {
+      setRegisterValues([6]);
     }
 
     if (typeof onFunctionStateChange === "function") {

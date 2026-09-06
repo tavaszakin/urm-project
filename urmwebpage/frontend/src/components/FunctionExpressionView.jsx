@@ -8,6 +8,8 @@ import { ProjectionNotation } from "../utils/mathNotation.jsx";
 const TOKEN_SEGMENT_PATTERN = /([A-Za-z]+(?:\d+)?|[0-9]+|_+|\s+|[^A-Za-z0-9_\s]+)/g;
 const UPRIGHT_TEXT_TOKENS = new Set([
   "addition",
+  "multiplication",
+  "exponentiation",
   "successor",
   "predecessor",
   "constant",
@@ -16,6 +18,11 @@ const UPRIGHT_TEXT_TOKENS = new Set([
   "truncated_subtraction",
   "subtraction",
   "zero",
+  "divisor",
+  "count",
+  "num",
+  "divisors",
+  "tau",
   "compose",
   "minimization",
   "previous",
@@ -46,7 +53,8 @@ function normalizeExpressionNode(node) {
 }
 
 function getExpectedArity(kind, spec) {
-  if (kind === "add" || kind === "bounded_sub") return 2;
+  if (kind === "add" || kind === "multiplication" || kind === "exponentiation" || kind === "geometric_sum" || kind === "bounded_sub") return 2;
+  if (kind === "divisor_count") return 1;
   if (kind === "predecessor") return 1;
   if (kind === "projection") {
     const arity = Number(spec?.arity);
@@ -107,8 +115,20 @@ function getDisplayCallee(spec) {
     return "addition";
   }
 
+  if (kind === "multiplication") {
+    return "multiplication";
+  }
+
+  if (kind === "exponentiation") {
+    return "exponentiation";
+  }
+
   if (kind === "bounded_sub") {
     return "truncated_subtraction";
+  }
+
+  if (kind === "divisor_count") {
+    return "divisor_count";
   }
 
   if (kind === "predecessor") {
