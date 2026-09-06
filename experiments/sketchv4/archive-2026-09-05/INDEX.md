@@ -166,3 +166,10 @@ JSON reports preserve post-checkpoint diagnostics. For exact committed-stage rec
 three checkpoint tags documented in `README.md`. For ignored post-checkpoint work, restore the
 archived module/report pair into an isolated final-checkpoint worktree with the archived
 `programs.json`. Failed experiments are retained intentionally.
+
+## Continuation
+
+Items 14-18 — the 2026-09-06 endpoint-transition intrusion-ownership censuses and the
+completed-but-unpromoted local scoring experiment — are archived separately with their own
+index, reports, and integrity digest at `../archive-2026-09-06-endpoint-transition/`.
+This directory's content-set digest above is unaffected.

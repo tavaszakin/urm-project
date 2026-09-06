@@ -595,7 +595,7 @@ function buildGeneralizedLoopTargetAttachmentView(composedView) {
 		}
 	};
 }
-function buildComposedLoopEndpointCandidate(rawView) {
+function buildComposedLoopEndpointRealizer(rawView) {
 	const base = {
 		cfg: rawView.cfg,
 		roles: rawView.roles,
@@ -613,6 +613,10 @@ function buildComposedLoopEndpointCandidate(rawView) {
 	};
 	const realizeSources = (orientationMap) => buildGeneralizedLoopSourcePortView(realizeExistingStack(orientationMap));
 	const realizeEndpoints = (orientationMap) => buildGeneralizedLoopTargetAttachmentView(realizeSources(orientationMap));
+	return { includesRightReentry, realizeExistingStack, realizeSources, realizeEndpoints };
+}
+function buildComposedLoopEndpointCandidate(rawView) {
+	const { includesRightReentry, realizeExistingStack, realizeEndpoints } = buildComposedLoopEndpointRealizer(rawView);
 	const orientationResult = assignOrientation({
 		realForks: rawView.roles.realForkIds,
 		bottomUp: rawView.tree.bottomUp,
@@ -1276,4 +1280,4 @@ function namedOrientationMap(view) {
 	return Object.fromEntries([...view.orientationMap].sort(([a], [b]) => a.localeCompare(b)).map(([id, orientation]) => [id, orientation.no === "right" ? "flipped" : "default"]));
 }
 //#endregion
-export { buildCurrentCheckpointView, canonicalGeometry, namedOrientationMap, summarizeView };
+export { buildComposedLoopEndpointRealizer, buildCurrentCheckpointView, buildRawRoleOrdinaryTerminalBase, canonicalGeometry, namedOrientationMap, summarizeView, unrelatedNodeEdgeIntersections };
