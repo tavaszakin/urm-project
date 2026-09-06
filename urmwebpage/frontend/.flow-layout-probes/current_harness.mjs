@@ -10,7 +10,7 @@ import { routeEdges } from "../src/layout/sketchv4/routing.js";
 import { evaluateDefects } from "../src/layout/sketchv4/defects.js";
 import { assignOrientation } from "../src/layout/sketchv4/orientation.js";
 import { getLegalIncidentStubsForNode, validateEdgeAttachments } from "../src/layout/sketchv4/attachmentStubs.js";
-import { roleGuardOrientation } from "../src/layout/sketchv4/pipeline.js";
+import { buildLayout, roleGuardOrientation } from "../src/layout/sketchv4/pipeline.js";
 //#region .flow-layout-probes/_current_bundle_source.mjs
 const DEFAULT = {
 	no: "left",
@@ -1248,6 +1248,97 @@ function summarizeView(view) {
 function buildCurrentCheckpointView(program, programName) {
 	return buildComposedLoopEndpointCandidate(buildRawRoleOrdinaryTerminalBase(program, programName)).view;
 }
+
+const CHECKPOINT_STAGE_IDS = Object.freeze(["BASE", "A", "B", "C", "D", "E"]);
+const CURRENT_VISUAL = Object.freeze({
+	sizeForKind: sizeForCurrentKind,
+	branchAngleTan: ordinaryVisual.branchAngleTan,
+	pitch: Object.freeze({ ...ordinaryVisual.pitch }),
+	terminalSize: Object.freeze([48, 18]),
+	haltBandOffset: 154,
+	clearance: CLEARANCE
+});
+
+function buildNativeProductionBaseView(program, programName) {
+	const layout = buildLayout(program, {
+		programName,
+		orientationSource: "v4Assigned",
+		visual: CURRENT_VISUAL,
+		pins: /* @__PURE__ */ new Map(),
+		diagnostics: true
+	});
+	return {
+		...layout,
+		mode: "current",
+		programName,
+		program,
+		attachments: attachmentRecords(layout.cfg, layout.roles, layout.boxes, layout.routed.routes),
+		terminalId: "halt",
+		viewLabel: "Current native production V4",
+		purity: { controlUsesCurrentPipelineUnchanged: true }
+	};
+}
+
+function buildCheckpointStageRealizer(rawBase, stage) {
+	const normalizedStage = String(stage ?? "").toUpperCase();
+	if (!CHECKPOINT_STAGE_IDS.includes(normalizedStage) || normalizedStage === "BASE") {
+		throw new Error(`unknown composed checkpoint stage ${stage}`);
+	}
+	const realizeA = (orientationMap) => realizeExperimental(rawBase, orientationMap);
+	const realizeB = (orientationMap) => buildAdaptiveBranchRayMergeSourcesView(realizeA(orientationMap));
+	const realizeC = (orientationMap) => {
+		const adaptive = realizeB(orientationMap);
+		return rawBase.programName === "characteristic:divides" ? applyRightToRightHvhMerge(adaptive) : adaptive;
+	};
+	const realizeD = (orientationMap) => buildGeneralizedLoopSourcePortView(realizeC(orientationMap));
+	const realizeE = (orientationMap) => buildGeneralizedLoopTargetAttachmentView(realizeD(orientationMap));
+	return { A: realizeA, B: realizeB, C: realizeC, D: realizeD, E: realizeE }[normalizedStage];
+}
+
+function stageTransformStack(stage, includesRightReentry) {
+	const normalizedStage = String(stage).toUpperCase();
+	if (normalizedStage === "BASE") return ["native production SketchV4 realization"];
+	const stack = ["ordinary synthetic terminal with raw transformed roles"];
+	if (["B", "C", "D", "E"].includes(normalizedStage)) stack.push("adaptive conditional merge doorways and rays");
+	if (["C", "D", "E"].includes(normalizedStage) && includesRightReentry) stack.push("divides i-57 right-to-right H/V/H compatibility route");
+	if (["D", "E"].includes(normalizedStage)) stack.push("generalized backward-loop source attachment");
+	if (normalizedStage === "E") stack.push("generalized backward-loop target attachment");
+	return stack;
+}
+
+function buildCheckpointStageView(program, programName, stage, options = {}) {
+	const normalizedStage = String(stage ?? "").toUpperCase();
+	if (!CHECKPOINT_STAGE_IDS.includes(normalizedStage)) throw new Error(`unknown checkpoint stage ${stage}`);
+	if (normalizedStage === "BASE") {
+		if (options.orientationMap) throw new Error("BASE does not accept a harness orientation override");
+		const view = buildNativeProductionBaseView(program, programName);
+		view.checkpointStage = normalizedStage;
+		view.stageTransformStack = stageTransformStack(normalizedStage, false);
+		return view;
+	}
+
+	const rawBase = buildRawRoleOrdinaryTerminalBase(program, programName);
+	const realize = buildCheckpointStageRealizer(rawBase, normalizedStage);
+	let orientationResult = null;
+	let orientationMap = options.orientationMap ?? null;
+	if (!orientationMap) {
+		orientationResult = assignOrientation({
+			realForks: rawBase.roles.realForkIds,
+			bottomUp: rawBase.tree.bottomUp,
+			rfParent: rawBase.tree.rfParent,
+			rfChildren: rawBase.tree.rfChildren,
+			evaluate: (candidateMap) => realize(candidateMap).defects,
+			pins: /* @__PURE__ */ new Map()
+		});
+		orientationMap = orientationResult.orientationMap;
+	}
+	const view = realize(orientationMap);
+	view.orientationMap = orientationMap;
+	view.orientationResult = orientationResult;
+	view.checkpointStage = normalizedStage;
+	view.stageTransformStack = stageTransformStack(normalizedStage, programName === "characteristic:divides");
+	return view;
+}
 function canonicalGeometry(view) {
 	return JSON.stringify({
 		nodeBoxes: [...view.boxes].sort(([a], [b]) => a.localeCompare(b)).map(([id, box]) => [
@@ -1280,4 +1371,4 @@ function namedOrientationMap(view) {
 	return Object.fromEntries([...view.orientationMap].sort(([a], [b]) => a.localeCompare(b)).map(([id, orientation]) => [id, orientation.no === "right" ? "flipped" : "default"]));
 }
 //#endregion
-export { buildComposedLoopEndpointRealizer, buildCurrentCheckpointView, buildRawRoleOrdinaryTerminalBase, canonicalGeometry, namedOrientationMap, summarizeView, unrelatedNodeEdgeIntersections };
+export { CHECKPOINT_STAGE_IDS, buildCheckpointStageView, buildComposedLoopEndpointRealizer, buildCurrentCheckpointView, buildRawRoleOrdinaryTerminalBase, canonicalGeometry, namedOrientationMap, summarizeView, unrelatedNodeEdgeIntersections };

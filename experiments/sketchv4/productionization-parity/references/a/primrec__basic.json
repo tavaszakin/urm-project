@@ -1,0 +1,2760 @@
+{
+  "diagnostics": {
+    "attachments": [
+      {
+        "edgeId": "entry",
+        "edgeRole": "entry-link",
+        "legal": true,
+        "routeFamily": "entry",
+        "source": {
+          "adjacentPoint": [
+            0,
+            67
+          ],
+          "incidentDirection": "south",
+          "legal": true,
+          "nodeId": "start",
+          "nodeShape": "terminal",
+          "nodeType": "start",
+          "portName": "bottom",
+          "portPoint": [
+            0,
+            9
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            0,
+            9
+          ],
+          "incidentDirection": "north",
+          "legal": true,
+          "nodeId": "i-0",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "top",
+          "portPoint": [
+            0,
+            67
+          ],
+          "reason": null
+        }
+      },
+      {
+        "edgeId": "i-0-cont",
+        "edgeRole": "setup-link",
+        "legal": true,
+        "routeFamily": "setup",
+        "source": {
+          "adjacentPoint": [
+            0,
+            121
+          ],
+          "incidentDirection": "south",
+          "legal": true,
+          "nodeId": "i-0",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "bottom",
+          "portPoint": [
+            0,
+            97
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            0,
+            97
+          ],
+          "incidentDirection": "north",
+          "legal": true,
+          "nodeId": "i-1",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "top",
+          "portPoint": [
+            0,
+            121
+          ],
+          "reason": null
+        }
+      },
+      {
+        "edgeId": "i-1-cont",
+        "edgeRole": "setup-link",
+        "legal": true,
+        "routeFamily": "setup",
+        "source": {
+          "adjacentPoint": [
+            0,
+            175
+          ],
+          "incidentDirection": "south",
+          "legal": true,
+          "nodeId": "i-1",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "bottom",
+          "portPoint": [
+            0,
+            151
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            0,
+            151
+          ],
+          "incidentDirection": "north",
+          "legal": true,
+          "nodeId": "i-2",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "top",
+          "portPoint": [
+            0,
+            175
+          ],
+          "reason": null
+        }
+      },
+      {
+        "edgeId": "i-10-cont",
+        "edgeRole": "spine-continuation",
+        "legal": true,
+        "routeFamily": "spine",
+        "source": {
+          "adjacentPoint": [
+            -203.2,
+            920.1467672771852
+          ],
+          "incidentDirection": "south",
+          "legal": true,
+          "nodeId": "i-10",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "bottom",
+          "portPoint": [
+            -203.2,
+            868.1467672771852
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            -203.2,
+            868.1467672771852
+          ],
+          "incidentDirection": "north",
+          "legal": true,
+          "nodeId": "i-11",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "top",
+          "portPoint": [
+            -203.2,
+            920.1467672771852
+          ],
+          "reason": null
+        }
+      },
+      {
+        "edgeId": "i-11-cont",
+        "edgeRole": "spine-continuation",
+        "legal": true,
+        "routeFamily": "spine",
+        "source": {
+          "adjacentPoint": [
+            -203.2,
+            1002.1467672771852
+          ],
+          "incidentDirection": "south",
+          "legal": true,
+          "nodeId": "i-11",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "bottom",
+          "portPoint": [
+            -203.2,
+            950.1467672771852
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            -203.2,
+            950.1467672771852
+          ],
+          "incidentDirection": "north",
+          "legal": true,
+          "nodeId": "i-12",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "top",
+          "portPoint": [
+            -203.2,
+            1002.1467672771852
+          ],
+          "reason": null
+        }
+      },
+      {
+        "edgeId": "i-12-cont",
+        "edgeRole": "spine-continuation",
+        "legal": true,
+        "routeFamily": "spine",
+        "source": {
+          "adjacentPoint": [
+            -203.2,
+            1076.146767277185
+          ],
+          "incidentDirection": "south",
+          "legal": true,
+          "nodeId": "i-12",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "bottom",
+          "portPoint": [
+            -203.2,
+            1032.146767277185
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            -203.2,
+            1032.146767277185
+          ],
+          "incidentDirection": "north",
+          "legal": true,
+          "nodeId": "i-13",
+          "nodeShape": "diamond",
+          "nodeType": "conditionalJump",
+          "portName": "top",
+          "portPoint": [
+            -203.2,
+            1076.146767277185
+          ],
+          "reason": null
+        }
+      },
+      {
+        "edgeId": "i-13-no",
+        "edgeRole": "branch-exit",
+        "legal": false,
+        "routeFamily": "branch-exit",
+        "source": {
+          "adjacentPoint": [
+            -366.206,
+            1203.1912457533895
+          ],
+          "incidentDirection": "south-west",
+          "legal": true,
+          "nodeId": "i-13",
+          "nodeShape": "diamond",
+          "nodeType": "conditionalJump",
+          "portName": "lower-left",
+          "portPoint": [
+            -223.7,
+            1110.646767277185
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            -223.7,
+            1110.646767277185
+          ],
+          "incidentDirection": "north-east",
+          "legal": false,
+          "nodeId": "i-14",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "top",
+          "portPoint": [
+            -366.206,
+            1203.1912457533895
+          ],
+          "reason": "legal port top, illegal incident direction north-east; expected north"
+        }
+      },
+      {
+        "edgeId": "i-13-yes",
+        "edgeRole": "branch-exit",
+        "legal": false,
+        "routeFamily": "branch-exit",
+        "source": {
+          "adjacentPoint": [
+            -40.19399999999999,
+            1203.1912457533895
+          ],
+          "incidentDirection": "south-east",
+          "legal": true,
+          "nodeId": "i-13",
+          "nodeShape": "diamond",
+          "nodeType": "conditionalJump",
+          "portName": "lower-right",
+          "portPoint": [
+            -182.7,
+            1110.646767277185
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            -182.7,
+            1110.646767277185
+          ],
+          "incidentDirection": "north-west",
+          "legal": false,
+          "nodeId": "i-17",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "top",
+          "portPoint": [
+            -40.19399999999999,
+            1203.1912457533895
+          ],
+          "reason": "legal port top, illegal incident direction north-west; expected north"
+        }
+      },
+      {
+        "edgeId": "i-14-cont",
+        "edgeRole": "spine-continuation",
+        "legal": true,
+        "routeFamily": "spine",
+        "source": {
+          "adjacentPoint": [
+            -366.206,
+            1285.1912457533895
+          ],
+          "incidentDirection": "south",
+          "legal": true,
+          "nodeId": "i-14",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "bottom",
+          "portPoint": [
+            -366.206,
+            1233.1912457533895
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            -366.206,
+            1233.1912457533895
+          ],
+          "incidentDirection": "north",
+          "legal": true,
+          "nodeId": "i-15",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "top",
+          "portPoint": [
+            -366.206,
+            1285.1912457533895
+          ],
+          "reason": null
+        }
+      },
+      {
+        "edgeId": "i-15-cont",
+        "edgeRole": "spine-continuation",
+        "legal": true,
+        "routeFamily": "spine",
+        "source": {
+          "adjacentPoint": [
+            -366.206,
+            1367.1912457533895
+          ],
+          "incidentDirection": "south",
+          "legal": true,
+          "nodeId": "i-15",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "bottom",
+          "portPoint": [
+            -366.206,
+            1315.1912457533895
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            -366.206,
+            1315.1912457533895
+          ],
+          "incidentDirection": "north",
+          "legal": true,
+          "nodeId": "i-16",
+          "nodeShape": "rectangle",
+          "nodeType": "unconditionalJump",
+          "portName": "top",
+          "portPoint": [
+            -366.206,
+            1367.1912457533895
+          ],
+          "reason": null
+        }
+      },
+      {
+        "edgeId": "i-16-jump",
+        "edgeRole": "loop-return",
+        "legal": true,
+        "routeFamily": "loop-return",
+        "source": {
+          "adjacentPoint": [
+            -450,
+            1382.1912457533895
+          ],
+          "incidentDirection": "west",
+          "legal": true,
+          "nodeId": "i-16",
+          "nodeShape": "rectangle",
+          "nodeType": "unconditionalJump",
+          "portName": "left",
+          "portPoint": [
+            -410.206,
+            1382.1912457533895
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            -450,
+            1099.146767277185
+          ],
+          "incidentDirection": "west",
+          "legal": true,
+          "nodeId": "i-13",
+          "nodeShape": "diamond",
+          "nodeType": "conditionalJump",
+          "portName": "left",
+          "portPoint": [
+            -244.2,
+            1099.146767277185
+          ],
+          "reason": null
+        }
+      },
+      {
+        "edgeId": "i-17-cont",
+        "edgeRole": "spine-continuation",
+        "legal": true,
+        "routeFamily": "spine",
+        "source": {
+          "adjacentPoint": [
+            -40.19399999999999,
+            1285.1912457533895
+          ],
+          "incidentDirection": "south",
+          "legal": true,
+          "nodeId": "i-17",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "bottom",
+          "portPoint": [
+            -40.19399999999999,
+            1233.1912457533895
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            -40.19399999999999,
+            1233.1912457533895
+          ],
+          "incidentDirection": "north",
+          "legal": true,
+          "nodeId": "i-18",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "top",
+          "portPoint": [
+            -40.19399999999999,
+            1285.1912457533895
+          ],
+          "reason": null
+        }
+      },
+      {
+        "edgeId": "i-18-cont",
+        "edgeRole": "spine-continuation",
+        "legal": true,
+        "routeFamily": "spine",
+        "source": {
+          "adjacentPoint": [
+            -40.19399999999999,
+            1367.1912457533895
+          ],
+          "incidentDirection": "south",
+          "legal": true,
+          "nodeId": "i-18",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "bottom",
+          "portPoint": [
+            -40.19399999999999,
+            1315.1912457533895
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            -40.19399999999999,
+            1315.1912457533895
+          ],
+          "incidentDirection": "north",
+          "legal": true,
+          "nodeId": "i-19",
+          "nodeShape": "rectangle",
+          "nodeType": "unconditionalJump",
+          "portName": "top",
+          "portPoint": [
+            -40.19399999999999,
+            1367.1912457533895
+          ],
+          "reason": null
+        }
+      },
+      {
+        "edgeId": "i-19-jump",
+        "edgeRole": "loop-return",
+        "legal": false,
+        "routeFamily": "loop-return",
+        "source": {
+          "adjacentPoint": [
+            -84.19399999999999,
+            1446.1912457533895
+          ],
+          "incidentDirection": "south",
+          "legal": false,
+          "nodeId": "i-19",
+          "nodeShape": "rectangle",
+          "nodeType": "unconditionalJump",
+          "portName": "left",
+          "portPoint": [
+            -84.19399999999999,
+            1382.1912457533895
+          ],
+          "reason": "legal port left, illegal incident direction south; expected west"
+        },
+        "target": {
+          "adjacentPoint": [
+            -494,
+            380
+          ],
+          "incidentDirection": "west",
+          "legal": true,
+          "nodeId": "i-5",
+          "nodeShape": "diamond",
+          "nodeType": "conditionalJump",
+          "portName": "left",
+          "portPoint": [
+            -41,
+            380
+          ],
+          "reason": null
+        }
+      },
+      {
+        "edgeId": "i-2-cont",
+        "edgeRole": "setup-link",
+        "legal": true,
+        "routeFamily": "setup",
+        "source": {
+          "adjacentPoint": [
+            0,
+            229
+          ],
+          "incidentDirection": "south",
+          "legal": true,
+          "nodeId": "i-2",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "bottom",
+          "portPoint": [
+            0,
+            205
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            0,
+            205
+          ],
+          "incidentDirection": "north",
+          "legal": true,
+          "nodeId": "i-3",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "top",
+          "portPoint": [
+            0,
+            229
+          ],
+          "reason": null
+        }
+      },
+      {
+        "edgeId": "i-20-cont",
+        "edgeRole": "spine-continuation",
+        "legal": true,
+        "routeFamily": "spine",
+        "source": {
+          "adjacentPoint": [
+            203.2,
+            592.1467672771852
+          ],
+          "incidentDirection": "south",
+          "legal": true,
+          "nodeId": "i-20",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "bottom",
+          "portPoint": [
+            203.2,
+            540.1467672771852
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            203.2,
+            540.1467672771852
+          ],
+          "incidentDirection": "north",
+          "legal": true,
+          "nodeId": "i-21",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "top",
+          "portPoint": [
+            203.2,
+            592.1467672771852
+          ],
+          "reason": null
+        }
+      },
+      {
+        "edgeId": "i-3-cont",
+        "edgeRole": "setup-link",
+        "legal": true,
+        "routeFamily": "setup",
+        "source": {
+          "adjacentPoint": [
+            0,
+            283
+          ],
+          "incidentDirection": "south",
+          "legal": true,
+          "nodeId": "i-3",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "bottom",
+          "portPoint": [
+            0,
+            259
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            0,
+            259
+          ],
+          "incidentDirection": "north",
+          "legal": true,
+          "nodeId": "i-4",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "top",
+          "portPoint": [
+            0,
+            283
+          ],
+          "reason": null
+        }
+      },
+      {
+        "edgeId": "i-4-cont",
+        "edgeRole": "spine-continuation",
+        "legal": true,
+        "routeFamily": "spine",
+        "source": {
+          "adjacentPoint": [
+            0,
+            357
+          ],
+          "incidentDirection": "south",
+          "legal": true,
+          "nodeId": "i-4",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "bottom",
+          "portPoint": [
+            0,
+            313
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            0,
+            313
+          ],
+          "incidentDirection": "north",
+          "legal": true,
+          "nodeId": "i-5",
+          "nodeShape": "diamond",
+          "nodeType": "conditionalJump",
+          "portName": "top",
+          "portPoint": [
+            0,
+            357
+          ],
+          "reason": null
+        }
+      },
+      {
+        "edgeId": "i-5-no",
+        "edgeRole": "branch-exit",
+        "legal": false,
+        "routeFamily": "branch-exit",
+        "source": {
+          "adjacentPoint": [
+            -203.2,
+            510.1467672771852
+          ],
+          "incidentDirection": "south-west",
+          "legal": true,
+          "nodeId": "i-5",
+          "nodeShape": "diamond",
+          "nodeType": "conditionalJump",
+          "portName": "lower-left",
+          "portPoint": [
+            -20.5,
+            391.5
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            -20.5,
+            391.5
+          ],
+          "incidentDirection": "north-east",
+          "legal": false,
+          "nodeId": "i-6",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "top",
+          "portPoint": [
+            -203.2,
+            510.1467672771852
+          ],
+          "reason": "legal port top, illegal incident direction north-east; expected north"
+        }
+      },
+      {
+        "edgeId": "i-5-yes",
+        "edgeRole": "branch-exit",
+        "legal": false,
+        "routeFamily": "branch-exit",
+        "source": {
+          "adjacentPoint": [
+            203.2,
+            510.1467672771852
+          ],
+          "incidentDirection": "south-east",
+          "legal": true,
+          "nodeId": "i-5",
+          "nodeShape": "diamond",
+          "nodeType": "conditionalJump",
+          "portName": "lower-right",
+          "portPoint": [
+            20.5,
+            391.5
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            20.5,
+            391.5
+          ],
+          "incidentDirection": "north-west",
+          "legal": false,
+          "nodeId": "i-20",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "top",
+          "portPoint": [
+            203.2,
+            510.1467672771852
+          ],
+          "reason": "legal port top, illegal incident direction north-west; expected north"
+        }
+      },
+      {
+        "edgeId": "i-6-cont",
+        "edgeRole": "spine-continuation",
+        "legal": true,
+        "routeFamily": "spine",
+        "source": {
+          "adjacentPoint": [
+            -203.2,
+            592.1467672771852
+          ],
+          "incidentDirection": "south",
+          "legal": true,
+          "nodeId": "i-6",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "bottom",
+          "portPoint": [
+            -203.2,
+            540.1467672771852
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            -203.2,
+            540.1467672771852
+          ],
+          "incidentDirection": "north",
+          "legal": true,
+          "nodeId": "i-7",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "top",
+          "portPoint": [
+            -203.2,
+            592.1467672771852
+          ],
+          "reason": null
+        }
+      },
+      {
+        "edgeId": "i-7-cont",
+        "edgeRole": "spine-continuation",
+        "legal": true,
+        "routeFamily": "spine",
+        "source": {
+          "adjacentPoint": [
+            -203.2,
+            674.1467672771852
+          ],
+          "incidentDirection": "south",
+          "legal": true,
+          "nodeId": "i-7",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "bottom",
+          "portPoint": [
+            -203.2,
+            622.1467672771852
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            -203.2,
+            622.1467672771852
+          ],
+          "incidentDirection": "north",
+          "legal": true,
+          "nodeId": "i-8",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "top",
+          "portPoint": [
+            -203.2,
+            674.1467672771852
+          ],
+          "reason": null
+        }
+      },
+      {
+        "edgeId": "i-8-cont",
+        "edgeRole": "spine-continuation",
+        "legal": true,
+        "routeFamily": "spine",
+        "source": {
+          "adjacentPoint": [
+            -203.2,
+            756.1467672771852
+          ],
+          "incidentDirection": "south",
+          "legal": true,
+          "nodeId": "i-8",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "bottom",
+          "portPoint": [
+            -203.2,
+            704.1467672771852
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            -203.2,
+            704.1467672771852
+          ],
+          "incidentDirection": "north",
+          "legal": true,
+          "nodeId": "i-9",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "top",
+          "portPoint": [
+            -203.2,
+            756.1467672771852
+          ],
+          "reason": null
+        }
+      },
+      {
+        "edgeId": "i-9-cont",
+        "edgeRole": "spine-continuation",
+        "legal": true,
+        "routeFamily": "spine",
+        "source": {
+          "adjacentPoint": [
+            -203.2,
+            838.1467672771852
+          ],
+          "incidentDirection": "south",
+          "legal": true,
+          "nodeId": "i-9",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "bottom",
+          "portPoint": [
+            -203.2,
+            786.1467672771852
+          ],
+          "reason": null
+        },
+        "target": {
+          "adjacentPoint": [
+            -203.2,
+            786.1467672771852
+          ],
+          "incidentDirection": "north",
+          "legal": true,
+          "nodeId": "i-10",
+          "nodeShape": "rectangle",
+          "nodeType": "action",
+          "portName": "top",
+          "portPoint": [
+            -203.2,
+            838.1467672771852
+          ],
+          "reason": null
+        }
+      }
+    ],
+    "defects": {
+      "branchVsBranchCrossingCount": 0,
+      "crossingCount": 0,
+      "defects": [],
+      "edgeOverlapCount": 0,
+      "excludedDiamondInBranchCrossingCount": 0,
+      "laneBundleConflictCount": 0,
+      "nodeOverlapCount": 0,
+      "placementClearanceFailureCount": 0,
+      "routeFamilyConflictCount": 0,
+      "total": 0
+    },
+    "orientationResult": {
+      "finalTotal": 0,
+      "rareRepairCandidates": [],
+      "rows": [
+        {
+          "childRealForks": [],
+          "chosenCost": 0,
+          "costDefault": 0,
+          "costFlipped": 0,
+          "defaultBit": "default",
+          "isPinned": false,
+          "parentRealFork": "i-5",
+          "realForkId": "i-13",
+          "strictImprovement": false,
+          "tieBreakReason": "tie -> default",
+          "v4AssignedBit": "default"
+        },
+        {
+          "childRealForks": [
+            "i-13"
+          ],
+          "chosenCost": 0,
+          "costDefault": 0,
+          "costFlipped": 0,
+          "defaultBit": "default",
+          "isPinned": false,
+          "parentRealFork": null,
+          "realForkId": "i-5",
+          "strictImprovement": false,
+          "tieBreakReason": "tie -> default",
+          "v4AssignedBit": "default"
+        }
+      ]
+    },
+    "stageEvidence": {
+      "adaptiveChangedEdgeIds": [],
+      "adaptiveDecisions": [],
+      "eligibleConditionalMergeEdgeIds": [],
+      "i57CompatibilityRoute": null,
+      "legalLoopSourceCount": 1,
+      "legalLoopTargetCount": 2,
+      "loopReturnEdgeCount": 2,
+      "loopSourceChanges": [],
+      "loopTargetAmbiguousEdgeIds": [],
+      "loopTargetChanges": [],
+      "loopTargetNoCandidateEdgeIds": []
+    }
+  },
+  "fixture": "primrec:basic",
+  "geometry": {
+    "canonicalBytes": 4938,
+    "sha256": "be2c021566d0774fe63eb885ca90a7a4f00a9f596b2adddc9c6d5a019ea2e32f"
+  },
+  "nodes": [
+    {
+      "box": {
+        "bottom": 97,
+        "cx": 0,
+        "cy": 82,
+        "h": 30,
+        "left": -44,
+        "right": 44,
+        "top": 67,
+        "w": 88
+      },
+      "id": "i-0",
+      "instructionIndex": 0,
+      "kind": "action",
+      "role": "setup-node"
+    },
+    {
+      "box": {
+        "bottom": 151,
+        "cx": 0,
+        "cy": 136,
+        "h": 30,
+        "left": -44,
+        "right": 44,
+        "top": 121,
+        "w": 88
+      },
+      "id": "i-1",
+      "instructionIndex": 1,
+      "kind": "action",
+      "role": "setup-node"
+    },
+    {
+      "box": {
+        "bottom": 868.1467672771852,
+        "cx": -203.2,
+        "cy": 853.1467672771852,
+        "h": 30,
+        "left": -247.2,
+        "right": -159.2,
+        "top": 838.1467672771852,
+        "w": 88
+      },
+      "id": "i-10",
+      "instructionIndex": 10,
+      "kind": "action",
+      "role": "subtree-member"
+    },
+    {
+      "box": {
+        "bottom": 950.1467672771852,
+        "cx": -203.2,
+        "cy": 935.1467672771852,
+        "h": 30,
+        "left": -247.2,
+        "right": -159.2,
+        "top": 920.1467672771852,
+        "w": 88
+      },
+      "id": "i-11",
+      "instructionIndex": 11,
+      "kind": "action",
+      "role": "subtree-member"
+    },
+    {
+      "box": {
+        "bottom": 1032.146767277185,
+        "cx": -203.2,
+        "cy": 1017.1467672771852,
+        "h": 30,
+        "left": -247.2,
+        "right": -159.2,
+        "top": 1002.1467672771852,
+        "w": 88
+      },
+      "id": "i-12",
+      "instructionIndex": 12,
+      "kind": "action",
+      "role": "subtree-member"
+    },
+    {
+      "box": {
+        "bottom": 1122.146767277185,
+        "cx": -203.2,
+        "cy": 1099.146767277185,
+        "h": 46,
+        "left": -244.2,
+        "right": -162.2,
+        "top": 1076.146767277185,
+        "w": 82
+      },
+      "id": "i-13",
+      "instructionIndex": 13,
+      "kind": "conditionalJump",
+      "role": "real-fork"
+    },
+    {
+      "box": {
+        "bottom": 1233.1912457533895,
+        "cx": -366.206,
+        "cy": 1218.1912457533895,
+        "h": 30,
+        "left": -410.206,
+        "right": -322.206,
+        "top": 1203.1912457533895,
+        "w": 88
+      },
+      "id": "i-14",
+      "instructionIndex": 14,
+      "kind": "action",
+      "role": "subtree-member"
+    },
+    {
+      "box": {
+        "bottom": 1315.1912457533895,
+        "cx": -366.206,
+        "cy": 1300.1912457533895,
+        "h": 30,
+        "left": -410.206,
+        "right": -322.206,
+        "top": 1285.1912457533895,
+        "w": 88
+      },
+      "id": "i-15",
+      "instructionIndex": 15,
+      "kind": "action",
+      "role": "subtree-member"
+    },
+    {
+      "box": {
+        "bottom": 1397.1912457533895,
+        "cx": -366.206,
+        "cy": 1382.1912457533895,
+        "h": 30,
+        "left": -410.206,
+        "right": -322.206,
+        "top": 1367.1912457533895,
+        "w": 88
+      },
+      "id": "i-16",
+      "instructionIndex": 16,
+      "kind": "unconditionalJump",
+      "role": "subtree-member"
+    },
+    {
+      "box": {
+        "bottom": 1233.1912457533895,
+        "cx": -40.19399999999999,
+        "cy": 1218.1912457533895,
+        "h": 30,
+        "left": -84.19399999999999,
+        "right": 3.8060000000000116,
+        "top": 1203.1912457533895,
+        "w": 88
+      },
+      "id": "i-17",
+      "instructionIndex": 17,
+      "kind": "action",
+      "role": "subtree-member"
+    },
+    {
+      "box": {
+        "bottom": 1315.1912457533895,
+        "cx": -40.19399999999999,
+        "cy": 1300.1912457533895,
+        "h": 30,
+        "left": -84.19399999999999,
+        "right": 3.8060000000000116,
+        "top": 1285.1912457533895,
+        "w": 88
+      },
+      "id": "i-18",
+      "instructionIndex": 18,
+      "kind": "action",
+      "role": "subtree-member"
+    },
+    {
+      "box": {
+        "bottom": 1397.1912457533895,
+        "cx": -40.19399999999999,
+        "cy": 1382.1912457533895,
+        "h": 30,
+        "left": -84.19399999999999,
+        "right": 3.8060000000000116,
+        "top": 1367.1912457533895,
+        "w": 88
+      },
+      "id": "i-19",
+      "instructionIndex": 19,
+      "kind": "unconditionalJump",
+      "role": "subtree-member"
+    },
+    {
+      "box": {
+        "bottom": 205,
+        "cx": 0,
+        "cy": 190,
+        "h": 30,
+        "left": -44,
+        "right": 44,
+        "top": 175,
+        "w": 88
+      },
+      "id": "i-2",
+      "instructionIndex": 2,
+      "kind": "action",
+      "role": "setup-node"
+    },
+    {
+      "box": {
+        "bottom": 540.1467672771852,
+        "cx": 203.2,
+        "cy": 525.1467672771852,
+        "h": 30,
+        "left": 159.2,
+        "right": 247.2,
+        "top": 510.1467672771852,
+        "w": 88
+      },
+      "id": "i-20",
+      "instructionIndex": 20,
+      "kind": "action",
+      "role": "subtree-member"
+    },
+    {
+      "box": {
+        "bottom": 622.1467672771852,
+        "cx": 203.2,
+        "cy": 607.1467672771852,
+        "h": 30,
+        "left": 159.2,
+        "right": 247.2,
+        "top": 592.1467672771852,
+        "w": 88
+      },
+      "id": "i-21",
+      "instructionIndex": 21,
+      "kind": "action",
+      "role": "subtree-member"
+    },
+    {
+      "box": {
+        "bottom": 259,
+        "cx": 0,
+        "cy": 244,
+        "h": 30,
+        "left": -44,
+        "right": 44,
+        "top": 229,
+        "w": 88
+      },
+      "id": "i-3",
+      "instructionIndex": 3,
+      "kind": "action",
+      "role": "setup-node"
+    },
+    {
+      "box": {
+        "bottom": 313,
+        "cx": 0,
+        "cy": 298,
+        "h": 30,
+        "left": -44,
+        "right": 44,
+        "top": 283,
+        "w": 88
+      },
+      "id": "i-4",
+      "instructionIndex": 4,
+      "kind": "action",
+      "role": "setup-node"
+    },
+    {
+      "box": {
+        "bottom": 403,
+        "cx": 0,
+        "cy": 380,
+        "h": 46,
+        "left": -41,
+        "right": 41,
+        "top": 357,
+        "w": 82
+      },
+      "id": "i-5",
+      "instructionIndex": 5,
+      "kind": "conditionalJump",
+      "role": "real-fork"
+    },
+    {
+      "box": {
+        "bottom": 540.1467672771852,
+        "cx": -203.2,
+        "cy": 525.1467672771852,
+        "h": 30,
+        "left": -247.2,
+        "right": -159.2,
+        "top": 510.1467672771852,
+        "w": 88
+      },
+      "id": "i-6",
+      "instructionIndex": 6,
+      "kind": "action",
+      "role": "subtree-member"
+    },
+    {
+      "box": {
+        "bottom": 622.1467672771852,
+        "cx": -203.2,
+        "cy": 607.1467672771852,
+        "h": 30,
+        "left": -247.2,
+        "right": -159.2,
+        "top": 592.1467672771852,
+        "w": 88
+      },
+      "id": "i-7",
+      "instructionIndex": 7,
+      "kind": "action",
+      "role": "subtree-member"
+    },
+    {
+      "box": {
+        "bottom": 704.1467672771852,
+        "cx": -203.2,
+        "cy": 689.1467672771852,
+        "h": 30,
+        "left": -247.2,
+        "right": -159.2,
+        "top": 674.1467672771852,
+        "w": 88
+      },
+      "id": "i-8",
+      "instructionIndex": 8,
+      "kind": "action",
+      "role": "subtree-member"
+    },
+    {
+      "box": {
+        "bottom": 786.1467672771852,
+        "cx": -203.2,
+        "cy": 771.1467672771852,
+        "h": 30,
+        "left": -247.2,
+        "right": -159.2,
+        "top": 756.1467672771852,
+        "w": 88
+      },
+      "id": "i-9",
+      "instructionIndex": 9,
+      "kind": "action",
+      "role": "subtree-member"
+    },
+    {
+      "box": {
+        "bottom": 9,
+        "cx": 0,
+        "cy": 0,
+        "h": 18,
+        "left": -24,
+        "right": 24,
+        "top": -9,
+        "w": 48
+      },
+      "id": "start",
+      "instructionIndex": null,
+      "kind": "start",
+      "role": "start"
+    }
+  ],
+  "orientation": [
+    {
+      "bit": "default",
+      "id": "i-13",
+      "no": "left",
+      "yes": "right"
+    },
+    {
+      "bit": "default",
+      "id": "i-5",
+      "no": "left",
+      "yes": "right"
+    }
+  ],
+  "ports": [
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        0,
+        9
+      ],
+      "defaultTargetPort": [
+        0,
+        67
+      ],
+      "edgeId": "entry",
+      "portPolicyCase": "entry-link",
+      "role": "entry-link",
+      "source": "start",
+      "sourcePort": [
+        0,
+        9
+      ],
+      "target": "i-0",
+      "targetPort": [
+        0,
+        67
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        0,
+        97
+      ],
+      "defaultTargetPort": [
+        0,
+        121
+      ],
+      "edgeId": "i-0-cont",
+      "portPolicyCase": "setup-link",
+      "role": "setup-link",
+      "source": "i-0",
+      "sourcePort": [
+        0,
+        97
+      ],
+      "target": "i-1",
+      "targetPort": [
+        0,
+        121
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        0,
+        151
+      ],
+      "defaultTargetPort": [
+        0,
+        175
+      ],
+      "edgeId": "i-1-cont",
+      "portPolicyCase": "setup-link",
+      "role": "setup-link",
+      "source": "i-1",
+      "sourcePort": [
+        0,
+        151
+      ],
+      "target": "i-2",
+      "targetPort": [
+        0,
+        175
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        -203.2,
+        868.1467672771852
+      ],
+      "defaultTargetPort": [
+        -203.2,
+        920.1467672771852
+      ],
+      "edgeId": "i-10-cont",
+      "portPolicyCase": "spine-continuation",
+      "role": "spine-continuation",
+      "source": "i-10",
+      "sourcePort": [
+        -203.2,
+        868.1467672771852
+      ],
+      "target": "i-11",
+      "targetPort": [
+        -203.2,
+        920.1467672771852
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        -203.2,
+        950.1467672771852
+      ],
+      "defaultTargetPort": [
+        -203.2,
+        1002.1467672771852
+      ],
+      "edgeId": "i-11-cont",
+      "portPolicyCase": "spine-continuation",
+      "role": "spine-continuation",
+      "source": "i-11",
+      "sourcePort": [
+        -203.2,
+        950.1467672771852
+      ],
+      "target": "i-12",
+      "targetPort": [
+        -203.2,
+        1002.1467672771852
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        -203.2,
+        1032.146767277185
+      ],
+      "defaultTargetPort": [
+        -203.2,
+        1076.146767277185
+      ],
+      "edgeId": "i-12-cont",
+      "portPolicyCase": "spine-continuation",
+      "role": "spine-continuation",
+      "source": "i-12",
+      "sourcePort": [
+        -203.2,
+        1032.146767277185
+      ],
+      "target": "i-13",
+      "targetPort": [
+        -203.2,
+        1076.146767277185
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        -223.7,
+        1110.646767277185
+      ],
+      "defaultTargetPort": [
+        -366.206,
+        1203.1912457533895
+      ],
+      "edgeId": "i-13-no",
+      "portPolicyCase": "branch-exit",
+      "role": "branch-exit",
+      "source": "i-13",
+      "sourcePort": [
+        -223.7,
+        1110.646767277185
+      ],
+      "target": "i-14",
+      "targetPort": [
+        -366.206,
+        1203.1912457533895
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        -182.7,
+        1110.646767277185
+      ],
+      "defaultTargetPort": [
+        -40.19399999999999,
+        1203.1912457533895
+      ],
+      "edgeId": "i-13-yes",
+      "portPolicyCase": "branch-exit",
+      "role": "branch-exit",
+      "source": "i-13",
+      "sourcePort": [
+        -182.7,
+        1110.646767277185
+      ],
+      "target": "i-17",
+      "targetPort": [
+        -40.19399999999999,
+        1203.1912457533895
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        -366.206,
+        1233.1912457533895
+      ],
+      "defaultTargetPort": [
+        -366.206,
+        1285.1912457533895
+      ],
+      "edgeId": "i-14-cont",
+      "portPolicyCase": "spine-continuation",
+      "role": "spine-continuation",
+      "source": "i-14",
+      "sourcePort": [
+        -366.206,
+        1233.1912457533895
+      ],
+      "target": "i-15",
+      "targetPort": [
+        -366.206,
+        1285.1912457533895
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        -366.206,
+        1315.1912457533895
+      ],
+      "defaultTargetPort": [
+        -366.206,
+        1367.1912457533895
+      ],
+      "edgeId": "i-15-cont",
+      "portPolicyCase": "spine-continuation",
+      "role": "spine-continuation",
+      "source": "i-15",
+      "sourcePort": [
+        -366.206,
+        1315.1912457533895
+      ],
+      "target": "i-16",
+      "targetPort": [
+        -366.206,
+        1367.1912457533895
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        -410.206,
+        1382.1912457533895
+      ],
+      "defaultTargetPort": [
+        -244.2,
+        1099.146767277185
+      ],
+      "edgeId": "i-16-jump",
+      "portPolicyCase": "loop-return",
+      "role": "loop-return",
+      "source": "i-16",
+      "sourcePort": [
+        -410.206,
+        1382.1912457533895
+      ],
+      "target": "i-13",
+      "targetPort": [
+        -244.2,
+        1099.146767277185
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        -40.19399999999999,
+        1233.1912457533895
+      ],
+      "defaultTargetPort": [
+        -40.19399999999999,
+        1285.1912457533895
+      ],
+      "edgeId": "i-17-cont",
+      "portPolicyCase": "spine-continuation",
+      "role": "spine-continuation",
+      "source": "i-17",
+      "sourcePort": [
+        -40.19399999999999,
+        1233.1912457533895
+      ],
+      "target": "i-18",
+      "targetPort": [
+        -40.19399999999999,
+        1285.1912457533895
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        -40.19399999999999,
+        1315.1912457533895
+      ],
+      "defaultTargetPort": [
+        -40.19399999999999,
+        1367.1912457533895
+      ],
+      "edgeId": "i-18-cont",
+      "portPolicyCase": "spine-continuation",
+      "role": "spine-continuation",
+      "source": "i-18",
+      "sourcePort": [
+        -40.19399999999999,
+        1315.1912457533895
+      ],
+      "target": "i-19",
+      "targetPort": [
+        -40.19399999999999,
+        1367.1912457533895
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        -84.19399999999999,
+        1382.1912457533895
+      ],
+      "defaultTargetPort": [
+        -41,
+        380
+      ],
+      "edgeId": "i-19-jump",
+      "portPolicyCase": "loop-return",
+      "role": "loop-return",
+      "source": "i-19",
+      "sourcePort": [
+        -84.19399999999999,
+        1382.1912457533895
+      ],
+      "target": "i-5",
+      "targetPort": [
+        -41,
+        380
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        0,
+        205
+      ],
+      "defaultTargetPort": [
+        0,
+        229
+      ],
+      "edgeId": "i-2-cont",
+      "portPolicyCase": "setup-link",
+      "role": "setup-link",
+      "source": "i-2",
+      "sourcePort": [
+        0,
+        205
+      ],
+      "target": "i-3",
+      "targetPort": [
+        0,
+        229
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        203.2,
+        540.1467672771852
+      ],
+      "defaultTargetPort": [
+        203.2,
+        592.1467672771852
+      ],
+      "edgeId": "i-20-cont",
+      "portPolicyCase": "spine-continuation",
+      "role": "spine-continuation",
+      "source": "i-20",
+      "sourcePort": [
+        203.2,
+        540.1467672771852
+      ],
+      "target": "i-21",
+      "targetPort": [
+        203.2,
+        592.1467672771852
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        0,
+        259
+      ],
+      "defaultTargetPort": [
+        0,
+        283
+      ],
+      "edgeId": "i-3-cont",
+      "portPolicyCase": "setup-link",
+      "role": "setup-link",
+      "source": "i-3",
+      "sourcePort": [
+        0,
+        259
+      ],
+      "target": "i-4",
+      "targetPort": [
+        0,
+        283
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        0,
+        313
+      ],
+      "defaultTargetPort": [
+        0,
+        357
+      ],
+      "edgeId": "i-4-cont",
+      "portPolicyCase": "spine-continuation",
+      "role": "spine-continuation",
+      "source": "i-4",
+      "sourcePort": [
+        0,
+        313
+      ],
+      "target": "i-5",
+      "targetPort": [
+        0,
+        357
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        -20.5,
+        391.5
+      ],
+      "defaultTargetPort": [
+        -203.2,
+        510.1467672771852
+      ],
+      "edgeId": "i-5-no",
+      "portPolicyCase": "branch-exit",
+      "role": "branch-exit",
+      "source": "i-5",
+      "sourcePort": [
+        -20.5,
+        391.5
+      ],
+      "target": "i-6",
+      "targetPort": [
+        -203.2,
+        510.1467672771852
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        20.5,
+        391.5
+      ],
+      "defaultTargetPort": [
+        203.2,
+        510.1467672771852
+      ],
+      "edgeId": "i-5-yes",
+      "portPolicyCase": "branch-exit",
+      "role": "branch-exit",
+      "source": "i-5",
+      "sourcePort": [
+        20.5,
+        391.5
+      ],
+      "target": "i-20",
+      "targetPort": [
+        203.2,
+        510.1467672771852
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        -203.2,
+        540.1467672771852
+      ],
+      "defaultTargetPort": [
+        -203.2,
+        592.1467672771852
+      ],
+      "edgeId": "i-6-cont",
+      "portPolicyCase": "spine-continuation",
+      "role": "spine-continuation",
+      "source": "i-6",
+      "sourcePort": [
+        -203.2,
+        540.1467672771852
+      ],
+      "target": "i-7",
+      "targetPort": [
+        -203.2,
+        592.1467672771852
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        -203.2,
+        622.1467672771852
+      ],
+      "defaultTargetPort": [
+        -203.2,
+        674.1467672771852
+      ],
+      "edgeId": "i-7-cont",
+      "portPolicyCase": "spine-continuation",
+      "role": "spine-continuation",
+      "source": "i-7",
+      "sourcePort": [
+        -203.2,
+        622.1467672771852
+      ],
+      "target": "i-8",
+      "targetPort": [
+        -203.2,
+        674.1467672771852
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        -203.2,
+        704.1467672771852
+      ],
+      "defaultTargetPort": [
+        -203.2,
+        756.1467672771852
+      ],
+      "edgeId": "i-8-cont",
+      "portPolicyCase": "spine-continuation",
+      "role": "spine-continuation",
+      "source": "i-8",
+      "sourcePort": [
+        -203.2,
+        704.1467672771852
+      ],
+      "target": "i-9",
+      "targetPort": [
+        -203.2,
+        756.1467672771852
+      ]
+    },
+    {
+      "changed": false,
+      "defaultSourcePort": [
+        -203.2,
+        786.1467672771852
+      ],
+      "defaultTargetPort": [
+        -203.2,
+        838.1467672771852
+      ],
+      "edgeId": "i-9-cont",
+      "portPolicyCase": "spine-continuation",
+      "role": "spine-continuation",
+      "source": "i-9",
+      "sourcePort": [
+        -203.2,
+        786.1467672771852
+      ],
+      "target": "i-10",
+      "targetPort": [
+        -203.2,
+        838.1467672771852
+      ]
+    }
+  ],
+  "provenance": {
+    "archiveContentSetSha256": "2c5a07b33abc61a758ec7017c825389d065c0e73902a2a92a67cb74ce115a833",
+    "fixtureSnapshotSha256": "e77a35d377920b7546b406eaa9d7f6e788a7208d8433ea2e798f6d740d7120f5",
+    "generatedOn": "2026-09-06",
+    "sourceCheckpoint": "9f166f24721e7125ec9c0105e8960c6273d8d932",
+    "sourceHarnessCommit": "990d9f7c21f35ff16239eeea027c767ec683f922"
+  },
+  "routes": [
+    {
+      "connectorKind": null,
+      "edgeId": "entry",
+      "edgeRole": "entry-link",
+      "haltLandingSlot": null,
+      "laneBundleId": null,
+      "points": [
+        [
+          0,
+          9
+        ],
+        [
+          0,
+          67
+        ]
+      ],
+      "portPolicyCase": "entry-link",
+      "railCoord": null,
+      "routeFamily": "entry",
+      "source": "start",
+      "sourcePort": [
+        0,
+        9
+      ],
+      "target": "i-0",
+      "targetPort": [
+        0,
+        67
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-0-cont",
+      "edgeRole": "setup-link",
+      "haltLandingSlot": null,
+      "laneBundleId": null,
+      "points": [
+        [
+          0,
+          97
+        ],
+        [
+          0,
+          121
+        ]
+      ],
+      "portPolicyCase": "setup-link",
+      "railCoord": null,
+      "routeFamily": "setup",
+      "source": "i-0",
+      "sourcePort": [
+        0,
+        97
+      ],
+      "target": "i-1",
+      "targetPort": [
+        0,
+        121
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-1-cont",
+      "edgeRole": "setup-link",
+      "haltLandingSlot": null,
+      "laneBundleId": null,
+      "points": [
+        [
+          0,
+          151
+        ],
+        [
+          0,
+          175
+        ]
+      ],
+      "portPolicyCase": "setup-link",
+      "railCoord": null,
+      "routeFamily": "setup",
+      "source": "i-1",
+      "sourcePort": [
+        0,
+        151
+      ],
+      "target": "i-2",
+      "targetPort": [
+        0,
+        175
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-10-cont",
+      "edgeRole": "spine-continuation",
+      "haltLandingSlot": null,
+      "laneBundleId": null,
+      "points": [
+        [
+          -203.2,
+          868.1467672771852
+        ],
+        [
+          -203.2,
+          920.1467672771852
+        ]
+      ],
+      "portPolicyCase": "spine-continuation",
+      "railCoord": null,
+      "routeFamily": "spine",
+      "source": "i-10",
+      "sourcePort": [
+        -203.2,
+        868.1467672771852
+      ],
+      "target": "i-11",
+      "targetPort": [
+        -203.2,
+        920.1467672771852
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-11-cont",
+      "edgeRole": "spine-continuation",
+      "haltLandingSlot": null,
+      "laneBundleId": null,
+      "points": [
+        [
+          -203.2,
+          950.1467672771852
+        ],
+        [
+          -203.2,
+          1002.1467672771852
+        ]
+      ],
+      "portPolicyCase": "spine-continuation",
+      "railCoord": null,
+      "routeFamily": "spine",
+      "source": "i-11",
+      "sourcePort": [
+        -203.2,
+        950.1467672771852
+      ],
+      "target": "i-12",
+      "targetPort": [
+        -203.2,
+        1002.1467672771852
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-12-cont",
+      "edgeRole": "spine-continuation",
+      "haltLandingSlot": null,
+      "laneBundleId": null,
+      "points": [
+        [
+          -203.2,
+          1032.146767277185
+        ],
+        [
+          -203.2,
+          1076.146767277185
+        ]
+      ],
+      "portPolicyCase": "spine-continuation",
+      "railCoord": null,
+      "routeFamily": "spine",
+      "source": "i-12",
+      "sourcePort": [
+        -203.2,
+        1032.146767277185
+      ],
+      "target": "i-13",
+      "targetPort": [
+        -203.2,
+        1076.146767277185
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-13-no",
+      "edgeRole": "branch-exit",
+      "haltLandingSlot": null,
+      "laneBundleId": null,
+      "points": [
+        [
+          -223.7,
+          1110.646767277185
+        ],
+        [
+          -366.206,
+          1203.1912457533895
+        ]
+      ],
+      "portPolicyCase": "branch-exit",
+      "railCoord": null,
+      "routeFamily": "branch-exit",
+      "source": "i-13",
+      "sourcePort": [
+        -223.7,
+        1110.646767277185
+      ],
+      "target": "i-14",
+      "targetPort": [
+        -366.206,
+        1203.1912457533895
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-13-yes",
+      "edgeRole": "branch-exit",
+      "haltLandingSlot": null,
+      "laneBundleId": null,
+      "points": [
+        [
+          -182.7,
+          1110.646767277185
+        ],
+        [
+          -40.19399999999999,
+          1203.1912457533895
+        ]
+      ],
+      "portPolicyCase": "branch-exit",
+      "railCoord": null,
+      "routeFamily": "branch-exit",
+      "source": "i-13",
+      "sourcePort": [
+        -182.7,
+        1110.646767277185
+      ],
+      "target": "i-17",
+      "targetPort": [
+        -40.19399999999999,
+        1203.1912457533895
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-14-cont",
+      "edgeRole": "spine-continuation",
+      "haltLandingSlot": null,
+      "laneBundleId": null,
+      "points": [
+        [
+          -366.206,
+          1233.1912457533895
+        ],
+        [
+          -366.206,
+          1285.1912457533895
+        ]
+      ],
+      "portPolicyCase": "spine-continuation",
+      "railCoord": null,
+      "routeFamily": "spine",
+      "source": "i-14",
+      "sourcePort": [
+        -366.206,
+        1233.1912457533895
+      ],
+      "target": "i-15",
+      "targetPort": [
+        -366.206,
+        1285.1912457533895
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-15-cont",
+      "edgeRole": "spine-continuation",
+      "haltLandingSlot": null,
+      "laneBundleId": null,
+      "points": [
+        [
+          -366.206,
+          1315.1912457533895
+        ],
+        [
+          -366.206,
+          1367.1912457533895
+        ]
+      ],
+      "portPolicyCase": "spine-continuation",
+      "railCoord": null,
+      "routeFamily": "spine",
+      "source": "i-15",
+      "sourcePort": [
+        -366.206,
+        1315.1912457533895
+      ],
+      "target": "i-16",
+      "targetPort": [
+        -366.206,
+        1367.1912457533895
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-16-jump",
+      "edgeRole": "loop-return",
+      "haltLandingSlot": null,
+      "laneBundleId": "loop-return|left@-410",
+      "points": [
+        [
+          -410.206,
+          1382.1912457533895
+        ],
+        [
+          -450,
+          1382.1912457533895
+        ],
+        [
+          -450,
+          1099.146767277185
+        ],
+        [
+          -244.2,
+          1099.146767277185
+        ]
+      ],
+      "portPolicyCase": "loop-return",
+      "railCoord": -450,
+      "routeFamily": "loop-return",
+      "source": "i-16",
+      "sourcePort": [
+        -410.206,
+        1382.1912457533895
+      ],
+      "target": "i-13",
+      "targetPort": [
+        -244.2,
+        1099.146767277185
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-17-cont",
+      "edgeRole": "spine-continuation",
+      "haltLandingSlot": null,
+      "laneBundleId": null,
+      "points": [
+        [
+          -40.19399999999999,
+          1233.1912457533895
+        ],
+        [
+          -40.19399999999999,
+          1285.1912457533895
+        ]
+      ],
+      "portPolicyCase": "spine-continuation",
+      "railCoord": null,
+      "routeFamily": "spine",
+      "source": "i-17",
+      "sourcePort": [
+        -40.19399999999999,
+        1233.1912457533895
+      ],
+      "target": "i-18",
+      "targetPort": [
+        -40.19399999999999,
+        1285.1912457533895
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-18-cont",
+      "edgeRole": "spine-continuation",
+      "haltLandingSlot": null,
+      "laneBundleId": null,
+      "points": [
+        [
+          -40.19399999999999,
+          1315.1912457533895
+        ],
+        [
+          -40.19399999999999,
+          1367.1912457533895
+        ]
+      ],
+      "portPolicyCase": "spine-continuation",
+      "railCoord": null,
+      "routeFamily": "spine",
+      "source": "i-18",
+      "sourcePort": [
+        -40.19399999999999,
+        1315.1912457533895
+      ],
+      "target": "i-19",
+      "targetPort": [
+        -40.19399999999999,
+        1367.1912457533895
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-19-jump",
+      "edgeRole": "loop-return",
+      "haltLandingSlot": null,
+      "laneBundleId": "loop-return|left@-410",
+      "points": [
+        [
+          -84.19399999999999,
+          1382.1912457533895
+        ],
+        [
+          -84.19399999999999,
+          1446.1912457533895
+        ],
+        [
+          -494,
+          1446.1912457533895
+        ],
+        [
+          -494,
+          380
+        ],
+        [
+          -41,
+          380
+        ]
+      ],
+      "portPolicyCase": "loop-return",
+      "railCoord": -494,
+      "routeFamily": "loop-return",
+      "source": "i-19",
+      "sourcePort": [
+        -84.19399999999999,
+        1382.1912457533895
+      ],
+      "target": "i-5",
+      "targetPort": [
+        -41,
+        380
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-2-cont",
+      "edgeRole": "setup-link",
+      "haltLandingSlot": null,
+      "laneBundleId": null,
+      "points": [
+        [
+          0,
+          205
+        ],
+        [
+          0,
+          229
+        ]
+      ],
+      "portPolicyCase": "setup-link",
+      "railCoord": null,
+      "routeFamily": "setup",
+      "source": "i-2",
+      "sourcePort": [
+        0,
+        205
+      ],
+      "target": "i-3",
+      "targetPort": [
+        0,
+        229
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-20-cont",
+      "edgeRole": "spine-continuation",
+      "haltLandingSlot": null,
+      "laneBundleId": null,
+      "points": [
+        [
+          203.2,
+          540.1467672771852
+        ],
+        [
+          203.2,
+          592.1467672771852
+        ]
+      ],
+      "portPolicyCase": "spine-continuation",
+      "railCoord": null,
+      "routeFamily": "spine",
+      "source": "i-20",
+      "sourcePort": [
+        203.2,
+        540.1467672771852
+      ],
+      "target": "i-21",
+      "targetPort": [
+        203.2,
+        592.1467672771852
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-3-cont",
+      "edgeRole": "setup-link",
+      "haltLandingSlot": null,
+      "laneBundleId": null,
+      "points": [
+        [
+          0,
+          259
+        ],
+        [
+          0,
+          283
+        ]
+      ],
+      "portPolicyCase": "setup-link",
+      "railCoord": null,
+      "routeFamily": "setup",
+      "source": "i-3",
+      "sourcePort": [
+        0,
+        259
+      ],
+      "target": "i-4",
+      "targetPort": [
+        0,
+        283
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-4-cont",
+      "edgeRole": "spine-continuation",
+      "haltLandingSlot": null,
+      "laneBundleId": null,
+      "points": [
+        [
+          0,
+          313
+        ],
+        [
+          0,
+          357
+        ]
+      ],
+      "portPolicyCase": "spine-continuation",
+      "railCoord": null,
+      "routeFamily": "spine",
+      "source": "i-4",
+      "sourcePort": [
+        0,
+        313
+      ],
+      "target": "i-5",
+      "targetPort": [
+        0,
+        357
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-5-no",
+      "edgeRole": "branch-exit",
+      "haltLandingSlot": null,
+      "laneBundleId": null,
+      "points": [
+        [
+          -20.5,
+          391.5
+        ],
+        [
+          -203.2,
+          510.1467672771852
+        ]
+      ],
+      "portPolicyCase": "branch-exit",
+      "railCoord": null,
+      "routeFamily": "branch-exit",
+      "source": "i-5",
+      "sourcePort": [
+        -20.5,
+        391.5
+      ],
+      "target": "i-6",
+      "targetPort": [
+        -203.2,
+        510.1467672771852
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-5-yes",
+      "edgeRole": "branch-exit",
+      "haltLandingSlot": null,
+      "laneBundleId": null,
+      "points": [
+        [
+          20.5,
+          391.5
+        ],
+        [
+          203.2,
+          510.1467672771852
+        ]
+      ],
+      "portPolicyCase": "branch-exit",
+      "railCoord": null,
+      "routeFamily": "branch-exit",
+      "source": "i-5",
+      "sourcePort": [
+        20.5,
+        391.5
+      ],
+      "target": "i-20",
+      "targetPort": [
+        203.2,
+        510.1467672771852
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-6-cont",
+      "edgeRole": "spine-continuation",
+      "haltLandingSlot": null,
+      "laneBundleId": null,
+      "points": [
+        [
+          -203.2,
+          540.1467672771852
+        ],
+        [
+          -203.2,
+          592.1467672771852
+        ]
+      ],
+      "portPolicyCase": "spine-continuation",
+      "railCoord": null,
+      "routeFamily": "spine",
+      "source": "i-6",
+      "sourcePort": [
+        -203.2,
+        540.1467672771852
+      ],
+      "target": "i-7",
+      "targetPort": [
+        -203.2,
+        592.1467672771852
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-7-cont",
+      "edgeRole": "spine-continuation",
+      "haltLandingSlot": null,
+      "laneBundleId": null,
+      "points": [
+        [
+          -203.2,
+          622.1467672771852
+        ],
+        [
+          -203.2,
+          674.1467672771852
+        ]
+      ],
+      "portPolicyCase": "spine-continuation",
+      "railCoord": null,
+      "routeFamily": "spine",
+      "source": "i-7",
+      "sourcePort": [
+        -203.2,
+        622.1467672771852
+      ],
+      "target": "i-8",
+      "targetPort": [
+        -203.2,
+        674.1467672771852
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-8-cont",
+      "edgeRole": "spine-continuation",
+      "haltLandingSlot": null,
+      "laneBundleId": null,
+      "points": [
+        [
+          -203.2,
+          704.1467672771852
+        ],
+        [
+          -203.2,
+          756.1467672771852
+        ]
+      ],
+      "portPolicyCase": "spine-continuation",
+      "railCoord": null,
+      "routeFamily": "spine",
+      "source": "i-8",
+      "sourcePort": [
+        -203.2,
+        704.1467672771852
+      ],
+      "target": "i-9",
+      "targetPort": [
+        -203.2,
+        756.1467672771852
+      ]
+    },
+    {
+      "connectorKind": null,
+      "edgeId": "i-9-cont",
+      "edgeRole": "spine-continuation",
+      "haltLandingSlot": null,
+      "laneBundleId": null,
+      "points": [
+        [
+          -203.2,
+          786.1467672771852
+        ],
+        [
+          -203.2,
+          838.1467672771852
+        ]
+      ],
+      "portPolicyCase": "spine-continuation",
+      "railCoord": null,
+      "routeFamily": "spine",
+      "source": "i-9",
+      "sourcePort": [
+        -203.2,
+        786.1467672771852
+      ],
+      "target": "i-10",
+      "targetPort": [
+        -203.2,
+        838.1467672771852
+      ]
+    }
+  ],
+  "schemaVersion": 1,
+  "stage": "A",
+  "stageTransformStack": [
+    "ordinary synthetic terminal with raw transformed roles"
+  ],
+  "terminal": {
+    "box": {
+      "bottom": 622.1467672771852,
+      "cx": 203.2,
+      "cy": 607.1467672771852,
+      "h": 30,
+      "left": 159.2,
+      "right": 247.2,
+      "top": 592.1467672771852,
+      "w": 88
+    },
+    "id": "i-21",
+    "kind": "action"
+  }
+}

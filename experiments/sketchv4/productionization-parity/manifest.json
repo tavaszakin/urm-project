@@ -1,0 +1,2485 @@
+{
+  "acceptedFinalDefects": {
+    "characteristic:divides": [
+      "i-55-jump × i-57-cont overlap",
+      "i-38 deferred visual concern"
+    ],
+    "characteristic:eq": [
+      "i-46-yes × i-47-cont overlap"
+    ],
+    "minimization:bounded_sub": [
+      "i-24-jump × i-26 intrusion"
+    ],
+    "predecessor": [],
+    "primrec:basic": []
+  },
+  "broaderRegressionFixtureList": "experiments/sketchv4/productionization-parity/BROADER_REGRESSION_FIXTURES.md",
+  "commands": {
+    "generate": "node experiments/sketchv4/productionization-parity/scripts/generate_references.mjs",
+    "verifyEverything": "node experiments/sketchv4/productionization-parity/scripts/verify_parity.mjs --all-stages --all",
+    "verifyFinal": "node experiments/sketchv4/productionization-parity/scripts/verify_parity.mjs --stage E --all",
+    "verifyOne": "node experiments/sketchv4/productionization-parity/scripts/verify_parity.mjs --stage A --fixture characteristic:divides",
+    "viewer": "cd urmwebpage/frontend && npx vite --config ../../experiments/sketchv4/productionization-parity/vite.config.mjs"
+  },
+  "expectedDeltas": {
+    "adaptivelyShortenedEdges": {
+      "characteristic:divides": [
+        "i-15-yes",
+        "i-38-yes"
+      ],
+      "characteristic:eq": [],
+      "minimization:bounded_sub": [],
+      "predecessor": [],
+      "primrec:basic": []
+    },
+    "eligibleConditionalMergeEdges": {
+      "characteristic:divides": [
+        "i-15-yes",
+        "i-38-yes",
+        "i-53-yes"
+      ],
+      "characteristic:eq": [
+        "i-11-yes",
+        "i-31-yes",
+        "i-46-yes"
+      ],
+      "minimization:bounded_sub": [
+        "i-12-yes"
+      ],
+      "predecessor": [
+        "i-0-yes"
+      ],
+      "primrec:basic": []
+    },
+    "finalLegalLoopTargetCount": 16,
+    "fixedOrientation": {
+      "B_TO_C": {
+        "characteristic:divides": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [
+              "i-57-cont"
+            ],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [
+              "i-57-cont"
+            ],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "characteristic:eq": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "minimization:bounded_sub": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "predecessor": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "primrec:basic": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        }
+      },
+      "C_TO_D": {
+        "characteristic:divides": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [
+              "i-27-jump",
+              "i-52-jump"
+            ],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [
+              "i-27-jump",
+              "i-52-jump"
+            ],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "characteristic:eq": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "minimization:bounded_sub": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "predecessor": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "primrec:basic": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [
+              "i-19-jump"
+            ],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [
+              "i-19-jump"
+            ],
+            "removed": []
+          },
+          "terminalChanged": false
+        }
+      },
+      "D_TO_E": {
+        "characteristic:divides": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [
+              "i-52-jump"
+            ],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [
+              "i-52-jump"
+            ],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "characteristic:eq": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "minimization:bounded_sub": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "predecessor": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "primrec:basic": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        }
+      }
+    },
+    "i57Compatibility": {
+      "edgeId": "i-57-cont",
+      "fixture": "characteristic:divides",
+      "normalOrientationConsequence": {
+        "bit": "default",
+        "costDefault": 3,
+        "costFlipped": 3,
+        "realForkId": "i-25"
+      },
+      "route": {
+        "clearance": 16,
+        "connectorKind": "sideEntryJog",
+        "corridorRule": "max(sourceBox.right, targetBox.right) + existing V4 clearance",
+        "corridorX": 133.64933039999997,
+        "edgeId": "i-57-cont",
+        "edgeRole": "merge-connector",
+        "newRoutePoints": [
+          [
+            3.8060000000000116,
+            626.1912457533896
+          ],
+          [
+            133.64933039999997,
+            626.1912457533896
+          ],
+          [
+            133.64933039999997,
+            2522.5852145813533
+          ],
+          [
+            117.64933039999997,
+            2522.5852145813533
+          ]
+        ],
+        "newSourcePort": [
+          3.8060000000000116,
+          626.1912457533896
+        ],
+        "newTargetPort": [
+          117.64933039999997,
+          2522.5852145813533
+        ],
+        "oldRoutePoints": [
+          [
+            -40.19399999999999,
+            641.1912457533896
+          ],
+          [
+            -40.19399999999999,
+            2522.5852145813533
+          ],
+          [
+            29.649330399999968,
+            2522.5852145813533
+          ]
+        ],
+        "oldSourcePort": [
+          -40.19399999999999,
+          641.1912457533896
+        ],
+        "oldTargetPort": [
+          29.649330399999968,
+          2522.5852145813533
+        ],
+        "routeFamily": "merge-connector",
+        "routeShape": "right port -> H -> V -> H -> right port"
+      }
+    },
+    "loopSourceChangedEdges": {
+      "characteristic:divides": [
+        "i-27-jump",
+        "i-52-jump"
+      ],
+      "characteristic:eq": [],
+      "minimization:bounded_sub": [],
+      "predecessor": [],
+      "primrec:basic": [
+        "i-19-jump"
+      ]
+    },
+    "loopSourceChanges": {
+      "characteristic:divides": [
+        {
+          "bendRow": 1934.1326071255528,
+          "bodyClassification": "vertical-first",
+          "edgeId": "i-27-jump",
+          "newAttachmentLegality": {
+            "overall": true,
+            "source": true,
+            "target": true
+          },
+          "newRoutePoints": [
+            [
+              -341.7519704,
+              1560.6799996697519
+            ],
+            [
+              -341.7519704,
+              1934.1326071255528
+            ],
+            [
+              -878,
+              1934.1326071255528
+            ],
+            [
+              -878,
+              425.1467672771852
+            ],
+            [
+              -244.2,
+              425.1467672771852
+            ]
+          ],
+          "newSourcePort": [
+            -341.7519704,
+            1560.6799996697519
+          ],
+          "oldAttachmentLegality": {
+            "overall": false,
+            "source": false,
+            "target": true
+          },
+          "oldRoutePoints": [
+            [
+              -385.7519704,
+              1545.6799996697519
+            ],
+            [
+              -385.7519704,
+              1934.1326071255528
+            ],
+            [
+              -878,
+              1934.1326071255528
+            ],
+            [
+              -878,
+              425.1467672771852
+            ],
+            [
+              -244.2,
+              425.1467672771852
+            ]
+          ],
+          "oldSourcePort": [
+            -385.7519704,
+            1545.6799996697519
+          ],
+          "preservedRouteSuffix": [
+            [
+              -878,
+              1934.1326071255528
+            ],
+            [
+              -878,
+              425.1467672771852
+            ],
+            [
+              -244.2,
+              425.1467672771852
+            ]
+          ],
+          "railCoord": -878,
+          "source": "i-27",
+          "target": "i-4",
+          "targetPort": [
+            -244.2,
+            425.1467672771852
+          ],
+          "unchanged": {
+            "bendRow": {
+              "after": 1934.1326071255528,
+              "before": 1934.1326071255528,
+              "unchanged": true
+            },
+            "rail": {
+              "after": -878,
+              "before": -878,
+              "unchanged": true
+            },
+            "routeSuffix": {
+              "after": [
+                [
+                  -878,
+                  1934.1326071255528
+                ],
+                [
+                  -878,
+                  425.1467672771852
+                ],
+                [
+                  -244.2,
+                  425.1467672771852
+                ]
+              ],
+              "before": [
+                [
+                  -878,
+                  1934.1326071255528
+                ],
+                [
+                  -878,
+                  425.1467672771852
+                ],
+                [
+                  -244.2,
+                  425.1467672771852
+                ]
+              ],
+              "unchanged": true
+            },
+            "targetAttachment": {
+              "after": [
+                -244.2,
+                425.1467672771852
+              ],
+              "before": [
+                -244.2,
+                425.1467672771852
+              ],
+              "unchanged": true
+            }
+          }
+        },
+        {
+          "bendRow": 2829.037822037154,
+          "bodyClassification": "vertical-first",
+          "edgeId": "i-52-jump",
+          "newAttachmentLegality": {
+            "overall": false,
+            "source": true,
+            "target": false
+          },
+          "newRoutePoints": [
+            [
+              -127.35066960000003,
+              2455.5852145813533
+            ],
+            [
+              -127.35066960000003,
+              2829.037822037154
+            ],
+            [
+              -922,
+              2829.037822037154
+            ],
+            [
+              -922,
+              361.1467672771852
+            ],
+            [
+              -244.2,
+              361.1467672771852
+            ],
+            [
+              -244.2,
+              425.1467672771852
+            ]
+          ],
+          "newSourcePort": [
+            -127.35066960000003,
+            2455.5852145813533
+          ],
+          "oldAttachmentLegality": {
+            "overall": false,
+            "source": false,
+            "target": false
+          },
+          "oldRoutePoints": [
+            [
+              -171.35066960000003,
+              2440.5852145813533
+            ],
+            [
+              -171.35066960000003,
+              2829.037822037154
+            ],
+            [
+              -922,
+              2829.037822037154
+            ],
+            [
+              -922,
+              361.1467672771852
+            ],
+            [
+              -244.2,
+              361.1467672771852
+            ],
+            [
+              -244.2,
+              425.1467672771852
+            ]
+          ],
+          "oldSourcePort": [
+            -171.35066960000003,
+            2440.5852145813533
+          ],
+          "preservedRouteSuffix": [
+            [
+              -922,
+              2829.037822037154
+            ],
+            [
+              -922,
+              361.1467672771852
+            ],
+            [
+              -244.2,
+              361.1467672771852
+            ],
+            [
+              -244.2,
+              425.1467672771852
+            ]
+          ],
+          "railCoord": -922,
+          "source": "i-52",
+          "target": "i-4",
+          "targetPort": [
+            -244.2,
+            425.1467672771852
+          ],
+          "unchanged": {
+            "bendRow": {
+              "after": 2829.037822037154,
+              "before": 2829.037822037154,
+              "unchanged": true
+            },
+            "rail": {
+              "after": -922,
+              "before": -922,
+              "unchanged": true
+            },
+            "routeSuffix": {
+              "after": [
+                [
+                  -922,
+                  2829.037822037154
+                ],
+                [
+                  -922,
+                  361.1467672771852
+                ],
+                [
+                  -244.2,
+                  361.1467672771852
+                ],
+                [
+                  -244.2,
+                  425.1467672771852
+                ]
+              ],
+              "before": [
+                [
+                  -922,
+                  2829.037822037154
+                ],
+                [
+                  -922,
+                  361.1467672771852
+                ],
+                [
+                  -244.2,
+                  361.1467672771852
+                ],
+                [
+                  -244.2,
+                  425.1467672771852
+                ]
+              ],
+              "unchanged": true
+            },
+            "targetAttachment": {
+              "after": [
+                -244.2,
+                425.1467672771852
+              ],
+              "before": [
+                -244.2,
+                425.1467672771852
+              ],
+              "unchanged": true
+            }
+          }
+        }
+      ],
+      "characteristic:eq": [],
+      "minimization:bounded_sub": [],
+      "predecessor": [],
+      "primrec:basic": [
+        {
+          "bendRow": 1446.1912457533895,
+          "bodyClassification": "vertical-first",
+          "edgeId": "i-19-jump",
+          "newAttachmentLegality": {
+            "overall": true,
+            "source": true,
+            "target": true
+          },
+          "newRoutePoints": [
+            [
+              -40.19399999999999,
+              1397.1912457533895
+            ],
+            [
+              -40.19399999999999,
+              1446.1912457533895
+            ],
+            [
+              -494,
+              1446.1912457533895
+            ],
+            [
+              -494,
+              380
+            ],
+            [
+              -41,
+              380
+            ]
+          ],
+          "newSourcePort": [
+            -40.19399999999999,
+            1397.1912457533895
+          ],
+          "oldAttachmentLegality": {
+            "overall": false,
+            "source": false,
+            "target": true
+          },
+          "oldRoutePoints": [
+            [
+              -84.19399999999999,
+              1382.1912457533895
+            ],
+            [
+              -84.19399999999999,
+              1446.1912457533895
+            ],
+            [
+              -494,
+              1446.1912457533895
+            ],
+            [
+              -494,
+              380
+            ],
+            [
+              -41,
+              380
+            ]
+          ],
+          "oldSourcePort": [
+            -84.19399999999999,
+            1382.1912457533895
+          ],
+          "preservedRouteSuffix": [
+            [
+              -494,
+              1446.1912457533895
+            ],
+            [
+              -494,
+              380
+            ],
+            [
+              -41,
+              380
+            ]
+          ],
+          "railCoord": -494,
+          "source": "i-19",
+          "target": "i-5",
+          "targetPort": [
+            -41,
+            380
+          ],
+          "unchanged": {
+            "bendRow": {
+              "after": 1446.1912457533895,
+              "before": 1446.1912457533895,
+              "unchanged": true
+            },
+            "rail": {
+              "after": -494,
+              "before": -494,
+              "unchanged": true
+            },
+            "routeSuffix": {
+              "after": [
+                [
+                  -494,
+                  1446.1912457533895
+                ],
+                [
+                  -494,
+                  380
+                ],
+                [
+                  -41,
+                  380
+                ]
+              ],
+              "before": [
+                [
+                  -494,
+                  1446.1912457533895
+                ],
+                [
+                  -494,
+                  380
+                ],
+                [
+                  -41,
+                  380
+                ]
+              ],
+              "unchanged": true
+            },
+            "targetAttachment": {
+              "after": [
+                -41,
+                380
+              ],
+              "before": [
+                -41,
+                380
+              ],
+              "unchanged": true
+            }
+          }
+        }
+      ]
+    },
+    "loopTargetChanges": {
+      "characteristic:divides": [
+        {
+          "approachEnd": [
+            -244.2,
+            361.1467672771852
+          ],
+          "approachStart": [
+            -922,
+            361.1467672771852
+          ],
+          "candidateCount": 1,
+          "candidateIncidentDirection": "north-west",
+          "candidateNamedPort": "upper-left",
+          "edgeId": "i-52-jump",
+          "intersection": [
+            -317.2869565217391,
+            361.1467672771852
+          ],
+          "newRoutePoints": [
+            [
+              -127.35066960000003,
+              2455.5852145813533
+            ],
+            [
+              -127.35066960000003,
+              2829.037822037154
+            ],
+            [
+              -922,
+              2829.037822037154
+            ],
+            [
+              -922,
+              361.1467672771852
+            ],
+            [
+              -317.2869565217391,
+              361.1467672771852
+            ],
+            [
+              -223.7,
+              413.6467672771852
+            ]
+          ],
+          "newRouteSuffix": [
+            [
+              -922,
+              361.1467672771852
+            ],
+            [
+              -317.2869565217391,
+              361.1467672771852
+            ],
+            [
+              -223.7,
+              413.6467672771852
+            ]
+          ],
+          "newTargetPort": [
+            -223.7,
+            413.6467672771852
+          ],
+          "oldRoutePoints": [
+            [
+              -127.35066960000003,
+              2455.5852145813533
+            ],
+            [
+              -127.35066960000003,
+              2829.037822037154
+            ],
+            [
+              -922,
+              2829.037822037154
+            ],
+            [
+              -922,
+              361.1467672771852
+            ],
+            [
+              -244.2,
+              361.1467672771852
+            ],
+            [
+              -244.2,
+              425.1467672771852
+            ]
+          ],
+          "oldRouteSuffix": [
+            [
+              -922,
+              361.1467672771852
+            ],
+            [
+              -244.2,
+              361.1467672771852
+            ],
+            [
+              -244.2,
+              425.1467672771852
+            ]
+          ],
+          "oldTargetPort": [
+            -244.2,
+            425.1467672771852
+          ],
+          "outcome": "generalized-unique-compatible-port",
+          "railCoord": -922,
+          "resultingOverallAttachmentLegal": true,
+          "resultingTargetLegal": true,
+          "source": "i-52",
+          "target": "i-4"
+        }
+      ],
+      "characteristic:eq": [],
+      "minimization:bounded_sub": [],
+      "predecessor": [],
+      "primrec:basic": []
+    },
+    "normalOrientation": {
+      "A_TO_B": {
+        "characteristic:divides": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [
+              "i-15-yes",
+              "i-38-yes",
+              "i-53-yes"
+            ],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [
+              "i-15-yes",
+              "i-38-yes",
+              "i-53-yes"
+            ],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "characteristic:eq": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [
+              "i-11-yes",
+              "i-31-yes",
+              "i-46-yes"
+            ],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [
+              "i-11-yes",
+              "i-31-yes",
+              "i-46-yes"
+            ],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "minimization:bounded_sub": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [
+              "i-12-yes"
+            ],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [
+              "i-12-yes"
+            ],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "predecessor": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [
+              "i-0-yes"
+            ],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [
+              "i-0-yes"
+            ],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "primrec:basic": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        }
+      },
+      "BASE_TO_A": {
+        "characteristic:divides": {
+          "nodes": {
+            "added": [
+              "i-58"
+            ],
+            "changed": [
+              "i-26",
+              "i-27",
+              "i-28",
+              "i-29",
+              "i-30",
+              "i-31",
+              "i-32",
+              "i-33",
+              "i-34",
+              "i-35",
+              "i-36",
+              "i-37",
+              "i-38",
+              "i-39",
+              "i-40",
+              "i-41",
+              "i-42",
+              "i-43",
+              "i-44",
+              "i-45",
+              "i-46",
+              "i-47",
+              "i-48",
+              "i-49",
+              "i-50",
+              "i-51",
+              "i-52"
+            ],
+            "removed": [
+              "halt"
+            ]
+          },
+          "orientation": {
+            "added": [],
+            "changed": [
+              "i-25"
+            ],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [
+              "i-25-no",
+              "i-25-yes",
+              "i-26-cont",
+              "i-27-jump",
+              "i-28-cont",
+              "i-29-cont",
+              "i-30-cont",
+              "i-31-cont",
+              "i-32-cont",
+              "i-33-cont",
+              "i-34-cont",
+              "i-35-cont",
+              "i-36-no",
+              "i-36-yes",
+              "i-37-cont",
+              "i-38-no",
+              "i-38-yes",
+              "i-39-cont",
+              "i-40-cont",
+              "i-41-no",
+              "i-41-yes",
+              "i-42-cont",
+              "i-43-jump",
+              "i-44-cont",
+              "i-45-cont",
+              "i-46-jump",
+              "i-47-cont",
+              "i-48-no",
+              "i-48-yes",
+              "i-49-cont",
+              "i-50-jump",
+              "i-51-cont",
+              "i-52-jump",
+              "i-55-jump",
+              "i-57-cont"
+            ],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [
+              "i-25-no",
+              "i-25-yes",
+              "i-26-cont",
+              "i-27-jump",
+              "i-28-cont",
+              "i-29-cont",
+              "i-30-cont",
+              "i-31-cont",
+              "i-32-cont",
+              "i-33-cont",
+              "i-34-cont",
+              "i-35-cont",
+              "i-36-no",
+              "i-36-yes",
+              "i-37-cont",
+              "i-38-no",
+              "i-38-yes",
+              "i-39-cont",
+              "i-40-cont",
+              "i-41-no",
+              "i-41-yes",
+              "i-42-cont",
+              "i-43-jump",
+              "i-44-cont",
+              "i-45-cont",
+              "i-46-jump",
+              "i-47-cont",
+              "i-48-no",
+              "i-48-yes",
+              "i-49-cont",
+              "i-50-jump",
+              "i-51-cont",
+              "i-52-jump",
+              "i-55-jump",
+              "i-57-cont"
+            ],
+            "removed": []
+          },
+          "terminalChanged": true
+        },
+        "characteristic:eq": {
+          "nodes": {
+            "added": [
+              "i-48"
+            ],
+            "changed": [
+              "i-46"
+            ],
+            "removed": [
+              "halt"
+            ]
+          },
+          "orientation": {
+            "added": [
+              "i-46"
+            ],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [
+              "i-45-jump",
+              "i-46-yes",
+              "i-47-cont"
+            ],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [
+              "i-45-jump",
+              "i-46-yes",
+              "i-47-cont"
+            ],
+            "removed": []
+          },
+          "terminalChanged": true
+        },
+        "minimization:bounded_sub": {
+          "nodes": {
+            "added": [
+              "i-26"
+            ],
+            "changed": [],
+            "removed": [
+              "halt"
+            ]
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [
+              "i-25-cont"
+            ],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [
+              "i-25-cont"
+            ],
+            "removed": []
+          },
+          "terminalChanged": true
+        },
+        "predecessor": {
+          "nodes": {
+            "added": [
+              "i-7"
+            ],
+            "changed": [
+              "i-0",
+              "i-1",
+              "i-2",
+              "i-3",
+              "i-4",
+              "i-5",
+              "i-6"
+            ],
+            "removed": [
+              "halt"
+            ]
+          },
+          "orientation": {
+            "added": [
+              "i-0"
+            ],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [
+              "i-0-no",
+              "i-0-yes",
+              "i-1-cont",
+              "i-2-no",
+              "i-2-yes",
+              "i-3-cont",
+              "i-4-cont",
+              "i-5-jump",
+              "i-6-cont"
+            ],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [
+              "i-0-no",
+              "i-0-yes",
+              "i-1-cont",
+              "i-2-no",
+              "i-2-yes",
+              "i-3-cont",
+              "i-4-cont",
+              "i-5-jump",
+              "i-6-cont"
+            ],
+            "removed": []
+          },
+          "terminalChanged": true
+        },
+        "primrec:basic": {
+          "nodes": {
+            "added": [
+              "i-21"
+            ],
+            "changed": [],
+            "removed": [
+              "halt"
+            ]
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [
+              "i-20-cont"
+            ],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [
+              "i-20-cont"
+            ],
+            "removed": []
+          },
+          "terminalChanged": true
+        }
+      },
+      "B_TO_C": {
+        "characteristic:divides": {
+          "nodes": {
+            "added": [],
+            "changed": [
+              "i-26",
+              "i-27",
+              "i-28",
+              "i-29",
+              "i-30",
+              "i-31",
+              "i-32",
+              "i-33",
+              "i-34",
+              "i-35",
+              "i-36",
+              "i-37",
+              "i-38",
+              "i-39",
+              "i-40",
+              "i-41",
+              "i-42",
+              "i-43",
+              "i-44",
+              "i-45",
+              "i-46",
+              "i-47",
+              "i-48",
+              "i-49",
+              "i-50",
+              "i-51",
+              "i-52",
+              "i-58"
+            ],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [
+              "i-25"
+            ],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [
+              "i-25-no",
+              "i-25-yes",
+              "i-26-cont",
+              "i-27-jump",
+              "i-28-cont",
+              "i-29-cont",
+              "i-30-cont",
+              "i-31-cont",
+              "i-32-cont",
+              "i-33-cont",
+              "i-34-cont",
+              "i-35-cont",
+              "i-36-no",
+              "i-36-yes",
+              "i-37-cont",
+              "i-38-no",
+              "i-38-yes",
+              "i-39-cont",
+              "i-40-cont",
+              "i-41-no",
+              "i-41-yes",
+              "i-42-cont",
+              "i-43-jump",
+              "i-44-cont",
+              "i-45-cont",
+              "i-46-jump",
+              "i-47-cont",
+              "i-48-no",
+              "i-48-yes",
+              "i-49-cont",
+              "i-50-jump",
+              "i-51-cont",
+              "i-52-jump",
+              "i-55-jump",
+              "i-57-cont"
+            ],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [
+              "i-25-no",
+              "i-25-yes",
+              "i-26-cont",
+              "i-27-jump",
+              "i-28-cont",
+              "i-29-cont",
+              "i-30-cont",
+              "i-31-cont",
+              "i-32-cont",
+              "i-33-cont",
+              "i-34-cont",
+              "i-35-cont",
+              "i-36-no",
+              "i-36-yes",
+              "i-37-cont",
+              "i-38-no",
+              "i-38-yes",
+              "i-39-cont",
+              "i-40-cont",
+              "i-41-no",
+              "i-41-yes",
+              "i-42-cont",
+              "i-43-jump",
+              "i-44-cont",
+              "i-45-cont",
+              "i-46-jump",
+              "i-47-cont",
+              "i-48-no",
+              "i-48-yes",
+              "i-49-cont",
+              "i-50-jump",
+              "i-51-cont",
+              "i-52-jump",
+              "i-55-jump",
+              "i-57-cont"
+            ],
+            "removed": []
+          },
+          "terminalChanged": true
+        },
+        "characteristic:eq": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "minimization:bounded_sub": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "predecessor": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "primrec:basic": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        }
+      },
+      "C_TO_D": {
+        "characteristic:divides": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [
+              "i-27-jump",
+              "i-52-jump"
+            ],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [
+              "i-27-jump",
+              "i-52-jump"
+            ],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "characteristic:eq": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "minimization:bounded_sub": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "predecessor": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "primrec:basic": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [
+              "i-19-jump"
+            ],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [
+              "i-19-jump"
+            ],
+            "removed": []
+          },
+          "terminalChanged": false
+        }
+      },
+      "D_TO_E": {
+        "characteristic:divides": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [
+              "i-52-jump"
+            ],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [
+              "i-52-jump"
+            ],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "characteristic:eq": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "minimization:bounded_sub": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "predecessor": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        },
+        "primrec:basic": {
+          "nodes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "orientation": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "ports": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "routes": {
+            "added": [],
+            "changed": [],
+            "removed": []
+          },
+          "terminalChanged": false
+        }
+      }
+    }
+  },
+  "fixtures": [
+    "minimization:bounded_sub",
+    "characteristic:divides",
+    "characteristic:eq",
+    "primrec:basic",
+    "predecessor"
+  ],
+  "orientationMaps": {
+    "A": {
+      "characteristic:divides": {
+        "i-13": "default",
+        "i-15": "default",
+        "i-18": "default",
+        "i-25": "flipped",
+        "i-3": "default",
+        "i-36": "default",
+        "i-38": "default",
+        "i-4": "default",
+        "i-41": "default",
+        "i-48": "flipped",
+        "i-53": "flipped"
+      },
+      "characteristic:eq": {
+        "i-11": "default",
+        "i-14": "default",
+        "i-29": "default",
+        "i-31": "default",
+        "i-34": "default",
+        "i-43": "default",
+        "i-46": "default",
+        "i-9": "default"
+      },
+      "minimization:bounded_sub": {
+        "i-10": "default",
+        "i-12": "default",
+        "i-15": "default",
+        "i-22": "default"
+      },
+      "predecessor": {
+        "i-0": "default",
+        "i-2": "default"
+      },
+      "primrec:basic": {
+        "i-13": "default",
+        "i-5": "default"
+      }
+    },
+    "B": {
+      "characteristic:divides": {
+        "i-13": "default",
+        "i-15": "default",
+        "i-18": "default",
+        "i-25": "flipped",
+        "i-3": "default",
+        "i-36": "default",
+        "i-38": "default",
+        "i-4": "default",
+        "i-41": "default",
+        "i-48": "flipped",
+        "i-53": "flipped"
+      },
+      "characteristic:eq": {
+        "i-11": "default",
+        "i-14": "default",
+        "i-29": "default",
+        "i-31": "default",
+        "i-34": "default",
+        "i-43": "default",
+        "i-46": "default",
+        "i-9": "default"
+      },
+      "minimization:bounded_sub": {
+        "i-10": "default",
+        "i-12": "default",
+        "i-15": "default",
+        "i-22": "default"
+      },
+      "predecessor": {
+        "i-0": "default",
+        "i-2": "default"
+      },
+      "primrec:basic": {
+        "i-13": "default",
+        "i-5": "default"
+      }
+    },
+    "BASE": {
+      "characteristic:divides": {
+        "i-13": "default",
+        "i-15": "default",
+        "i-18": "default",
+        "i-25": "default",
+        "i-3": "default",
+        "i-36": "default",
+        "i-38": "default",
+        "i-4": "default",
+        "i-41": "default",
+        "i-48": "flipped",
+        "i-53": "flipped"
+      },
+      "characteristic:eq": {
+        "i-11": "default",
+        "i-14": "default",
+        "i-29": "default",
+        "i-31": "default",
+        "i-34": "default",
+        "i-43": "default",
+        "i-9": "default"
+      },
+      "minimization:bounded_sub": {
+        "i-10": "default",
+        "i-12": "default",
+        "i-15": "default",
+        "i-22": "default"
+      },
+      "predecessor": {
+        "i-2": "default"
+      },
+      "primrec:basic": {
+        "i-13": "default",
+        "i-5": "default"
+      }
+    },
+    "C": {
+      "characteristic:divides": {
+        "i-13": "default",
+        "i-15": "default",
+        "i-18": "default",
+        "i-25": "default",
+        "i-3": "default",
+        "i-36": "default",
+        "i-38": "default",
+        "i-4": "default",
+        "i-41": "default",
+        "i-48": "flipped",
+        "i-53": "flipped"
+      },
+      "characteristic:eq": {
+        "i-11": "default",
+        "i-14": "default",
+        "i-29": "default",
+        "i-31": "default",
+        "i-34": "default",
+        "i-43": "default",
+        "i-46": "default",
+        "i-9": "default"
+      },
+      "minimization:bounded_sub": {
+        "i-10": "default",
+        "i-12": "default",
+        "i-15": "default",
+        "i-22": "default"
+      },
+      "predecessor": {
+        "i-0": "default",
+        "i-2": "default"
+      },
+      "primrec:basic": {
+        "i-13": "default",
+        "i-5": "default"
+      }
+    },
+    "D": {
+      "characteristic:divides": {
+        "i-13": "default",
+        "i-15": "default",
+        "i-18": "default",
+        "i-25": "default",
+        "i-3": "default",
+        "i-36": "default",
+        "i-38": "default",
+        "i-4": "default",
+        "i-41": "default",
+        "i-48": "flipped",
+        "i-53": "flipped"
+      },
+      "characteristic:eq": {
+        "i-11": "default",
+        "i-14": "default",
+        "i-29": "default",
+        "i-31": "default",
+        "i-34": "default",
+        "i-43": "default",
+        "i-46": "default",
+        "i-9": "default"
+      },
+      "minimization:bounded_sub": {
+        "i-10": "default",
+        "i-12": "default",
+        "i-15": "default",
+        "i-22": "default"
+      },
+      "predecessor": {
+        "i-0": "default",
+        "i-2": "default"
+      },
+      "primrec:basic": {
+        "i-13": "default",
+        "i-5": "default"
+      }
+    },
+    "E": {
+      "characteristic:divides": {
+        "i-13": "default",
+        "i-15": "default",
+        "i-18": "default",
+        "i-25": "default",
+        "i-3": "default",
+        "i-36": "default",
+        "i-38": "default",
+        "i-4": "default",
+        "i-41": "default",
+        "i-48": "flipped",
+        "i-53": "flipped"
+      },
+      "characteristic:eq": {
+        "i-11": "default",
+        "i-14": "default",
+        "i-29": "default",
+        "i-31": "default",
+        "i-34": "default",
+        "i-43": "default",
+        "i-46": "default",
+        "i-9": "default"
+      },
+      "minimization:bounded_sub": {
+        "i-10": "default",
+        "i-12": "default",
+        "i-15": "default",
+        "i-22": "default"
+      },
+      "predecessor": {
+        "i-0": "default",
+        "i-2": "default"
+      },
+      "primrec:basic": {
+        "i-13": "default",
+        "i-5": "default"
+      }
+    }
+  },
+  "provenance": {
+    "archiveContentSetSha256": "2c5a07b33abc61a758ec7017c825389d065c0e73902a2a92a67cb74ce115a833",
+    "fixtureSnapshot": "experiments/sketchv4/archive-2026-09-05/programs.json",
+    "fixtureSnapshotSha256": "e77a35d377920b7546b406eaa9d7f6e788a7208d8433ea2e798f6d740d7120f5",
+    "generatedOn": "2026-09-06",
+    "laterEndpointTransitionResearchIncluded": false,
+    "sourceCheckpoint": {
+      "branch": "checkpoint/sketchv4-loop-endpoints-composed",
+      "commit": "9f166f24721e7125ec9c0105e8960c6273d8d932",
+      "tag": "sketchv4-loop-endpoints-composed-checkpoint"
+    },
+    "sourceHarnessCommit": "990d9f7c21f35ff16239eeea027c767ec683f922"
+  },
+  "referenceFileSha256": {
+    "references/a/characteristic__divides.json": "5e159c29728ded7047265b23fecb89eb220578167c6ff2b1a1519f9280f1175f",
+    "references/a/characteristic__eq.json": "6a42d9ca32a5a6070e699144cfb628563ea6a72993932757db31db1e1d75ce38",
+    "references/a/minimization__bounded_sub.json": "cec283b7d26425103830e183296cff28d73683caed941692f7b062a3719ab323",
+    "references/a/predecessor.json": "35ff8f3d81fabe21aa5a24a30f2b0debe94cb671eec5370570227362485aacf3",
+    "references/a/primrec__basic.json": "000e56ae285d035da7ede2ad32254e6c09da2cfb2a56e795ba67a1d7ed4ab807",
+    "references/b/characteristic__divides.json": "01bade02466df15942d9869e19887185534e571f367ab3872fb9ca5f6be5115a",
+    "references/b/characteristic__eq.json": "cb7f2285007175c11aeaff12ae6c79079a711d246444819c7082dabccd7534e4",
+    "references/b/minimization__bounded_sub.json": "5dd431aadb11e580e8936090f7f2addd624fcfb4ac75c9386b18a5a9ffc4ce81",
+    "references/b/predecessor.json": "79812fed2217ec3c46bacf46ea0b7f64df2e56c69ac93861480d1d77403b831d",
+    "references/b/primrec__basic.json": "5d92ec9a61fe8eb2d17342f0fe4aabbab049090f8f8f5a982e5f23030b9e4293",
+    "references/base/characteristic__divides.json": "6da19f6dd6dbbf9919a53dd5c4314196bd6f0d0e991275c1198344c51d66dfe1",
+    "references/base/characteristic__eq.json": "76636d15767b2c9f12bea212f1d41fdc62c84ce3b9781f8a3644ca480dcd1142",
+    "references/base/minimization__bounded_sub.json": "5d6d4443f96b1536e3dc4dfbcb15d62b36b3f3b38525c256c1d9100570b01e3c",
+    "references/base/predecessor.json": "cd241865867160c7512ce6f414451352241cfc1430468f130161588081a4623c",
+    "references/base/primrec__basic.json": "bcb31612f64dd03f22e1fe3b5486c1ccdaa390f195035f1128fe9af7a2e8afa2",
+    "references/c/characteristic__divides.json": "ed41240fcbe977f697280956f2725dfc233fd56c22b32818338a06dad350ed25",
+    "references/c/characteristic__eq.json": "77faad2d8c028d08096be369d71130ea08096c942e06c8186b82103249a0be6d",
+    "references/c/minimization__bounded_sub.json": "31dd728c8ded8146accd282666b045816781ca093343f42bebb40a91442f81c5",
+    "references/c/predecessor.json": "96d51c82680d2e504dcbac61437c4c2e1bd94f343a5c5077605e3220257f995f",
+    "references/c/primrec__basic.json": "4bde3c9561fa7206113b6ac43ab145eb29c270364e29ecbb6fbee91e88bc2dc3",
+    "references/d/characteristic__divides.json": "dedcb48b523ed0205fdf748ffefcc9a06f222836da0ad5b086f1b2c7511e30e3",
+    "references/d/characteristic__eq.json": "4e557e60c79b16d187dcf9c44f85b1c3c5be9e26db3c9b68a8bc2869528c44c3",
+    "references/d/minimization__bounded_sub.json": "e401b037968c10a0f0dfc05656b5dd6104883ccdcb4b673f5a68a51613a24f09",
+    "references/d/predecessor.json": "561f476aac36f35354ae791282cf2fae21afdfeaa170046e03d0206bff2cbc20",
+    "references/d/primrec__basic.json": "72bd0ef17f0473e32300ac099a900440b5d5d92bc18d8ba79cc6d4870c246e54",
+    "references/e/characteristic__divides.json": "e5a54e925678bef42e41a7943e1f2f6441ccd273929fd343c92c8b4060b65962",
+    "references/e/characteristic__eq.json": "2c245fd96da92a19cb8d8d885286c5b386a8d25c4ad6d78edbca79d870616ac3",
+    "references/e/minimization__bounded_sub.json": "ecbc6badf13a58784c53a17f471643c9311657a62896a2fbfca5c1f9440623f6",
+    "references/e/predecessor.json": "31af15732ffc3c65cdf596134e71c6c25822fd3d3c452cf88619951f151774c6",
+    "references/e/primrec__basic.json": "e1fe79c298c5406c2d0a3ec781d74f8666a3feb5734eec04cc8448c62aeecbe7"
+  },
+  "restoration": {
+    "checkpointInspection": "git worktree add --detach /absolute/path/to/sketchv4-loop-endpoints-checkpoint sketchv4-loop-endpoints-composed-checkpoint",
+    "intentionalReplacementPolicy": "Replace references only in a separate reviewed change that explains why the target checkpoint changed; use --reviewed-replace only as part of that change."
+  },
+  "schemaVersion": 1,
+  "stageDependencyOrder": [
+    "BASE",
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+  ],
+  "stageHashes": {
+    "A": {
+      "characteristic:divides": {
+        "canonicalBytes": 17825,
+        "reference": "references/a/characteristic__divides.json",
+        "sha256": "fe21090d207cb59ae6de696dec41edef7db8feb2accecfe4e8446e10c3a36973"
+      },
+      "characteristic:eq": {
+        "canonicalBytes": 13311,
+        "reference": "references/a/characteristic__eq.json",
+        "sha256": "13d46e825aece6233ffc1b5e806ad85367ad193104c4cfa9c0e4593e3f788011"
+      },
+      "minimization:bounded_sub": {
+        "canonicalBytes": 6081,
+        "reference": "references/a/minimization__bounded_sub.json",
+        "sha256": "94718bf10822533e711d62fa9b4eaaacba28ce0a775701738a89a5a8904f6cf9"
+      },
+      "predecessor": {
+        "canonicalBytes": 2363,
+        "reference": "references/a/predecessor.json",
+        "sha256": "09be6cd8dadc7978e345333cab7009ae22161fda0249c41073594c5ae92ff6fc"
+      },
+      "primrec:basic": {
+        "canonicalBytes": 4938,
+        "reference": "references/a/primrec__basic.json",
+        "sha256": "be2c021566d0774fe63eb885ca90a7a4f00a9f596b2adddc9c6d5a019ea2e32f"
+      }
+    },
+    "B": {
+      "characteristic:divides": {
+        "canonicalBytes": 17908,
+        "reference": "references/b/characteristic__divides.json",
+        "sha256": "c8eb0fc0f5529b32bddbd4f81a59bb52ca0abd8c64eabd4333ab1e08ee0a9fbe"
+      },
+      "characteristic:eq": {
+        "canonicalBytes": 13261,
+        "reference": "references/b/characteristic__eq.json",
+        "sha256": "0dead3046499c21957c0cf59cd0950f83d6af903bd04307c72f154ca8ca07990"
+      },
+      "minimization:bounded_sub": {
+        "canonicalBytes": 6052,
+        "reference": "references/b/minimization__bounded_sub.json",
+        "sha256": "3730839d2267f10d1878cf1404da003b08e345cb049f3ed48144cce1142efb65"
+      },
+      "predecessor": {
+        "canonicalBytes": 2324,
+        "reference": "references/b/predecessor.json",
+        "sha256": "167acfeec41d4523bd623f3450151b219a17b443f8a082143ab93dea2cd65926"
+      },
+      "primrec:basic": {
+        "canonicalBytes": 4938,
+        "reference": "references/b/primrec__basic.json",
+        "sha256": "be2c021566d0774fe63eb885ca90a7a4f00a9f596b2adddc9c6d5a019ea2e32f"
+      }
+    },
+    "BASE": {
+      "characteristic:divides": {
+        "canonicalBytes": 19107,
+        "reference": "references/base/characteristic__divides.json",
+        "sha256": "8a7511f00ddf6e24e5713b5a0e54e895821817c3936a0d8a0029f63cb2d1800b"
+      },
+      "characteristic:eq": {
+        "canonicalBytes": 13363,
+        "reference": "references/base/characteristic__eq.json",
+        "sha256": "fc65f1267c4dd46587df5befd03f304824b9e0d8cd1b02b21167c4d3ade5123f"
+      },
+      "minimization:bounded_sub": {
+        "canonicalBytes": 6107,
+        "reference": "references/base/minimization__bounded_sub.json",
+        "sha256": "09979c3772117058460fbbc8c7af00e778f9b8666975388a263dd34a3d846ec3"
+      },
+      "predecessor": {
+        "canonicalBytes": 1855,
+        "reference": "references/base/predecessor.json",
+        "sha256": "b81fb7d2f71c3c6c8d6956f44d75f45cccc982687cb236790779c3209c1308b4"
+      },
+      "primrec:basic": {
+        "canonicalBytes": 4994,
+        "reference": "references/base/primrec__basic.json",
+        "sha256": "475edf94da4d479ab532f3a29008603ff803cc4b440ddd94118f16153648a1ce"
+      }
+    },
+    "C": {
+      "characteristic:divides": {
+        "canonicalBytes": 19203,
+        "reference": "references/c/characteristic__divides.json",
+        "sha256": "0122c288cfb31b2c76206e6cb27c57a6c892e5c654dd56bad18d190e20d3bb92"
+      },
+      "characteristic:eq": {
+        "canonicalBytes": 13261,
+        "reference": "references/c/characteristic__eq.json",
+        "sha256": "0dead3046499c21957c0cf59cd0950f83d6af903bd04307c72f154ca8ca07990"
+      },
+      "minimization:bounded_sub": {
+        "canonicalBytes": 6052,
+        "reference": "references/c/minimization__bounded_sub.json",
+        "sha256": "3730839d2267f10d1878cf1404da003b08e345cb049f3ed48144cce1142efb65"
+      },
+      "predecessor": {
+        "canonicalBytes": 2324,
+        "reference": "references/c/predecessor.json",
+        "sha256": "167acfeec41d4523bd623f3450151b219a17b443f8a082143ab93dea2cd65926"
+      },
+      "primrec:basic": {
+        "canonicalBytes": 4938,
+        "reference": "references/c/primrec__basic.json",
+        "sha256": "be2c021566d0774fe63eb885ca90a7a4f00a9f596b2adddc9c6d5a019ea2e32f"
+      }
+    },
+    "D": {
+      "characteristic:divides": {
+        "canonicalBytes": 19203,
+        "reference": "references/d/characteristic__divides.json",
+        "sha256": "2a9354a026f3191452d8c16e05f7c648652c0f2f1299bd85b5850641da454341"
+      },
+      "characteristic:eq": {
+        "canonicalBytes": 13261,
+        "reference": "references/d/characteristic__eq.json",
+        "sha256": "0dead3046499c21957c0cf59cd0950f83d6af903bd04307c72f154ca8ca07990"
+      },
+      "minimization:bounded_sub": {
+        "canonicalBytes": 6052,
+        "reference": "references/d/minimization__bounded_sub.json",
+        "sha256": "3730839d2267f10d1878cf1404da003b08e345cb049f3ed48144cce1142efb65"
+      },
+      "predecessor": {
+        "canonicalBytes": 2324,
+        "reference": "references/d/predecessor.json",
+        "sha256": "167acfeec41d4523bd623f3450151b219a17b443f8a082143ab93dea2cd65926"
+      },
+      "primrec:basic": {
+        "canonicalBytes": 4938,
+        "reference": "references/d/primrec__basic.json",
+        "sha256": "e06058db84d418002da1194801c561efd33708c894213fe00a6db6830495536f"
+      }
+    },
+    "E": {
+      "characteristic:divides": {
+        "canonicalBytes": 19215,
+        "reference": "references/e/characteristic__divides.json",
+        "sha256": "72995a166e8ed11f62d9cad0d9d6fea364b7bc9080cf2eceb7b53f630b234efd"
+      },
+      "characteristic:eq": {
+        "canonicalBytes": 13261,
+        "reference": "references/e/characteristic__eq.json",
+        "sha256": "0dead3046499c21957c0cf59cd0950f83d6af903bd04307c72f154ca8ca07990"
+      },
+      "minimization:bounded_sub": {
+        "canonicalBytes": 6052,
+        "reference": "references/e/minimization__bounded_sub.json",
+        "sha256": "3730839d2267f10d1878cf1404da003b08e345cb049f3ed48144cce1142efb65"
+      },
+      "predecessor": {
+        "canonicalBytes": 2324,
+        "reference": "references/e/predecessor.json",
+        "sha256": "167acfeec41d4523bd623f3450151b219a17b443f8a082143ab93dea2cd65926"
+      },
+      "primrec:basic": {
+        "canonicalBytes": 4938,
+        "reference": "references/e/primrec__basic.json",
+        "sha256": "e06058db84d418002da1194801c561efd33708c894213fe00a6db6830495536f"
+      }
+    }
+  },
+  "stageStacks": {
+    "A": [
+      "ordinary synthetic terminal with raw transformed roles"
+    ],
+    "B": [
+      "ordinary synthetic terminal with raw transformed roles",
+      "adaptive conditional merge doorways and rays"
+    ],
+    "BASE": [
+      "native production SketchV4 realization"
+    ],
+    "C": [
+      "ordinary synthetic terminal with raw transformed roles",
+      "adaptive conditional merge doorways and rays",
+      "divides i-57 right-to-right H/V/H compatibility route"
+    ],
+    "D": [
+      "ordinary synthetic terminal with raw transformed roles",
+      "adaptive conditional merge doorways and rays",
+      "divides i-57 right-to-right H/V/H compatibility route",
+      "generalized backward-loop source attachment"
+    ],
+    "E": [
+      "ordinary synthetic terminal with raw transformed roles",
+      "adaptive conditional merge doorways and rays",
+      "divides i-57 right-to-right H/V/H compatibility route",
+      "generalized backward-loop source attachment",
+      "generalized backward-loop target attachment"
+    ]
+  },
+  "stages": [
+    "BASE",
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+  ],
+  "title": "SketchV4 productionization parity characterization",
+  "warning": "These reference files are characterization evidence. Do not regenerate them to make a later production implementation pass."
+}
