@@ -170,6 +170,99 @@ function parityFailures(reference, candidate) {
   return failures;
 }
 
+function layerBContractFailures(referenceA, referenceB, candidate, view) {
+  const failures = [];
+  const expectedEvidence = referenceB.diagnostics.stageEvidence;
+  const actualEvidence = candidate.diagnostics.stageEvidence;
+  for (const field of [
+    "eligibleConditionalMergeEdgeIds",
+    "adaptiveChangedEdgeIds",
+    "adaptiveDecisions",
+  ]) {
+    const difference = firstValueDifference(expectedEvidence[field], actualEvidence[field]);
+    if (difference) failures.push({ type: `Layer B ${field} mismatch`, first: difference });
+  }
+
+  const structurallyEligible = view.cfg.edges
+    .filter((edge) => (
+      (edge.branch === "yes" || edge.branch === "no")
+      && view.roles.edgeRoleById.get(edge.id) === "merge-connector"
+      && view.cfg.nodeById.get(edge.from)?.kind === "conditionalJump"
+    ))
+    .map((edge) => edge.id);
+  const eligibilityDifference = firstValueDifference(
+    expectedEvidence.eligibleConditionalMergeEdgeIds,
+    structurallyEligible,
+  );
+  if (eligibilityDifference) {
+    failures.push({ type: "Layer B structural eligibility mismatch", first: eligibilityDifference });
+  }
+
+  const routesA = rowIndex(referenceA.routes, "edgeId");
+  const routesB = rowIndex(candidate.routes, "edgeId");
+  const portsA = rowIndex(referenceA.ports, "edgeId");
+  const portsB = rowIndex(candidate.ports, "edgeId");
+  const nodesB = rowIndex(candidate.nodes, "id");
+  const orientationB = rowIndex(candidate.orientation, "id");
+  const decisionById = rowIndex(actualEvidence.adaptiveDecisions, "edgeId");
+
+  for (const edgeId of structurallyEligible) {
+    const edge = view.cfg.edgeById.get(edgeId);
+    const beforeRoute = routesA.get(edgeId);
+    const afterRoute = routesB.get(edgeId);
+    const beforePort = portsA.get(edgeId);
+    const afterPort = portsB.get(edgeId);
+    const decision = decisionById.get(edgeId);
+    const orientation = orientationB.get(edge.from);
+    const visualSide = orientation?.[edge.branch];
+    const sourceBox = nodesB.get(edge.from)?.box;
+    const siblingArm = view.skeleton.armSegments.find((arm) => (
+      arm.srcDiamond === edge.from && arm.side !== visualSide
+    ));
+    const expectedSourcePort = visualSide === "left"
+      ? [(sourceBox.left + sourceBox.cx) / 2, (sourceBox.cy + sourceBox.bottom) / 2]
+      : [(sourceBox.cx + sourceBox.right) / 2, (sourceBox.cy + sourceBox.bottom) / 2];
+    for (const [label, expected, actual] of [
+      ["target route port", beforeRoute?.targetPort, afterRoute?.targetPort],
+      ["target port record", beforePort?.targetPort, afterPort?.targetPort],
+      ["semantic branch doorway", expectedSourcePort, afterRoute?.sourcePort],
+      ["route/port source agreement", afterRoute?.sourcePort, afterPort?.sourcePort],
+    ]) {
+      const difference = firstValueDifference(expected, actual);
+      if (difference) failures.push({ type: `Layer B ${edgeId} ${label} mismatch`, first: difference });
+    }
+    const points = afterRoute?.points ?? [];
+    if (points.length !== 4
+      || points[1]?.[0] !== points[2]?.[0]
+      || points[2]?.[1] !== points[3]?.[1]
+      || firstValueDifference(points[3], afterRoute?.targetPort)) {
+      failures.push({ type: `Layer B ${edgeId} route is not ray→vertical→horizontal` });
+    }
+    const rayDx = Math.abs((decision?.chosenRayEndpoint?.[0] ?? 0) - (decision?.sourcePort?.[0] ?? 0));
+    const rayDy = (decision?.chosenRayEndpoint?.[1] ?? 0) - (decision?.sourcePort?.[1] ?? 0);
+    const siblingDx = Math.abs((siblingArm?.targetTop?.[0] ?? 0) - (siblingArm?.face?.[0] ?? 0));
+    const siblingDy = (siblingArm?.targetTop?.[1] ?? 0) - (siblingArm?.face?.[1] ?? 0);
+    if (!siblingArm || rayDx <= 0 || siblingDx <= 0
+      || Math.abs(rayDy / rayDx - siblingDy / siblingDx) > 1e-9) {
+      failures.push({ type: `Layer B ${edgeId} source ray did not preserve the sibling exit angle` });
+    }
+    if (decision?.shortened) {
+      const direction = visualSide === "left" ? -1 : 1;
+      const run = direction * (decision.chosenRayEndpoint[0] - decision.sourcePort[0]);
+      if (Math.abs(run - decision.availableBoundaryGap / 2) > 1e-9) {
+        failures.push({ type: `Layer B ${edgeId} shortened ray is not at the boundary-gap midpoint` });
+      }
+    } else if (firstValueDifference(decision?.fullRayEndpoint, decision?.chosenRayEndpoint)) {
+      failures.push({ type: `Layer B ${edgeId} clear full sibling ray was not retained` });
+    }
+  }
+
+  if (view.conditionalMergeSources?.contract?.edgeGeometryInfluencesDecision !== false) {
+    failures.push({ type: "Layer B edge geometry influenced adaptive shortening" });
+  }
+  return failures;
+}
+
 function verifyReferenceIntegrity(manifest, cache, stage, fixture) {
   const expected = manifest.stageHashes[stage][fixture];
   const absolute = path.join(PACKAGE, expected.reference);
@@ -250,16 +343,21 @@ async function main() {
       }));
       const reference = references[stage][fixture];
       const failures = parityFailures(reference, candidate);
-      // Layer A is also characterized as a transition from the immutable production BASE.
-      // Checking the stored delta explicitly makes an accidental out-of-layer change visible
-      // even before a later production commit reaches exact whole-layout parity.
-      if (stage === "A") {
-        const expectedDelta = manifest.expectedDeltas.normalOrientation.BASE_TO_A[fixture];
-        const actualDelta = geometryDelta(references.BASE[fixture], candidate);
+      if (stage === "B") {
+        failures.push(...layerBContractFailures(references.A[fixture], reference, candidate, view));
+      }
+      // Production stages are also characterized against their immutable predecessor. Checking
+      // that stored transition explicitly makes an accidental out-of-layer change immediately
+      // visible, in addition to whole-layout parity.
+      const transition = stage === "A" ? "BASE_TO_A" : stage === "B" ? "A_TO_B" : null;
+      if (transition) {
+        const priorStage = transition.split("_TO_")[0];
+        const expectedDelta = manifest.expectedDeltas.normalOrientation[transition][fixture];
+        const actualDelta = geometryDelta(references[priorStage][fixture], candidate);
         const difference = firstValueDifference(expectedDelta, actualDelta);
         if (difference) {
           failures.push({
-            type: "BASE→A delta mismatch",
+            type: `${transition.replace("_TO_", "→")} delta mismatch`,
             first: difference,
             expected: expectedDelta,
             actual: actualDelta,

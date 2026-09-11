@@ -6,7 +6,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { buildLayout } from "../../../../urmwebpage/frontend/src/layout/sketchv4/pipeline.js";
 import { ENCODING_PRESETS } from "../../../../urmwebpage/frontend/src/utils/encodingPresets.js";
 import { PLAYGROUND_STARTER_PROGRAMS } from "../../../../urmwebpage/frontend/src/utils/playgroundPresets.js";
-import { LAYER_A_VISUAL } from "./live_production_layer_a.mjs";
+import { PRODUCTIONIZATION_VISUAL } from "./live_production.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, "../../../..");
@@ -108,10 +108,54 @@ function assertLayerA(layout, sourceProgram, label) {
   assert.equal(layout.terminalConstruction.candidateAndFinalRealizer, "shared-realizeUnder", `${label}: shared realizer contract`);
 }
 
+function assertLayerB(layout, label) {
+  const eligibleEdges = layout.cfg.edges.filter((edge) => (
+    (edge.branch === "yes" || edge.branch === "no")
+    && layout.roles.edgeRoleById.get(edge.id) === "merge-connector"
+    && layout.cfg.nodeById.get(edge.from)?.kind === "conditionalJump"
+  ));
+  const eligibleIds = eligibleEdges.map((edge) => edge.id);
+  assert.deepEqual(layout.conditionalMergeSources.eligibleEdgeIds, eligibleIds, `${label}: Layer B eligibility`);
+  assert.deepEqual(
+    layout.conditionalMergeSources.decisions.map((decision) => decision.edgeId),
+    eligibleIds,
+    `${label}: one Layer B decision per eligible edge`,
+  );
+  assert.deepEqual(
+    layout.conditionalMergeSources.decisions.filter((decision) => decision.shortened).map((decision) => decision.edgeId),
+    layout.conditionalMergeSources.shortenedEdgeIds,
+    `${label}: shortened-edge census`,
+  );
+  assert.equal(layout.conditionalMergeSources.contract.edgeGeometryInfluencesDecision, false, `${label}: edge geometry is diagnostic-only`);
+  assert.equal(layout.conditionalMergeSources.contract.targetPortSelectionChanged, false, `${label}: target-port policy unchanged`);
+
+  const routeById = new Map(layout.routed.routes.map((route) => [route.edgeId, route]));
+  const decisionById = new Map(layout.conditionalMergeSources.decisions.map((decision) => [decision.edgeId, decision]));
+  for (const edge of eligibleEdges) {
+    const route = routeById.get(edge.id);
+    const port = layout.routed.ports.get(edge.id);
+    const decision = decisionById.get(edge.id);
+    const visualSide = layout.orientationOf(edge.from)?.[edge.branch];
+    const sourceBox = layout.boxes.get(edge.from);
+    const expectedSourcePort = visualSide === "left"
+      ? [(sourceBox.left + sourceBox.cx) / 2, (sourceBox.cy + sourceBox.bottom) / 2]
+      : [(sourceBox.cx + sourceBox.right) / 2, (sourceBox.cy + sourceBox.bottom) / 2];
+    assert.deepEqual(route.sourcePort, expectedSourcePort, `${label}: ${edge.id} semantic branch doorway`);
+    assert.deepEqual(port.sourcePort, route.sourcePort, `${label}: ${edge.id} source-port record`);
+    assert.deepEqual(port.targetPort, route.targetPort, `${label}: ${edge.id} target-port record`);
+    assert.deepEqual(route.points[0], route.sourcePort, `${label}: ${edge.id} ray starts at doorway`);
+    assert.deepEqual(route.points[3], route.targetPort, `${label}: ${edge.id} body ends at selected target`);
+    assert.equal(route.points[1][0], route.points[2][0], `${label}: ${edge.id} vertical leg`);
+    assert.equal(route.points[2][1], route.points[3][1], `${label}: ${edge.id} horizontal leg`);
+    assert.deepEqual(decision.finalRoutePoints, route.points, `${label}: ${edge.id} decision diagnostics`);
+  }
+}
+
 function buildAndCheck(program, label) {
-  const options = { programName: label, orientationSource: "v4Assigned", visual: LAYER_A_VISUAL };
+  const options = { programName: label, orientationSource: "v4Assigned", visual: PRODUCTIONIZATION_VISUAL };
   const first = buildLayout(program, { ...options, diagnostics: true });
   assertLayerA(first, program, label);
+  assertLayerB(first, label);
   const repeated = buildLayout(program, { ...options, diagnostics: true });
   assert.equal(canonicalGeometry(repeated), canonicalGeometry(first), `${label}: repeated output deterministic`);
   const noDiagnostics = buildLayout(program, { ...options, diagnostics: false });
@@ -209,8 +253,12 @@ async function main() {
       "no legacy HALT layout path",
       "deterministic repeated output",
       "diagnostics read-only",
-      "shared candidate/final Layer-A realizer",
+      "shared candidate/final production realizer",
       "adapter terminal identity translation",
+      "structural conditional merge-source eligibility",
+      "semantic branch doorway and ray/V/H body",
+      "node-box-only adaptive shortening",
+      "unchanged target-port policy",
     ],
   }, null, 2));
 }

@@ -1,5 +1,5 @@
 import { buildCheckpointStageView } from "../../../urmwebpage/frontend/.flow-layout-probes/current_harness.mjs";
-import { buildParityCandidate as buildLiveProductionLayerA } from "./scripts/live_production_layer_a.mjs";
+import { buildParityCandidate as buildLiveProduction } from "./scripts/live_production.mjs";
 import {
   canonicalGeometryFromSnapshot,
   compareSnapshots,
@@ -228,12 +228,12 @@ async function renderSelection() {
   try {
     const referencePath = manifest.stageHashes[stage][fixture].reference;
     const reference = await fetch(`./${referencePath}`).then((response) => response.json());
-    const liveProduction = stage === "A";
+    const liveProduction = stage === "B";
     const candidateView = liveProduction
-      ? buildLiveProductionLayerA(programs[fixture], fixture, stage)
+      ? buildLiveProduction(programs[fixture], fixture, stage)
       : buildCheckpointStageView(programs[fixture], fixture, stage);
     const comparisonSource = liveProduction
-      ? "native production SketchV4 Layer A"
+      ? "native production SketchV4 Layer B"
       : "current tested checkpoint harness";
     const candidate = await snapshotWithHash(candidateView, fixture, stage, comparisonSource);
     buildCount += 1;
@@ -246,7 +246,7 @@ async function renderSelection() {
     renderCard($("#reference-card"), "Frozen reference", reference, referenceFocus, diff, {
       routeDiffs, nodeDiffs, color: "#ffb454", identicalOpacity: 0.9,
     }, defects);
-    renderCard($("#candidate-card"), liveProduction ? "Live production Layer A" : "Current harness reproduction", candidate, candidateFocus, diff, {
+    renderCard($("#candidate-card"), liveProduction ? "Live production Layer B" : "Current harness reproduction", candidate, candidateFocus, diff, {
       routeDiffs, nodeDiffs, color: "#63d3ff", identicalOpacity: 0.9,
     }, defects);
 

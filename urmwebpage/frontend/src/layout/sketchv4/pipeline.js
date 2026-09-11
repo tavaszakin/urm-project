@@ -20,6 +20,7 @@ import { buildRealForkTree } from "./realforktree.js";
 import { buildSkeleton } from "./skeleton.js";
 import { computeLanes } from "./lanes.js";
 import { routeEdges } from "./routing.js";
+import { applyAdaptiveConditionalMergeSources } from "./conditionalMergeSources.js";
 import { evaluateDefects } from "./defects.js";
 import { assignOrientation } from "./orientation.js";
 import { buildDiagnostics } from "./diagnostics.js";
@@ -150,8 +151,17 @@ export function buildLayout(program, options = {}) {
     const lanes = computeLanes(cfg, roles, ownership, skeleton, { orientationOf });
     // routing.js/ports.js retain an inert compatibility argument, but no HALT node, edge role,
     // box, landing slot, route family, or port policy reaches them in Layer A.
-    const routed = routeEdges(cfg, roles, ownership, skeleton, lanes, NO_HALT_CONTEXT, { clearance });
+    const baseRouted = routeEdges(cfg, roles, ownership, skeleton, lanes, NO_HALT_CONTEXT, { clearance });
     const boxes = new Map([...skeleton.placements].map(([id, p]) => [id, p.box]));
+    const conditionalMergeSources = applyAdaptiveConditionalMergeSources(
+      cfg,
+      roles,
+      skeleton,
+      baseRouted,
+      boxes,
+      { orientationOf, branchAngleTan: v.branchAngleTan, clearance },
+    );
+    const routed = conditionalMergeSources.routed;
     const terminalPlacement = skeleton.placements.get(terminalId);
     const realization = {
       orientationOf,
@@ -159,6 +169,7 @@ export function buildLayout(program, options = {}) {
       lanes,
       routed,
       boxes,
+      conditionalMergeSources,
       terminal: terminalPlacement ? {
         id: terminalId,
         instructionIndex: terminalIndex,
@@ -208,6 +219,7 @@ export function buildLayout(program, options = {}) {
     cfg, roles, ownership, tree, orientationMap, orientationResult,
     skeleton: R.skeleton, lanes: R.lanes, routed: R.routed, ports: R.routed.ports, boxes: R.boxes, orientationOf: R.orientationOf,
     terminalId, terminalIndex, terminal: R.terminal,
+    conditionalMergeSources: R.conditionalMergeSources,
     // This record makes the internal topology/display boundary and shared-realizer invariant
     // inspectable without reviving a layout-level `halt` object.
     terminalConstruction: {
