@@ -15350,7 +15350,7 @@ function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow di
             {layoutPlan.nodes.map((node) => (
               <g key={node.id} className="beta-flow-node">
                 {renderNodeShape(node, layout, layoutPlan.offsetX, layoutPlan.offsetY)}
-                {node.kind === "start" || node.kind === "halt" ? (
+                {node.kind === "start" || node.kind === "halt" || node.isSyntheticTerminal ? (
                   <text
                     className="beta-flow-terminal-label"
                     x={safeSvgCoordinate(node.x + layoutPlan.offsetX)}
@@ -15645,10 +15645,26 @@ function buildSketchV4LayoutPlan(program, selectedFunctionId, sketchV3Plan, opti
   const offsetX = -rb.minX; // shift V4 coords (origin at start, can be negative) into [0, width]
   const offsetY = -rb.minY;
   const placements = new Map(v4.skeleton.placements);
-  const haltBox = v4.halt.haltBox;
+  const terminalPlacement = placements.get(v4.terminalId);
+  if (!terminalPlacement) {
+    throw new Error(`SketchV4: no ordinary placement for synthetic terminal "${v4.terminalId}" — falling back`);
+  }
 
   const nodes = sketchV3Plan.nodes.map((node) => {
-    if (node.id === "halt") return { ...node, x: haltBox.cx, y: haltBox.cy };
+    // Rendering compatibility boundary only: the engine terminal remains i-N/action, while
+    // the existing public diagram model keeps its canonical `halt` id and HALT label. Keeping
+    // kind=action makes the displayed box match the engine's ordinary 88x30 geometry.
+    if (node.id === "halt") {
+      return {
+        ...node,
+        kind: "action",
+        label: "HALT",
+        x: terminalPlacement.cx,
+        y: terminalPlacement.cy,
+        isSyntheticTerminal: true,
+        sketchV4InternalNodeId: v4.terminalId,
+      };
+    }
     const p = placements.get(node.id);
     if (!p) throw new Error(`SketchV4: no placement for node "${node.id}" (node-set mismatch) — falling back`);
     return { ...node, x: p.cx, y: p.cy };
@@ -15668,8 +15684,10 @@ function buildSketchV4LayoutPlan(program, selectedFunctionId, sketchV3Plan, opti
     const [labelX, labelY] = labelPointForPolyline(pts, {
       offset: branch ? SKETCHV4_BRANCH_LABEL_OFFSET : 0,
     });
-    // branch is intrinsic to the edge id; from/to are already render-node ids (full program).
-    const edge = { id: e.edgeId, from: e.source, to: e.target, points: pts, branch, type: e.routeFamily, labelX, labelY };
+    // Translate only endpoint identities at the adapter boundary. Geometry remains the exact
+    // route produced against the internal ordinary terminal box.
+    const displayNodeId = (id) => id === v4.terminalId ? "halt" : id;
+    const edge = { id: e.edgeId, from: displayNodeId(e.source), to: displayNodeId(e.target), points: pts, branch, type: e.routeFamily, labelX, labelY };
     if (portDebug && changedPortCase.has(e.edgeId)) edge.debugPortCase = changedPortCase.get(e.edgeId);
     return edge;
   });
@@ -15688,6 +15706,12 @@ function buildSketchV4LayoutPlan(program, selectedFunctionId, sketchV3Plan, opti
     sketchV4PlacementDebug: v4.diagnostics,
     sketchV4PlacementBounds: v4.placementBounds,
     sketchV4RenderBounds: v4.renderBounds,
+    sketchV4TerminalCompatibility: {
+      internalNodeId: v4.terminalId,
+      displayNodeId: "halt",
+      displayLabel: "HALT",
+      layoutKind: "action",
+    },
     sketchV4OrientationFlips: [...v4.orientationMap].filter(([, o]) => o?.no === "right").map(([f]) => f),
   };
 }

@@ -22,6 +22,7 @@
 
 const START_ID = "start";
 const SINK_ID = "halt";
+const ORDINARY_TERMINAL_INSTRUCTION = Object.freeze(["Z", 0]);
 
 // URM opcode -> node kind. A jump J(a,b,t) with a === b is unconditional (the
 // condition is always true); otherwise it is a two-way conditional diamond. Every
@@ -42,6 +43,81 @@ function jumpTarget(instruction) {
 
 export function nodeIdForIndex(index) {
   return `i-${index}`;
+}
+
+// Layer A production terminal topology. The synthetic instruction is deliberately
+// introduced before role classification, ownership, orientation, placement, and routing.
+// It is therefore an ordinary action throughout the layout engine; "HALT" is only a
+// display label applied by the rendering adapter.
+export function buildOrdinaryTerminalCfg(program) {
+  const sourceProgram = Array.isArray(program) ? program : [];
+  const terminalIndex = sourceProgram.length;
+  const terminalId = nodeIdForIndex(terminalIndex);
+  const redirectedExplicitJumpIndexes = [];
+  const expectedTerminalIncomingEdgeIds = [];
+
+  if (terminalIndex === 0) expectedTerminalIncomingEdgeIds.push("entry");
+  for (let index = 0; index < terminalIndex; index += 1) {
+    const instruction = sourceProgram[index];
+    const kind = classifyKind(instruction);
+    if (kind === "conditionalJump") {
+      const target = jumpTarget(instruction);
+      if (!Number.isInteger(target) || target < 0 || target >= terminalIndex) {
+        expectedTerminalIncomingEdgeIds.push(`i-${index}-yes`);
+      }
+      if (index + 1 === terminalIndex) expectedTerminalIncomingEdgeIds.push(`i-${index}-no`);
+    } else if (kind === "unconditionalJump") {
+      const target = jumpTarget(instruction);
+      if (!Number.isInteger(target) || target < 0 || target >= terminalIndex) {
+        expectedTerminalIncomingEdgeIds.push(`i-${index}-jump`);
+      }
+    } else if (index + 1 === terminalIndex) {
+      expectedTerminalIncomingEdgeIds.push(`i-${index}-cont`);
+    }
+  }
+  expectedTerminalIncomingEdgeIds.sort();
+
+  const augmentedProgram = sourceProgram.map((raw, index) => {
+    const instruction = Array.isArray(raw) ? [...raw] : raw;
+    if (Array.isArray(instruction) && String(instruction[0]).trim().toUpperCase() === "J") {
+      const target = Number(instruction[3]);
+      if (!Number.isInteger(target) || target < 0 || target >= terminalIndex) {
+        instruction[3] = terminalIndex;
+        redirectedExplicitJumpIndexes.push(index);
+      }
+    }
+    return instruction;
+  });
+  augmentedProgram.push([...ORDINARY_TERMINAL_INSTRUCTION]);
+
+  const cfg = buildCfg(augmentedProgram);
+  const syntheticOutgoingEdgeId = cfg.outgoingByIndex.get(terminalIndex)?.cont?.id ?? null;
+
+  // The normal builder has now performed traversal against the transformed topology.
+  // Remove only its legacy sink artifact and the synthetic action's generated fallthrough.
+  cfg.nodes = cfg.nodes.filter((node) => node.id !== SINK_ID);
+  cfg.nodeById.delete(SINK_ID);
+  cfg.edges = cfg.edges.filter((edge) => edge.id !== syntheticOutgoingEdgeId && edge.to !== SINK_ID);
+  cfg.edgeById = new Map(cfg.edges.map((edge) => [edge.id, edge]));
+  cfg.outgoingByIndex.set(terminalIndex, { yes: null, no: null, cont: null });
+  cfg.sinkNodeId = terminalId;
+
+  const terminalIncomingEdgeIds = cfg.edges
+    .filter((edge) => edge.to === terminalId)
+    .map((edge) => edge.id)
+    .sort();
+
+  return {
+    cfg,
+    sourceProgram,
+    augmentedProgram,
+    terminalIndex,
+    terminalId,
+    terminalIncomingEdgeIds,
+    expectedTerminalIncomingEdgeIds,
+    redirectedExplicitJumpIndexes,
+    syntheticOutgoingEdgeId,
+  };
 }
 
 // Build the CFG and DFS order. Returns a plain, serializable structure.

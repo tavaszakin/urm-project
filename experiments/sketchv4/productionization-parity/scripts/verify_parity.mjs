@@ -250,6 +250,22 @@ async function main() {
       }));
       const reference = references[stage][fixture];
       const failures = parityFailures(reference, candidate);
+      // Layer A is also characterized as a transition from the immutable production BASE.
+      // Checking the stored delta explicitly makes an accidental out-of-layer change visible
+      // even before a later production commit reaches exact whole-layout parity.
+      if (stage === "A") {
+        const expectedDelta = manifest.expectedDeltas.normalOrientation.BASE_TO_A[fixture];
+        const actualDelta = geometryDelta(references.BASE[fixture], candidate);
+        const difference = firstValueDifference(expectedDelta, actualDelta);
+        if (difference) {
+          failures.push({
+            type: "BASE→A delta mismatch",
+            first: difference,
+            expected: expectedDelta,
+            actual: actualDelta,
+          });
+        }
+      }
       failed ||= failures.length > 0;
       rows.push({
         stage,

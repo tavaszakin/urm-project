@@ -2,7 +2,7 @@
 //
 // STRICTLY READ-ONLY. Reshapes a completed V4 layout into SketchV3-parity-friendly debug
 // records. It reads the layout and returns fresh record objects; it never mutates placement,
-// routes, lanes, HALT, orientation, or defects, and has no feedback path into layout. The
+// routes, lanes, terminal, orientation, or defects, and has no feedback path into layout. The
 // only sanctioned defect->layout path in V4 remains orientation deliberately calling
 // defects.js as its objective (in orientation.js / pipeline.js), never this reporter.
 //
@@ -68,19 +68,27 @@ function findParallelRailConflicts(routes, clearance, minOverlap) {
 }
 
 export function buildDiagnostics(layout) {
-  const { program, orientationSource, cfg, roles, ownership, tree, orientationMap, orientationResult, skeleton, lanes, halt, routed, ports, defects, placementBounds, renderBounds } = layout;
+  const { program, orientationSource, cfg, roles, ownership, tree, orientationMap, orientationResult, skeleton, lanes, terminal, terminalId, terminalConstruction, routed, ports, defects, placementBounds, renderBounds } = layout;
   const bitOf = (f) => (orientationMap.get(f)?.no === "right" ? "flipped" : "default");
   const wh = (b) => (b ? { width: r(b.width), height: r(b.height), minX: r(b.minX), maxX: r(b.maxX), minY: r(b.minY), maxY: r(b.maxY) } : null);
   const rp = (p) => (Array.isArray(p) ? [r(p[0]), r(p[1])] : null);
   const nodeFor = (id) => {
-    const base = cfg.nodeById.get(id) ?? { id, kind: id === "halt" ? "halt" : "unknown", instructionIndex: null };
-    const placement = id === "halt" ? { box: halt.haltBox, role: roles.nodeRoleById.get(id) } : skeleton.placements.get(id);
+    const base = cfg.nodeById.get(id) ?? { id, kind: "unknown", instructionIndex: null };
+    const placement = skeleton.placements.get(id);
     return { ...base, role: roles.nodeRoleById.get(id), box: placement?.box ?? null };
   };
 
   const sketchV4PlacementDebug = {
     nodes: [...skeleton.placements].map(([id, p]) => ({ id, cx: r(p.cx), cy: r(p.cy), left: r(p.box.left), right: r(p.box.right), top: r(p.box.top), bottom: r(p.box.bottom), role: p.role })),
-    halt: { cx: r(halt.haltBox.cx), cy: r(halt.haltBox.cy), left: r(halt.haltBox.left), right: r(halt.haltBox.right), top: r(halt.haltBox.top), bottom: r(halt.haltBox.bottom) },
+    terminal: terminal ? {
+      id: terminal.id,
+      instructionIndex: terminal.instructionIndex,
+      kind: terminal.kind,
+      cx: r(terminal.box.cx), cy: r(terminal.box.cy),
+      left: r(terminal.box.left), right: r(terminal.box.right),
+      top: r(terminal.box.top), bottom: r(terminal.box.bottom),
+    } : null,
+    halt: null,
     placementBounds: wh(placementBounds), renderBounds: wh(renderBounds),
   };
 
@@ -92,12 +100,16 @@ export function buildDiagnostics(layout) {
 
   const sketchV4LaneRecords = lanes.laneRecords.map((l) => ({ ...l }));
 
-  const sketchV4HaltRecords = {
-    haltSide: halt.haltSide, haltX: halt.haltX, haltY: halt.haltY, haltBandOffset: halt.haltBandOffset,
-    outermostLoopRail: halt.outermostLoopRail, sameSideLoopRailCount: halt.sameSideLoopRailCount,
-    haltBandReserved: halt.haltBandReserved, loopRailInsideHaltBand: halt.loopRailInsideHaltBand,
-    haltExitRecords: halt.haltExitRecords.map((h) => ({ ...h })),
-  };
+  // Kept as a null compatibility field for existing debug consumers. There is no layout-level
+  // HALT object in Layer A; the synthetic terminal record below is the authoritative identity.
+  const sketchV4HaltRecords = null;
+  const sketchV4TerminalRecords = terminal ? {
+    terminalId,
+    instructionIndex: terminal.instructionIndex,
+    kind: terminal.kind,
+    box: { ...terminal.box },
+    construction: { ...terminalConstruction },
+  } : null;
 
   const sketchV4RouteRecords = routed.routes.map((e) => ({
     edgeId: e.edgeId, source: e.source, target: e.target, edgeRole: e.edgeRole, routeFamily: e.routeFamily,
@@ -197,10 +209,13 @@ export function buildDiagnostics(layout) {
     parallelRailConflictCount: sketchV4ParallelRailConflictRecords.length,
     parallelRailClearance: routed.parallelRailClearance ?? null,
     parallelRailMinOverlap: routed.parallelRailMinOverlap ?? null,
-    haltBandReserved: halt.haltBandReserved, loopRailInsideHaltBand: halt.loopRailInsideHaltBand,
+    terminalId,
+    ordinarySyntheticTerminal: true,
+    haltBandReserved: null,
+    loopRailInsideHaltBand: null,
     placementBounds: wh(placementBounds), renderBounds: wh(renderBounds),
     rareRepairCandidates: orientationResult?.rareRepairCandidates ?? null,
   };
 
-  return { sketchV4PlacementDebug, sketchV4RoleRecords, sketchV4OwnershipRecords, sketchV4LaneRecords, sketchV4HaltRecords, sketchV4RouteRecords, sketchV4AttachmentRecords, sketchV4IllegalAttachmentRecords, sketchV4PortRecords, sketchV4ChangedPortRecords, sketchV4DefectRecords, sketchV4ParallelRailAdjustmentRecords, sketchV4ParallelRailConflictRecords, sketchV4OrientationRecords, sketchV4Summary };
+  return { sketchV4PlacementDebug, sketchV4RoleRecords, sketchV4OwnershipRecords, sketchV4LaneRecords, sketchV4HaltRecords, sketchV4TerminalRecords, sketchV4RouteRecords, sketchV4AttachmentRecords, sketchV4IllegalAttachmentRecords, sketchV4PortRecords, sketchV4ChangedPortRecords, sketchV4DefectRecords, sketchV4ParallelRailAdjustmentRecords, sketchV4ParallelRailConflictRecords, sketchV4OrientationRecords, sketchV4Summary };
 }
