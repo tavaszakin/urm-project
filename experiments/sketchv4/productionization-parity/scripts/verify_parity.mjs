@@ -422,6 +422,111 @@ function layerDContractFailures(referenceC, referenceD, candidate, view) {
   return failures;
 }
 
+function layerEContractFailures(referenceD, referenceE, candidate, view) {
+  const failures = [];
+  const expectedEvidence = referenceE.diagnostics.stageEvidence;
+  const actualEvidence = candidate.diagnostics.stageEvidence;
+  for (const field of [
+    "loopSourceChanges",
+    "loopTargetChanges",
+    "loopTargetAmbiguousEdgeIds",
+    "loopTargetNoCandidateEdgeIds",
+    "loopReturnEdgeCount",
+    "legalLoopSourceCount",
+    "legalLoopTargetCount",
+  ]) {
+    const difference = firstValueDifference(expectedEvidence[field], actualEvidence[field]);
+    if (difference) failures.push({ type: `Layer E ${field} mismatch`, first: difference });
+  }
+
+  const expectedDelta = geometryDelta(referenceD, referenceE);
+  const expectedChangedIds = expectedDelta.routes.changed;
+  const actualChangedIds = [...view.generalizedLoopTargets.changedEdgeIds].sort();
+  const changedDifference = firstValueDifference(expectedChangedIds, actualChangedIds);
+  if (changedDifference) failures.push({ type: "Layer E changed-route census mismatch", first: changedDifference });
+
+  const loopRoutes = view.routed.routes.filter((route) => route.edgeRole === "loop-return");
+  const consideredDifference = firstValueDifference(
+    loopRoutes.map((route) => route.edgeId),
+    view.generalizedLoopTargets.consideredEdgeIds,
+  );
+  if (consideredDifference) failures.push({ type: "Layer E structural loop-return selector mismatch", first: consideredDifference });
+
+  const routeById = rowIndex(loopRoutes, "edgeId");
+  const sourceRecordById = rowIndex(view.generalizedLoopSources.records, "edgeId");
+  for (const record of view.generalizedLoopTargets.records) {
+    const route = routeById.get(record.edgeId);
+    const port = view.routed.ports.get(record.edgeId);
+    const sourceRecord = sourceRecordById.get(record.edgeId);
+    for (const [description, expected, actual] of [
+      ["Layer D input route", sourceRecord?.newRoutePoints, record.oldRoutePoints],
+      ["unchanged source port", record.sourcePort, route?.sourcePort],
+      ["unchanged source port record", record.oldSourcePortRecord, record.newSourcePortRecord],
+      ["unchanged source-side route prefix", record.oldRoutePoints.slice(0, -2), record.newRoutePoints.slice(0, -2)],
+      ["unchanged rail", record.railCoord, route?.railCoord],
+      ["unchanged route family", record.routeFamily, route?.routeFamily],
+      ["unchanged loop lane", record.laneBundleId, route?.laneBundleId],
+      ["final target port", record.resultingTargetPort, route?.targetPort],
+      ["final target port record", record.newTargetPortRecord, port?.targetPort],
+      ["final route points", record.newRoutePoints, route?.points],
+    ]) {
+      const difference = firstValueDifference(expected, actual);
+      if (difference) failures.push({ type: `Layer E ${record.edgeId} ${description} mismatch`, first: difference });
+    }
+    const compatibleCount = record.inspectedPortRays.filter((candidateRecord) => candidateRecord.compatible).length;
+    if (compatibleCount !== record.candidateCount) {
+      failures.push({ type: `Layer E ${record.edgeId} compatible-candidate count mismatch` });
+    }
+    if (record.inspectedPortRays.some((candidateRecord) => !candidateRecord.incidentDirection.includes("-"))) {
+      failures.push({ type: `Layer E ${record.edgeId} inspected a non-diagonal target ray` });
+    }
+    if (record.currentTargetLegal) {
+      const difference = firstValueDifference(record.oldRoutePoints, record.newRoutePoints);
+      if (record.routeChanged || record.outcome !== "unchanged-already-legal" || difference) {
+        failures.push({ type: `Layer E ${record.edgeId} changed an already-legal target`, first: difference });
+      }
+    } else if (record.routeChanged) {
+      if (record.candidateCount !== 1
+        || record.outcome !== "generalized-unique-compatible-port"
+        || record.resultingTargetLegal !== true) {
+        failures.push({ type: `Layer E ${record.edgeId} did not use one uniquely compatible legal target` });
+      }
+    } else if (record.candidateCount > 1) {
+      if (record.outcome !== "unchanged-ambiguous-compatible-ports") {
+        failures.push({ type: `Layer E ${record.edgeId} did not preserve an ambiguous target` });
+      }
+    } else if (record.outcome !== "unchanged-no-compatible-port") {
+      failures.push({ type: `Layer E ${record.edgeId} unexpected illegal-target outcome` });
+    }
+  }
+
+  if (view.generalizedLoopTargets.unexpectedlyChangedLegalEdgeIds.length !== 0) {
+    failures.push({ type: "Layer E changed an already-legal loop target" });
+  }
+  const contract = view.generalizedLoopTargets.contract;
+  for (const field of [
+    "fixtureIdentityUsed",
+    "edgeIdentityUsed",
+    "instructionIndexUsed",
+    "targetIdentityUsed",
+    "frozenCoordinatesUsed",
+    "fixedLengthTargetStubUsed",
+    "crossingOrDefectScoreUsedForSelection",
+    "obstacleOrClearanceSearchUsedForSelection",
+    "sourcePortsChanged",
+    "sourceGeometryChanged",
+    "loopReturnRailsChanged",
+    "loopBendRowsChanged",
+    "nodePositionsChanged",
+    "orientationPolicyChanged",
+    "nonLoopRoutesChanged",
+    "automaticRepairAfterConstruction",
+  ]) {
+    if (contract[field] !== false) failures.push({ type: `Layer E contract ${field} must remain false` });
+  }
+  return failures;
+}
+
 function verifyReferenceIntegrity(manifest, cache, stage, fixture) {
   const expected = manifest.stageHashes[stage][fixture];
   const absolute = path.join(PACKAGE, expected.reference);
@@ -505,7 +610,7 @@ async function main() {
       if (stage === "B") {
         failures.push(...layerBContractFailures(references.A[fixture], references.B[fixture], candidate, view));
       }
-      if (["C", "D"].includes(stage)) {
+      if (["C", "D", "E"].includes(stage)) {
         failures.push(...layerCContractFailures(references.B[fixture], references.C[fixture], candidate, view));
       }
       if (stage === "C") {
@@ -545,6 +650,25 @@ async function main() {
           });
         }
       }
+      if (stage === "E") {
+        failures.push(...layerEContractFailures(references.D[fixture], reference, candidate, view));
+        const fixedOrientationMap = new Map(reference.orientation.map((row) => [row.id, { no: row.no, yes: row.yes }]));
+        const fixedDView = buildCheckpointStageView(programs[fixture], fixture, "D", { orientationMap: fixedOrientationMap });
+        const fixedD = snapshotFromView(fixedDView, fixture, "D", { comparisonSource: "tested checkpoint harness" });
+        const fixedEView = await buildCandidate(programs[fixture], fixture, "E", { orientationMap: fixedOrientationMap });
+        const fixedE = snapshotFromView(fixedEView, fixture, "E", { comparisonSource: "live production fixed orientation" });
+        const expectedFixedDelta = manifest.expectedDeltas.fixedOrientation.D_TO_E[fixture];
+        const actualFixedDelta = geometryDelta(fixedD, fixedE);
+        const fixedDifference = firstValueDifference(expectedFixedDelta, actualFixedDelta);
+        if (fixedDifference) {
+          failures.push({
+            type: "fixed-orientation D→E delta mismatch",
+            first: fixedDifference,
+            expected: expectedFixedDelta,
+            actual: actualFixedDelta,
+          });
+        }
+      }
       // Production stages are also characterized against their immutable predecessor. Checking
       // that stored transition explicitly makes an accidental out-of-layer change immediately
       // visible, in addition to whole-layout parity.
@@ -552,6 +676,7 @@ async function main() {
         : stage === "B" ? "A_TO_B"
           : stage === "C" ? "B_TO_C"
             : stage === "D" ? "C_TO_D"
+              : stage === "E" ? "D_TO_E"
             : null;
       if (transition) {
         const priorStage = transition.split("_TO_")[0];

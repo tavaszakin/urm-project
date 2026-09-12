@@ -30,8 +30,8 @@ function attachmentRecords(view) {
 }
 
 export function buildParityCandidate(program, fixture, stage, options = {}) {
-  if (String(stage).toUpperCase() !== "D") {
-    throw new Error(`current live production candidate is Stage D, not ${stage}`);
+  if (String(stage).toUpperCase() !== "E") {
+    throw new Error(`current live production candidate is Stage E, not ${stage}`);
   }
   const pins = options.orientationMap
     ? new Map([...options.orientationMap].map(([id, orientation]) => [id, { ...orientation }]))
@@ -62,16 +62,18 @@ export function buildParityCandidate(program, fixture, stage, options = {}) {
   } : null;
   return {
     ...view,
-    mode: "production-layer-d",
+    mode: "production-layer-e",
     attachments: attachmentRecords(view),
     experimentalRouteSplices: view.conditionalMergeSources.decisions,
     experimentalRouteSplice,
     experimentalLoopSourcePortCensus: view.generalizedLoopSources.records,
+    experimentalLoopTargetAttachmentCensus: view.generalizedLoopTargets.records,
     stageTransformStack: [
       "native production ordinary synthetic terminal",
       "native production adaptive conditional merge doorways and rays",
       "native production structural same-side continuation reentry",
       "native production generalized backward-loop source attachment",
+      "native production generalized backward-loop target attachment",
     ],
     purity: {
       ...view.terminalConstruction,
@@ -83,6 +85,12 @@ export function buildParityCandidate(program, fixture, stage, options = {}) {
       loopSourceGeneralizationConsideredEdgeIds: view.generalizedLoopSources.consideredEdgeIds,
       loopSourceGeneralizationChangedEdgeIds: view.generalizedLoopSources.changedEdgeIds,
       ...view.generalizedLoopSources.contract,
+      loopTargetGeneralizationConsideredEdgeIds: view.generalizedLoopTargets.consideredEdgeIds,
+      loopTargetGeneralizationChangedEdgeIds: view.generalizedLoopTargets.changedEdgeIds,
+      loopTargetGeneralizationAmbiguousEdgeIds: view.generalizedLoopTargets.ambiguousEdgeIds,
+      loopTargetGeneralizationNoCandidateEdgeIds: view.generalizedLoopTargets.noCandidateEdgeIds,
+      unexpectedlyChangedLegalEdgeIds: view.generalizedLoopTargets.unexpectedlyChangedLegalEdgeIds,
+      ...view.generalizedLoopTargets.contract,
     },
   };
 }

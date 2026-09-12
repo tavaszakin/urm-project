@@ -68,7 +68,7 @@ function findParallelRailConflicts(routes, clearance, minOverlap) {
 }
 
 export function buildDiagnostics(layout) {
-  const { program, orientationSource, cfg, roles, ownership, tree, orientationMap, orientationResult, skeleton, lanes, terminal, terminalId, terminalConstruction, conditionalMergeSources, sameSideReentries, generalizedLoopSources, routed, ports, defects, placementBounds, renderBounds } = layout;
+  const { program, orientationSource, cfg, roles, ownership, tree, orientationMap, orientationResult, skeleton, lanes, terminal, terminalId, terminalConstruction, conditionalMergeSources, sameSideReentries, generalizedLoopSources, generalizedLoopTargets, routed, ports, defects, placementBounds, renderBounds } = layout;
   const bitOf = (f) => (orientationMap.get(f)?.no === "right" ? "flipped" : "default");
   const wh = (b) => (b ? { width: r(b.width), height: r(b.height), minX: r(b.minX), maxX: r(b.maxX), minY: r(b.minY), maxY: r(b.maxY) } : null);
   const rp = (p) => (Array.isArray(p) ? [r(p[0]), r(p[1])] : null);
@@ -129,6 +129,32 @@ export function buildDiagnostics(layout) {
     oldRoutePoints: record.oldRoutePoints.map((point) => [...point]),
     newRoutePoints: record.newRoutePoints.map((point) => [...point]),
     preservedRouteSuffix: record.preservedRouteSuffix.map((point) => [...point]),
+  }));
+
+  const copyOptionalPoint = (point) => Array.isArray(point) ? [...point] : null;
+  const sketchV4GeneralizedLoopTargetRecords = generalizedLoopTargets.records.map((record) => ({
+    ...record,
+    currentTargetPort: [...record.currentTargetPort],
+    intersection: copyOptionalPoint(record.intersection),
+    approachStart: copyOptionalPoint(record.approachStart),
+    approachEnd: copyOptionalPoint(record.approachEnd),
+    inspectedPortRays: record.inspectedPortRays.map((candidate) => ({
+      ...candidate,
+      port: [...candidate.port],
+      rayVector: [...candidate.rayVector],
+      intersection: copyOptionalPoint(candidate.intersection),
+      proposedPoints: candidate.proposedPoints?.map((point) => [...point]) ?? null,
+    })),
+    oldRouteSuffix: record.oldRouteSuffix.map((point) => [...point]),
+    newRouteSuffix: record.newRouteSuffix.map((point) => [...point]),
+    oldRoutePoints: record.oldRoutePoints.map((point) => [...point]),
+    newRoutePoints: record.newRoutePoints.map((point) => [...point]),
+    sourcePort: [...record.sourcePort],
+    oldSourcePortRecord: [...record.oldSourcePortRecord],
+    newSourcePortRecord: [...record.newSourcePortRecord],
+    oldTargetPortRecord: [...record.oldTargetPortRecord],
+    newTargetPortRecord: [...record.newTargetPortRecord],
+    resultingTargetPort: [...record.resultingTargetPort],
   }));
 
   // Kept as a null compatibility field for existing debug consumers. There is no layout-level
@@ -242,6 +268,11 @@ export function buildDiagnostics(layout) {
     generalizedLoopSourceCount: generalizedLoopSources.consideredEdgeIds.length,
     changedGeneralizedLoopSourceCount: generalizedLoopSources.changedEdgeIds.length,
     changedGeneralizedLoopSourceEdgeIds: [...generalizedLoopSources.changedEdgeIds],
+    generalizedLoopTargetCount: generalizedLoopTargets.consideredEdgeIds.length,
+    changedGeneralizedLoopTargetCount: generalizedLoopTargets.changedEdgeIds.length,
+    changedGeneralizedLoopTargetEdgeIds: [...generalizedLoopTargets.changedEdgeIds],
+    ambiguousGeneralizedLoopTargetEdgeIds: [...generalizedLoopTargets.ambiguousEdgeIds],
+    noCandidateGeneralizedLoopTargetEdgeIds: [...generalizedLoopTargets.noCandidateEdgeIds],
     illegalLocalAttachmentEdgeCount: sketchV4IllegalAttachmentRecords.length,
     illegalLocalAttachmentEndpointCount: illegalAttachmentEndpointCount,
     parallelRailAdjustmentCount: sketchV4ParallelRailAdjustmentRecords.length,
@@ -256,5 +287,5 @@ export function buildDiagnostics(layout) {
     rareRepairCandidates: orientationResult?.rareRepairCandidates ?? null,
   };
 
-  return { sketchV4PlacementDebug, sketchV4RoleRecords, sketchV4OwnershipRecords, sketchV4LaneRecords, sketchV4ConditionalMergeSourceRecords, sketchV4SameSideReentryRecords, sketchV4GeneralizedLoopSourceRecords, sketchV4HaltRecords, sketchV4TerminalRecords, sketchV4RouteRecords, sketchV4AttachmentRecords, sketchV4IllegalAttachmentRecords, sketchV4PortRecords, sketchV4ChangedPortRecords, sketchV4DefectRecords, sketchV4ParallelRailAdjustmentRecords, sketchV4ParallelRailConflictRecords, sketchV4OrientationRecords, sketchV4Summary };
+  return { sketchV4PlacementDebug, sketchV4RoleRecords, sketchV4OwnershipRecords, sketchV4LaneRecords, sketchV4ConditionalMergeSourceRecords, sketchV4SameSideReentryRecords, sketchV4GeneralizedLoopSourceRecords, sketchV4GeneralizedLoopTargetRecords, sketchV4HaltRecords, sketchV4TerminalRecords, sketchV4RouteRecords, sketchV4AttachmentRecords, sketchV4IllegalAttachmentRecords, sketchV4PortRecords, sketchV4ChangedPortRecords, sketchV4DefectRecords, sketchV4ParallelRailAdjustmentRecords, sketchV4ParallelRailConflictRecords, sketchV4OrientationRecords, sketchV4Summary };
 }

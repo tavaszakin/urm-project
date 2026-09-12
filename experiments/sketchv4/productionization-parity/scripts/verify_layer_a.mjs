@@ -221,19 +221,28 @@ function assertLayerD(layout, label) {
   );
 
   const routeById = new Map(loopRoutes.map((route) => [route.edgeId, route]));
+  const targetRecordById = new Map(
+    layout.generalizedLoopTargets.records.map((record) => [record.edgeId, record]),
+  );
   for (const record of records) {
     const route = routeById.get(record.edgeId);
     const port = layout.routed.ports.get(record.edgeId);
     const sourceBox = layout.boxes.get(route.source);
+    const targetRecord = targetRecordById.get(record.edgeId);
     assert.equal(layout.roles.edgeRoleById.get(record.edgeId), "loop-return", `${label}: ${record.edgeId} semantic loop role`);
-    assert.deepEqual(route.targetPort, record.targetPort, `${label}: ${record.edgeId} target attachment unchanged`);
+    assert.deepEqual(targetRecord.oldRoutePoints, record.newRoutePoints, `${label}: ${record.edgeId} Layer E consumes exact Layer D route`);
     assert.deepEqual(
       record.newTargetPortRecord,
       record.oldTargetPortRecord,
       `${label}: ${record.edgeId} target port record unchanged`,
     );
     assert.equal(route.railCoord, record.railCoord, `${label}: ${record.edgeId} rail unchanged`);
-    assert.deepEqual(route.points, record.newRoutePoints, `${label}: ${record.edgeId} final route matches Layer D record`);
+    assert.deepEqual(route.sourcePort, record.resultingSourcePort, `${label}: ${record.edgeId} Layer D source survives Layer E`);
+    assert.deepEqual(
+      route.points.slice(0, -2),
+      record.newRoutePoints.slice(0, -2),
+      `${label}: ${record.edgeId} Layer D route prefix survives Layer E`,
+    );
 
     if (record.bodyClassification === "vertical-first") {
       assert.equal(record.routeChanged, true, `${label}: ${record.edgeId} vertical-first route changed`);
@@ -278,12 +287,100 @@ function assertLayerD(layout, label) {
   for (const route of loopRoutes) {
     assert.equal(attachmentById.get(route.edgeId)?.sourceAttachmentLegal, true, `${label}: ${route.edgeId} final loop source legal`);
   }
-  assert.equal(Object.hasOwn(layout, "generalizedLoopTargets"), false, `${label}: Stage E transform absent`);
-  assert.equal(
-    [...layout.routed.ports.values()].some((record) => record.experimentalGeneralizedTargetPort),
-    false,
-    `${label}: Stage E target-port marker absent`,
+}
+
+function assertLayerE(layout, label) {
+  const loopRoutes = layout.routed.routes.filter((route) => route.edgeRole === "loop-return");
+  const records = layout.generalizedLoopTargets.records;
+  assert.deepEqual(
+    layout.generalizedLoopTargets.consideredEdgeIds,
+    loopRoutes.map((route) => route.edgeId),
+    `${label}: Layer E considers every loop-return`,
   );
+  assert.deepEqual(
+    records.map((record) => record.edgeId),
+    loopRoutes.map((route) => route.edgeId),
+    `${label}: one Layer E record per loop-return`,
+  );
+  assert.deepEqual(
+    layout.generalizedLoopTargets.changedEdgeIds,
+    records.filter((record) => record.routeChanged).map((record) => record.edgeId),
+    `${label}: Layer E changed-edge census`,
+  );
+  assert.deepEqual(
+    layout.generalizedLoopTargets.unexpectedlyChangedLegalEdgeIds,
+    [],
+    `${label}: already-legal loop targets are immutable`,
+  );
+
+  const routeById = new Map(loopRoutes.map((route) => [route.edgeId, route]));
+  for (const record of records) {
+    const route = routeById.get(record.edgeId);
+    const port = layout.routed.ports.get(record.edgeId);
+    assert.equal(layout.roles.edgeRoleById.get(record.edgeId), "loop-return", `${label}: ${record.edgeId} semantic loop role`);
+    assert.deepEqual(route.points, record.newRoutePoints, `${label}: ${record.edgeId} final Layer E route`);
+    assert.deepEqual(route.sourcePort, record.sourcePort, `${label}: ${record.edgeId} source geometry unchanged`);
+    assert.deepEqual(record.newSourcePortRecord, record.oldSourcePortRecord, `${label}: ${record.edgeId} source port record unchanged`);
+    assert.deepEqual(
+      record.newRoutePoints.slice(0, -2),
+      record.oldRoutePoints.slice(0, -2),
+      `${label}: ${record.edgeId} earlier route points unchanged`,
+    );
+    assert.equal(route.railCoord, record.railCoord, `${label}: ${record.edgeId} rail unchanged`);
+    assert.equal(route.routeFamily, record.routeFamily, `${label}: ${record.edgeId} route family unchanged`);
+    assert.equal(route.laneBundleId, record.laneBundleId, `${label}: ${record.edgeId} loop lane unchanged`);
+    assert.deepEqual(route.targetPort, record.resultingTargetPort, `${label}: ${record.edgeId} target route port`);
+    assert.deepEqual(port.targetPort, record.newTargetPortRecord, `${label}: ${record.edgeId} target port record`);
+    assert.equal(
+      record.inspectedPortRays.filter((candidate) => candidate.compatible).length,
+      record.candidateCount,
+      `${label}: ${record.edgeId} compatible candidate count`,
+    );
+    assert.equal(
+      record.inspectedPortRays.every((candidate) => candidate.incidentDirection.includes("-")),
+      true,
+      `${label}: ${record.edgeId} only declared diagonal port rays inspected`,
+    );
+
+    if (record.currentTargetLegal) {
+      assert.equal(record.routeChanged, false, `${label}: ${record.edgeId} legal target unchanged`);
+      assert.equal(record.outcome, "unchanged-already-legal", `${label}: ${record.edgeId} legal-target outcome`);
+      assert.deepEqual(record.newRoutePoints, record.oldRoutePoints, `${label}: ${record.edgeId} legal route byte-identical`);
+    } else if (record.routeChanged) {
+      assert.equal(record.candidateCount, 1, `${label}: ${record.edgeId} unique compatible target`);
+      assert.equal(record.outcome, "generalized-unique-compatible-port", `${label}: ${record.edgeId} unique-target outcome`);
+      assert.equal(record.resultingTargetLegal, true, `${label}: ${record.edgeId} resulting target legal`);
+      assert.equal(port.experimentalGeneralizedTargetPort, true, `${label}: ${record.edgeId} target-port marker`);
+      assert.deepEqual(port.experimentalTargetRayIntersection, record.intersection, `${label}: ${record.edgeId} ray intersection record`);
+    } else if (record.candidateCount > 1) {
+      assert.equal(record.outcome, "unchanged-ambiguous-compatible-ports", `${label}: ${record.edgeId} ambiguity preserved`);
+      assert.deepEqual(record.newRoutePoints, record.oldRoutePoints, `${label}: ${record.edgeId} ambiguous route unchanged`);
+    } else {
+      assert.equal(record.outcome, "unchanged-no-compatible-port", `${label}: ${record.edgeId} no-candidate outcome`);
+      assert.deepEqual(record.newRoutePoints, record.oldRoutePoints, `${label}: ${record.edgeId} no-candidate route unchanged`);
+    }
+  }
+
+  for (const field of [
+    "fixtureIdentityUsed",
+    "edgeIdentityUsed",
+    "instructionIndexUsed",
+    "targetIdentityUsed",
+    "frozenCoordinatesUsed",
+    "fixedLengthTargetStubUsed",
+    "crossingOrDefectScoreUsedForSelection",
+    "obstacleOrClearanceSearchUsedForSelection",
+    "sourcePortsChanged",
+    "sourceGeometryChanged",
+    "loopReturnRailsChanged",
+    "loopBendRowsChanged",
+    "nodePositionsChanged",
+    "orientationPolicyChanged",
+    "nonLoopRoutesChanged",
+    "automaticRepairAfterConstruction",
+  ]) {
+    assert.equal(layout.generalizedLoopTargets.contract[field], false, `${label}: Layer E ${field}`);
+  }
 }
 
 function buildAndCheck(program, label) {
@@ -293,6 +390,7 @@ function buildAndCheck(program, label) {
   assertLayerB(first, label);
   assertLayerC(first, label);
   assertLayerD(first, label);
+  assertLayerE(first, label);
   const repeated = buildLayout(program, { ...options, diagnostics: true });
   assert.equal(canonicalGeometry(repeated), canonicalGeometry(first), `${label}: repeated output deterministic`);
   const noDiagnostics = buildLayout(program, { ...options, diagnostics: false });
@@ -405,7 +503,10 @@ async function main() {
       "outward lateral-first loop sources preserved byte-for-byte",
       "all loop-return source attachments legal",
       "identity-free Layer D selector",
-      "Stage E target attachment absent",
+      "legal loop targets preserved byte-for-byte",
+      "unique declared diagonal target-ray intersection",
+      "unchanged Layer D source geometry, loop rail, route family, and lane",
+      "identity-free Layer E selector",
     ],
   }, null, 2));
 }
