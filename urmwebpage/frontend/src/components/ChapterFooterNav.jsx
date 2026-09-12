@@ -4,6 +4,7 @@ const CHAPTER_SEQUENCE = [
   { label: "URM Simulator", path: "/playground" },
   { label: "Demo", path: DEMO_ROUTE },
   { label: "Compute", path: "/compute" },
+  { label: "Flow Diagram", path: "/flow-diagram" },
   { label: "S-m-n", path: "/smn" },
   { label: "Encoding", path: "/encoding" },
   { label: "State Codes", path: "/state-codes" },
