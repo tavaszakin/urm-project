@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import AppHeader from "./components/AppHeader.jsx";
 import ChapterFooterNav from "./components/ChapterFooterNav.jsx";
 import ThemeToggleButton from "./components/ThemeToggleButton.jsx";
-import { SHOW_BETA_FLOW_DIAGRAM_PAGE } from "./betaFlags.js";
 import ComputePage from "./pages/ComputePage.jsx";
 import EncodingPage from "./pages/EncodingPage.jsx";
 import FiniteStructuresBetaPage from "./pages/FiniteStructuresBetaPage.jsx";
@@ -27,8 +26,9 @@ const PROGRAM_EQUIVALENCE_PATHS = new Set([PROGRAM_EQUIVALENCE_ROUTE, "/many-pro
 const PLAYGROUND_PATHS = new Set(["/playground", "/urm-playground"]);
 const DEMO_PATHS = new Set([DEMO_ROUTE, "/public", "/soft-launch"]);
 const FINITE_STRUCTURES_BETA_PATHS = new Set(["/finite-structures-beta"]);
-const BETA_FLOW_DIAGRAM_ROUTE = "/beta/flow-diagram";
-const BETA_FLOW_DIAGRAM_PATHS = new Set([BETA_FLOW_DIAGRAM_ROUTE]);
+const FLOW_DIAGRAM_ROUTE = "/flow-diagram";
+const FLOW_DIAGRAM_BETA_PATH = "/beta/flow-diagram";
+const FLOW_DIAGRAM_PATHS = new Set([FLOW_DIAGRAM_ROUTE, FLOW_DIAGRAM_BETA_PATH]);
 const BORDER_EXPERIMENT_MODE = "off";
 const BORDER_EXPERIMENT_MODES = new Set(["off", "moderate", "black"]);
 
@@ -42,8 +42,8 @@ function getRouteFromPath(pathname) {
   if (PROGRAM_EQUIVALENCE_PATHS.has(pathname)) return PROGRAM_EQUIVALENCE_ROUTE;
   if (PLAYGROUND_PATHS.has(pathname)) return "/playground";
   if (FINITE_STRUCTURES_BETA_PATHS.has(pathname)) return "/finite-structures-beta";
-  if (SHOW_BETA_FLOW_DIAGRAM_PAGE && BETA_FLOW_DIAGRAM_PATHS.has(pathname)) {
-    return BETA_FLOW_DIAGRAM_ROUTE;
+  if (FLOW_DIAGRAM_PATHS.has(pathname)) {
+    return FLOW_DIAGRAM_ROUTE;
   }
   if (pathname === "/learn") return "/learn";
   if (pathname === "/translate") return "/translate";
@@ -69,8 +69,8 @@ function getBrowserPathForRoute(route, requestedPath = route) {
     ? "/playground"
     : route === "/finite-structures-beta"
     ? "/finite-structures-beta"
-    : route === BETA_FLOW_DIAGRAM_ROUTE
-    ? BETA_FLOW_DIAGRAM_ROUTE
+    : route === FLOW_DIAGRAM_ROUTE
+    ? FLOW_DIAGRAM_ROUTE
     : route === "/learn"
       ? "/learn"
       : "/translate";
@@ -114,6 +114,18 @@ export default function App() {
   }, [route]);
 
   useEffect(() => {
+    if (route !== FLOW_DIAGRAM_ROUTE || window.location.pathname !== FLOW_DIAGRAM_BETA_PATH) {
+      return;
+    }
+
+    window.history.replaceState(
+      window.history.state,
+      "",
+      `${FLOW_DIAGRAM_ROUTE}${window.location.search}${window.location.hash}`,
+    );
+  }, [route]);
+
+  useEffect(() => {
     window.localStorage.setItem(THEME_STORAGE_KEY, themeMode);
   }, [themeMode]);
 
@@ -146,8 +158,8 @@ export default function App() {
           ? "Simulator"
         : route === "/finite-structures-beta"
           ? "Finite Structures Lab"
-        : route === BETA_FLOW_DIAGRAM_ROUTE
-          ? "Flow Diagram Beta"
+        : route === FLOW_DIAGRAM_ROUTE
+          ? "Flow Diagram"
         : route === "/learn"
           ? "Learn"
           : "Compute",
@@ -162,7 +174,7 @@ export default function App() {
     route === PROGRAM_EQUIVALENCE_ROUTE ||
     route === "/playground" ||
     route === "/finite-structures-beta" ||
-    route === BETA_FLOW_DIAGRAM_ROUTE;
+    route === FLOW_DIAGRAM_ROUTE;
   const isHomeRoute = route === "/";
   const useWorkspaceLayout = isDemoRoute || isComputeRoute;
   const activeBorderExperimentMode = BORDER_EXPERIMENT_MODES.has(BORDER_EXPERIMENT_MODE)
@@ -377,7 +389,7 @@ export default function App() {
             <PlaygroundPage />
           ) : route === "/finite-structures-beta" ? (
             <FiniteStructuresBetaPage />
-          ) : route === BETA_FLOW_DIAGRAM_ROUTE ? (
+          ) : route === FLOW_DIAGRAM_ROUTE ? (
             <FlowDiagramBetaPage />
           ) : (
             <ComputePage onNavigate={handleNavigate} />

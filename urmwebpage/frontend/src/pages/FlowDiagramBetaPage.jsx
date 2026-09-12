@@ -486,9 +486,8 @@ export default function FlowDiagramBetaPage() {
         <div className="page-intro-copy">
           <div className="beta-flow-title-row">
             <h2 id="beta-flow-title" className="page-title">
-              Flow Diagram Beta
+              Flow Diagram
             </h2>
-            <span className="beta-flow-label">Experimental</span>
           </div>
         </div>
       </section>
@@ -518,7 +517,7 @@ export default function FlowDiagramBetaPage() {
               onChange={(event) => setShowLayoutComparison(event.target.checked)}
             />
             {" "}
-            Show layout comparison (beta)
+            Show layout comparison
           </label>
         ) : null}
         {compiledResult ? (
