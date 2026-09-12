@@ -231,12 +231,12 @@ async function renderSelection() {
   try {
     const referencePath = manifest.stageHashes[stage][fixture].reference;
     const reference = await fetch(`./${referencePath}`).then((response) => response.json());
-    const liveProduction = stage === "C";
+    const liveProduction = stage === "D";
     const candidateView = liveProduction
       ? buildLiveProduction(programs[fixture], fixture, stage)
       : buildCheckpointStageView(programs[fixture], fixture, stage);
     const comparisonSource = liveProduction
-      ? "native production SketchV4 Layer C"
+      ? "native production SketchV4 Layer D"
       : "current tested checkpoint harness";
     const candidate = await snapshotWithHash(candidateView, fixture, stage, comparisonSource);
     buildCount += 1;
@@ -249,7 +249,7 @@ async function renderSelection() {
     renderCard($("#reference-card"), "Frozen reference", reference, referenceFocus, diff, {
       routeDiffs, nodeDiffs, color: "#ffb454", identicalOpacity: 0.9,
     }, defects);
-    renderCard($("#candidate-card"), liveProduction ? "Live production Layer C" : "Current harness reproduction", candidate, candidateFocus, diff, {
+    renderCard($("#candidate-card"), liveProduction ? "Live production Layer D" : "Current harness reproduction", candidate, candidateFocus, diff, {
       routeDiffs, nodeDiffs, color: "#63d3ff", identicalOpacity: 0.9,
     }, defects);
 

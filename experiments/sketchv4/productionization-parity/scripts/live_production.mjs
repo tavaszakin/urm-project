@@ -30,8 +30,8 @@ function attachmentRecords(view) {
 }
 
 export function buildParityCandidate(program, fixture, stage, options = {}) {
-  if (String(stage).toUpperCase() !== "C") {
-    throw new Error(`current live production candidate is Stage C, not ${stage}`);
+  if (String(stage).toUpperCase() !== "D") {
+    throw new Error(`current live production candidate is Stage D, not ${stage}`);
   }
   const pins = options.orientationMap
     ? new Map([...options.orientationMap].map(([id, orientation]) => [id, { ...orientation }]))
@@ -62,14 +62,16 @@ export function buildParityCandidate(program, fixture, stage, options = {}) {
   } : null;
   return {
     ...view,
-    mode: "production-layer-c",
+    mode: "production-layer-d",
     attachments: attachmentRecords(view),
     experimentalRouteSplices: view.conditionalMergeSources.decisions,
     experimentalRouteSplice,
+    experimentalLoopSourcePortCensus: view.generalizedLoopSources.records,
     stageTransformStack: [
       "native production ordinary synthetic terminal",
       "native production adaptive conditional merge doorways and rays",
       "native production structural same-side continuation reentry",
+      "native production generalized backward-loop source attachment",
     ],
     purity: {
       ...view.terminalConstruction,
@@ -78,6 +80,9 @@ export function buildParityCandidate(program, fixture, stage, options = {}) {
       ...view.conditionalMergeSources.contract,
       sameSideReentryEligibleEdgeIds: view.sameSideReentries.eligibleEdgeIds,
       ...view.sameSideReentries.contract,
+      loopSourceGeneralizationConsideredEdgeIds: view.generalizedLoopSources.consideredEdgeIds,
+      loopSourceGeneralizationChangedEdgeIds: view.generalizedLoopSources.changedEdgeIds,
+      ...view.generalizedLoopSources.contract,
     },
   };
 }

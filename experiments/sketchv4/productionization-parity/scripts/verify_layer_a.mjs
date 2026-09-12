@@ -201,12 +201,98 @@ function assertLayerC(layout, label) {
   }
 }
 
+function assertLayerD(layout, label) {
+  const loopRoutes = layout.routed.routes.filter((route) => route.edgeRole === "loop-return");
+  const records = layout.generalizedLoopSources.records;
+  assert.deepEqual(
+    layout.generalizedLoopSources.consideredEdgeIds,
+    loopRoutes.map((route) => route.edgeId),
+    `${label}: Layer D considers every loop-return`,
+  );
+  assert.deepEqual(
+    records.map((record) => record.edgeId),
+    loopRoutes.map((route) => route.edgeId),
+    `${label}: one Layer D record per loop-return`,
+  );
+  assert.deepEqual(
+    layout.generalizedLoopSources.changedEdgeIds,
+    records.filter((record) => record.routeChanged).map((record) => record.edgeId),
+    `${label}: Layer D changed-edge census`,
+  );
+
+  const routeById = new Map(loopRoutes.map((route) => [route.edgeId, route]));
+  for (const record of records) {
+    const route = routeById.get(record.edgeId);
+    const port = layout.routed.ports.get(record.edgeId);
+    const sourceBox = layout.boxes.get(route.source);
+    assert.equal(layout.roles.edgeRoleById.get(record.edgeId), "loop-return", `${label}: ${record.edgeId} semantic loop role`);
+    assert.deepEqual(route.targetPort, record.targetPort, `${label}: ${record.edgeId} target attachment unchanged`);
+    assert.deepEqual(
+      record.newTargetPortRecord,
+      record.oldTargetPortRecord,
+      `${label}: ${record.edgeId} target port record unchanged`,
+    );
+    assert.equal(route.railCoord, record.railCoord, `${label}: ${record.edgeId} rail unchanged`);
+    assert.deepEqual(route.points, record.newRoutePoints, `${label}: ${record.edgeId} final route matches Layer D record`);
+
+    if (record.bodyClassification === "vertical-first") {
+      assert.equal(record.routeChanged, true, `${label}: ${record.edgeId} vertical-first route changed`);
+      assert.deepEqual(route.sourcePort, [sourceBox.cx, sourceBox.bottom], `${label}: ${record.edgeId} bottom-center source`);
+      assert.deepEqual(port.sourcePort, route.sourcePort, `${label}: ${record.edgeId} source port record`);
+      assert.deepEqual(route.points[1], [sourceBox.cx, record.bendRow], `${label}: ${record.edgeId} unchanged bend row`);
+      assert.deepEqual(
+        record.oldRoutePoints.slice(2),
+        record.newRoutePoints.slice(2),
+        `${label}: ${record.edgeId} route suffix unchanged`,
+      );
+      assert.equal(record.newAttachmentLegality.source, true, `${label}: ${record.edgeId} source attachment legal`);
+    } else {
+      assert.equal(record.bodyClassification, "lateral-first", `${label}: ${record.edgeId} supported departure classification`);
+      assert.equal(record.routeChanged, false, `${label}: ${record.edgeId} lateral-first route unchanged`);
+      assert.deepEqual(record.newRoutePoints, record.oldRoutePoints, `${label}: ${record.edgeId} lateral route byte-identical`);
+    }
+  }
+
+  for (const field of [
+    "fixtureIdentityUsed",
+    "edgeIdentityUsed",
+    "instructionIndexUsed",
+    "terminalIdentityUsed",
+    "frozenCoordinatesUsed",
+    "loopReturnRailsChanged",
+    "loopBendRowsChanged",
+    "targetPortSelectionChanged",
+    "targetEntryGeometryChanged",
+    "nodePositionsChanged",
+    "orientationPolicyChanged",
+    "nonLoopRoutesChanged",
+    "automaticRepairAfterConstruction",
+    "obstacleSearchUsed",
+  ]) {
+    assert.equal(layout.generalizedLoopSources.contract[field], false, `${label}: Layer D ${field}`);
+  }
+
+  const attachmentById = new Map(
+    layout.diagnostics.sketchV4AttachmentRecords.map((record) => [record.edgeId, record]),
+  );
+  for (const route of loopRoutes) {
+    assert.equal(attachmentById.get(route.edgeId)?.sourceAttachmentLegal, true, `${label}: ${route.edgeId} final loop source legal`);
+  }
+  assert.equal(Object.hasOwn(layout, "generalizedLoopTargets"), false, `${label}: Stage E transform absent`);
+  assert.equal(
+    [...layout.routed.ports.values()].some((record) => record.experimentalGeneralizedTargetPort),
+    false,
+    `${label}: Stage E target-port marker absent`,
+  );
+}
+
 function buildAndCheck(program, label) {
   const options = { programName: label, orientationSource: "v4Assigned", visual: PRODUCTIONIZATION_VISUAL };
   const first = buildLayout(program, { ...options, diagnostics: true });
   assertLayerA(first, program, label);
   assertLayerB(first, label);
   assertLayerC(first, label);
+  assertLayerD(first, label);
   const repeated = buildLayout(program, { ...options, diagnostics: true });
   assert.equal(canonicalGeometry(repeated), canonicalGeometry(first), `${label}: repeated output deterministic`);
   const noDiagnostics = buildLayout(program, { ...options, diagnostics: false });
@@ -313,6 +399,13 @@ async function main() {
       "structural same-side continuation reentry eligibility",
       "right/right horizontal attachment and H/V/H body",
       "identity-free Layer C selector",
+      "structural loop-return source-departure classification",
+      "vertical-first bottom-center source attachment",
+      "unchanged loop rail, bend row, route suffix, and target attachment",
+      "outward lateral-first loop sources preserved byte-for-byte",
+      "all loop-return source attachments legal",
+      "identity-free Layer D selector",
+      "Stage E target attachment absent",
     ],
   }, null, 2));
 }

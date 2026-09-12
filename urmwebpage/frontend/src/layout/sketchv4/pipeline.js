@@ -22,6 +22,7 @@ import { computeLanes } from "./lanes.js";
 import { routeEdges } from "./routing.js";
 import { applyAdaptiveConditionalMergeSources } from "./conditionalMergeSources.js";
 import { applySameSideContinuationReentries } from "./sameSideReentry.js";
+import { applyGeneralizedLoopSourceAttachments } from "./loopSourceAttachments.js";
 import { evaluateDefects } from "./defects.js";
 import { assignOrientation } from "./orientation.js";
 import { buildDiagnostics } from "./diagnostics.js";
@@ -169,7 +170,13 @@ export function buildLayout(program, options = {}) {
       boxes,
       { clearance },
     );
-    const routed = sameSideReentries.routed;
+    const generalizedLoopSources = applyGeneralizedLoopSourceAttachments(
+      cfg,
+      roles,
+      sameSideReentries.routed,
+      boxes,
+    );
+    const routed = generalizedLoopSources.routed;
     const terminalPlacement = skeleton.placements.get(terminalId);
     const realization = {
       orientationOf,
@@ -179,6 +186,7 @@ export function buildLayout(program, options = {}) {
       boxes,
       conditionalMergeSources,
       sameSideReentries,
+      generalizedLoopSources,
       terminal: terminalPlacement ? {
         id: terminalId,
         instructionIndex: terminalIndex,
@@ -230,6 +238,7 @@ export function buildLayout(program, options = {}) {
     terminalId, terminalIndex, terminal: R.terminal,
     conditionalMergeSources: R.conditionalMergeSources,
     sameSideReentries: R.sameSideReentries,
+    generalizedLoopSources: R.generalizedLoopSources,
     // This record makes the internal topology/display boundary and shared-realizer invariant
     // inspectable without reviving a layout-level `halt` object.
     terminalConstruction: {

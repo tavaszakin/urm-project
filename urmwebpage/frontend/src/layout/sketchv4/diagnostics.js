@@ -68,7 +68,7 @@ function findParallelRailConflicts(routes, clearance, minOverlap) {
 }
 
 export function buildDiagnostics(layout) {
-  const { program, orientationSource, cfg, roles, ownership, tree, orientationMap, orientationResult, skeleton, lanes, terminal, terminalId, terminalConstruction, conditionalMergeSources, sameSideReentries, routed, ports, defects, placementBounds, renderBounds } = layout;
+  const { program, orientationSource, cfg, roles, ownership, tree, orientationMap, orientationResult, skeleton, lanes, terminal, terminalId, terminalConstruction, conditionalMergeSources, sameSideReentries, generalizedLoopSources, routed, ports, defects, placementBounds, renderBounds } = layout;
   const bitOf = (f) => (orientationMap.get(f)?.no === "right" ? "flipped" : "default");
   const wh = (b) => (b ? { width: r(b.width), height: r(b.height), minX: r(b.minX), maxX: r(b.maxX), minY: r(b.minY), maxY: r(b.maxY) } : null);
   const rp = (p) => (Array.isArray(p) ? [r(p[0]), r(p[1])] : null);
@@ -117,6 +117,18 @@ export function buildDiagnostics(layout) {
     newTargetPort: [...record.newTargetPort],
     oldRoutePoints: record.oldRoutePoints.map((point) => [...point]),
     newRoutePoints: record.newRoutePoints.map((point) => [...point]),
+  }));
+
+  const sketchV4GeneralizedLoopSourceRecords = generalizedLoopSources.records.map((record) => ({
+    ...record,
+    existingSourcePort: [...record.existingSourcePort],
+    resultingSourcePort: [...record.resultingSourcePort],
+    targetPort: [...record.targetPort],
+    oldTargetPortRecord: [...record.oldTargetPortRecord],
+    newTargetPortRecord: [...record.newTargetPortRecord],
+    oldRoutePoints: record.oldRoutePoints.map((point) => [...point]),
+    newRoutePoints: record.newRoutePoints.map((point) => [...point]),
+    preservedRouteSuffix: record.preservedRouteSuffix.map((point) => [...point]),
   }));
 
   // Kept as a null compatibility field for existing debug consumers. There is no layout-level
@@ -227,6 +239,9 @@ export function buildDiagnostics(layout) {
     shortenedConditionalMergeSourceEdgeIds: [...conditionalMergeSources.shortenedEdgeIds],
     sameSideReentryCount: sameSideReentries.eligibleEdgeIds.length,
     sameSideReentryEdgeIds: [...sameSideReentries.eligibleEdgeIds],
+    generalizedLoopSourceCount: generalizedLoopSources.consideredEdgeIds.length,
+    changedGeneralizedLoopSourceCount: generalizedLoopSources.changedEdgeIds.length,
+    changedGeneralizedLoopSourceEdgeIds: [...generalizedLoopSources.changedEdgeIds],
     illegalLocalAttachmentEdgeCount: sketchV4IllegalAttachmentRecords.length,
     illegalLocalAttachmentEndpointCount: illegalAttachmentEndpointCount,
     parallelRailAdjustmentCount: sketchV4ParallelRailAdjustmentRecords.length,
@@ -241,5 +256,5 @@ export function buildDiagnostics(layout) {
     rareRepairCandidates: orientationResult?.rareRepairCandidates ?? null,
   };
 
-  return { sketchV4PlacementDebug, sketchV4RoleRecords, sketchV4OwnershipRecords, sketchV4LaneRecords, sketchV4ConditionalMergeSourceRecords, sketchV4SameSideReentryRecords, sketchV4HaltRecords, sketchV4TerminalRecords, sketchV4RouteRecords, sketchV4AttachmentRecords, sketchV4IllegalAttachmentRecords, sketchV4PortRecords, sketchV4ChangedPortRecords, sketchV4DefectRecords, sketchV4ParallelRailAdjustmentRecords, sketchV4ParallelRailConflictRecords, sketchV4OrientationRecords, sketchV4Summary };
+  return { sketchV4PlacementDebug, sketchV4RoleRecords, sketchV4OwnershipRecords, sketchV4LaneRecords, sketchV4ConditionalMergeSourceRecords, sketchV4SameSideReentryRecords, sketchV4GeneralizedLoopSourceRecords, sketchV4HaltRecords, sketchV4TerminalRecords, sketchV4RouteRecords, sketchV4AttachmentRecords, sketchV4IllegalAttachmentRecords, sketchV4PortRecords, sketchV4ChangedPortRecords, sketchV4DefectRecords, sketchV4ParallelRailAdjustmentRecords, sketchV4ParallelRailConflictRecords, sketchV4OrientationRecords, sketchV4Summary };
 }

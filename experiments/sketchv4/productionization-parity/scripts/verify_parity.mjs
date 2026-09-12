@@ -333,6 +333,95 @@ function layerCContractFailures(referenceB, referenceC, candidate, view) {
   return failures;
 }
 
+function layerDContractFailures(referenceC, referenceD, candidate, view) {
+  const failures = [];
+  const expectedEvidence = referenceD.diagnostics.stageEvidence;
+  const actualEvidence = candidate.diagnostics.stageEvidence;
+  for (const field of [
+    "loopSourceChanges",
+    "loopReturnEdgeCount",
+    "legalLoopSourceCount",
+    "legalLoopTargetCount",
+    "loopTargetChanges",
+  ]) {
+    const difference = firstValueDifference(expectedEvidence[field], actualEvidence[field]);
+    if (difference) failures.push({ type: `Layer D ${field} mismatch`, first: difference });
+  }
+
+  const expectedDelta = geometryDelta(referenceC, referenceD);
+  const expectedChangedIds = expectedDelta.routes.changed;
+  const actualChangedIds = [...view.generalizedLoopSources.changedEdgeIds].sort();
+  const changedDifference = firstValueDifference(expectedChangedIds, actualChangedIds);
+  if (changedDifference) failures.push({ type: "Layer D changed-route census mismatch", first: changedDifference });
+
+  const loopRoutes = view.routed.routes.filter((route) => route.edgeRole === "loop-return");
+  const consideredDifference = firstValueDifference(
+    loopRoutes.map((route) => route.edgeId),
+    view.generalizedLoopSources.consideredEdgeIds,
+  );
+  if (consideredDifference) failures.push({ type: "Layer D structural loop-return selector mismatch", first: consideredDifference });
+
+  const routeById = rowIndex(view.routed.routes, "edgeId");
+  for (const record of view.generalizedLoopSources.records) {
+    const route = routeById.get(record.edgeId);
+    const port = view.routed.ports.get(record.edgeId);
+    const sourceBox = view.boxes.get(route?.source);
+    for (const [description, expected, actual] of [
+      ["target route port", record.targetPort, route?.targetPort],
+      ["target port record", record.oldTargetPortRecord, record.newTargetPortRecord],
+      ["rail", record.railCoord, route?.railCoord],
+      ["final points", record.newRoutePoints, route?.points],
+    ]) {
+      const difference = firstValueDifference(expected, actual);
+      if (difference) failures.push({ type: `Layer D ${record.edgeId} ${description} mismatch`, first: difference });
+    }
+    if (record.bodyClassification === "vertical-first") {
+      for (const [description, expected, actual] of [
+        ["bottom-center source", [sourceBox?.cx, sourceBox?.bottom], route?.sourcePort],
+        ["source port record", route?.sourcePort, port?.sourcePort],
+        ["unchanged bend row", [sourceBox?.cx, record.bendRow], route?.points?.[1]],
+        ["unchanged route suffix", record.oldRoutePoints.slice(2), record.newRoutePoints.slice(2)],
+      ]) {
+        const difference = firstValueDifference(expected, actual);
+        if (difference) failures.push({ type: `Layer D ${record.edgeId} ${description} mismatch`, first: difference });
+      }
+      if (!record.routeChanged || record.newAttachmentLegality?.source !== true) {
+        failures.push({ type: `Layer D ${record.edgeId} vertical-first source was not made legal` });
+      }
+    } else if (record.bodyClassification !== "lateral-first"
+      || record.routeChanged
+      || firstValueDifference(record.oldRoutePoints, record.newRoutePoints)) {
+      failures.push({ type: `Layer D ${record.edgeId} lateral-first route was not preserved` });
+    }
+  }
+
+  const contract = view.generalizedLoopSources.contract;
+  for (const field of [
+    "fixtureIdentityUsed",
+    "edgeIdentityUsed",
+    "instructionIndexUsed",
+    "terminalIdentityUsed",
+    "frozenCoordinatesUsed",
+    "loopReturnRailsChanged",
+    "loopBendRowsChanged",
+    "targetPortSelectionChanged",
+    "targetEntryGeometryChanged",
+    "nodePositionsChanged",
+    "orientationPolicyChanged",
+    "nonLoopRoutesChanged",
+    "automaticRepairAfterConstruction",
+    "obstacleSearchUsed",
+  ]) {
+    if (contract[field] !== false) failures.push({ type: `Layer D contract ${field} must remain false` });
+  }
+  if (actualEvidence.loopTargetChanges.length !== 0
+    || Object.hasOwn(view, "generalizedLoopTargets")
+    || [...view.routed.ports.values()].some((record) => record.experimentalGeneralizedTargetPort)) {
+    failures.push({ type: "Stage E target attachment appeared in Layer D" });
+  }
+  return failures;
+}
+
 function verifyReferenceIntegrity(manifest, cache, stage, fixture) {
   const expected = manifest.stageHashes[stage][fixture];
   const absolute = path.join(PACKAGE, expected.reference);
@@ -414,10 +503,12 @@ async function main() {
       const reference = references[stage][fixture];
       const failures = parityFailures(reference, candidate);
       if (stage === "B") {
-        failures.push(...layerBContractFailures(references.A[fixture], reference, candidate, view));
+        failures.push(...layerBContractFailures(references.A[fixture], references.B[fixture], candidate, view));
+      }
+      if (["C", "D"].includes(stage)) {
+        failures.push(...layerCContractFailures(references.B[fixture], references.C[fixture], candidate, view));
       }
       if (stage === "C") {
-        failures.push(...layerCContractFailures(references.B[fixture], reference, candidate, view));
         const fixedOrientationMap = new Map(reference.orientation.map((row) => [row.id, { no: row.no, yes: row.yes }]));
         const fixedBView = buildCheckpointStageView(programs[fixture], fixture, "B", { orientationMap: fixedOrientationMap });
         const fixedB = snapshotFromView(fixedBView, fixture, "B", { comparisonSource: "tested checkpoint harness" });
@@ -435,12 +526,32 @@ async function main() {
           });
         }
       }
+      if (stage === "D") {
+        failures.push(...layerDContractFailures(references.C[fixture], reference, candidate, view));
+        const fixedOrientationMap = new Map(reference.orientation.map((row) => [row.id, { no: row.no, yes: row.yes }]));
+        const fixedCView = buildCheckpointStageView(programs[fixture], fixture, "C", { orientationMap: fixedOrientationMap });
+        const fixedC = snapshotFromView(fixedCView, fixture, "C", { comparisonSource: "tested checkpoint harness" });
+        const fixedDView = await buildCandidate(programs[fixture], fixture, "D", { orientationMap: fixedOrientationMap });
+        const fixedD = snapshotFromView(fixedDView, fixture, "D", { comparisonSource: "live production fixed orientation" });
+        const expectedFixedDelta = manifest.expectedDeltas.fixedOrientation.C_TO_D[fixture];
+        const actualFixedDelta = geometryDelta(fixedC, fixedD);
+        const fixedDifference = firstValueDifference(expectedFixedDelta, actualFixedDelta);
+        if (fixedDifference) {
+          failures.push({
+            type: "fixed-orientation C→D delta mismatch",
+            first: fixedDifference,
+            expected: expectedFixedDelta,
+            actual: actualFixedDelta,
+          });
+        }
+      }
       // Production stages are also characterized against their immutable predecessor. Checking
       // that stored transition explicitly makes an accidental out-of-layer change immediately
       // visible, in addition to whole-layout parity.
       const transition = stage === "A" ? "BASE_TO_A"
         : stage === "B" ? "A_TO_B"
           : stage === "C" ? "B_TO_C"
+            : stage === "D" ? "C_TO_D"
             : null;
       if (transition) {
         const priorStage = transition.split("_TO_")[0];
