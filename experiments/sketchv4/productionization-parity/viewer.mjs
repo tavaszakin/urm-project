@@ -23,7 +23,7 @@ const FOCUS_PRESETS = [
   ["full", "Full layout"],
   ["terminal", "A · synthetic terminal"],
   ["adaptive", "B · adaptive merge edges"],
-  ["i57", "C · divides i-57"],
+  ["i57", "C · divides reentry context"],
   ["loop-sources", "D · loop sources"],
   ["i52-target", "E · i-52 → i-4 target"],
 ];
@@ -76,6 +76,9 @@ function focusDefinition(snapshot, requested) {
     for (const id of snapshot.diagnostics.stageEvidence.eligibleConditionalMergeEdgeIds) routes.add(id);
   } else if (focus === "i57") {
     routes.add("i-57-cont");
+    routes.add("i-55-jump");
+    nodes.add("i-25");
+    nodes.add(snapshot.terminal?.id);
   } else if (focus === "loop-sources") {
     const byFixture = {
       "characteristic:divides": ["i-27-jump", "i-52-jump"],
@@ -228,12 +231,12 @@ async function renderSelection() {
   try {
     const referencePath = manifest.stageHashes[stage][fixture].reference;
     const reference = await fetch(`./${referencePath}`).then((response) => response.json());
-    const liveProduction = stage === "B";
+    const liveProduction = stage === "C";
     const candidateView = liveProduction
       ? buildLiveProduction(programs[fixture], fixture, stage)
       : buildCheckpointStageView(programs[fixture], fixture, stage);
     const comparisonSource = liveProduction
-      ? "native production SketchV4 Layer B"
+      ? "native production SketchV4 Layer C"
       : "current tested checkpoint harness";
     const candidate = await snapshotWithHash(candidateView, fixture, stage, comparisonSource);
     buildCount += 1;
@@ -246,7 +249,7 @@ async function renderSelection() {
     renderCard($("#reference-card"), "Frozen reference", reference, referenceFocus, diff, {
       routeDiffs, nodeDiffs, color: "#ffb454", identicalOpacity: 0.9,
     }, defects);
-    renderCard($("#candidate-card"), liveProduction ? "Live production Layer B" : "Current harness reproduction", candidate, candidateFocus, diff, {
+    renderCard($("#candidate-card"), liveProduction ? "Live production Layer C" : "Current harness reproduction", candidate, candidateFocus, diff, {
       routeDiffs, nodeDiffs, color: "#63d3ff", identicalOpacity: 0.9,
     }, defects);
 

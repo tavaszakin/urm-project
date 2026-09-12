@@ -12,6 +12,7 @@ import {
   snapshotFromView,
   stableStringify,
 } from "../lib/parity_data.mjs";
+import { buildCheckpointStageView } from "../../../../urmwebpage/frontend/.flow-layout-probes/current_harness.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, "../../../..");
@@ -263,6 +264,75 @@ function layerBContractFailures(referenceA, referenceB, candidate, view) {
   return failures;
 }
 
+function layerCContractFailures(referenceB, referenceC, candidate, view) {
+  const failures = [];
+  const expectedEvidence = referenceC.diagnostics.stageEvidence.i57CompatibilityRoute;
+  const actualEvidence = candidate.diagnostics.stageEvidence.i57CompatibilityRoute;
+  const evidenceDifference = firstValueDifference(expectedEvidence, actualEvidence);
+  if (evidenceDifference) failures.push({ type: "Layer C reentry evidence mismatch", first: evidenceDifference });
+
+  const expectedEdgeIds = expectedEvidence ? [expectedEvidence.edgeId] : [];
+  const selectedDifference = firstValueDifference(expectedEdgeIds, view.sameSideReentries.eligibleEdgeIds);
+  if (selectedDifference) failures.push({ type: "Layer C structural selector mismatch", first: selectedDifference });
+
+  for (const record of view.sameSideReentries.records) {
+    const route = view.routed.routes.find((candidateRoute) => candidateRoute.edgeId === record.edgeId);
+    const port = view.routed.ports.get(record.edgeId);
+    const sourceBox = view.boxes.get(route?.source);
+    const targetBox = view.boxes.get(route?.target);
+    const expectedSource = sourceBox && [sourceBox.right, sourceBox.cy];
+    const expectedTarget = targetBox && [targetBox.right, targetBox.cy];
+    const expectedCorridorX = Math.max(sourceBox?.right ?? -Infinity, targetBox?.right ?? -Infinity) + 16;
+    for (const [label, expected, actual] of [
+      ["source right-centre", expectedSource, route?.sourcePort],
+      ["target right-centre", expectedTarget, route?.targetPort],
+      ["source port record", route?.sourcePort, port?.sourcePort],
+      ["target port record", route?.targetPort, port?.targetPort],
+    ]) {
+      const difference = firstValueDifference(expected, actual);
+      if (difference) failures.push({ type: `Layer C ${record.edgeId} ${label} mismatch`, first: difference });
+    }
+    const points = route?.points ?? [];
+    if (points.length !== 4
+      || points[0]?.[1] !== points[1]?.[1]
+      || points[1]?.[0] !== points[2]?.[0]
+      || points[2]?.[1] !== points[3]?.[1]
+      || points[1]?.[0] !== expectedCorridorX) {
+      failures.push({ type: `Layer C ${record.edgeId} route is not exact right/right H/V/H` });
+    }
+  }
+
+  const contract = view.sameSideReentries.contract;
+  for (const field of [
+    "fixtureIdentityUsed",
+    "edgeIdentityUsed",
+    "instructionIndexUsed",
+    "terminalIdentityUsed",
+    "frozenCoordinatesUsed",
+    "routeFamilyChanged",
+    "automaticRepairAfterConstruction",
+    "obstacleSearchUsed",
+  ]) {
+    if (contract[field] !== false) failures.push({ type: `Layer C contract ${field} must remain false` });
+  }
+
+  const beforeI25 = referenceB.diagnostics.orientationResult?.rows?.find((row) => row.realForkId === "i-25");
+  const afterI25 = view.orientationResult?.rows?.find((row) => row.realForkId === "i-25");
+  if (referenceC.fixture === "characteristic:divides") {
+    const expectedBefore = { costDefault: 4, costFlipped: 3, v4AssignedBit: "flipped" };
+    const expectedAfter = { costDefault: 3, costFlipped: 3, v4AssignedBit: "default" };
+    for (const [label, row, expected] of [
+      ["Stage B i-25", beforeI25, expectedBefore],
+      ["Stage C i-25", afterI25, expectedAfter],
+    ]) {
+      for (const [field, value] of Object.entries(expected)) {
+        if (row?.[field] !== value) failures.push({ type: `${label} ${field} mismatch`, expected: value, actual: row?.[field] });
+      }
+    }
+  }
+  return failures;
+}
+
 function verifyReferenceIntegrity(manifest, cache, stage, fixture) {
   const expected = manifest.stageHashes[stage][fixture];
   const absolute = path.join(PACKAGE, expected.reference);
@@ -346,10 +416,32 @@ async function main() {
       if (stage === "B") {
         failures.push(...layerBContractFailures(references.A[fixture], reference, candidate, view));
       }
+      if (stage === "C") {
+        failures.push(...layerCContractFailures(references.B[fixture], reference, candidate, view));
+        const fixedOrientationMap = new Map(reference.orientation.map((row) => [row.id, { no: row.no, yes: row.yes }]));
+        const fixedBView = buildCheckpointStageView(programs[fixture], fixture, "B", { orientationMap: fixedOrientationMap });
+        const fixedB = snapshotFromView(fixedBView, fixture, "B", { comparisonSource: "tested checkpoint harness" });
+        const fixedCView = await buildCandidate(programs[fixture], fixture, "C", { orientationMap: fixedOrientationMap });
+        const fixedC = snapshotFromView(fixedCView, fixture, "C", { comparisonSource: "live production fixed orientation" });
+        const expectedFixedDelta = manifest.expectedDeltas.fixedOrientation.B_TO_C[fixture];
+        const actualFixedDelta = geometryDelta(fixedB, fixedC);
+        const fixedDifference = firstValueDifference(expectedFixedDelta, actualFixedDelta);
+        if (fixedDifference) {
+          failures.push({
+            type: "fixed-orientation B→C delta mismatch",
+            first: fixedDifference,
+            expected: expectedFixedDelta,
+            actual: actualFixedDelta,
+          });
+        }
+      }
       // Production stages are also characterized against their immutable predecessor. Checking
       // that stored transition explicitly makes an accidental out-of-layer change immediately
       // visible, in addition to whole-layout parity.
-      const transition = stage === "A" ? "BASE_TO_A" : stage === "B" ? "A_TO_B" : null;
+      const transition = stage === "A" ? "BASE_TO_A"
+        : stage === "B" ? "A_TO_B"
+          : stage === "C" ? "B_TO_C"
+            : null;
       if (transition) {
         const priorStage = transition.split("_TO_")[0];
         const expectedDelta = manifest.expectedDeltas.normalOrientation[transition][fixture];

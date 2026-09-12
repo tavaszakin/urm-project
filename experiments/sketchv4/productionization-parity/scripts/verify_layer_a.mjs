@@ -151,11 +151,62 @@ function assertLayerB(layout, label) {
   }
 }
 
+function assertLayerC(layout, label) {
+  const structurallyEligible = layout.cfg.edges.filter((edge) => (
+    layout.roles.edgeRoleById.get(edge.id) === "merge-connector"
+    && edge.branch == null
+    && layout.cfg.nodeById.get(edge.from)?.kind === "action"
+    && layout.cfg.nodeById.get(edge.to)?.kind === "action"
+    && layout.cfg.edges.some((sibling) => (
+      sibling.id !== edge.id
+      && sibling.to === edge.to
+      && layout.roles.edgeRoleById.get(sibling.id) === "merge-connector"
+      && layout.cfg.nodeById.get(sibling.from)?.kind === "unconditionalJump"
+    ))
+  ));
+  assert.deepEqual(
+    layout.sameSideReentries.eligibleEdgeIds,
+    structurallyEligible.map((edge) => edge.id),
+    `${label}: Layer C structural eligibility`,
+  );
+  const routeById = new Map(layout.routed.routes.map((route) => [route.edgeId, route]));
+  for (const edge of structurallyEligible) {
+    const route = routeById.get(edge.id);
+    const port = layout.routed.ports.get(edge.id);
+    const sourceBox = layout.boxes.get(edge.from);
+    const targetBox = layout.boxes.get(edge.to);
+    const corridorX = Math.max(sourceBox.right, targetBox.right) + PRODUCTIONIZATION_VISUAL.clearance;
+    assert.deepEqual(route.sourcePort, [sourceBox.right, sourceBox.cy], `${label}: ${edge.id} right source attachment`);
+    assert.deepEqual(route.targetPort, [targetBox.right, targetBox.cy], `${label}: ${edge.id} right target attachment`);
+    assert.deepEqual(port.sourcePort, route.sourcePort, `${label}: ${edge.id} source port record`);
+    assert.deepEqual(port.targetPort, route.targetPort, `${label}: ${edge.id} target port record`);
+    assert.deepEqual(route.points, [
+      route.sourcePort,
+      [corridorX, route.sourcePort[1]],
+      [corridorX, route.targetPort[1]],
+      route.targetPort,
+    ], `${label}: ${edge.id} exact right/right H/V/H body`);
+  }
+  for (const field of [
+    "fixtureIdentityUsed",
+    "edgeIdentityUsed",
+    "instructionIndexUsed",
+    "terminalIdentityUsed",
+    "frozenCoordinatesUsed",
+    "routeFamilyChanged",
+    "automaticRepairAfterConstruction",
+    "obstacleSearchUsed",
+  ]) {
+    assert.equal(layout.sameSideReentries.contract[field], false, `${label}: Layer C ${field}`);
+  }
+}
+
 function buildAndCheck(program, label) {
   const options = { programName: label, orientationSource: "v4Assigned", visual: PRODUCTIONIZATION_VISUAL };
   const first = buildLayout(program, { ...options, diagnostics: true });
   assertLayerA(first, program, label);
   assertLayerB(first, label);
+  assertLayerC(first, label);
   const repeated = buildLayout(program, { ...options, diagnostics: true });
   assert.equal(canonicalGeometry(repeated), canonicalGeometry(first), `${label}: repeated output deterministic`);
   const noDiagnostics = buildLayout(program, { ...options, diagnostics: false });
@@ -259,6 +310,9 @@ async function main() {
       "semantic branch doorway and ray/V/H body",
       "node-box-only adaptive shortening",
       "unchanged target-port policy",
+      "structural same-side continuation reentry eligibility",
+      "right/right horizontal attachment and H/V/H body",
+      "identity-free Layer C selector",
     ],
   }, null, 2));
 }

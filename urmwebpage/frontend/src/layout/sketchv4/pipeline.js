@@ -21,6 +21,7 @@ import { buildSkeleton } from "./skeleton.js";
 import { computeLanes } from "./lanes.js";
 import { routeEdges } from "./routing.js";
 import { applyAdaptiveConditionalMergeSources } from "./conditionalMergeSources.js";
+import { applySameSideContinuationReentries } from "./sameSideReentry.js";
 import { evaluateDefects } from "./defects.js";
 import { assignOrientation } from "./orientation.js";
 import { buildDiagnostics } from "./diagnostics.js";
@@ -161,7 +162,14 @@ export function buildLayout(program, options = {}) {
       boxes,
       { orientationOf, branchAngleTan: v.branchAngleTan, clearance },
     );
-    const routed = conditionalMergeSources.routed;
+    const sameSideReentries = applySameSideContinuationReentries(
+      cfg,
+      roles,
+      conditionalMergeSources.routed,
+      boxes,
+      { clearance },
+    );
+    const routed = sameSideReentries.routed;
     const terminalPlacement = skeleton.placements.get(terminalId);
     const realization = {
       orientationOf,
@@ -170,6 +178,7 @@ export function buildLayout(program, options = {}) {
       routed,
       boxes,
       conditionalMergeSources,
+      sameSideReentries,
       terminal: terminalPlacement ? {
         id: terminalId,
         instructionIndex: terminalIndex,
@@ -196,7 +205,7 @@ export function buildLayout(program, options = {}) {
     orientationMap = orientationResult.orientationMap;
   }
 
-  // 6-8 final realization with the chosen orientation. This is the same complete Layer-A
+  // 6-8 final realization with the chosen orientation. This is the same complete production
   // realizer used by evaluate() above; only the orientation map differs.
   const R = realizeUnder(orientationMap);
 
@@ -220,6 +229,7 @@ export function buildLayout(program, options = {}) {
     skeleton: R.skeleton, lanes: R.lanes, routed: R.routed, ports: R.routed.ports, boxes: R.boxes, orientationOf: R.orientationOf,
     terminalId, terminalIndex, terminal: R.terminal,
     conditionalMergeSources: R.conditionalMergeSources,
+    sameSideReentries: R.sameSideReentries,
     // This record makes the internal topology/display boundary and shared-realizer invariant
     // inspectable without reviving a layout-level `halt` object.
     terminalConstruction: {
