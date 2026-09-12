@@ -15611,6 +15611,10 @@ function labelPointForPolyline(points, { offset = 0 } = {}) {
 // the branch edge. Tuned to the current SVG scale (diamond/action node sizes, ~11px label
 // font, render-time -3px nudge); large enough to clear the line, small enough not to drift.
 const SKETCHV4_BRANCH_LABEL_OFFSET = 12;
+// Display-only paint margin retained from the mature SketchV4 viewer. The layout
+// engine's renderBounds remain the exact geometry envelope; this padding is added
+// only while adapting that geometry into FlowSvgDisplay's zero-origin viewport.
+const SKETCHV4_SVG_PAINT_PADDING = 28;
 
 // Adapts a SketchV4 buildLayout() result into the layoutPlan shape FlowSvgDisplay renders.
 // Reuses the shared plan's node metadata (labels/kinds/dimensions) and overrides positions
@@ -15646,8 +15650,11 @@ function buildSketchV4LayoutPlan(program, selectedFunctionId, sketchV3Plan, opti
   });
 
   const rb = v4.renderBounds;
-  const offsetX = -rb.minX; // shift V4 coords (origin at start, can be negative) into [0, width]
-  const offsetY = -rb.minY;
+  // Shift V4 coordinates into a padded, zero-origin display frame. Keeping the
+  // margin in layout units means graph scaling and fit/scroll policy operate on
+  // the padded natural size without changing any node or route geometry.
+  const offsetX = -rb.minX + SKETCHV4_SVG_PAINT_PADDING;
+  const offsetY = -rb.minY + SKETCHV4_SVG_PAINT_PADDING;
   const placements = new Map(v4.skeleton.placements);
   const terminalPlacement = placements.get(v4.terminalId);
   if (!terminalPlacement) {
@@ -15702,8 +15709,9 @@ function buildSketchV4LayoutPlan(program, selectedFunctionId, sketchV3Plan, opti
     sketchV4Active: true,
     nodes,
     edges,
-    width: rb.width,   // route-inclusive renderBounds drive the viewBox, not placement-only bounds
-    height: rb.height,
+    // Route-inclusive renderBounds plus a paint-only margin drive the viewBox.
+    width: rb.width + SKETCHV4_SVG_PAINT_PADDING * 2,
+    height: rb.height + SKETCHV4_SVG_PAINT_PADDING * 2,
     offsetX,
     offsetY,
     nodeMap: new Map(nodes.map((node) => [node.id, node])),
