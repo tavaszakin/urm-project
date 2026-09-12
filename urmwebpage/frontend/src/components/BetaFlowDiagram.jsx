@@ -1,8 +1,8 @@
 import KatexMath from "./KatexMath.jsx";
 import { applySketchV1Layout } from "./SketchV1FlowDiagram.jsx";
 import { applySketchV3LayoutWithAutomaticRepair } from "./SketchV3FlowDiagram.jsx";
-// SketchV4 is opt-in only (?flowLayout=sketchv4). The modules are pure and have no import
-// side effects; buildLayout() never runs unless the flag is set (see computePrimaryLayoutPlan).
+// SketchV4 is the primary CFG layout. The modules are pure and have no import side effects;
+// the legacy SketchV3 layout remains available only through an explicit debug selection.
 import { buildLayout as buildSketchV4Layout } from "../layout/sketchv4/pipeline.js";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -15465,19 +15465,23 @@ function safeComputeLayout(program, selectedFunctionId, options, layout) {
   }
 }
 
-// ---- SketchV4 opt-in integration (Phase 8) ---------------------------------------------
-// SketchV4 is an explicit opt-in layout mode. The default URL is byte-unchanged: it always
-// builds (and renders) SketchV3 exactly as before. Only ?flowLayout=sketchv4 activates V4,
-// and any V4 error falls back to SketchV3 so the page always renders.
+// ---- SketchV4 primary integration -------------------------------------------------------
+// The ordinary CFG path and the explicit beta control both select SketchV4. SketchV3 remains
+// reachable only as ?flowLayout=sketchv3 for deliberate debugging; an absent or unrecognized
+// query value cannot silently restore the legacy engine.
 
-function isSketchV4Requested() {
-  // Headless override (node harness / tests), mirroring __sketchV3AutoFlip. Never set in the app.
-  if (typeof globalThis !== "undefined" && globalThis.__sketchV4Requested) return true;
-  if (typeof window === "undefined") return false; // SSR/headless default = SketchV3
+function selectedPrimaryLayoutEngine() {
+  // Headless overrides for verification. The old boolean hook remains as an explicit V4 alias.
+  if (typeof globalThis !== "undefined" && globalThis.__flowLayoutEngine === "sketchV3") return "sketchV3";
+  if (typeof globalThis !== "undefined" && globalThis.__flowLayoutEngine === "sketchV4") return "sketchV4";
+  if (typeof globalThis !== "undefined" && globalThis.__sketchV4Requested) return "sketchV4";
+  if (typeof window === "undefined") return "sketchV4";
   try {
-    return new URLSearchParams(window.location.search).get("flowLayout")?.toLowerCase() === "sketchv4";
+    return new URLSearchParams(window.location.search).get("flowLayout")?.toLowerCase() === "sketchv3"
+      ? "sketchV3"
+      : "sketchV4";
   } catch {
-    return false;
+    return "sketchV4";
   }
 }
 
@@ -15716,25 +15720,17 @@ function buildSketchV4LayoutPlan(program, selectedFunctionId, sketchV3Plan, opti
   };
 }
 
-// Primary layout dispatch. The default render builds SketchV3 exactly as before. When
-// ?flowLayout=sketchv4 is set it builds only the cheap shared metadata plan first, attempts
-// V4, and only pays for the full SketchV3 path if V4 fails and a fallback is needed.
-// When V4 is not requested this is identical to the previous buildDiagramModel(sketchV3) call.
+// Primary layout dispatch. The ordinary path and ?flowLayout=sketchv4 build the same V4 plan.
+// The full SketchV3 path is reachable only through the explicit ?flowLayout=sketchv3 debug mode.
+// V4 failures are not silently replaced by legacy geometry.
 // Collapse setup blocks (v1) is disabled/archived — V4 always lays out the original full program
 // (see .sketchv3-harness/archive/collapse_setup_blocks_v1_disabled.md).
 function computePrimaryLayoutPlan(program, selectedFunctionId, options = {}) {
-  if (!isSketchV4Requested()) {
+  if (selectedPrimaryLayoutEngine() === "sketchV3") {
     return buildDiagramModel(program, selectedFunctionId, { ...options, layoutMode: "sketchV3" });
   }
-  try {
-    const sketchV4MetadataPlan = buildSketchV4MetadataPlan(program, selectedFunctionId, options);
-    return buildSketchV4LayoutPlan(program, selectedFunctionId, sketchV4MetadataPlan, options);
-  } catch (error) {
-    const sketchV3Plan = buildDiagramModel(program, selectedFunctionId, { ...options, layoutMode: "sketchV3" });
-    sketchV3Plan.sketchV4Active = false;
-    sketchV3Plan.sketchV4Error = { message: error?.message ?? String(error), stack: error?.stack ?? null };
-    return sketchV3Plan;
-  }
+  const sketchV4MetadataPlan = buildSketchV4MetadataPlan(program, selectedFunctionId, options);
+  return buildSketchV4LayoutPlan(program, selectedFunctionId, sketchV4MetadataPlan, options);
 }
 
 // Headless verification entry points (node harness / dev console); not used by the app UI.
