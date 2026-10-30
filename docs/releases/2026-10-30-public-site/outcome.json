@@ -1,0 +1,110 @@
+{
+  "status": "deployed-and-verified",
+  "date": "2026-10-30",
+  "approved_candidate_sha": "749e2aea572fda6d230f9b281e0701f49c2abbb3",
+  "merged_production_sha": "ddc25ad9b5e0dd184f46929c60d9031b2484940f",
+  "application_tree": "5987e5a275288318682ed9c8c419de08c941ff78",
+  "frontend_backend_trees_identical": true,
+  "frontend": {
+    "deployment_id": "dpl_5jnMBDAB55XJsj6dZfeUGuQ2VTtE",
+    "commit": "ddc25ad9b5e0dd184f46929c60d9031b2484940f",
+    "url": "https://urm-project-neon.vercel.app",
+    "autoAssignCustomDomains": true
+  },
+  "backend": {
+    "deployment_id": "dep-dbi8vlmgekts7397dp40",
+    "commit": "749e2aea572fda6d230f9b281e0701f49c2abbb3",
+    "status": "live",
+    "autoDeploy": "yes",
+    "autoDeployTrigger": "commit",
+    "branch": "main"
+  },
+  "temporary_credentials_cleared": true,
+  "rollback_not_required": true,
+  "runtime_recovery": {
+    "job": {
+      "createdAt": "2026-10-30T12:36:10.723573Z",
+      "finishedAt": "2026-10-30T12:37:15Z",
+      "id": "job-dbi8uelg1s2s73eb3jug",
+      "planId": "plan-srv-006",
+      "serviceId": "srv-d7a1t14hg0os73bat3mg",
+      "startCommand": "python3 -B -c 'import sys, os, json, importlib.metadata as m\nprint(json.dumps({\"check\":\"urm-predeploy-runtime-artifact\",\"python\":sys.version,\"executable\":sys.executable,\"git_commit\":os.environ.get(\"RENDER_GIT_COMMIT\"),\"service_id\":os.environ.get(\"RENDER_SERVICE_ID\"),\"cwd\":os.getcwd(),\"parent_requirements_exists\":os.path.isfile(\"../requirements.txt\"),\"versions\":{n:m.version(n) for n in [\"fastapi\",\"uvicorn\",\"pydantic\",\"starlette\"]}},sort_keys=True))'",
+      "startedAt": "2026-10-30T12:36:10Z",
+      "status": "succeeded"
+    },
+    "runtime": {
+      "check": "urm-predeploy-runtime-artifact",
+      "cwd": "/opt/render/project/src/urmwebpage",
+      "executable": "/opt/render/project/src/.venv/bin/python3",
+      "git_commit": "5483006b2ad5967a02b5764870b33d8506261afd",
+      "parent_requirements_exists": true,
+      "python": "3.14.3 (main, Feb  9 2026, 23:06:03) [GCC 12.2.0]",
+      "service_id": "srv-d7a1t14hg0os73bat3mg",
+      "versions": {
+        "fastapi": "0.136.3",
+        "pydantic": "2.13.4",
+        "starlette": "1.2.1",
+        "uvicorn": "0.48.0"
+      }
+    },
+    "artifact_retrieval_verified": true,
+    "recovery_deploy_id": "dep-d8ge73poagis738r2hdg"
+  },
+  "build_summary": [
+    {
+      "time": "2026-10-30T12:38:55.098709405Z",
+      "message": "==> Using Python version 3.14.3 (default)"
+    },
+    {
+      "time": "2026-10-30T12:38:55.098714461Z",
+      "message": "==> Docs on specifying a Python version: https://render.com/docs/python-version"
+    },
+    {
+      "time": "2026-10-30T12:38:55.098831279Z",
+      "message": "==> Installing Python version 3.14.3..."
+    },
+    {
+      "time": "2026-10-30T12:38:58.738347106Z",
+      "message": "==> Running build command 'pip install -r ../requirements.txt'..."
+    },
+    {
+      "time": "2026-10-30T12:39:01.25130973Z",
+      "message": "Successfully installed annotated-doc-0.0.5 annotated-types-0.8.0 anyio-4.15.1 click-8.5.0 fastapi-0.162.0 h11-0.16.0 idna-3.20 opentelemetry-api-1.45.2 pydantic-2.14.2 pydantic-core-2.50.2 starlette-1.10.0 typing-extensions-4.16.0 typing-inspection-0.4.4 uvicorn-0.54.0"
+    },
+    {
+      "time": "2026-10-30T12:39:11.457458844Z",
+      "message": "==> Build successful \ud83c\udf89"
+    },
+    {
+      "time": "2026-10-30T12:39:35.846242735Z",
+      "message": "==> Running 'uvicorn main:app --host 0.0.0.0 --port 10000'"
+    },
+    {
+      "time": "2026-10-30T12:39:38.758631658Z",
+      "message": "INFO:     Application startup complete."
+    }
+  ],
+  "checks": {
+    "backend_tests_with_deployed_package_versions": 89,
+    "public_compiler_cases": 23,
+    "canonical_kinds": 20,
+    "live_execution": "Arity 3-6 descending/zero/step-limit, raw URM successor and addition, CORS, program and trace passed",
+    "old_public_frontend_against_new_backend": "Passed without API interception before merge",
+    "staged_frontend": "Passed authenticated direct routes/refreshes, computations and exact flow node counts; real API, no overrides",
+    "public_frontend": "Passed same browser checks without authentication bypass or API override",
+    "bundle_parity_sha256": "f155328fe42db7986c8451497f779728309ffa228ae58ebc9e58bf20cf569786",
+    "new_regressions_detected": false
+  },
+  "remaining_findings": [
+    "Existing lint errors/warnings and known diagram geometry defects remain unchanged",
+    "Python requirements remain unpinned; actual build versions recorded and retested",
+    "Existing development/build dependency advisories remain; production dependency audit was clear",
+    "Starlette TestClient emits a new httpx deprecation warning under the deployed versions; tests pass"
+  ],
+  "temporary_ssh": {
+    "used": false,
+    "registration_removed": "User confirmed removed",
+    "private_key_files_deleted": true
+  },
+  "lessons_scope": "Separate documentation/test-helper branch; no extra production release or application changes."
+}

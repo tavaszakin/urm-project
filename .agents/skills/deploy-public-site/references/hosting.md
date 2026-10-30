@@ -50,7 +50,37 @@ previews disabled. These settings have successful deploy history. Preserve
 them unless an approved candidate build demonstrates a problem. The root/parent
 requirements path differs from current documented root isolation; do not silently
 change the root or command to resolve this uncertainty. No Python version pin is
-configured; exact live interpreter version needs retained logs or SSH access.
+configured. The 2026-10-30 artifact check confirmed Python 3.14.3 and that the
+parent requirements file exists. Reverify runtime instead of inferring it from
+the service creation date or the local test interpreter.
+
+## Runtime and recovery check without SSH
+
+Build logs older than 30 days are unavailable through the logs API. A short
+read-only one-off job is an alternative to registering an SSH key: Render starts
+it from the service's most recent successful artifact and configuration, without
+changing production traffic, root, command or automation. Disclose its brief
+per-second compute charge; do not use this as permission to create paid staging
+services or run unrelated jobs.
+
+Use the supported `POST /v1/services/{serviceId}/jobs` with a `startCommand` that
+prints only `sys.version`, selected package versions, `RENDER_GIT_COMMIT`, working
+directory and relevant file-existence checks. Never dump the environment. Wait
+for `succeeded`, then retrieve logs using the **job ID** as the log resource.
+`render logs --output json` emits concatenated JSON objects, not a JSON array;
+parse them with `JSONDecoder.raw_decode` or use the structured logs API.
+
+Bind the job's commit to the currently live deploy before proceeding. Successful
+instantiation proves the artifact is retrievable; record the source deploy ID as
+the rollback target. Do not equate this with having performed a production
+rollback. Stop if the job fails, provenance differs, or required recovery remains
+unproven. See [Render's artifact snapshot semantics](https://render.com/docs/one-off-jobs).
+
+Temporary SSH access, if genuinely needed, requires separate approval to register
+an account credential. The public API does not expose SSH-key registration;
+dashboard help may be needed. Remove the account registration and local temporary
+private key after use, and record cleanup. Do not request SSH setup when an
+authorized read-only artifact job can satisfy the checks.
 
 ## Controlled release
 
@@ -74,6 +104,29 @@ must be controlled before merging. Verify candidate SHA/project, Production API,
 READY state, smoke checks and unchanged public aliases. Then
 `vercel promote <deployment-url-or-id>` assigns the verified build to the existing
 production domains. Use current CLI help/API schemas for exact provider commands.
+
+With `ssoProtection: all_except_custom_domains`, a READY staged Production URL
+can require Vercel authentication while the existing public domain stays open.
+Use authenticated staging checks; do not disable deployment protection. Native
+`vercel curl` can generate a project automation-bypass credential automatically.
+Record whether it created a new credential, keep it out of logs/files, and revoke
+only that new credential after testing (`PATCH /v1/projects/{id}/protection-bypass`,
+`revoke: {secret: ..., regenerate: false}`). Never revoke pre-existing credentials.
+For browser smoke, `--vercel-bypass-env <variable-name>` reads the credential from
+the process environment and sends it only to the exact target Vercel origin,
+never to Render or external assets. Omit API overrides for staged/live checks.
+
+Before promotion, verify the merged application tree matches the approved
+candidate, the staged build SHA is correct, and the public alias still serves the
+old deployment. Static bundle checksums can confirm parity with local validation.
+Remember that disabling custom-domain auto-assignment can still update protected
+Git/project aliases; always check the actual public domain's deployment ID.
+
+Python requirements are unpinned. Capture the versions from the actual build log;
+if they differ from preflight, rerun existing backend tests in an isolated matching
+environment before merging/promotion. Do not silently change the approved
+candidate or pin new versions during the rollout. Preserve the tested artifact
+and record this reproducibility limitation for a separate reviewed change.
 
 Use previews or an isolated staging backend if available. A new paid service
 requires authorization; do not repurpose production as staging. Final staged
