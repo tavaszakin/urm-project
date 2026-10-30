@@ -46,7 +46,7 @@ export default function LearnPage({ onNavigate }) {
             <div><code>Z(i)</code> gives memory a clean starting point.</div>
             <div><code>S(i)</code> changes state one step at a time.</div>
             <div><code>T(i, j)</code> carries values into the next part of a computation.</div>
-            <div><code>J(i, j, q)</code> chooses what instruction comes next.</div>
+            <div><code>J(i, j, q)</code> compares Ri and Rj; if they are equal, execution jumps to Iq, otherwise it continues to the next instruction.</div>
             <div className="learn-details-closing">
               Together they give a URM memory, state change, and control flow.
             </div>
@@ -61,7 +61,7 @@ export default function LearnPage({ onNavigate }) {
           <p className="learn-section-copy">
             Recursive-function programs are assembled from familiar patterns: base-case setup,
             copying carried values, updating a running value, and using small control loops to
-            decide what happens next. The Compute page keeps the mathematical definition in front;
+            decide what happens next. The Simulator page keeps the mathematical definition in front;
             these cards show the register-level moves underneath it.
           </p>
         </div>

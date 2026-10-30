@@ -1,4 +1,8 @@
-import { formatProjectionNotation, getProjectionArrayIndex, getProjectionVariableMeaning } from "./utils/mathNotation.jsx";
+import { formatProjectionNotation, getProjectionVariableMeaning } from "./utils/mathNotation.jsx";
+import {
+  getCharacteristicRelationMetadata,
+  normalizeCharacteristicRelation,
+} from "./characteristicMetadata.js";
 
 export const FUNCTION_METADATA = {
   zero: {
@@ -14,6 +18,13 @@ export const FUNCTION_METADATA = {
     notation: "S(x)",
     description: "Returns x + 1.",
     aliases: ["succ"],
+  },
+  predecessor: {
+    display: "Predecessor",
+    shortDisplay: "Predecessor",
+    notation: "x ∸ 1",
+    description: "Returns max(x − 1, 0).",
+    aliases: ["pred", "truncated_predecessor"],
   },
   constant: {
     display: "Constant",
@@ -36,12 +47,67 @@ export const FUNCTION_METADATA = {
     description: "Adds two numbers.",
     aliases: ["addition"],
   },
+  multiplication: {
+    display: "Multiplication",
+    shortDisplay: "Multiplication",
+    notation: "x × y",
+    description: "Multiplies two numbers using primitive recursion.",
+    aliases: ["multiply", "mult"],
+  },
+  exponentiation: {
+    display: "Exponentiation",
+    shortDisplay: "Exponentiation",
+    notation: "x^y",
+    description: "Raises one number to another using primitive recursion.",
+    aliases: ["power", "pow"],
+  },
+  factorial: {
+    display: "Factorial",
+    shortDisplay: "Factorial",
+    notation: "n!",
+    description: "Computes n! using primitive recursion.",
+    aliases: ["fact"],
+  },
+  geometric_sum: {
+    display: "Geometric Sum",
+    shortDisplay: "Geometric Sum",
+    notation: "1 + x + … + x^y",
+    description: "Computes 1 + x + x² + … + xʸ using primitive recursion.",
+    aliases: ["geom"],
+  },
+  divisor_count: {
+    display: "Divisor Count",
+    shortDisplay: "Divisor Count",
+    notation: "τ(n)",
+    description: "Counts the positive divisors of n.",
+    aliases: ["num_divisors"],
+  },
   bounded_sub: {
     display: "Truncated subtraction",
     shortDisplay: "Truncated subtraction",
     notation: "x ∸ y",
     description: "Returns max(x − y, 0).",
     aliases: ["sub", "truncated_sub", "truncated_subtraction"],
+  },
+  ...Object.fromEntries(["three", "four", "five", "six"].map((name, index) => {
+    const k = index + 3;
+    const display = k === 3 ? "Median of three" : `Second-smallest of ${name}`;
+    return [`second_smallest_${k}`, {
+      display,
+      shortDisplay: display,
+      notation: k === 3 ? "median" : "second_smallest",
+      description: `Returns the second-smallest of ${k} inputs, counting repeated values separately.`,
+      aliases: [],
+      arity: k,
+      defaultInputs: [3, 1, 2, 0, 4, 2].slice(0, k),
+    }];
+  })),
+  characteristic: {
+    display: "Characteristic Function",
+    shortDisplay: "Characteristic Function",
+    notation: "χ_R(x,y)",
+    description: "Returns 1 when the selected relation holds, and 0 otherwise.",
+    aliases: [],
   },
   compose: {
     display: "Composition",
@@ -56,6 +122,13 @@ export const FUNCTION_METADATA = {
     notation: "PR(g, h)",
     description: "Defined by a base function and a step function.",
     aliases: ["primitive_rec", "primitive_recursion"],
+  },
+  minimization: {
+    display: "Minimization",
+    shortDisplay: "Minimization",
+    notation: "μ",
+    description: "Searches for the least value that makes the inner function return 0.",
+    aliases: ["min", "mu"],
   },
 };
 
@@ -72,12 +145,24 @@ const ALIAS_TO_CANONICAL = Object.entries(FUNCTION_METADATA).reduce((acc, [kind,
 export const FUNCTION_ORDER = [
   "zero",
   "successor",
+  "predecessor",
   "constant",
   "projection",
   "add",
+  "multiplication",
+  "exponentiation",
+  "factorial",
+  "geometric_sum",
+  "divisor_count",
+  "second_smallest_3",
+  "second_smallest_4",
+  "second_smallest_5",
+  "second_smallest_6",
   "bounded_sub",
+  "characteristic",
   "compose",
   "primrec",
+  "minimization",
 ];
 
 export function normalizeFunctionKind(kind) {
@@ -152,6 +237,8 @@ export function getFunctionDisplayLabel(spec) {
 
 export function renderFunctionLabel(spec) {
   const kind = normalizeFunctionKind(spec?.kind);
+  const metadata = getFunctionMetadata(kind);
+  if (Number.isInteger(metadata.arity)) return metadata.notation;
 
   if (kind === "projection") {
     return getFunctionNotation(spec);
@@ -173,8 +260,20 @@ export function renderFunctionLabel(spec) {
     return `PR(${renderFunctionLabel(spec?.base)}, ${renderFunctionLabel(spec?.step)})`;
   }
 
+  if (kind === "minimization") {
+    return `μ(${renderFunctionLabel(spec?.inner)})`;
+  }
+
   if (kind === "bounded_sub") {
     return "truncated subtraction";
+  }
+
+  if (kind === "predecessor") {
+    return "predecessor";
+  }
+
+  if (kind === "characteristic") {
+    return `χ_${normalizeCharacteristicRelation(spec?.relation)}`;
   }
 
   if (kind) {
@@ -191,9 +290,17 @@ function wrapFunctionCall(name, args) {
 export function renderFunctionExpression(spec, variables = []) {
   const kind = normalizeFunctionKind(spec?.kind);
   const args = variables.filter((value) => value !== undefined);
+  const metadata = getFunctionMetadata(kind);
+  if (Number.isInteger(metadata.arity)) {
+    return wrapFunctionCall(metadata.notation, args);
+  }
 
   if (kind === "successor") {
     return wrapFunctionCall("successor", [args[0] ?? "x"]);
+  }
+
+  if (kind === "predecessor") {
+    return `${args[0] ?? "x"} ∸ 1`;
   }
 
   if (kind === "add") {
@@ -204,12 +311,50 @@ export function renderFunctionExpression(spec, variables = []) {
     return wrapFunctionCall("add", [args[0] ?? "x", args[1] ?? "y"]);
   }
 
+  if (kind === "multiplication") {
+    if (args.length >= 2) {
+      return `${args[0]} × ${args[1]}`;
+    }
+
+    return wrapFunctionCall("multiplication", [args[0] ?? "x", args[1] ?? "y"]);
+  }
+
+  if (kind === "exponentiation") {
+    if (args.length >= 2) {
+      return `${args[0]}^${args[1]}`;
+    }
+
+    return wrapFunctionCall("exponentiation", [args[0] ?? "x", args[1] ?? "y"]);
+  }
+
+  if (kind === "factorial") {
+    return `${args[0] ?? "n"}!`;
+  }
+
+  if (kind === "geometric_sum") {
+    const x = args[0] ?? "x";
+    const y = args[1] ?? "y";
+    return `1 + ${x} + … + ${x}^${y}`;
+  }
+
+  if (kind === "divisor_count") {
+    return `τ(${args[0] ?? "n"})`;
+  }
+
   if (kind === "bounded_sub") {
     if (args.length >= 2) {
       return `${args[0]} ∸ ${args[1]}`;
     }
 
     return wrapFunctionCall("truncated subtraction", [args[0] ?? "x", args[1] ?? "y"]);
+  }
+
+  if (kind === "characteristic") {
+    const relation = getCharacteristicRelationMetadata(spec?.relation);
+    if (args.length >= 2) {
+      return `χ_R(${args[0]}, ${args[1]})`;
+    }
+    return wrapFunctionCall(`χ_${relation.value}`, [args[0] ?? "x", args[1] ?? "y"]);
   }
 
   if (kind === "projection") {
@@ -242,6 +387,11 @@ export function renderFunctionExpression(spec, variables = []) {
 
   if (kind === "primrec") {
     return `PR(${renderFunctionLabel(spec?.base)}, ${renderFunctionLabel(spec?.step)})`;
+  }
+
+  if (kind === "minimization") {
+    const innerExpression = renderFunctionExpression(spec?.inner, [...args, "y"]);
+    return `μy[${innerExpression}=0]`;
   }
 
   return renderFunctionLabel(spec);

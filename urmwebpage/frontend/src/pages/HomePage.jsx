@@ -1,42 +1,41 @@
+const overviewItems = [
+  {
+    step: "1",
+    title: "Simulator",
+    path: "/compute",
+  },
+  {
+    step: "2",
+    title: "Flow Diagram",
+    path: "/flow-diagram",
+  },
+];
+
 export default function HomePage({ onNavigate }) {
   return (
     <main className="home-page" aria-labelledby="home-title">
       <section className="home-landing">
         <div className="home-copy">
-          <h1 id="home-title" className="home-title">Unlimited Register Machine Visualizer</h1>
-          <p className="home-subtitle">
-            See how computable functions execute step by step as register machine programs.
-          </p>
+          <h1 id="home-title" className="home-title">URM stuff</h1>
         </div>
 
-        <div className="home-actions" role="navigation" aria-label="Primary">
-          <button
-            type="button"
-            className="home-nav-card home-nav-card-primary"
-            onClick={() => onNavigate("/demo")}
-          >
-            <span className="home-nav-head">
-              <span className="home-nav-title">Demo</span>
-            </span>
-            <span className="home-nav-kicker">(Start here)</span>
-            <span className="home-nav-copy">
-              Step through a complete example and watch the machine evolve.
-            </span>
-          </button>
-
-          <button
-            type="button"
-            className="home-nav-card"
-            onClick={() => onNavigate("/compute")}
-          >
-            <span className="home-nav-head">
-              <span className="home-nav-title">Compute</span>
-            </span>
-            <span className="home-nav-copy">
-              Build a function, run it, and inspect its execution step by step.
-            </span>
-          </button>
-        </div>
+        <nav className="home-overview" aria-label="Overview">
+          <ol className="home-overview-list">
+            {overviewItems.map((item) => (
+              <li key={item.path} className="home-overview-item">
+                <span className="home-overview-number">{item.step}</span>
+                <button
+                  type="button"
+                  className="home-overview-link"
+                  onClick={() => onNavigate(item.path)}
+                >
+                  {item.title}
+                </button>
+                {item.note ? <span className="home-overview-note">{item.note}</span> : null}
+              </li>
+            ))}
+          </ol>
+        </nav>
       </section>
     </main>
   );

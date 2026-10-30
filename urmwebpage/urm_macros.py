@@ -56,6 +56,19 @@ def successor() -> List[Instruction]:
     return [("S", 0)]
 
 
+def predecessor() -> List[Instruction]:
+    """Return the predecessor function x -> max(x - 1, 0) in R0."""
+    return [
+        ("J", 0, 3, 7),
+        ("S", 2),
+        ("J", 0, 2, 6),
+        ("S", 1),
+        ("S", 2),
+        ("J", 0, 0, 2),
+        ("T", 1, 0),
+    ]
+
+
 def projection(i: int) -> List[Instruction]:
     """
     Return the i-th input (1-based) as the output in R0.
@@ -71,6 +84,40 @@ def constant(k: int) -> List[Instruction]:
     for _ in range(k):
         prog.append(("S", 0))
     return prog
+
+
+def second_smallest(k: int) -> List[Instruction]:
+    """Return the second order statistic of R0..R(k-1), counting duplicates.
+
+    Rk is the only scratch register. After the first input matches the counter,
+    search the other positions starting at the same counter value, so repeated
+    minima are counted separately. Labels are resolved to zero-based URM targets.
+    """
+    if type(k) is not int or k < 2:
+        raise ValueError("second_smallest requires at least two inputs")
+
+    labels = {}
+    program = [("Z", k)]
+    labels["FIRST"] = len(program)
+    for i in range(k):
+        program.append(("J", k, i, f"SECOND_{i}"))
+    program.extend([("S", k), ("J", 0, 0, "FIRST")])
+
+    for i in range(k):
+        label = f"SECOND_{i}"
+        labels[label] = len(program)
+        for j in range(k):
+            if j != i:
+                program.append(("J", k, j, "DONE"))
+        program.extend([("S", k), ("J", 0, 0, label)])
+
+    labels["DONE"] = len(program)
+    program.append(("T", k, 0))
+    return [
+        ("J", instruction[1], instruction[2], labels[instruction[3]])
+        if instruction[0] == "J" else instruction
+        for instruction in program
+    ]
 
 
 # ============================================================

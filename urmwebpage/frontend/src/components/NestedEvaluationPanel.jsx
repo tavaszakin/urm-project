@@ -64,6 +64,13 @@ function formatIterationResultCall(iteration, remainingInputs) {
   );
 }
 
+function isSupportedNestedEvaluation(evaluation) {
+  if (!evaluation) return false;
+
+  const kind = normalizeFunctionKind(evaluation?.kind);
+  return kind === "primrec";
+}
+
 function ValuePill({ children, strong = false }) {
   return (
     <span
@@ -265,7 +272,7 @@ function PrimitiveRecursionEvaluation({ evaluation, selectedStepIndex = null }) 
 }
 
 export default function NestedEvaluationPanel({ evaluation, compact = false, selectedStepIndex = null }) {
-  if (!evaluation) return null;
+  if (!isSupportedNestedEvaluation(evaluation)) return null;
 
   const kind = normalizeFunctionKind(evaluation.kind);
   if (kind === "compose") {
@@ -302,9 +309,6 @@ export default function NestedEvaluationPanel({ evaluation, compact = false, sel
 
       {kind === "primrec" && (
         <PrimitiveRecursionEvaluation evaluation={evaluation} selectedStepIndex={selectedStepIndex} />
-      )}
-      {kind !== "primrec" && (
-        <div style={emptyTextStyle}>Unsupported evaluation metadata shape.</div>
       )}
     </div>
   );

@@ -1,24 +1,82 @@
 import { useEffect, useMemo, useState } from "react";
 import AppHeader from "./components/AppHeader.jsx";
+import ChapterFooterNav from "./components/ChapterFooterNav.jsx";
 import ThemeToggleButton from "./components/ThemeToggleButton.jsx";
 import ComputePage from "./pages/ComputePage.jsx";
+import EncodingPage from "./pages/EncodingPage.jsx";
+import FiniteStructuresBetaPage from "./pages/FiniteStructuresBetaPage.jsx";
+import FlowDiagramBetaPage from "./pages/FlowDiagramBetaPage.jsx";
 import HomePage from "./pages/HomePage.jsx";
+import ManyProgramsPage from "./pages/ManyProgramsPage.jsx";
+import PlaygroundPage from "./pages/PlaygroundPage.jsx";
 import PublicDemoPage from "./pages/PublicDemoPage.jsx";
+import SmnPage from "./pages/SmnPage.jsx";
+import StateCodesPage from "./pages/StateCodesPage.jsx";
 import TranslatePage from "./pages/TranslatePage.jsx";
 import { DEMO_ROUTE } from "./demoDefaults.js";
 import { RADII, THEMES, THEME_MODES, THEME_STORAGE_KEY, TYPOGRAPHY } from "./theme.js";
 
 const HOME_PATHS = new Set(["/"]);
 const COMPUTE_PATHS = new Set(["/compute"]);
+const ENCODING_PATHS = new Set(["/encoding", "/encode"]);
+const STATE_CODES_PATHS = new Set(["/state-codes"]);
+const SMN_PATHS = new Set(["/smn"]);
+const PROGRAM_EQUIVALENCE_ROUTE = "/program-equivalence";
+const PROGRAM_EQUIVALENCE_PATHS = new Set([PROGRAM_EQUIVALENCE_ROUTE, "/many-programs"]);
+const PLAYGROUND_PATHS = new Set(["/playground", "/urm-playground"]);
 const DEMO_PATHS = new Set([DEMO_ROUTE, "/public", "/soft-launch"]);
+const FINITE_STRUCTURES_BETA_PATHS = new Set(["/finite-structures-beta"]);
+const FLOW_DIAGRAM_ROUTE = "/flow-diagram";
+const FLOW_DIAGRAM_BETA_PATH = "/beta/flow-diagram";
+const FLOW_DIAGRAM_PATHS = new Set([FLOW_DIAGRAM_ROUTE, FLOW_DIAGRAM_BETA_PATH]);
+const PUBLIC_CHAPTER_PATHS = ["/compute", FLOW_DIAGRAM_ROUTE];
+const PUBLIC_FRONTEND_PATHS = new Set(["/", "/compute", FLOW_DIAGRAM_ROUTE]);
+const BORDER_EXPERIMENT_MODE = "off";
+const BORDER_EXPERIMENT_MODES = new Set(["off", "moderate", "black"]);
 
 function getRouteFromPath(pathname) {
+  if (!PUBLIC_FRONTEND_PATHS.has(pathname)) return "/";
   if (HOME_PATHS.has(pathname)) return "/";
   if (DEMO_PATHS.has(pathname)) return DEMO_ROUTE;
   if (COMPUTE_PATHS.has(pathname)) return "/compute";
+  if (ENCODING_PATHS.has(pathname)) return "/encoding";
+  if (STATE_CODES_PATHS.has(pathname)) return "/state-codes";
+  if (SMN_PATHS.has(pathname)) return "/smn";
+  if (PROGRAM_EQUIVALENCE_PATHS.has(pathname)) return PROGRAM_EQUIVALENCE_ROUTE;
+  if (PLAYGROUND_PATHS.has(pathname)) return "/playground";
+  if (FINITE_STRUCTURES_BETA_PATHS.has(pathname)) return "/finite-structures-beta";
+  if (FLOW_DIAGRAM_PATHS.has(pathname)) {
+    return FLOW_DIAGRAM_ROUTE;
+  }
   if (pathname === "/learn") return "/learn";
   if (pathname === "/translate") return "/translate";
   return "/";
+}
+
+function getBrowserPathForRoute(route, requestedPath = route) {
+  return route === "/"
+    ? "/"
+    : route === DEMO_ROUTE
+    ? DEMO_ROUTE
+    : route === "/compute"
+    ? requestedPath
+    : route === "/encoding"
+    ? "/encoding"
+    : route === "/state-codes"
+    ? "/state-codes"
+    : route === "/smn"
+    ? "/smn"
+    : route === PROGRAM_EQUIVALENCE_ROUTE
+    ? PROGRAM_EQUIVALENCE_ROUTE
+    : route === "/playground"
+    ? "/playground"
+    : route === "/finite-structures-beta"
+    ? "/finite-structures-beta"
+    : route === FLOW_DIAGRAM_ROUTE
+    ? FLOW_DIAGRAM_ROUTE
+    : route === "/learn"
+      ? "/learn"
+      : "/translate";
 }
 
 function getInitialThemeMode() {
@@ -42,13 +100,40 @@ export default function App() {
   const theme = THEMES[themeMode] ?? THEMES[THEME_MODES.light];
 
   useEffect(() => {
-    const handlePopState = () => {
-      setRoute(getRouteFromPath(window.location.pathname));
+    const syncRouteFromLocation = () => {
+      const pathname = window.location.pathname;
+
+      if (!PUBLIC_FRONTEND_PATHS.has(pathname)) {
+        window.history.replaceState(window.history.state, "", "/");
+      }
+
+      setRoute(getRouteFromPath(pathname));
     };
 
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
+    syncRouteFromLocation();
+    window.addEventListener("popstate", syncRouteFromLocation);
+    return () => window.removeEventListener("popstate", syncRouteFromLocation);
   }, []);
+
+  useEffect(() => {
+    if (route !== PROGRAM_EQUIVALENCE_ROUTE || window.location.pathname !== "/many-programs") {
+      return;
+    }
+
+    window.history.replaceState({}, "", PROGRAM_EQUIVALENCE_ROUTE);
+  }, [route]);
+
+  useEffect(() => {
+    if (route !== FLOW_DIAGRAM_ROUTE || window.location.pathname !== FLOW_DIAGRAM_BETA_PATH) {
+      return;
+    }
+
+    window.history.replaceState(
+      window.history.state,
+      "",
+      `${FLOW_DIAGRAM_ROUTE}${window.location.search}${window.location.hash}`,
+    );
+  }, [route]);
 
   useEffect(() => {
     window.localStorage.setItem(THEME_STORAGE_KEY, themeMode);
@@ -71,15 +156,44 @@ export default function App() {
         ? "Home"
         : route === DEMO_ROUTE
         ? "Demo"
+        : route === "/encoding"
+        ? "Encoding"
+        : route === "/state-codes"
+        ? "State Codes"
+        : route === "/smn"
+        ? "S-m-n"
+        : route === PROGRAM_EQUIVALENCE_ROUTE
+        ? "Program Equivalence"
+        : route === "/playground"
+          ? "Simulator"
+        : route === "/finite-structures-beta"
+          ? "Finite Structures Lab"
+        : route === FLOW_DIAGRAM_ROUTE
+          ? "Flow Diagram"
         : route === "/learn"
           ? "Learn"
-          : "Compute",
+          : "Simulator",
     [route],
   );
   const isDemoRoute = route === DEMO_ROUTE;
-  const isComputeRoute = route === "/compute";
+  const isComputeRoute =
+    route === "/compute" ||
+    route === "/encoding" ||
+    route === "/state-codes" ||
+    route === "/smn" ||
+    route === PROGRAM_EQUIVALENCE_ROUTE ||
+    route === "/playground" ||
+    route === "/finite-structures-beta" ||
+    route === FLOW_DIAGRAM_ROUTE;
   const isHomeRoute = route === "/";
   const useWorkspaceLayout = isDemoRoute || isComputeRoute;
+  const hideRedundantPageHeaderDetails = route === "/compute" || route === FLOW_DIAGRAM_ROUTE;
+  const activeBorderExperimentMode = BORDER_EXPERIMENT_MODES.has(BORDER_EXPERIMENT_MODE)
+    ? BORDER_EXPERIMENT_MODE
+    : "off";
+  const isBorderExperimentEnabled = activeBorderExperimentMode !== "off";
+  const experimentBorderStrong =
+    activeBorderExperimentMode === "black" ? "#000000" : "#6f7b8c";
 
   function toggleTheme() {
     setThemeMode((current) => (current === THEME_MODES.night ? THEME_MODES.light : THEME_MODES.night));
@@ -87,16 +201,7 @@ export default function App() {
 
   function handleNavigate(nextPath) {
     const normalizedPath = getRouteFromPath(nextPath);
-    const nextBrowserPath =
-      normalizedPath === "/"
-        ? "/"
-        : normalizedPath === DEMO_ROUTE
-        ? DEMO_ROUTE
-        : normalizedPath === "/compute"
-        ? nextPath
-        : normalizedPath === "/learn"
-          ? "/learn"
-          : "/translate";
+    const nextBrowserPath = getBrowserPathForRoute(normalizedPath, nextPath);
 
     if (window.location.pathname !== nextBrowserPath) {
       window.history.pushState({}, "", nextBrowserPath);
@@ -107,7 +212,11 @@ export default function App() {
 
   return (
     <div
-      className={`app-root${isHomeRoute ? " app-root-home" : ""}`}
+      className={`app-root${isHomeRoute ? " app-root-home" : ""}${isBorderExperimentEnabled ? " border-experiment" : ""}`}
+      data-border-experiment={isBorderExperimentEnabled ? "on" : undefined}
+      data-border-experiment-mode={
+        isBorderExperimentEnabled ? activeBorderExperimentMode : undefined
+      }
       style={{
         "--slider-track": theme.surface.borderSoft,
         "--slider-thumb-fill": theme.surface.cardBackground,
@@ -124,7 +233,9 @@ export default function App() {
         "--app-border": theme.surface.border,
         "--app-border-soft": theme.surface.borderSoft,
         "--border-default": theme.border.default,
-        "--border-strong": theme.border.strong,
+        "--border-strong": isBorderExperimentEnabled && themeMode === THEME_MODES.light
+          ? experimentBorderStrong
+          : theme.border.strong,
         "--app-text-primary": theme.text.primary,
         "--app-text-secondary": theme.text.secondary,
         "--app-text-muted": theme.text.muted,
@@ -207,8 +318,9 @@ export default function App() {
         "--app-toggle-border": theme.border.default,
         "--app-toggle-text": theme.text.primaryOnLight,
         "--app-toggle-hover": theme.surface.panelBackgroundAlt,
-        "--font-ui": TYPOGRAPHY.families.ui,
-        "--font-mono": TYPOGRAPHY.families.mono,
+        "--font-ui": "serif",
+        "--font-mono": "serif",
+        "--font-math": "serif",
         "--font-weight-regular": TYPOGRAPHY.weights.regular,
         "--font-weight-medium": TYPOGRAPHY.weights.medium,
         "--font-weight-semibold": TYPOGRAPHY.weights.semibold,
@@ -235,6 +347,7 @@ export default function App() {
         "--radius-button": `${RADII.button}px`,
         "--radius-chip": `${RADII.chip}px`,
         minHeight: "100vh",
+        fontFamily: "var(--font-ui)",
         background: theme.surface.pageBackgroundAlt,
         color: theme.text.primary,
         padding: useWorkspaceLayout ? "0" : "14px 18px 22px",
@@ -249,11 +362,23 @@ export default function App() {
       </div>
 
       {isDemoRoute ? (
-        <PublicDemoPage onNavigate={handleNavigate} themeMode={themeMode} />
+        <>
+          <PublicDemoPage onNavigate={handleNavigate} themeMode={themeMode} />
+          <ChapterFooterNav activePath={route} onNavigate={handleNavigate} />
+        </>
       ) : isHomeRoute ? (
-        <HomePage onNavigate={handleNavigate} />
+        <div className="app-shell" style={{ alignContent: "start" }}>
+          <AppHeader
+            activePath={route}
+            onNavigate={handleNavigate}
+            subtitle={activePage}
+            light={themeMode === THEME_MODES.light}
+            showTitle={false}
+          />
+          <HomePage onNavigate={handleNavigate} />
+        </div>
       ) : (
-        <div className={`app-shell${isComputeRoute ? " app-shell-light" : ""}`}>
+        <div className={`app-shell${isComputeRoute ? " app-shell-light" : ""}${hideRedundantPageHeaderDetails ? " app-shell-simple-page-header" : ""}`}>
           <AppHeader
             activePath={route}
             onNavigate={handleNavigate}
@@ -274,9 +399,29 @@ export default function App() {
             </div>
           ) : route === "/translate" ? (
             <TranslatePage />
+          ) : route === "/encoding" ? (
+            <EncodingPage />
+          ) : route === "/state-codes" ? (
+            <StateCodesPage />
+          ) : route === "/smn" ? (
+            <SmnPage />
+          ) : route === PROGRAM_EQUIVALENCE_ROUTE ? (
+            <ManyProgramsPage />
+          ) : route === "/playground" ? (
+            <PlaygroundPage />
+          ) : route === "/finite-structures-beta" ? (
+            <FiniteStructuresBetaPage />
+          ) : route === FLOW_DIAGRAM_ROUTE ? (
+            <FlowDiagramBetaPage />
           ) : (
             <ComputePage onNavigate={handleNavigate} />
           )}
+
+          <ChapterFooterNav
+            activePath={route}
+            onNavigate={handleNavigate}
+            chapterPaths={PUBLIC_FRONTEND_PATHS.has(route) ? PUBLIC_CHAPTER_PATHS : undefined}
+          />
         </div>
       )}
     </div>

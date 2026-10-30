@@ -34,7 +34,7 @@ export default function BuildingBlockDemoCard({
           <p className="learn-demo-meaning">{meaning}</p>
         </div>
         <div className="learn-demo-step-indicator">
-          <span className="learn-demo-step-label">Step</span>
+          <span className="learn-demo-step-label">Trace step</span>
           <span className="learn-demo-step-value">
             {currentStepIndex} / {totalSteps}
           </span>

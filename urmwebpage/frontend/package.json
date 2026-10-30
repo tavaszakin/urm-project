@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "test:second-smallest": "node scripts/verify-second-smallest.mjs",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:sketchv4": "node --test ../../experiments/sketchv4/tests/owned-orientation.test.mjs"
   },
   "dependencies": {
     "react": "^19.2.4",

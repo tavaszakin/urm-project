@@ -1,0 +1,2429 @@
+{
+  "schema": 1,
+  "provenance": {
+    "approvedPublicHead": "38eda866b66854ae33bb400c8095c5c4fa0785c9",
+    "capture": "optimized experimental mode before Step 8E promotion",
+    "date": "2026-10-29",
+    "sourceSha256": {
+      "orientation.js": "281d0cc020b742d787f283630e3e4b2a0031176a37971ddf5fabb52dc5616bb7",
+      "pipeline.js": "2d9ab7ea7afd23d4a9072bf535e4ae09b040e17c42a1183b62d9276afa5d72ac",
+      "ownedIntrusionsLab.js": "3a3b911b70977b186dd683d9bbed3ba7f0fee35770d9b87da0579df9b568f8ea",
+      "BetaFlowDiagram.jsx": "dbd0ae2b0b7c2aa6fa47db6c6c7ed6e0b7af26b942f748147ce5443860d88935"
+    }
+  },
+  "triggers": [
+    {
+      "programName": "canonical:minimization:bounded_sub",
+      "aliases": [
+        "canonical:minimization:bounded_sub",
+        "selector:minimization",
+        "flow-preset:minimization"
+      ],
+      "conditionalId": "i-22",
+      "instruction": [
+        "J",
+        2,
+        3,
+        25
+      ],
+      "yesDestination": "i-25",
+      "noDestination": "i-23",
+      "defaultPrimary": 0,
+      "flippedPrimary": 0,
+      "defaultOwned": 1,
+      "flippedOwned": 0
+    },
+    {
+      "programName": "step8b:outside-no-arrival",
+      "aliases": [
+        "step8b:outside-no-arrival"
+      ],
+      "conditionalId": "i-1",
+      "instruction": [
+        "J",
+        1,
+        2,
+        4
+      ],
+      "yesDestination": "i-4",
+      "noDestination": "i-2",
+      "defaultPrimary": 0,
+      "flippedPrimary": 0,
+      "defaultOwned": 1,
+      "flippedOwned": 0
+    },
+    {
+      "programName": "step8b:outside-no-same-arm",
+      "aliases": [
+        "step8b:outside-no-same-arm"
+      ],
+      "conditionalId": "i-2",
+      "instruction": [
+        "J",
+        2,
+        3,
+        5
+      ],
+      "yesDestination": "i-5",
+      "noDestination": "i-3",
+      "defaultPrimary": 1,
+      "flippedPrimary": 1,
+      "defaultOwned": 1,
+      "flippedOwned": 0
+    },
+    {
+      "programName": "metrics:minimization(add)",
+      "aliases": [
+        "metrics:minimization(add)"
+      ],
+      "conditionalId": "i-13",
+      "instruction": [
+        "J",
+        2,
+        3,
+        16
+      ],
+      "yesDestination": "i-16",
+      "noDestination": "i-14",
+      "defaultPrimary": 0,
+      "flippedPrimary": 0,
+      "defaultOwned": 1,
+      "flippedOwned": 0
+    }
+  ],
+  "programs": [
+    {
+      "name": "encoding:template",
+      "evidence": {
+        "programHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "geometryHash": "8f170cb25b4eea900c46a81eb1b7b8fdd9c74eb1d751acdfb7934a132d0ba505",
+        "svgHash": "47d47bbb344c39e980f33aa743820e82b67a85daa04363ec95e9438a27bf5c4c",
+        "orientations": {},
+        "decisions": [],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": []
+        }
+      }
+    },
+    {
+      "name": "encoding:zero",
+      "evidence": {
+        "programHash": "9051356ed05e0651970119e4f022e3a45a071529eccb04f981f6259b7f7435d6",
+        "geometryHash": "a8a1ac48dc888c7c096e4ba90a29badfd129e8df73a407cb7c73ea116965ae6f",
+        "svgHash": "d3d8e9da12f938d807dfe110ed66a953502b579b14d7805d6bd78de2ebe38c4a",
+        "orientations": {},
+        "decisions": [],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": []
+        }
+      }
+    },
+    {
+      "name": "encoding:successor",
+      "evidence": {
+        "programHash": "c18c0acfdbf1cc2eca2ef9675733a6300f1e5e31fc8ff4b05a0949f237b8f8d8",
+        "geometryHash": "a8a1ac48dc888c7c096e4ba90a29badfd129e8df73a407cb7c73ea116965ae6f",
+        "svgHash": "d3d8e9da12f938d807dfe110ed66a953502b579b14d7805d6bd78de2ebe38c4a",
+        "orientations": {},
+        "decisions": [],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": []
+        }
+      }
+    },
+    {
+      "name": "encoding:identity",
+      "evidence": {
+        "programHash": "fdefe33062f23ffccd8368759a1b5dd43899972eb909aa751ff803582e0989fa",
+        "geometryHash": "a8a1ac48dc888c7c096e4ba90a29badfd129e8df73a407cb7c73ea116965ae6f",
+        "svgHash": "d3d8e9da12f938d807dfe110ed66a953502b579b14d7805d6bd78de2ebe38c4a",
+        "orientations": {},
+        "decisions": [],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": []
+        }
+      }
+    },
+    {
+      "name": "encoding:constant-2",
+      "evidence": {
+        "programHash": "68438f8a921f32ed31c613812dd1d6fbcc49388047e8cd1cdceb7404aa174f9d",
+        "geometryHash": "cb6d29ff0825322b579b0bbea9d7e85adbd8d9001121db7b4b995da8d0c88b64",
+        "svgHash": "0d8377303112370b68894698d12fdd06a4326e6ac66d52ab1dd7c9e7f4634195",
+        "orientations": {},
+        "decisions": [],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": []
+        }
+      }
+    },
+    {
+      "name": "encoding:projection-transfer",
+      "evidence": {
+        "programHash": "b3333c5a6682f9a55f8a8726bf0ee2bfda3c2b4f29eee2827c261fab7ed81128",
+        "geometryHash": "a8a1ac48dc888c7c096e4ba90a29badfd129e8df73a407cb7c73ea116965ae6f",
+        "svgHash": "d3d8e9da12f938d807dfe110ed66a953502b579b14d7805d6bd78de2ebe38c4a",
+        "orientations": {},
+        "decisions": [],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": []
+        }
+      }
+    },
+    {
+      "name": "encoding:addition-loop",
+      "evidence": {
+        "programHash": "b30d9a1bf50b6426442750e31c369415767a58c10d3f8ef4dfaa13b05d2078a5",
+        "geometryHash": "1d67cabd71019b2eab773f3991b89eff50b10866ae03490d2b865c4ce2bf16b7",
+        "svgHash": "9ea86726383f9ba23c9a3a23641b8ed46b44b60932454f02b30f227334428f2a",
+        "orientations": {
+          "i-1": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-1",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-1-yes",
+            "i-1-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "encoding:increment-until-equal",
+      "evidence": {
+        "programHash": "36cbc8b29b97c33fe47e6fc9902e894a7dbaf61c6be3eae660fb3e7c94be8103",
+        "geometryHash": "f34fa7ae456dc5ab54a7deca1773e2fc926bc1d6be1e169cfdc4572a88d8d77a",
+        "svgHash": "9e19d79ef6b33c18ffd81fa35494d37f591f0d13ba16c300c0c925bcdd87a70e",
+        "orientations": {
+          "i-0": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-0",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-0-yes",
+            "i-0-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "encoding:truncated-subtraction",
+      "evidence": {
+        "programHash": "e2c97bb4ee2c3b96f01dd848b42da88b8e20e7e93164813c208f8e4b582e5a55",
+        "geometryHash": "f82ca62536bc6c0806aa4d9cba9a63ca9184e1ee013937570568ea39e478368f",
+        "svgHash": "9a33c1ae7078a9326bae43e42bcec4243aeec8f1468187f76cdf6639b47aa0ec",
+        "orientations": {
+          "i-1": "D",
+          "i-3": "D",
+          "i-6": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-6",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 1,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-3",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 2,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-1",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 1,
+            "defaultOwned": null,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-1-yes",
+            "i-1-no",
+            "i-3-no",
+            "i-6-yes",
+            "i-6-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "playground:copy-r0-r1",
+      "evidence": {
+        "programHash": "ffdb8c0deabe19c508ba543d499ff0c13beb8db246b6381584a30aac5ff270d3",
+        "geometryHash": "a8a1ac48dc888c7c096e4ba90a29badfd129e8df73a407cb7c73ea116965ae6f",
+        "svgHash": "d3d8e9da12f938d807dfe110ed66a953502b579b14d7805d6bd78de2ebe38c4a",
+        "orientations": {},
+        "decisions": [],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": []
+        }
+      }
+    },
+    {
+      "name": "state-codes:jump-to-halt-equal",
+      "evidence": {
+        "programHash": "1b0814e0c2102caa5e47dd746b0a03ba05591b8b939064d2d02552730d900717",
+        "geometryHash": "5dfb2e538e7a34ed4002fad791d496c7702ac55ddcc3478c0bfb2b7f0ee5d319",
+        "svgHash": "d7c394a1eccb1aad9875280db98418a08314da3fbdd161a88b11991d136bfe5b",
+        "orientations": {
+          "i-0": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-0",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-0-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "learn:zero",
+      "evidence": {
+        "programHash": "144453886791206404dbba2dbb6cc75180f2f2e8b6aa6568ac68bd300d8e3b6a",
+        "geometryHash": "a8a1ac48dc888c7c096e4ba90a29badfd129e8df73a407cb7c73ea116965ae6f",
+        "svgHash": "d3d8e9da12f938d807dfe110ed66a953502b579b14d7805d6bd78de2ebe38c4a",
+        "orientations": {},
+        "decisions": [],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": []
+        }
+      }
+    },
+    {
+      "name": "learn:successor",
+      "evidence": {
+        "programHash": "451f716e687c4f7e49f8892442873a4f40f506215bfb3095c2d7f61d3d2e5377",
+        "geometryHash": "a8a1ac48dc888c7c096e4ba90a29badfd129e8df73a407cb7c73ea116965ae6f",
+        "svgHash": "d3d8e9da12f938d807dfe110ed66a953502b579b14d7805d6bd78de2ebe38c4a",
+        "orientations": {},
+        "decisions": [],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": []
+        }
+      }
+    },
+    {
+      "name": "learn:copy",
+      "evidence": {
+        "programHash": "3a8e6d5bd183e4777499bcdee3969eba475a7471b09d10ed37f1803e5b9c39b2",
+        "geometryHash": "a8a1ac48dc888c7c096e4ba90a29badfd129e8df73a407cb7c73ea116965ae6f",
+        "svgHash": "d3d8e9da12f938d807dfe110ed66a953502b579b14d7805d6bd78de2ebe38c4a",
+        "orientations": {},
+        "decisions": [],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": []
+        }
+      }
+    },
+    {
+      "name": "learn:compare-and-jump",
+      "evidence": {
+        "programHash": "33ebeb5834a51b0fcda48170ceb7767595fcf466c83fac6ad482a7f7e3a00ff3",
+        "geometryHash": "7aba9d001aa0f89280c3cd754a59a22613607f1030d9e13a208bcf08cd4602df",
+        "svgHash": "96198ab07576ed2a98237bb4c499e72d9bcb9797a852f3517fc3a00b23c72cd4",
+        "orientations": {
+          "i-0": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-0",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-0-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "learn:build-constant",
+      "evidence": {
+        "programHash": "56c721cdca534a9e50aa5298ffeb1d5a2605c050a19ddbf1cd2442779779d3eb",
+        "geometryHash": "cb6d29ff0825322b579b0bbea9d7e85adbd8d9001121db7b4b995da8d0c88b64",
+        "svgHash": "0d8377303112370b68894698d12fdd06a4326e6ac66d52ab1dd7c9e7f4634195",
+        "orientations": {},
+        "decisions": [],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": []
+        }
+      }
+    },
+    {
+      "name": "equivalence:addition-P_1",
+      "evidence": {
+        "programHash": "88b9128ee91da75dbee287f873b439c1663d07e601d404b672b1ca0bd6a5b90c",
+        "geometryHash": "d9265fe86b16e671b4163d44b84ff2fe3c06447af785bdbfca7b305b4e8d4b1c",
+        "svgHash": "75cd1dd1b7ee31359696eca81f09ab016f9f288dc298c0dd7855772ea34e34d3",
+        "orientations": {
+          "i-3": "D",
+          "i-8": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-8",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-3",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-3-yes",
+            "i-3-no",
+            "i-8-yes",
+            "i-8-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "equivalence:addition-P_2",
+      "evidence": {
+        "programHash": "f83d8c0f15a7a600a23e84eacfac6b605854a5351f6735a973ab84ffdff8f661",
+        "geometryHash": "411efabab85b47441576865c36e6d3437fae74fe1059f839d63bc73415797c13",
+        "svgHash": "950d8a540cfa3d189c3d359c6883d756a7451709015b4710de0d1c17d2a9b345",
+        "orientations": {
+          "i-2": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-2",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-2-yes",
+            "i-2-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "equivalence:addition-P_3",
+      "evidence": {
+        "programHash": "ef3fa3e9f69b6d7d5ca475a050c22304fae0039c3a8934c16fc5deb66932a991",
+        "geometryHash": "411efabab85b47441576865c36e6d3437fae74fe1059f839d63bc73415797c13",
+        "svgHash": "950d8a540cfa3d189c3d359c6883d756a7451709015b4710de0d1c17d2a9b345",
+        "orientations": {
+          "i-2": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-2",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-2-yes",
+            "i-2-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "equivalence:successor-P_1",
+      "evidence": {
+        "programHash": "ba8dbee1bbbbfbb412bf415c9541f493c30e2fefe9852ebe2479827cc4245439",
+        "geometryHash": "072428d5da76e4a1561d079f5641d8a4af122a6a0f7fe8150e825198f4c5a5ec",
+        "svgHash": "c3318640eadca51610eb7ace5a6efd60d14ed0d52c6824e4dcf22aca54f831d8",
+        "orientations": {},
+        "decisions": [],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": []
+        }
+      }
+    },
+    {
+      "name": "equivalence:successor-P_2",
+      "evidence": {
+        "programHash": "7462034fae5a553b6ed4016577a87381468efbddbf7572cf60936e12ef14d9c1",
+        "geometryHash": "739186873d248aa6bfb4e47d60ab17f32c9b42b3706ba77babe4e59cd76234e3",
+        "svgHash": "8363a61e3c530915ef90667e89b8e89d0142bf3067201a67a7c649b51e99de4c",
+        "orientations": {},
+        "decisions": [],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": []
+        }
+      }
+    },
+    {
+      "name": "equivalence:successor-P_3",
+      "evidence": {
+        "programHash": "e9f56ecc34a94cf1b76f5a772011f21d1fa7bf8a13e2e1d2220fffc0e4ce2f72",
+        "geometryHash": "739186873d248aa6bfb4e47d60ab17f32c9b42b3706ba77babe4e59cd76234e3",
+        "svgHash": "8363a61e3c530915ef90667e89b8e89d0142bf3067201a67a7c649b51e99de4c",
+        "orientations": {},
+        "decisions": [],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": []
+        }
+      }
+    },
+    {
+      "name": "equivalence:identity-P_1",
+      "evidence": {
+        "programHash": "ee440471d8bd5c884a717ce856baf074ed1258f241a0af911a25f8ccc6579929",
+        "geometryHash": "072428d5da76e4a1561d079f5641d8a4af122a6a0f7fe8150e825198f4c5a5ec",
+        "svgHash": "c3318640eadca51610eb7ace5a6efd60d14ed0d52c6824e4dcf22aca54f831d8",
+        "orientations": {},
+        "decisions": [],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": []
+        }
+      }
+    },
+    {
+      "name": "equivalence:identity-P_2",
+      "evidence": {
+        "programHash": "2141af61eb3ad64f7f3ac60dbe8c07a03509498dad0b5b4bd130527edfb66277",
+        "geometryHash": "739186873d248aa6bfb4e47d60ab17f32c9b42b3706ba77babe4e59cd76234e3",
+        "svgHash": "8363a61e3c530915ef90667e89b8e89d0142bf3067201a67a7c649b51e99de4c",
+        "orientations": {},
+        "decisions": [],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": []
+        }
+      }
+    },
+    {
+      "name": "equivalence:identity-P_3",
+      "evidence": {
+        "programHash": "a4c39838274dae45dd4b3dfa53ecb14d008f1e61ba90a6a0248ef98d4c8b66dd",
+        "geometryHash": "cb6d29ff0825322b579b0bbea9d7e85adbd8d9001121db7b4b995da8d0c88b64",
+        "svgHash": "0d8377303112370b68894698d12fdd06a4326e6ac66d52ab1dd7c9e7f4634195",
+        "orientations": {},
+        "decisions": [],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": []
+        }
+      }
+    },
+    {
+      "name": "translate:addition",
+      "evidence": {
+        "programHash": "e8b517779de7447c11ded11fd0959c29b6876b25d6a34f18a2c17c92b0d2f81b",
+        "geometryHash": "411efabab85b47441576865c36e6d3437fae74fe1059f839d63bc73415797c13",
+        "svgHash": "950d8a540cfa3d189c3d359c6883d756a7451709015b4710de0d1c17d2a9b345",
+        "orientations": {
+          "i-2": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-2",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-2-yes",
+            "i-2-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "canonical:predecessor",
+      "evidence": {
+        "programHash": "3d6f38bb755ff094354593df4487d20a8e00a87c2755644a11cc20408130bb0f",
+        "geometryHash": "cea5aa736b27cc54084ea161982686fc826540d69c726e067ce7cb467e2ec914",
+        "svgHash": "b0fe12e503d1a295d8c7a07de87ed801da3dde9c7cac1eff2ee1adbf43ea7268",
+        "orientations": {
+          "i-0": "D",
+          "i-2": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-2",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 1,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-0",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 1,
+            "defaultOwned": null,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-0-no",
+            "i-2-yes",
+            "i-2-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "canonical:characteristic:leq",
+      "evidence": {
+        "programHash": "967ab812366b00ca79743f6fba1c1d557c5a39f037e05fb5745ee8377e77ce80",
+        "geometryHash": "c5e74e3790ed14c6d02059d583954f67276e51d25853b4f3001d297920b9afb0",
+        "svgHash": "36376bf80af6ff9fe8f10091ef6f1e06f78c78fccf06fe88dd741282d9bd4ec4",
+        "orientations": {
+          "i-9": "D",
+          "i-11": "D",
+          "i-14": "D",
+          "i-23": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-14",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 1,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-11",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 6,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-23",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-9",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 3,
+            "defaultOwned": null,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-9-yes",
+            "i-9-no",
+            "i-11-no",
+            "i-14-yes",
+            "i-14-no",
+            "i-23-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "canonical:characteristic:eq",
+      "evidence": {
+        "programHash": "d2423a6feee28a837412d172d75d92c6b0a326be50d4dbe801315553256a9aff",
+        "geometryHash": "42776e3ced1ee9b4c94f1e2cf8ee488663571bbe8ec63ee247f91dacafd4af0f",
+        "svgHash": "6013e5f833a44b956b6c00863e3bc0a079b974c2f6d84209334abb3fcc21c33f",
+        "orientations": {
+          "i-9": "D",
+          "i-11": "D",
+          "i-14": "D",
+          "i-29": "D",
+          "i-31": "D",
+          "i-34": "D",
+          "i-43": "D",
+          "i-46": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-34",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 1,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-46",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-14",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 1,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-31",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 6,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-43",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-11",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 2,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-29",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 6,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-9",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 1,
+            "defaultOwned": null,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-9-yes",
+            "i-9-no",
+            "i-11-no",
+            "i-14-yes",
+            "i-14-no",
+            "i-29-yes",
+            "i-29-no",
+            "i-31-no",
+            "i-34-yes",
+            "i-34-no",
+            "i-43-yes",
+            "i-43-no",
+            "i-46-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "canonical:characteristic:divides",
+      "evidence": {
+        "programHash": "575d2a72e69010e80bdfd0020c2dd8624a53216f112f2af9f1a829011f533f06",
+        "geometryHash": "3c95db597e48c06f8e81b19abfa4b0b2400257e514830fc3482731e1fb924ec0",
+        "svgHash": "17d2ba5efef432ad23091cf685192199ccadc097b20f35f0a2e27278203f19bf",
+        "orientations": {
+          "i-3": "D",
+          "i-4": "D",
+          "i-13": "D",
+          "i-15": "D",
+          "i-18": "D",
+          "i-25": "D",
+          "i-36": "D",
+          "i-38": "D",
+          "i-41": "D",
+          "i-48": "F",
+          "i-53": "F"
+        },
+        "decisions": [
+          {
+            "fork": "i-41",
+            "selected": "default",
+            "defaultPrimary": 4,
+            "flippedPrimary": 5,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-38",
+            "selected": "default",
+            "defaultPrimary": 4,
+            "flippedPrimary": 8,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-48",
+            "selected": "flipped",
+            "defaultPrimary": 4,
+            "flippedPrimary": 3,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-18",
+            "selected": "default",
+            "defaultPrimary": 3,
+            "flippedPrimary": 4,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-36",
+            "selected": "default",
+            "defaultPrimary": 3,
+            "flippedPrimary": 10,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-15",
+            "selected": "default",
+            "defaultPrimary": 3,
+            "flippedPrimary": 10,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-25",
+            "selected": "default",
+            "defaultPrimary": 3,
+            "flippedPrimary": 3,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-13",
+            "selected": "default",
+            "defaultPrimary": 3,
+            "flippedPrimary": 8,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-4",
+            "selected": "default",
+            "defaultPrimary": 3,
+            "flippedPrimary": 11,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-53",
+            "selected": "flipped",
+            "defaultPrimary": 3,
+            "flippedPrimary": 0,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-3",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 11,
+            "defaultOwned": null,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-3-yes",
+            "i-3-no",
+            "i-4-yes",
+            "i-4-no",
+            "i-13-yes",
+            "i-13-no",
+            "i-15-no",
+            "i-18-yes",
+            "i-18-no",
+            "i-25-yes",
+            "i-25-no",
+            "i-36-yes",
+            "i-36-no",
+            "i-38-yes",
+            "i-38-no",
+            "i-41-yes",
+            "i-41-no",
+            "i-48-yes",
+            "i-48-no",
+            "i-53-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "canonical:minimization:bounded_sub",
+      "evidence": {
+        "programHash": "a2fc09aeca3ac07700f482a1de70e093d0f360dbcd65f328cec518cbfe638dd1",
+        "geometryHash": "9cf56456ea75e8221ae0c2d0689f32e460ca59f4b855285335dc58bf635befa8",
+        "svgHash": "aa60db7993bdacc0b1f99c8a3e7f710bf4d38a3030b4c27874e75c708bd1c3de",
+        "orientations": {
+          "i-10": "D",
+          "i-12": "D",
+          "i-15": "D",
+          "i-22": "F"
+        },
+        "decisions": [
+          {
+            "fork": "i-15",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 1,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-12",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 4,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-22",
+            "selected": "flipped",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 1,
+            "flippedOwned": 0
+          },
+          {
+            "fork": "i-10",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 4,
+            "defaultOwned": null,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-10-yes",
+            "i-10-no",
+            "i-12-no",
+            "i-15-yes",
+            "i-15-no",
+            "i-22-yes",
+            "i-22-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "canonical:primrec:basic",
+      "evidence": {
+        "programHash": "1aea9fdce4452aeabe7726dbf813a2c0e7d666199d86f711c17e81b8f9a3b2e7",
+        "geometryHash": "f00fcb783105ebe299fcda8e6655aabf1987db80f52b310b5ee05e23443f9494",
+        "svgHash": "d8d5ed093091c9971553925c0f4fa19e5dcd0aca8df3a00641cd63effdc07a0c",
+        "orientations": {
+          "i-5": "D",
+          "i-13": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-13",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-5",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-5-yes",
+            "i-5-no",
+            "i-13-yes",
+            "i-13-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "step8b:no-yes-departure",
+      "evidence": {
+        "programHash": "da4b334e43b19b2e67776fc98d2e4fbb0a0ab94896a17e531ba8927ea694220a",
+        "geometryHash": "3ef1f86a63972fcb902508f7fcde27f6526bcf3390f647a34d69bb0af61c886b",
+        "svgHash": "d054e6bc7b5e9877a2dc67f776a0a6ac258021c23b3d2feeb1608c1d4ad8b816",
+        "orientations": {
+          "i-0": "D",
+          "i-1": "D",
+          "i-3": "F"
+        },
+        "decisions": [
+          {
+            "fork": "i-1",
+            "selected": "default",
+            "defaultPrimary": 3,
+            "flippedPrimary": 5,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-3",
+            "selected": "flipped",
+            "defaultPrimary": 3,
+            "flippedPrimary": 2,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-0",
+            "selected": "default",
+            "defaultPrimary": 2,
+            "flippedPrimary": 5,
+            "defaultOwned": null,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 2,
+          "nodeOverlaps": 1,
+          "crossings": 1,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 1,
+          "rawIntrusions": 1,
+          "ownedIntrusions": 1,
+          "illegalAttachments": [
+            "i-0-yes",
+            "i-0-no",
+            "i-1-yes",
+            "i-1-no",
+            "i-3-yes",
+            "i-3-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "step8b:no-yes-arrival",
+      "evidence": {
+        "programHash": "870d0bef8834d2344d3ceb6b155df9c96df86c64e57f4392326a0ffc9abbb95c",
+        "geometryHash": "edadaba936f3c56be769bae86b2e642e8f12668b896ddeba7d675adaacc00bc3",
+        "svgHash": "670f786b0855de01bba61e75ffc0490d4b89d26e8213473c203f82d38ccf4afa",
+        "orientations": {
+          "i-0": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-0",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 1,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-0-yes",
+            "i-0-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "step8b:outside-no-arrival",
+      "evidence": {
+        "programHash": "4631c80e714006198fd31ff635adddc440fed9a6dec6802254de7ddc77365c10",
+        "geometryHash": "79757d9ff1ff3001edada98826ca49e6420b26dffb41acd2092bc4998ee453e2",
+        "svgHash": "1e2b10a1d2ef75af91137a6ebcec7d76ec83baf497e7405530f335ed672290a3",
+        "orientations": {
+          "i-0": "D",
+          "i-1": "F"
+        },
+        "decisions": [
+          {
+            "fork": "i-1",
+            "selected": "flipped",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 1,
+            "flippedOwned": 0
+          },
+          {
+            "fork": "i-0",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-0-yes",
+            "i-0-no",
+            "i-1-yes",
+            "i-1-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "step8b:outside-no-same-arm",
+      "evidence": {
+        "programHash": "4684bbba32a78ab29c1c51321546812f6ee7c83f0461804a7f2235c66aece8f1",
+        "geometryHash": "10f6563f9c142b74cc55b2beb3683eee354bd96cd21c0960c6f66bed46191902",
+        "svgHash": "1ed0c899bbd17344297f2372aaba222a1c6049ed42221ad95297c4ed938fdf17",
+        "orientations": {
+          "i-0": "D",
+          "i-1": "F",
+          "i-2": "F"
+        },
+        "decisions": [
+          {
+            "fork": "i-2",
+            "selected": "flipped",
+            "defaultPrimary": 1,
+            "flippedPrimary": 1,
+            "defaultOwned": 1,
+            "flippedOwned": 0
+          },
+          {
+            "fork": "i-1",
+            "selected": "flipped",
+            "defaultPrimary": 1,
+            "flippedPrimary": 0,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-0",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 1,
+            "defaultOwned": null,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-0-yes",
+            "i-0-no",
+            "i-1-yes",
+            "i-1-no",
+            "i-2-yes",
+            "i-2-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "selector:constant",
+      "evidence": {
+        "programHash": "ae9ad40d7fc52f49d8947d3c9f7ca5473b18953536e2e387e33cf0b2731932c2",
+        "geometryHash": "2793dd455fcb1d018ec1d7246ef0706f1573c540c54ad7d5192e4e16f2552ab3",
+        "svgHash": "40c9694033e12ff837bab771b8e124607b34a0aa9025f4b2be2cc8a0b98ec1de",
+        "orientations": {},
+        "decisions": [],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": []
+        }
+      }
+    },
+    {
+      "name": "selector:multiplication",
+      "evidence": {
+        "programHash": "e38742aa84dd3ab145cb0cfe0907f623da577e74019e5ce6466dbf7eaf805a7c",
+        "geometryHash": "00d504cf20381fdbc231eed4d9d58a341a58c167a2224df977992ff6347074d9",
+        "svgHash": "e0c5bd28723040b14949314fa52d3364234614b6554d661a9ffd84889b211b1c",
+        "orientations": {
+          "i-5": "D",
+          "i-12": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-12",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-5",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-5-yes",
+            "i-5-no",
+            "i-12-yes",
+            "i-12-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "selector:exponentiation",
+      "evidence": {
+        "programHash": "1534d57679ef9e71088ebfd40ba51a465ea6ba657151aab0c946c0a8c72db8cc",
+        "geometryHash": "d0d19f2031bcc9fa945bc154633ded8d9d00147130af09fc6a603fef06694799",
+        "svgHash": "a18f050c56f6e1b2b4a5da76c87b590161f5d1a1b2578ee27605e15f2a426182",
+        "orientations": {
+          "i-6": "D",
+          "i-22": "D",
+          "i-29": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-29",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-22",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-6",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-6-yes",
+            "i-6-no",
+            "i-22-yes",
+            "i-22-no",
+            "i-29-yes",
+            "i-29-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "selector:factorial",
+      "evidence": {
+        "programHash": "7f76bb653fccffc9db1c1842b8be1f40836857fb2308299f5bab2f7c5f1f99aa",
+        "geometryHash": "d0d19f2031bcc9fa945bc154633ded8d9d00147130af09fc6a603fef06694799",
+        "svgHash": "a18f050c56f6e1b2b4a5da76c87b590161f5d1a1b2578ee27605e15f2a426182",
+        "orientations": {
+          "i-6": "D",
+          "i-22": "D",
+          "i-29": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-29",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-22",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-6",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-6-yes",
+            "i-6-no",
+            "i-22-yes",
+            "i-22-no",
+            "i-29-yes",
+            "i-29-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "selector:geometric_sum",
+      "evidence": {
+        "programHash": "1085c1d54b77d824e60039a4dca7a6aa2a74efe6ede81dc76b0b3f412eb16ff2",
+        "geometryHash": "689710425766dbc6c92270f2523e5a58ab540a757b7105fd1d92f7122fbe3673",
+        "svgHash": "837ca76c335a7021167b15a5eea7ac26632d1b610f2274480cf354d59276552f",
+        "orientations": {
+          "i-6": "D",
+          "i-156": "D",
+          "i-172": "D",
+          "i-179": "D",
+          "i-199": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-179",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-172",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-199",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-156",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-6",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-6-yes",
+            "i-6-no",
+            "i-156-yes",
+            "i-156-no",
+            "i-172-yes",
+            "i-172-no",
+            "i-179-yes",
+            "i-179-no",
+            "i-199-yes",
+            "i-199-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "selector:divisor_count",
+      "evidence": {
+        "programHash": "790bfb4ef7d654ae44cf4d10725af487ed7571fb8633d4daac297379841fcb64",
+        "geometryHash": "11baf92ba7cffa1fc6587e456f8bd9f7748e382fabe118a4d4a70c58e03e56aa",
+        "svgHash": "30b6c8a015a6a0d1719df825aed2d88c2123e48f98b0c779ede753773c73bbe6",
+        "orientations": {
+          "i-57": "D",
+          "i-220": "D",
+          "i-221": "D",
+          "i-230": "D",
+          "i-232": "D",
+          "i-235": "D",
+          "i-242": "D",
+          "i-253": "D",
+          "i-255": "D",
+          "i-258": "D",
+          "i-265": "F",
+          "i-270": "F",
+          "i-283": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-258",
+            "selected": "default",
+            "defaultPrimary": 3,
+            "flippedPrimary": 4,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-283",
+            "selected": "default",
+            "defaultPrimary": 3,
+            "flippedPrimary": 3,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-255",
+            "selected": "default",
+            "defaultPrimary": 3,
+            "flippedPrimary": 7,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-265",
+            "selected": "flipped",
+            "defaultPrimary": 3,
+            "flippedPrimary": 2,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-235",
+            "selected": "default",
+            "defaultPrimary": 2,
+            "flippedPrimary": 3,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-253",
+            "selected": "default",
+            "defaultPrimary": 2,
+            "flippedPrimary": 8,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-232",
+            "selected": "default",
+            "defaultPrimary": 2,
+            "flippedPrimary": 7,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-242",
+            "selected": "default",
+            "defaultPrimary": 2,
+            "flippedPrimary": 3,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-230",
+            "selected": "default",
+            "defaultPrimary": 2,
+            "flippedPrimary": 7,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-221",
+            "selected": "default",
+            "defaultPrimary": 2,
+            "flippedPrimary": 11,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-270",
+            "selected": "flipped",
+            "defaultPrimary": 2,
+            "flippedPrimary": 0,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-220",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 11,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-57",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-57-yes",
+            "i-57-no",
+            "i-220-yes",
+            "i-220-no",
+            "i-221-yes",
+            "i-221-no",
+            "i-230-yes",
+            "i-230-no",
+            "i-232-yes",
+            "i-232-no",
+            "i-235-yes",
+            "i-235-no",
+            "i-242-yes",
+            "i-242-no",
+            "i-253-yes",
+            "i-253-no",
+            "i-255-yes",
+            "i-255-no",
+            "i-258-yes",
+            "i-258-no",
+            "i-265-yes",
+            "i-265-no",
+            "i-270-no",
+            "i-283-yes",
+            "i-283-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "selector:compose",
+      "evidence": {
+        "programHash": "f03850c1423f5caeece45e23e0e807c2894e92848498c436adae7327f3352838",
+        "geometryHash": "249033b5c5b7b97abd47b86fd5ec54757db68c5972b8d538e5f2f233c24908ab",
+        "svgHash": "8caeba04af484d97d3b578d6426efefe4befa9e50dab66a96f1881374ec034ef",
+        "orientations": {
+          "i-6": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-6",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-6-yes",
+            "i-6-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "selector:primrec",
+      "evidence": {
+        "programHash": "f5f99522d208cebd0dcac574f215fe514d487e80498c9d91c1d98797214ee33c",
+        "geometryHash": "7dbe129598162507667b6c07af6efa019e79a5d0f686a37fec9a1888ddbcfcd1",
+        "svgHash": "eb298ee29a3cca3d1634c522aa4415c467535c11b17e9fb4b8659360bd9ca662",
+        "orientations": {
+          "i-8": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-8",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-8-yes",
+            "i-8-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "flow-preset:composition-bounded-sub",
+      "evidence": {
+        "programHash": "ce4b506d3cc7b9f5d06dc3ea4b4df3b2ee626a1edc0ef88254d6aaa17a7aae5c",
+        "geometryHash": "aec01010155c5045ff79aee01389115924a5b9c8aef4e48e4525de0d9751fbe8",
+        "svgHash": "e6e5eecc63f239780067e26b9395875ec6737e2634024bed36593b289ecb13ac",
+        "orientations": {
+          "i-8": "D",
+          "i-10": "D",
+          "i-13": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-13",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 1,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-10",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 2,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-8",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 1,
+            "defaultOwned": null,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-8-yes",
+            "i-8-no",
+            "i-10-no",
+            "i-13-yes",
+            "i-13-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "selector:characteristic:lt",
+      "evidence": {
+        "programHash": "f772372d780a1d910e9c3f0943cd529746684465746252a5ce7116e8dfe95b39",
+        "geometryHash": "319b5828f59444a995edc764c89787f44949eebd082d23f58dc9c27080e3509a",
+        "svgHash": "3c9d69c20d67fbd217411cba938ac6e097f6f21efe517eb67fef3a66407a175d",
+        "orientations": {
+          "i-11": "D",
+          "i-13": "D",
+          "i-16": "D",
+          "i-25": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-16",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 1,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-13",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 6,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-25",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-11",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 3,
+            "defaultOwned": null,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-11-yes",
+            "i-11-no",
+            "i-13-no",
+            "i-16-yes",
+            "i-16-no",
+            "i-25-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "metrics:compose(succ,succ)",
+      "evidence": {
+        "programHash": "cf352a4e237ebbd034d44be2d92e15225549c94f3ba24daf7b9b0a2f20a3138a",
+        "geometryHash": "5c0b40c9343ea382f5430d9db924cbfbc3eb09d2613cbfea518f366340a0757e",
+        "svgHash": "befc5d8e4d123e973c4c4342bf1cbe7cf250604b7f65cecd86ac3313784e2473",
+        "orientations": {},
+        "decisions": [],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": []
+        }
+      }
+    },
+    {
+      "name": "metrics:primrec(zero,succ)",
+      "evidence": {
+        "programHash": "8d097476c6536fae7ff111d8ac6929ad84419b492169154766eab940adedb3e4",
+        "geometryHash": "107a7a9de71f7974064a8c6a2abf4860f7cf455b05a6a6defa3f2ae1b8de972d",
+        "svgHash": "cd8f13f1589e98b3a6bb3348bdf6b9c89635d8e8bf368c7092e4880d9747f6ab",
+        "orientations": {
+          "i-5": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-5",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-5-yes",
+            "i-5-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "metrics:minimization(add)",
+      "evidence": {
+        "programHash": "c8f1a12e1afda0414305e2136000864e1512d0f97253a04ef37e8d24dbb6f412",
+        "geometryHash": "0b08dc069ff480d71ab10edcd43a41f20066ad3f6fbac7cc50c154a889043af5",
+        "svgHash": "fce6cf75b1166f23b2d539785c7b4b0ce7703b5dd8a167276f951b23e762ae82",
+        "orientations": {
+          "i-8": "D",
+          "i-13": "F"
+        },
+        "decisions": [
+          {
+            "fork": "i-13",
+            "selected": "flipped",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 1,
+            "flippedOwned": 0
+          },
+          {
+            "fork": "i-8",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-8-yes",
+            "i-8-no",
+            "i-13-yes",
+            "i-13-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "metrics:subst:double",
+      "evidence": {
+        "programHash": "0d933f2fe5e265323d21b8589d045c129d1b0313fa1794f0b47b724fdb706d5a",
+        "geometryHash": "fa2333ebd6717694fa2d0cbd2d70864a6f5d55ddefd731a731390cefc58546dc",
+        "svgHash": "39df40ad16b9ecb7ec9717ccdfad784f3ef532888467a1c1c047ca4703775f9f",
+        "orientations": {
+          "i-14": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-14",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-14-yes",
+            "i-14-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "metrics:subst:square",
+      "evidence": {
+        "programHash": "79bcc3721ed838c1a4114a32bd67eea22f94336e421a24b15920c8ad2f74a0a7",
+        "geometryHash": "6b8e5e05e46a17d6ed98f7ad2e76132887d5724301dc0bf0233f20d7843640b1",
+        "svgHash": "cdcc3f03e732b83d2bbfbc49d49bbc5eab7c3c317162c5190f6b2607913c1a68",
+        "orientations": {
+          "i-23": "D",
+          "i-30": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-30",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-23",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-23-yes",
+            "i-23-no",
+            "i-30-yes",
+            "i-30-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "metrics:subst:diagonal_divides",
+      "evidence": {
+        "programHash": "56611af69f5c36a8938da0b15b34dfc2fb6f6be9af96821455632bbd5139c2b9",
+        "geometryHash": "b19dadfa9ba00d230ca60c9178ce70ef620708d6551cf29acae8096e30f86009",
+        "svgHash": "a6d6438a01be9fc6acaf3033e44c6398c6150140660f9fabb04c8473023144c1",
+        "orientations": {
+          "i-30": "D",
+          "i-31": "D",
+          "i-40": "D",
+          "i-42": "D",
+          "i-45": "D",
+          "i-52": "D",
+          "i-63": "D",
+          "i-65": "D",
+          "i-68": "D",
+          "i-75": "F",
+          "i-80": "F"
+        },
+        "decisions": [
+          {
+            "fork": "i-68",
+            "selected": "default",
+            "defaultPrimary": 4,
+            "flippedPrimary": 5,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-65",
+            "selected": "default",
+            "defaultPrimary": 4,
+            "flippedPrimary": 8,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-75",
+            "selected": "flipped",
+            "defaultPrimary": 4,
+            "flippedPrimary": 3,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-45",
+            "selected": "default",
+            "defaultPrimary": 3,
+            "flippedPrimary": 4,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-63",
+            "selected": "default",
+            "defaultPrimary": 3,
+            "flippedPrimary": 10,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-42",
+            "selected": "default",
+            "defaultPrimary": 3,
+            "flippedPrimary": 10,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-52",
+            "selected": "default",
+            "defaultPrimary": 3,
+            "flippedPrimary": 3,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-40",
+            "selected": "default",
+            "defaultPrimary": 3,
+            "flippedPrimary": 8,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-31",
+            "selected": "default",
+            "defaultPrimary": 3,
+            "flippedPrimary": 11,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-80",
+            "selected": "flipped",
+            "defaultPrimary": 3,
+            "flippedPrimary": 0,
+            "defaultOwned": null,
+            "flippedOwned": null
+          },
+          {
+            "fork": "i-30",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 11,
+            "defaultOwned": null,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-30-yes",
+            "i-30-no",
+            "i-31-yes",
+            "i-31-no",
+            "i-40-yes",
+            "i-40-no",
+            "i-42-no",
+            "i-45-yes",
+            "i-45-no",
+            "i-52-yes",
+            "i-52-no",
+            "i-63-yes",
+            "i-63-no",
+            "i-65-yes",
+            "i-65-no",
+            "i-68-yes",
+            "i-68-no",
+            "i-75-yes",
+            "i-75-no",
+            "i-80-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "metrics:subst:add_succ",
+      "evidence": {
+        "programHash": "3f9745cda5b8ac7e606c42c26e138d9cd0c2bb26a6b00f23f65d496d1ae50ab7",
+        "geometryHash": "fdd6e7ffd41dbfe57184f1e1e54227c3fc63ee8bda7df3c79a31b5d85144dd4c",
+        "svgHash": "14fa751c43e351335c432f9ad8bfe04a685c7769d7db5ac8d80d64db7f994f60",
+        "orientations": {
+          "i-32": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-32",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-32-yes",
+            "i-32-no"
+          ]
+        }
+      }
+    },
+    {
+      "name": "metrics:subst:succ_add",
+      "evidence": {
+        "programHash": "09c0068a7ba22df025c68511f685f4db9bad1c82d3926ccb94af7970a3a5667f",
+        "geometryHash": "6621bcf8e53758dbde12f2b99bb266e6aeda41680b71ae7c3768b48affae54d5",
+        "svgHash": "f3dfd75eb23e2f44968466114793f363016a4aa6968a409646dadd663b4ac2a0",
+        "orientations": {
+          "i-6": "D"
+        },
+        "decisions": [
+          {
+            "fork": "i-6",
+            "selected": "default",
+            "defaultPrimary": 0,
+            "flippedPrimary": 0,
+            "defaultOwned": 0,
+            "flippedOwned": null
+          }
+        ],
+        "metrics": {
+          "primary": 0,
+          "nodeOverlaps": 0,
+          "crossings": 0,
+          "edgeOverlaps": 0,
+          "clearanceFailures": 0,
+          "rawIntrusions": 0,
+          "ownedIntrusions": 0,
+          "illegalAttachments": [
+            "i-6-yes",
+            "i-6-no"
+          ]
+        }
+      }
+    }
+  ]
+}

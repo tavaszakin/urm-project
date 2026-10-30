@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Scratch flow-layout diagnostic probes + artifacts (see .claude/skills/flow-layout-probe)
+.flow-layout-probes/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

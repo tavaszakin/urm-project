@@ -5,9 +5,6 @@ import { TYPOGRAPHY } from "../theme.js";
 import KatexMath from "./KatexMath.jsx";
 import { formatInstructionLatex } from "../utils/urmFormatting.js";
 
-const STATUS_CHANGED_BACKGROUND = "var(--machine-changed-bg)";
-const STATUS_CHANGED_BORDER = "var(--machine-changed-bg)";
-
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
 }
@@ -126,7 +123,6 @@ function CombinedProgramTable({ combinedProgramRows, row, programRefs }) {
 
         <tbody>
           {combinedProgramRows.map((programRow, rowIndex) => {
-            const displayInstructionNumber = rowIndex + 1;
             const isCurrent =
               row?.stageKey === programRow.stageKey &&
               row?.instructionIndex === programRow.instructionIndex;
@@ -183,9 +179,9 @@ function CombinedProgramTable({ combinedProgramRows, row, programRefs }) {
                       boxShadow: isCurrent ? "inset 0 0 0 1px color-mix(in srgb, var(--machine-active-border) 28%, transparent)" : "inset 0 -1px 0 var(--machine-inner-border)",
                     }}
                   >
-                    <span title={`I_${displayInstructionNumber}`}>
+                    <span title={`I${rowIndex}`}>
                       {isCurrent ? "▶ " : ""}
-                      {displayInstructionNumber}
+                      {rowIndex}
                     </span>
                   </td>
                   <td
@@ -218,7 +214,14 @@ function CombinedProgramTable({ combinedProgramRows, row, programRefs }) {
   );
 }
 
-function SectionedProgramList({ sections, row, programRefs }) {
+function SectionedProgramList({
+  sections,
+  row,
+  programRefs,
+  renderProgramInstruction = null,
+  renderProgramIndex = null,
+  showProgramHeader = false,
+}) {
   return (
     <div style={{ display: "grid", gap: 8 }}>
       {sections.map((section) => (
@@ -253,6 +256,9 @@ function SectionedProgramList({ sections, row, programRefs }) {
             maxHeight={sections.length > 1 ? 164 : 420}
             rowRefs={programRefs}
             rowRefPrefix={sections.length > 1 ? `${section.key}-` : ""}
+            renderInstruction={renderProgramInstruction}
+            renderIndex={renderProgramIndex}
+            showHeader={showProgramHeader && sections.length === 1}
           />
         </div>
       ))}
@@ -262,24 +268,45 @@ function SectionedProgramList({ sections, row, programRefs }) {
 
 export default function MachinePanel({
   title,
+  headerContent = null,
+  hideSectionCaptions = false,
+  traceCompact = false,
   program,
   row,
-  finalRegisters,
   trace,
   currentTraceIndex,
   selectedStepIndex = null,
+  semanticTraceBlocks = null,
+  hideStageColumns = false,
   isPlaying = false,
   playbackControls = null,
+  tracePanelCaption = null,
+  programPanelTitle = null,
+  programPanelCaption = null,
+  renderProgramInstruction = null,
+  renderProgramIndex = null,
+  showProgramHeader = false,
   programSections = null,
   combinedProgramRows = null,
   stageSummary = "",
+  statusPanelFooter = null,
   traceFooter = null,
   traceShowStepGroups = true,
+  outputIsFinal = false,
+  traceIndexHeader = "Step",
+  traceIndexValueFormatter = null,
+  suppressTraceActiveHighlight = false,
+  traceColumnWidths = null,
+  traceBodyCellFontSize = null,
+  traceSizingTraceLength = null,
+  traceSizingRegisterColumnCount = null,
+  tracePresentation = null,
+  traceFitToContent = false,
+  traceTableWidthPercent = null,
+  traceEqualColumnWidths = false,
+  traceStandaloneTable = false,
 }) {
   const programRefs = useRef([]);
-  const halted = row === null;
-
-  const registers = halted ? finalRegisters : row.registers;
   const activeStageLabel = row?.stageLabel ?? row?.stageKey ?? stageSummary;
   const panelTitleParts = splitPanelTitle(title);
 
@@ -322,6 +349,11 @@ export default function MachinePanel({
           ) : null}
           <h2 className="machine-panel-title">{panelTitleParts.value}</h2>
         </div>
+        {headerContent ? (
+          <div className="machine-panel-header-extra">
+            {headerContent}
+          </div>
+        ) : null}
       </div>
 
       {playbackControls ? (
@@ -334,20 +366,39 @@ export default function MachinePanel({
         <section className="machine-column machine-trace-column">
           <div className="machine-panel-section-header machine-trace-header">
             <div className="machine-panel-title">Computation Trace</div>
-            <div className="machine-panel-caption">
-              Current step in yellow. Changed registers in pink.
-            </div>
+            {!hideSectionCaptions && tracePanelCaption !== "" ? (
+              <div className="machine-panel-caption">
+                {tracePanelCaption ?? "Current trace step in yellow. Changed registers in pink."}
+              </div>
+            ) : null}
           </div>
 
           <div className="machine-trace-shell">
-            <div className="machine-trace-table-shell">
+            <div className={`machine-trace-table-shell${traceStandaloneTable ? " machine-trace-table-shell-standalone" : ""}`}>
               <TraceTable
                 trace={trace}
                 currentTraceIndex={currentTraceIndex}
                 selectedStepIndex={selectedStepIndex}
+                semanticTraceBlocks={semanticTraceBlocks}
+                hideStageColumns={hideStageColumns}
                 isPlaying={isPlaying}
+                compact={traceCompact}
                 maxHeight={524}
                 showStepGroups={traceShowStepGroups}
+                progressiveReveal
+                outputIsFinal={outputIsFinal}
+                traceIndexHeader={traceIndexHeader}
+                traceIndexValueFormatter={traceIndexValueFormatter}
+                suppressActiveHighlight={suppressTraceActiveHighlight}
+                columnWidths={traceColumnWidths}
+                bodyCellFontSize={traceBodyCellFontSize}
+                sizingTraceLength={traceSizingTraceLength}
+                sizingRegisterColumnCount={traceSizingRegisterColumnCount}
+                tracePresentationOverride={tracePresentation}
+                fitToContent={traceFitToContent}
+                tableWidthPercent={traceTableWidthPercent}
+                equalColumnWidths={traceEqualColumnWidths}
+                tableBorder={traceStandaloneTable}
               />
             </div>
           </div>
@@ -356,11 +407,13 @@ export default function MachinePanel({
         <aside className="machine-column machine-status-column machine-status-panel">
           <div className="machine-panel-section-header">
             <div className="machine-panel-title">
-              {hasCombinedProgramRows ? "URM Program" : sections.length > 1 ? "URM Programs" : "URM Program"}
+              {programPanelTitle ?? (hasCombinedProgramRows ? "URM Program" : sections.length > 1 ? "URM Programs" : "URM Program")}
             </div>
-            <div className="machine-panel-caption">
-              The active instruction stays highlighted and in view during playback.
-            </div>
+            {!hideSectionCaptions ? (
+              <div className="machine-panel-caption">
+                {programPanelCaption ?? "The active instruction stays highlighted and in view during playback."}
+              </div>
+            ) : null}
           </div>
 
           <div className="machine-status-sidebar">
@@ -368,9 +421,18 @@ export default function MachinePanel({
               {hasCombinedProgramRows ? (
                 <CombinedProgramTable combinedProgramRows={combinedProgramRows} row={row} programRefs={programRefs} />
               ) : (
-                <SectionedProgramList sections={sections} row={row} programRefs={programRefs} />
+                <SectionedProgramList
+                  sections={sections}
+                  row={row}
+                  programRefs={programRefs}
+                  renderProgramInstruction={renderProgramInstruction}
+                  renderProgramIndex={renderProgramIndex}
+                  showProgramHeader={showProgramHeader}
+                />
               )}
             </div>
+
+            {statusPanelFooter}
 
             {activeStageLabel && (
               <div className="machine-status-row">

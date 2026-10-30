@@ -2,25 +2,36 @@ import { Fragment, isValidElement } from "react";
 import { TYPOGRAPHY } from "../theme.js";
 import {
   normalizeFunctionKind,
+  getFunctionMetadata,
 } from "../functionMetadata.js";
 import { ProjectionNotation } from "../utils/mathNotation.jsx";
 
 const TOKEN_SEGMENT_PATTERN = /([A-Za-z]+(?:\d+)?|[0-9]+|_+|\s+|[^A-Za-z0-9_\s]+)/g;
 const UPRIGHT_TEXT_TOKENS = new Set([
   "addition",
+  "multiplication",
+  "exponentiation",
   "successor",
+  "predecessor",
   "constant",
   "projection",
   "truncated",
   "truncated_subtraction",
   "subtraction",
   "zero",
+  "divisor",
+  "count",
+  "num",
+  "divisors",
+  "tau",
   "compose",
+  "minimization",
   "previous",
   "function",
   "max",
   "min",
   "const",
+  "pred",
   "pr",
 ]);
 
@@ -43,13 +54,23 @@ function normalizeExpressionNode(node) {
 }
 
 function getExpectedArity(kind, spec) {
-  if (kind === "add" || kind === "bounded_sub") return 2;
+  const arity = getFunctionMetadata(kind).arity;
+  if (Number.isInteger(arity)) return arity;
+  if (kind === "add" || kind === "multiplication" || kind === "exponentiation" || kind === "geometric_sum" || kind === "bounded_sub") return 2;
+  if (kind === "divisor_count") return 1;
+  if (kind === "predecessor") return 1;
   if (kind === "projection") {
     const arity = Number(spec?.arity);
     return Number.isInteger(arity) && arity > 0 ? arity : 2;
   }
   if (kind === "compose") {
     return getExpectedArity(normalizeFunctionKind(spec?.inner?.kind), spec?.inner);
+  }
+  if (kind === "minimization") {
+    return Math.max(
+      getExpectedArity(normalizeFunctionKind(spec?.inner?.kind), spec?.inner) - 1,
+      0,
+    );
   }
   if (kind === "primrec") return 2;
   return 1;
@@ -80,6 +101,8 @@ function fillArgsToArity(args, expectedArity) {
 
 function getDisplayCallee(spec) {
   const kind = normalizeFunctionKind(spec?.kind);
+  const metadata = getFunctionMetadata(kind);
+  if (Number.isInteger(metadata.arity)) return metadata.notation;
 
   if (kind === "projection") {
     return <ProjectionNotation spec={spec} fallbackArity={spec?.arity} />;
@@ -89,12 +112,32 @@ function getDisplayCallee(spec) {
     return "constant";
   }
 
+  if (kind === "minimization") {
+    return "μ";
+  }
+
   if (kind === "add") {
     return "addition";
   }
 
+  if (kind === "multiplication") {
+    return "multiplication";
+  }
+
+  if (kind === "exponentiation") {
+    return "exponentiation";
+  }
+
   if (kind === "bounded_sub") {
     return "truncated_subtraction";
+  }
+
+  if (kind === "divisor_count") {
+    return "divisor_count";
+  }
+
+  if (kind === "predecessor") {
+    return "predecessor";
   }
 
   return kind || "function";
@@ -117,6 +160,16 @@ export function buildFunctionExpressionNode(spec, args = []) {
       getExpectedArity(outerKind, spec?.outer),
     );
     return buildFunctionExpressionNode(spec?.outer, outerArgs);
+  }
+
+  if (kind === "minimization") {
+    const innerKind = normalizeFunctionKind(spec?.inner?.kind);
+    const innerArgs = fillArgsToArity(
+      [...normalizedArgs, createExpressionText("y")],
+      getExpectedArity(innerKind, spec?.inner),
+    );
+    const innerExpression = buildFunctionExpressionNode(spec?.inner, innerArgs);
+    return createExpressionCall("μ", [innerExpression]);
   }
 
   if (kind === "constant") {
