@@ -1,0 +1,15 @@
+{
+  "frontend": "https://urm-project-neon.vercel.app/",
+  "legacy": true,
+  "api_override": "http://127.0.0.1:8011",
+  "intercepted_requests": 2,
+  "observed_api_origins": [
+    "https://urm-backend.onrender.com"
+  ],
+  "checks": [
+    "/: navigation and refresh",
+    "add: execution output 5, program and trace",
+    "bounded_sub: execution output 3, program and trace"
+  ],
+  "browser_errors": []
+}

@@ -1,0 +1,21 @@
+# Python bytecode cache
+__pycache__/
+*.pyc
+*.pyo
+
+# SketchV3 headless verification harness (local dev tooling)
+.sketchv3-harness/
+
+# Phase 0 fixture-metrics artifact (generated baseline, local dev tooling)
+.fixture-metrics/
+
+# Frontend build output and dependencies
+dist/
+node_modules/
+
+# Hosting CLI state and local environment values
+.vercel/
+.env
+.env.*
+!.env.example
+!.env.*.example

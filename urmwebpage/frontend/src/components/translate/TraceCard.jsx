@@ -21,7 +21,7 @@ export default function TraceCard({
       <div className="translate-trace-toolbar">
         <button
           type="button"
-          className="compare-controls-button"
+          className="compare-controls-button transport-btn"
           onClick={onPrev}
           disabled={currentStepIndex === 0}
         >
@@ -37,7 +37,7 @@ export default function TraceCard({
         />
         <button
           type="button"
-          className="compare-controls-button"
+          className="compare-controls-button transport-btn"
           onClick={onNext}
           disabled={currentStepIndex >= maxStepIndex}
         >
@@ -45,14 +45,14 @@ export default function TraceCard({
         </button>
         <button
           type="button"
-          className="compare-controls-button"
+          className="compare-controls-button transport-btn"
           onClick={onReset}
           disabled={currentStepIndex === 0}
         >
           Reset
         </button>
         <div className="compare-controls-meta">
-          Step: {currentStepIndex} / {maxStepIndex}
+          Trace step: {currentStepIndex} / {maxStepIndex}
         </div>
       </div>
 

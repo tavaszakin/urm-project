@@ -1,0 +1,11 @@
+{
+  "git": {
+    "deploymentEnabled": {
+      "release/*": false
+    }
+  },
+  "rewrites": [
+    { "source": "/compute", "destination": "/index.html" },
+    { "source": "/flow-diagram", "destination": "/index.html" }
+  ]
+}

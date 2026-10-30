@@ -1,0 +1,156 @@
+{
+  "prepared_date": "2026-10-30",
+  "status": "prepared-not-deployed",
+  "repository": "https://github.com/tavaszakin/urm-project",
+  "candidate_branch": "release/public-site-2026-10-30",
+  "production_base_sha": "5483006b2ad5967a02b5764870b33d8506261afd",
+  "source_sha": "2559765d2123be4ada1450923cc932ec20088a55",
+  "routing_source_sha": "67508a31eae187342d5bf708743ea8bd7ab512a9",
+  "application_commit": "a531ef75bcc3a4d7651801686cc6713e65a94a58",
+  "skill_commit": "1eacf045cafc3ce0093a752cbef48f6d8cedb59d",
+  "candidate_sha_location": "Final draft PR head / git rev-parse release/public-site-2026-10-30; this provenance commit cannot contain its own SHA.",
+  "included_uncommitted_edits": [
+    "urmwebpage/frontend/src/App.jsx",
+    "urmwebpage/frontend/src/components/AppHeader.jsx",
+    "urmwebpage/frontend/src/components/ChapterFooterNav.jsx",
+    "urmwebpage/frontend/src/pages/ComputePage.jsx",
+    "urmwebpage/frontend/src/pages/HomePage.jsx",
+    "urmwebpage/frontend/src/pages/LearnPage.jsx"
+  ],
+  "source_worktree_preserved": true,
+  "exclusions": [
+    "Unrelated current-worktree experiments and other feature branches",
+    "Historical SketchV4 research archives except fixtures/approved evidence required by test:sketchv4",
+    "Public-source .claude diagnostic skills",
+    "Public-source verification screenshots and generated reports",
+    "Public-source frontend diagnostic viewers except required current_harness.mjs"
+  ],
+  "vercel": {
+    "project_id": "prj_XVFhCNAgLhKd20scuP74q5cfalwn",
+    "team_id": "team_RtEzVQJim0trlNWsaJPieDPk",
+    "scope": "tavaszakins-projects",
+    "project": "urm-project",
+    "production_branch": "main",
+    "root_directory": "urmwebpage/frontend",
+    "framework": "vite",
+    "node_version": "24.x",
+    "build_command": "framework default: npm run build / vite build",
+    "install_command": "framework default",
+    "output_directory": "framework default: dist",
+    "api_variable": {
+      "key": "VITE_API_URL",
+      "value": "https://urm-backend.onrender.com",
+      "scopes": [
+        "production",
+        "preview",
+        "development"
+      ],
+      "branch_override": null
+    },
+    "auto_assign_custom_domains": true,
+    "git_create_deployments": "enabled",
+    "domain": "urm-project-neon.vercel.app",
+    "live_deployment_id": "dpl_EqLwZKfGcxfMPRaPepv9wTRroL4S",
+    "live_sha": "5483006b2ad5967a02b5764870b33d8506261afd",
+    "rollback_targets": [
+      {
+        "id": "dpl_EqLwZKfGcxfMPRaPepv9wTRroL4S",
+        "state": "READY",
+        "isRollbackCandidate": true,
+        "role": "Restore current public build after release"
+      },
+      {
+        "id": "dpl_C47gRcuPE53TKy5cNw1wPz7s6rQo",
+        "state": "READY",
+        "isRollbackCandidate": true,
+        "sha": "aa5e67d31152ce4a8977367fe1f1e5615ae135db"
+      }
+    ],
+    "retention": {
+      "expiration_days_production": 30,
+      "deployments_to_keep": 10
+    },
+    "release_branch_git_builds": "disabled by candidate vercel.json release/* rule"
+  },
+  "render": {
+    "workspace_id": "tea-d7a1ri4hg0os73b7q0b0",
+    "service_id": "srv-d7a1t14hg0os73bat3mg",
+    "service": "urm-backend",
+    "url": "https://urm-backend.onrender.com",
+    "production_branch": "main",
+    "root_directory": "urmwebpage",
+    "build_command": "pip install -r ../requirements.txt",
+    "start_command": "uvicorn main:app --host 0.0.0.0 --port 10000",
+    "runtime": "python",
+    "python_version_pin": null,
+    "python_version_actual": null,
+    "python_version_note": "Exact version unavailable: old build logs not returned and SSH key not configured. Live code already requires Python >=3.10 and Pydantic 2. Local tests used Python 3.14.3.",
+    "environment_variables": [],
+    "auto_deploy": "yes",
+    "auto_deploy_trigger": "commit",
+    "previews": "off",
+    "health_check_path": "",
+    "live_deployment_id": "dep-d8ge73poagis738r2hdg",
+    "live_sha": "5483006b2ad5967a02b5764870b33d8506261afd",
+    "rollback_targets": [
+      {
+        "id": "dep-d8ge73poagis738r2hdg",
+        "role": "Restore current API after release"
+      },
+      {
+        "id": "dep-d8e972navr4c738h44hg",
+        "sha": "5483006b2ad5967a02b5764870b33d8506261afd"
+      }
+    ],
+    "rollback_artifact_availability": "Not exposed in returned deploy metadata; recheck retention before release. Rebuild exact old SHA if necessary, acknowledging unpinned Python dependencies."
+  },
+  "access": {
+    "github": "Authenticated keychain; repo admin/push confirmed",
+    "vercel": "CLI 65.8.0 at ~/.local/bin/vercel; existing project/API reads confirmed",
+    "render": "CLI 2.15.1; workspace/service/deploy reads and authenticated API reads confirmed",
+    "production_write_operations": "Not exercised: settings/deploy/promote/merge remain subject to explicit approval and provider authorization",
+    "ssh": "Render SSH refused publickey; no key registered by this task"
+  },
+  "checks": {
+    "backend_unittests": {
+      "passed": 89
+    },
+    "layout_tests": {
+      "passed": 84,
+      "fresh_committed_export": true
+    },
+    "compiler_smoke": {
+      "passed": 23,
+      "canonical_kinds": 20
+    },
+    "second_smallest": "Arity/input/CFG/SVG checks passed for 3,4,5,6",
+    "browser_candidate": "Navigation/refresh, Simulator text, addition, bounded subtraction, arities 3-6 execution, exact diagram node counts; real CORS with no interception; no browser errors",
+    "browser_legacy": "Actual public frontend; addition/subtraction redirected only inside test browser to candidate API; no browser errors",
+    "production_url_build": "Passed with VITE_API_URL=https://urm-backend.onrender.com",
+    "skill": "quick_validate, JS syntax, inventory behavioral cases passed",
+    "lint": {
+      "errors": 66,
+      "warnings": 11,
+      "status": "Existing public-site lint failures; not silently fixed"
+    },
+    "npm_audit": {
+      "all_dependencies": {
+        "high": 8,
+        "moderate": 2,
+        "low": 1
+      },
+      "production_dependencies": 0
+    },
+    "known_diagram_defects": "Existing crossings/overlaps/attachment diagnostics reported by second-smallest renderer checks; diagrams render, geometry quality is not asserted clean"
+  },
+  "pending_checks": [
+    "Render exact interpreter version and rollback artifact retention",
+    "Approved candidate Render build validates existing parent-relative requirements path and resolved dependencies",
+    "Actual staged Vercel production build/direct routes/refreshes against updated live API",
+    "Final promotion and actual public-domain smoke checks",
+    "Automation restoration readback"
+  ],
+  "production_settings_changed": false,
+  "production_branch_merged": false,
+  "live_deployments_triggered": false
+}
