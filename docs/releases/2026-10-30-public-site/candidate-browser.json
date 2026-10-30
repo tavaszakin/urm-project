@@ -1,0 +1,25 @@
+{
+  "frontend": "http://127.0.0.1:5174/",
+  "legacy": false,
+  "api_override": null,
+  "intercepted_requests": 0,
+  "observed_api_origins": [
+    "http://127.0.0.1:8011"
+  ],
+  "checks": [
+    "/: navigation and refresh",
+    "/compute: navigation and refresh",
+    "add: execution output 5, program and trace",
+    "bounded_sub: execution output 3, program and trace",
+    "second_smallest_3: execution output 2, program and trace",
+    "second_smallest_4: execution output 2, program and trace",
+    "second_smallest_5: execution output 2, program and trace",
+    "second_smallest_6: execution output 2, program and trace",
+    "/flow-diagram: navigation and refresh",
+    "second_smallest_3: compilation and flow SVG",
+    "second_smallest_4: compilation and flow SVG",
+    "second_smallest_5: compilation and flow SVG",
+    "second_smallest_6: compilation and flow SVG"
+  ],
+  "browser_errors": []
+}
