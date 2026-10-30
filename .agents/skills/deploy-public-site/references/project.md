@@ -82,3 +82,8 @@ inside the test browser. For deployed verification omit overrides so a wrong API
 setting is caught. `--legacy` tests the old public frontend without new labels
 or function kinds. Inspect selectors/contracts after UI changes rather than
 weakening failing assertions.
+
+For a protected Vercel staging URL, use `--vercel-bypass-env <variable-name>`;
+the helper reads the staging credential only from process memory and applies it
+only to the exact Vercel origin. Never put the credential in arguments or reports.
+See hosting.md for creation, provenance, cleanup and redirect considerations.

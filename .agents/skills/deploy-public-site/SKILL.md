@@ -61,7 +61,9 @@ waive production approval. Complete independent preparation before asking.
 After approval, execute the approved actions rather than ending at instructions:
 
 1. Reverify candidate SHA, production tip, provider identities and automation.
-   Reconcile material drift before publishing.
+   Reconcile material drift before publishing. Complete user-required runtime
+   and recovery gates before changing production settings; a successful deploy
+   record alone does not prove its rollback artifact is still retrievable.
 2. Prevent simultaneous publication using verified provider controls and record
    every changed value. Keep branches/domains intact. Ensure merging cannot
    expose the frontend before backend checks pass.

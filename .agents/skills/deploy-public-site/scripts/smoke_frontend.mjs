@@ -9,7 +9,7 @@ const options = {};
 for (let index = 2; index < process.argv.length; index += 1) {
   const flag = process.argv[index];
   if (flag === '--legacy') options.legacy = true;
-  else if (['--url', '--api-override', '--playwright-module', '--browser', '--output'].includes(flag)) {
+  else if (['--url', '--api-override', '--playwright-module', '--browser', '--output', '--vercel-bypass-env'].includes(flag)) {
     const value = process.argv[++index];
     assert(value && !value.startsWith('--'), `${flag} requires a value`);
     options[flag.slice(2)] = value;
@@ -18,6 +18,11 @@ for (let index = 2; index < process.argv.length; index += 1) {
 assert(options.url, 'Usage: smoke_frontend.mjs --url <frontend> [--api-override <api>] [--legacy]');
 const base = new URL(options.url);
 assert(['http:', 'https:'].includes(base.protocol));
+const bypass = options['vercel-bypass-env'] ? process.env[options['vercel-bypass-env']] : undefined;
+if (options['vercel-bypass-env']) {
+  assert(bypass, 'Staging bypass credential must be supplied in the named environment variable');
+  assert(base.protocol === 'https:' && base.hostname.endsWith('.vercel.app'), 'Bypass is restricted to the target Vercel origin');
+}
 const playwright = await import(options['playwright-module']
   ? pathToFileURL(path.resolve(options['playwright-module'])).href : 'playwright');
 const browser = await playwright.chromium.launch({headless: true,
@@ -34,18 +39,22 @@ try {
       apiOrigins.add(new URL(response.url()).origin);
     }
   });
-  if (options['api-override']) {
-    const override = new URL(options['api-override']);
-    assert(['http:', 'https:'].includes(override.protocol));
+  if (options['api-override'] || bypass) {
+    const override = options['api-override'] ? new URL(options['api-override']) : null;
+    if (override) assert(['http:', 'https:'].includes(override.protocol));
     await page.route('**/*', async route => {
       const url = new URL(route.request().url());
-      if (!/^(\/api)?\/(run-function|compile-function|function-kinds)$/.test(url.pathname)) {
-        return route.continue();
+      if (override && /^(\/api)?\/(run-function|compile-function|function-kinds)$/.test(url.pathname)) {
+        intercepted += 1;
+        const response = await route.fetch({url: override.origin + override.pathname.replace(/\/$/, '')
+          + url.pathname.replace(/^\/api/, '') + url.search});
+        return route.fulfill({response});
       }
-      intercepted += 1;
-      const response = await route.fetch({url: override.origin + override.pathname.replace(/\/$/, '')
-        + url.pathname.replace(/^\/api/, '') + url.search});
-      await route.fulfill({response});
+      // Never send the project credential to Render, a CDN or another origin.
+      if (bypass && url.origin === base.origin) {
+        return route.continue({headers: {...route.request().headers(), 'x-vercel-protection-bypass': bypass}});
+      }
+      return route.continue();
     });
   }
   async function visit(route) {
@@ -114,6 +123,7 @@ try {
   assert.equal(errors.length, 0, `Browser errors: ${errors.join('; ')}`);
   if (options['api-override']) assert(intercepted > 0, 'API override was exercised');
   const report = {frontend: base.href, legacy: Boolean(options.legacy),
+    staging_authentication: bypass ? 'vercel-bypass' : null,
     api_override: options['api-override'] ?? null, intercepted_requests: intercepted,
     observed_api_origins: [...apiOrigins], checks, browser_errors: errors};
   if (options.output) {
