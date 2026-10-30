@@ -24,6 +24,7 @@ import {
   FUNCTION_ORDER,
   getFunctionDisplayName,
   getFunctionMetadata,
+  isFunctionVisibleInMenu,
   normalizeFunctionKind,
 } from "../functionMetadata.js";
 import FunctionDefinitionPreview from "./FunctionDefinitionPreview.jsx";
@@ -1423,7 +1424,9 @@ export default function FunctionRunner({
       (Array.isArray(functionModeOptions) && functionModeOptions.length > 0
         ? functionModeOptions
         : FUNCTION_ORDER
-      ).map((option) => {
+      ).filter((option) => isFunctionVisibleInMenu(
+        typeof option === "string" ? option : option.value,
+      )).map((option) => {
         const value = typeof option === "string" ? option : option.value;
         const label = typeof option === "string" ? getFunctionDisplayName(option) : option.label;
 

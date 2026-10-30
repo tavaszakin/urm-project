@@ -100,6 +100,7 @@ export const FUNCTION_METADATA = {
       aliases: [],
       arity: k,
       defaultInputs: [3, 1, 2, 0, 4, 2].slice(0, k),
+      publicVisible: false,
     }];
   })),
   characteristic: {
@@ -188,6 +189,10 @@ export function getFunctionMetadata(kindOrSpec) {
       aliases: [],
     }
   );
+}
+
+export function isFunctionVisibleInMenu(kindOrSpec) {
+  return import.meta.env.DEV || getFunctionMetadata(kindOrSpec).publicVisible !== false;
 }
 
 export function getFunctionDisplayName(kindOrSpec, { short = false } = {}) {

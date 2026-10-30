@@ -6,6 +6,7 @@ import {
   getFunctionDisplayName,
   getFunctionMetadata,
   getFunctionTooltip,
+  isFunctionVisibleInMenu,
 } from "../functionMetadata.js";
 import {
   CHARACTERISTIC_RELATIONS,
@@ -23,7 +24,7 @@ export const COMPOSITION_FUNCTION_ORDER = FUNCTION_ORDER.filter(
 );
 
 function buildFunctionOptions(values) {
-  return values.map((value) => ({
+  return values.filter(isFunctionVisibleInMenu).map((value) => ({
     value,
     label: getFunctionDisplayName(value),
   }));
