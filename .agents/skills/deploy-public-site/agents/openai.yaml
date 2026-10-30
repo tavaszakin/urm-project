@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deploy URM public site"
+  short_description: "Prepare and publish the existing URM website"
+  default_prompt: "Use $deploy-public-site to prepare the latest URM website release, validate it, and request approval for production changes."
