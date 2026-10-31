@@ -1,0 +1,49 @@
+.app-root-public-tools {
+  display: block;
+  position: relative;
+}
+
+/* Keep the theme control at its existing viewport position. */
+.app-root-public-tools > .site-topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.app-root-public-tools > .site-topbar .site-theme-toggle {
+  pointer-events: auto;
+}
+
+.public-tool-document {
+  margin: 8px;
+}
+
+/* Reset document text only; functional regions retain their existing fonts. */
+.public-tool-document > header,
+.public-tool-intro {
+  font: initial;
+  letter-spacing: initial;
+  text-align: left;
+}
+
+.public-tool-intro {
+  color: var(--compute-text);
+}
+
+.public-tool-intro > h1 {
+  font: revert;
+  letter-spacing: revert;
+  margin: revert;
+  color: inherit;
+}
+
+/* Preserve the former shell width: viewport minus 40px, capped at 1180px. */
+.public-tool-workspace,
+.public-tool-document > .chapter-footer-nav {
+  width: min(1180px, calc(100% - 24px));
+}
+
+.public-tool-document > .chapter-footer-nav {
+  margin: 1em 0 0;
+}
