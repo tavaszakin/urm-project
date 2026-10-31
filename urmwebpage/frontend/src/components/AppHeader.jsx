@@ -1,3 +1,6 @@
+import { Fragment } from "react";
+import "./AppHeader.css";
+
 const NAV_ITEMS = [
   { label: "Simulator", path: "/compute" },
   { label: "Flow Diagram", path: "/flow-diagram" },
@@ -10,6 +13,35 @@ export default function AppHeader({
   light = false,
   showTitle = true,
 }) {
+  if (activePath === "/compute" || activePath === "/flow-diagram") {
+    return (
+      <header>
+        <nav className="public-tool-nav" aria-label="Primary">
+          {[{ label: "URM stuff", path: "/" }, ...NAV_ITEMS].map((item, index) => (
+            <Fragment key={item.path}>
+              {index > 0 ? <span aria-hidden="true"> | </span> : null}
+              <a
+                href={item.path}
+                aria-current={activePath === item.path ? "page" : undefined}
+                onClick={(event) => {
+                  if (
+                    event.defaultPrevented ||
+                    event.button !== 0 ||
+                    event.metaKey || event.ctrlKey || event.shiftKey || event.altKey
+                  ) return;
+                  event.preventDefault();
+                  onNavigate(item.path);
+                }}
+              >
+                {item.label}
+              </a>
+            </Fragment>
+          ))}
+        </nav>
+      </header>
+    );
+  }
+
   const lightClass = light ? " app-header-light" : "";
   const titleClass = light ? " app-title-light" : "";
   const subtitleClass = light ? " app-header-subtitle-light" : "";
