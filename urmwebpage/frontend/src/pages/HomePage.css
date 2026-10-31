@@ -1,0 +1,27 @@
+/* Homepage-only alignment and native-link experiment. */
+.app-root-home > .app-shell {
+  display: block;
+  max-width: none;
+  margin: 0;
+}
+
+.app-root-home .home-page {
+  display: block;
+  place-items: normal;
+  padding: 0;
+}
+
+.home-page .home-landing {
+  display: block;
+  width: auto;
+}
+
+.home-page .home-overview {
+  margin-top: 18px;
+}
+
+.home-page a.home-overview-link {
+  color: revert;
+  text-decoration: underline;
+  text-underline-offset: auto;
+}
