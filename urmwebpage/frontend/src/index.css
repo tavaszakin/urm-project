@@ -1610,32 +1610,6 @@ select:-webkit-autofill:focus {
   width: 100%;
 }
 
-.home-overview-list {
-  width: 100%;
-  display: grid;
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.home-overview-item {
-  display: grid;
-  grid-template-columns: 28px auto minmax(0, 1fr);
-  align-items: baseline;
-  column-gap: 10px;
-  margin: 0;
-}
-
-.home-overview-number {
-  color: var(--theme-text);
-  font-family: var(--font-mono);
-  font-size: 15px;
-  font-weight: var(--font-weight-regular, 400);
-  line-height: var(--line-height-normal, 1.4);
-  text-align: right;
-}
-
 .home-overview-link {
   display: inline;
   padding: 0;
@@ -5733,11 +5707,6 @@ input[type="range"]:focus-visible::-moz-range-thumb {
 
   .home-landing {
     gap: 18px;
-  }
-
-  .home-overview-item {
-    grid-template-columns: 26px auto minmax(0, 1fr);
-    column-gap: 8px;
   }
 
   .site-topbar {

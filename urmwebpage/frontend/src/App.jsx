@@ -368,13 +368,6 @@ export default function App() {
         </>
       ) : isHomeRoute ? (
         <div className="app-shell" style={{ alignContent: "start" }}>
-          <AppHeader
-            activePath={route}
-            onNavigate={handleNavigate}
-            subtitle={activePage}
-            light={themeMode === THEME_MODES.light}
-            showTitle={false}
-          />
           <HomePage onNavigate={handleNavigate} />
         </div>
       ) : (

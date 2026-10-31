@@ -16,10 +16,6 @@
   width: auto;
 }
 
-.home-page .home-overview {
-  margin-top: 18px;
-}
-
 .home-page a.home-overview-link {
   color: revert;
   text-decoration: underline;
