@@ -9,6 +9,8 @@
   display: block;
   place-items: normal;
   padding: 0;
+  font: initial;
+  letter-spacing: initial;
 }
 
 .home-page .home-landing {
@@ -16,7 +18,13 @@
   width: auto;
 }
 
+.home-page .home-title {
+  font: revert;
+  letter-spacing: revert;
+}
+
 .home-page a.home-overview-link {
+  font: inherit;
   color: revert;
   text-decoration: underline;
   text-underline-offset: auto;
