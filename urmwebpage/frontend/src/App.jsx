@@ -350,7 +350,7 @@ export default function App() {
         fontFamily: "var(--font-ui)",
         background: theme.surface.pageBackgroundAlt,
         color: theme.text.primary,
-        padding: useWorkspaceLayout ? "0" : "14px 18px 22px",
+        padding: useWorkspaceLayout || isHomeRoute ? "0" : "14px 18px 22px",
         boxSizing: "border-box",
       }}
       data-theme={themeMode}
