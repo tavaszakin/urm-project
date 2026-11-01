@@ -216,6 +216,7 @@ function getBetaFlowLayoutMetadata(functionSpec) {
 }
 
 function isGeometryCollectionModeEnabled() {
+  if (import.meta.env.PROD) return false;
   if (typeof window === "undefined") return false;
 
   try {
@@ -504,7 +505,7 @@ export default function FlowDiagramBetaPage() {
           <h3 id="beta-flow-placeholder-title" className="beta-flow-card-title">
             Generated flow diagram
           </h3>
-          {layoutMetadata?.hasTunedLayout ? (
+          {import.meta.env.DEV && layoutMetadata?.hasTunedLayout ? (
             <label>
               <input
                 type="checkbox"
@@ -521,7 +522,7 @@ export default function FlowDiagramBetaPage() {
               selectedFunctionId={compiledResult.functionSpec?.kind}
               selectedExampleName={layoutMetadata?.exampleKey ?? compiledResult.functionSpec?.kind}
               layoutMetadata={layoutMetadata}
-              showLayoutComparison={showLayoutComparison}
+              showLayoutComparison={import.meta.env.DEV && showLayoutComparison}
             />
           ) : (
             <div className="beta-flow-placeholder">
