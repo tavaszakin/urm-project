@@ -1,0 +1,152 @@
+[
+  {
+    "width": 1440,
+    "theme": "light",
+    "mode": "successor",
+    "controlsAndKatex": "identical to approved design server with existing production menu exclusions applied"
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "mode": "projection",
+    "controlsAndKatex": "identical to approved design server with existing production menu exclusions applied"
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "mode": "compose",
+    "controlsAndKatex": "identical to approved design server with existing production menu exclusions applied"
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "mode": "primrec",
+    "controlsAndKatex": "identical to approved design server with existing production menu exclusions applied"
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "mode": "minimization",
+    "controlsAndKatex": "identical to approved design server with existing production menu exclusions applied"
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "mode": "successor",
+    "controlsAndKatex": "identical to approved design server with existing production menu exclusions applied"
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "mode": "projection",
+    "controlsAndKatex": "identical to approved design server with existing production menu exclusions applied"
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "mode": "compose",
+    "controlsAndKatex": "identical to approved design server with existing production menu exclusions applied"
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "mode": "primrec",
+    "controlsAndKatex": "identical to approved design server with existing production menu exclusions applied"
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "mode": "minimization",
+    "controlsAndKatex": "identical to approved design server with existing production menu exclusions applied"
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "mode": "successor",
+    "controlsAndKatex": "identical to approved design server with existing production menu exclusions applied"
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "mode": "projection",
+    "controlsAndKatex": "identical to approved design server with existing production menu exclusions applied"
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "mode": "compose",
+    "controlsAndKatex": "identical to approved design server with existing production menu exclusions applied"
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "mode": "primrec",
+    "controlsAndKatex": "identical to approved design server with existing production menu exclusions applied"
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "mode": "minimization",
+    "controlsAndKatex": "identical to approved design server with existing production menu exclusions applied"
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "mode": "successor",
+    "controlsAndKatex": "identical to approved design server with existing production menu exclusions applied"
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "mode": "projection",
+    "controlsAndKatex": "identical to approved design server with existing production menu exclusions applied"
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "mode": "compose",
+    "controlsAndKatex": "identical to approved design server with existing production menu exclusions applied"
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "mode": "primrec",
+    "controlsAndKatex": "identical to approved design server with existing production menu exclusions applied"
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "mode": "minimization",
+    "controlsAndKatex": "identical to approved design server with existing production menu exclusions applied"
+  },
+  {
+    "width": 1440,
+    "mode": "successor",
+    "svg": "identical to approved design server; both browsers use identical compiler fixtures; real live API separately verified without interception"
+  },
+  {
+    "width": 1440,
+    "mode": "add",
+    "svg": "identical to approved design server; both browsers use identical compiler fixtures; real live API separately verified without interception"
+  },
+  {
+    "width": 1440,
+    "mode": "divisor_count",
+    "svg": "identical to approved design server; both browsers use identical compiler fixtures; real live API separately verified without interception"
+  },
+  {
+    "width": 390,
+    "mode": "successor",
+    "svg": "identical to approved design server; both browsers use identical compiler fixtures; real live API separately verified without interception"
+  },
+  {
+    "width": 390,
+    "mode": "add",
+    "svg": "identical to approved design server; both browsers use identical compiler fixtures; real live API separately verified without interception"
+  },
+  {
+    "width": 390,
+    "mode": "divisor_count",
+    "svg": "identical to approved design server; both browsers use identical compiler fixtures; real live API separately verified without interception"
+  }
+]

@@ -1,0 +1,136 @@
+{
+  "status": "prepared; production publication pending",
+  "date": "2026-11-01",
+  "branch": "release/old-html-2026-10-31",
+  "source_sha": "da9c400edf584f18b7f0e1d66e740aa993432ae5",
+  "production_base_sha": "cdeffaffe5b0af89670b4621ded94f66ec0e5b90",
+  "candidate_sha_location": "git rev-parse release/old-html-2026-10-31; this record is committed with the final preparation evidence",
+  "included_dirty_edits": [],
+  "source_uncommitted_work_preserved": true,
+  "public_routes": [
+    "/",
+    "/compute",
+    "/flow-diagram"
+  ],
+  "private_function_kinds": [
+    "second_smallest_3",
+    "second_smallest_4",
+    "second_smallest_5",
+    "second_smallest_6"
+  ],
+  "public_filter_files_unchanged": [
+    "urmwebpage/frontend/src/functionMetadata.js",
+    "urmwebpage/frontend/src/components/FunctionSpecBuilder.jsx"
+  ],
+  "visibility_note": "Existing publicVisible:false filter retained in top-level and nested menus. No supported URL/persistence function selection exists; query attempts leave the default successor selected. Backend implementations and direct APIs remain unchanged.",
+  "production_only_boundary_fix": "Development-gate the existing flow comparison checkbox, collection hooks, audit/port switches and SketchV3 query/global override; normal SketchV4 algorithms untouched.",
+  "vercel": {
+    "project_id": "prj_XVFhCNAgLhKd20scuP74q5cfalwn",
+    "team_id": "team_RtEzVQJim0trlNWsaJPieDPk",
+    "project": "urm-project",
+    "branch": "main",
+    "root": "urmwebpage/frontend",
+    "node": "24.x",
+    "framework": "vite",
+    "api_env": [
+      {
+        "id": "aa1jxF7sceEwp7EA",
+        "key": "VITE_API_URL",
+        "value": "https://urm-backend.onrender.com",
+        "target": [
+          "production",
+          "preview",
+          "development"
+        ],
+        "gitBranch": null,
+        "customEnvironmentIds": [],
+        "type": "encrypted"
+      }
+    ],
+    "autoAssignCustomDomains": true,
+    "createDeployments": {
+      "createDeployments": "enabled"
+    },
+    "ssoProtection": {
+      "deploymentType": "all_except_custom_domains"
+    },
+    "preexisting_bypass_count": 0,
+    "public_url": "https://urm-project-neon.vercel.app",
+    "rollback_id": "dpl_RDxHnN9RgumBUzqrkG7V7N5L5HRy",
+    "rollback_url": "urm-project-b9pwzf41v-tavaszakins-projects.vercel.app",
+    "retention": {
+      "expirationDays": 30,
+      "expirationDaysProduction": 30,
+      "expirationDaysCanceled": 30,
+      "expirationDaysErrored": 30,
+      "deploymentsToKeep": 10
+    },
+    "rollback_READY_and_candidate": true
+  },
+  "render": {
+    "id": "srv-d7a1t14hg0os73bat3mg",
+    "branch": "main",
+    "root": "urmwebpage",
+    "url": "https://urm-backend.onrender.com",
+    "build": "pip install -r ../requirements.txt",
+    "start": "uvicorn main:app --host 0.0.0.0 --port 10000",
+    "autoDeploy": "yes",
+    "autoDeployTrigger": "commit",
+    "previews": {
+      "generation": "off"
+    },
+    "live_deployment": "dep-dbi8vlmgekts7397dp40",
+    "live_sha": "749e2aea572fda6d230f9b281e0701f49c2abbb3",
+    "redeploy_required": false,
+    "backend_input_changes": [],
+    "runtime_from_live_build_logs": {
+      "python": "3.14.3",
+      "fastapi": "0.162.0",
+      "pydantic": "2.14.2",
+      "starlette": "1.10.0",
+      "uvicorn": "0.54.0"
+    }
+  },
+  "checks": {
+    "backend_tests": 89,
+    "layout_tests": 84,
+    "offline_private_arity_3_6_tests": "passed; development SSR/offline output only",
+    "live_compiler_catalog_cases": 23,
+    "local_and_old_public_browser": "passed; real live API without interception",
+    "approved_control_and_svg_parity_cases": 26,
+    "protected_files_unchanged": 47,
+    "clean_npm_ci": "passed",
+    "production_build": "passed",
+    "npm_audit": {
+      "total": 17,
+      "high": 8,
+      "moderate": 8,
+      "low": 1,
+      "production_dependencies": 0
+    }
+  },
+  "automation_push_gate": {
+    "github_workflows": 0,
+    "github_repo_webhooks": 0,
+    "production_branch_protected": false,
+    "release_branch_vercel_builds": false,
+    "render_tracks_main_only": true
+  },
+  "planned_actions": [
+    "Push release branch and create draft PR after rechecking automation",
+    "Temporarily disable Vercel automatic production-domain assignment and read back",
+    "Merge exact reviewed PR head into main with [skip render]",
+    "Verify resulting Production build with Production API, no domain promotion, and current public alias unchanged",
+    "Use temporary project automation bypass for staging checks without changing SSO protection; revoke only newly created bypass",
+    "Promote verified READY build; verify live three routes and exclusions",
+    "Restore Vercel assignment true after successful main is verified; Render remains untouched"
+  ],
+  "rollback": "Restore the recorded Vercel deployment before any other recovery. Reconcile Git with a reviewed inverse frontend commit containing [skip render] while domain assignment remains paused, then restore original automation. No backend rollback is required for this frontend-only release.",
+  "warnings": [
+    "Existing build chunk-size warning",
+    "17 development/build dependency advisories; zero production dependency advisories",
+    "Known offline renderer diagnostics, no geometry algorithms changed",
+    "Unpinned backend requirements; no backend rebuild performed",
+    "Existing Starlette/httpx deprecation and ExecutionResponse.trace field-name warning"
+  ]
+}
