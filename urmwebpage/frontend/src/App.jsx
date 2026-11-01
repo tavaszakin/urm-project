@@ -15,6 +15,7 @@ import StateCodesPage from "./pages/StateCodesPage.jsx";
 import TranslatePage from "./pages/TranslatePage.jsx";
 import { DEMO_ROUTE } from "./demoDefaults.js";
 import { RADII, THEMES, THEME_MODES, THEME_STORAGE_KEY, TYPOGRAPHY } from "./theme.js";
+import "./pages/PublicToolPages.css";
 
 const HOME_PATHS = new Set(["/"]);
 const COMPUTE_PATHS = new Set(["/compute"]);
@@ -186,6 +187,7 @@ export default function App() {
     route === "/finite-structures-beta" ||
     route === FLOW_DIAGRAM_ROUTE;
   const isHomeRoute = route === "/";
+  const isPublicToolRoute = route === "/compute" || route === FLOW_DIAGRAM_ROUTE;
   const useWorkspaceLayout = isDemoRoute || isComputeRoute;
   const hideRedundantPageHeaderDetails = route === "/compute" || route === FLOW_DIAGRAM_ROUTE;
   const activeBorderExperimentMode = BORDER_EXPERIMENT_MODES.has(BORDER_EXPERIMENT_MODE)
@@ -212,7 +214,7 @@ export default function App() {
 
   return (
     <div
-      className={`app-root${isHomeRoute ? " app-root-home" : ""}${isBorderExperimentEnabled ? " border-experiment" : ""}`}
+      className={`app-root${isHomeRoute ? " app-root-home" : ""}${isPublicToolRoute ? " app-root-public-tools" : ""}${isBorderExperimentEnabled ? " border-experiment" : ""}`}
       data-border-experiment={isBorderExperimentEnabled ? "on" : undefined}
       data-border-experiment-mode={
         isBorderExperimentEnabled ? activeBorderExperimentMode : undefined
@@ -346,11 +348,11 @@ export default function App() {
         "--radius-control": `${RADII.control}px`,
         "--radius-button": `${RADII.button}px`,
         "--radius-chip": `${RADII.chip}px`,
-        minHeight: "100vh",
+        minHeight: isPublicToolRoute ? undefined : "100vh",
         fontFamily: "var(--font-ui)",
         background: theme.surface.pageBackgroundAlt,
         color: theme.text.primary,
-        padding: useWorkspaceLayout ? "0" : "14px 18px 22px",
+        padding: useWorkspaceLayout || isHomeRoute ? "0" : "14px 18px 22px",
         boxSizing: "border-box",
       }}
       data-theme={themeMode}
@@ -368,17 +370,10 @@ export default function App() {
         </>
       ) : isHomeRoute ? (
         <div className="app-shell" style={{ alignContent: "start" }}>
-          <AppHeader
-            activePath={route}
-            onNavigate={handleNavigate}
-            subtitle={activePage}
-            light={themeMode === THEME_MODES.light}
-            showTitle={false}
-          />
           <HomePage onNavigate={handleNavigate} />
         </div>
       ) : (
-        <div className={`app-shell${isComputeRoute ? " app-shell-light" : ""}${hideRedundantPageHeaderDetails ? " app-shell-simple-page-header" : ""}`}>
+        <div className={isPublicToolRoute ? "public-tool-document" : `app-shell${isComputeRoute ? " app-shell-light" : ""}${hideRedundantPageHeaderDetails ? " app-shell-simple-page-header" : ""}`}>
           <AppHeader
             activePath={route}
             onNavigate={handleNavigate}

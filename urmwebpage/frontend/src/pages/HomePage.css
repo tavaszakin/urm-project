@@ -1,0 +1,55 @@
+/* Homepage-only alignment and native-link experiment. */
+.app-root-home {
+  position: relative;
+}
+
+/* Preserve the toggle's existing position without reserving a document row. */
+.app-root-home > .site-topbar {
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  right: 18px;
+  width: auto;
+  pointer-events: none;
+}
+
+.app-root-home > .site-topbar .site-theme-toggle {
+  pointer-events: auto;
+}
+
+.app-root-home > .app-shell {
+  display: block;
+  max-width: none;
+  margin: 0;
+}
+
+.app-root-home .home-page {
+  display: block;
+  place-items: normal;
+  margin: 8px;
+  padding: 0;
+  font: initial;
+  letter-spacing: initial;
+}
+
+.home-page .home-landing {
+  display: block;
+  width: auto;
+}
+
+.home-page .home-copy {
+  display: block;
+}
+
+.home-page .home-title {
+  margin: revert;
+  font: revert;
+  letter-spacing: revert;
+}
+
+.home-page a.home-overview-link {
+  font: inherit;
+  color: revert;
+  text-decoration: underline;
+  text-underline-offset: auto;
+}

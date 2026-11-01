@@ -216,6 +216,7 @@ function getBetaFlowLayoutMetadata(functionSpec) {
 }
 
 function isGeometryCollectionModeEnabled() {
+  if (import.meta.env.PROD) return false;
   if (typeof window === "undefined") return false;
 
   try {
@@ -481,59 +482,55 @@ export default function FlowDiagramBetaPage() {
   }, []);
 
   return (
-    <div className="page-stack compute-page beta-flow-page">
-      <section className="page-intro page-intro-compact" aria-labelledby="beta-flow-title">
-        <div className="page-intro-copy">
-          <div className="beta-flow-title-row">
-            <h2 id="beta-flow-title" className="page-title">
-              Flow Diagram
-            </h2>
-          </div>
-        </div>
+    <div className="compute-page beta-flow-page">
+      <section className="public-tool-intro" aria-labelledby="beta-flow-title">
+        <h1 id="beta-flow-title">Flow Diagram</h1>
       </section>
 
-      <section className="beta-flow-selector" aria-label="Function selector">
-        <FunctionRunner
-          initialFunctionSpec={DEFAULT_FUNCTION_SPEC}
-          hideMachinePanel
-          onRunDataChange={handleRunDataChange}
-          onFunctionStateChange={setSelectedFunctionState}
-        />
-      </section>
-
-      <section
-        className="beta-flow-card beta-flow-placeholder-card"
-        aria-labelledby="beta-flow-placeholder-title"
-        data-selected-kind={selectedFunctionState.functionSpec?.kind ?? "successor"}
-      >
-        <h3 id="beta-flow-placeholder-title" className="beta-flow-card-title">
-          Generated flow diagram
-        </h3>
-        {layoutMetadata?.hasTunedLayout ? (
-          <label>
-            <input
-              type="checkbox"
-              checked={showLayoutComparison}
-              onChange={(event) => setShowLayoutComparison(event.target.checked)}
-            />
-            {" "}
-            Show layout comparison
-          </label>
-        ) : null}
-        {compiledResult ? (
-          <BetaFlowDiagram
-            program={compiledResult.program}
-            selectedFunctionId={compiledResult.functionSpec?.kind}
-            selectedExampleName={layoutMetadata?.exampleKey ?? compiledResult.functionSpec?.kind}
-            layoutMetadata={layoutMetadata}
-            showLayoutComparison={showLayoutComparison}
+      <div className="public-tool-workspace page-stack">
+        <section className="beta-flow-selector" aria-label="Function selector">
+          <FunctionRunner
+            initialFunctionSpec={DEFAULT_FUNCTION_SPEC}
+            hideMachinePanel
+            onRunDataChange={handleRunDataChange}
+            onFunctionStateChange={setSelectedFunctionState}
           />
-        ) : (
-          <div className="beta-flow-placeholder">
-            {diagramMessage || "No program is available for the selected function yet."}
-          </div>
-        )}
-      </section>
+        </section>
+
+        <section
+          className="beta-flow-card beta-flow-placeholder-card"
+          aria-labelledby="beta-flow-placeholder-title"
+          data-selected-kind={selectedFunctionState.functionSpec?.kind ?? "successor"}
+        >
+          <h3 id="beta-flow-placeholder-title" className="beta-flow-card-title">
+            Generated flow diagram
+          </h3>
+          {import.meta.env.DEV && layoutMetadata?.hasTunedLayout ? (
+            <label>
+              <input
+                type="checkbox"
+                checked={showLayoutComparison}
+                onChange={(event) => setShowLayoutComparison(event.target.checked)}
+              />
+              {" "}
+              Show layout comparison
+            </label>
+          ) : null}
+          {compiledResult ? (
+            <BetaFlowDiagram
+              program={compiledResult.program}
+              selectedFunctionId={compiledResult.functionSpec?.kind}
+              selectedExampleName={layoutMetadata?.exampleKey ?? compiledResult.functionSpec?.kind}
+              layoutMetadata={layoutMetadata}
+              showLayoutComparison={import.meta.env.DEV && showLayoutComparison}
+            />
+          ) : (
+            <div className="beta-flow-placeholder">
+              {diagramMessage || "No program is available for the selected function yet."}
+            </div>
+          )}
+        </section>
+      </div>
     </div>
   );
 }

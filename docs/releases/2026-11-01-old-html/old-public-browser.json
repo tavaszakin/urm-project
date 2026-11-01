@@ -1,0 +1,26 @@
+{
+  "frontend": "https://urm-project-neon.vercel.app/",
+  "legacy": true,
+  "staging_authentication": null,
+  "api_override": null,
+  "intercepted_requests": 0,
+  "observed_api_origins": [
+    "https://urm-backend.onrender.com"
+  ],
+  "checks": [
+    "/: navigation and refresh",
+    "/compute: navigation and refresh",
+    "add: execution output 5, program and trace",
+    "Simulator playback, next/previous stepping, seeking and rendered workspace",
+    "bounded_sub: execution output 3, program and trace",
+    "/flow-diagram: navigation and refresh",
+    "successor: compile, SketchV4 SVG with 3 nodes, fit and scroll",
+    "add: compile, SketchV4 SVG with 7 nodes, fit and scroll",
+    "divisor_count: compile, SketchV4 SVG with 295 nodes, fit and scroll",
+    "compose: compile, SketchV4 SVG with 16 nodes, fit and scroll",
+    "primrec: compile, SketchV4 SVG with 20 nodes, fit and scroll",
+    "minimization: compile, SketchV4 SVG with 28 nodes, fit and scroll",
+    "successor: execution output 5, program and trace"
+  ],
+  "browser_errors": []
+}

@@ -260,7 +260,7 @@ function SimpleModeParameterControls({ spec, onChange, onClearRunState = null })
   if (kind === "constant" || kind === "const") {
     return (
       <label style={simpleMetaControlStyle}>
-        <span style={simpleMetaLabelStyle}>Value</span>
+        <span className="runner-control-label" style={simpleMetaLabelStyle}>Value</span>
         <input
           type="number"
           value={spec?.value ?? ""}
@@ -275,10 +275,10 @@ function SimpleModeParameterControls({ spec, onChange, onClearRunState = null })
   if (kind === "projection" || kind === "proj") {
     return (
       <div style={simpleMetaControlStyle}>
-        <span style={simpleMetaLabelStyle}>Projection</span>
+        <span className="runner-control-label" style={simpleMetaLabelStyle}>Projection</span>
         <div style={simpleProjectionFieldsStyle}>
           <label style={simpleInlineMetaFieldStyle}>
-            <span style={simpleInlineMetaLabelStyle}>i</span>
+            <span className="runner-control-label" style={simpleInlineMetaLabelStyle}>i</span>
             <input
               type="number"
               min="1"
@@ -289,7 +289,7 @@ function SimpleModeParameterControls({ spec, onChange, onClearRunState = null })
             />
           </label>
           <label style={simpleInlineMetaFieldStyle}>
-            <span style={simpleInlineMetaLabelStyle}>n</span>
+            <span className="runner-control-label" style={simpleInlineMetaLabelStyle}>n</span>
             <input
               type="number"
               min="1"
@@ -309,7 +309,7 @@ function SimpleModeParameterControls({ spec, onChange, onClearRunState = null })
 
     return (
       <label style={simpleMetaControlStyle}>
-        <span style={simpleMetaLabelStyle}>Relation</span>
+        <span className="runner-control-label" style={simpleMetaLabelStyle}>Relation</span>
         <select
           value={relation}
           onChange={(event) => {
@@ -1510,7 +1510,9 @@ export default function FunctionRunner({
 
     return (
       <label style={compositionModeControlStyle}>
-        <span style={compositionModeLabelStyle}>Mode</span>
+        <span className="runner-control-label runner-mode-label" style={compositionModeLabelStyle}>
+          <span>Mode</span>
+        </span>
         <select
           value={selectedFunctionMode}
           onChange={(e) => handleFunctionModeChange(e.target.value)}

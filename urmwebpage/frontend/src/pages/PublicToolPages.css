@@ -1,0 +1,100 @@
+.app-root-public-tools {
+  display: block;
+  position: relative;
+}
+
+/* Keep the theme control at its existing viewport position. */
+.app-root-public-tools > .site-topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.app-root-public-tools > .site-topbar .site-theme-toggle {
+  pointer-events: auto;
+}
+
+.public-tool-document {
+  margin: 8px;
+}
+
+/* Reset document text only; functional regions retain their existing fonts. */
+.public-tool-document > header,
+.public-tool-intro {
+  font: initial;
+  letter-spacing: initial;
+  text-align: left;
+}
+
+.public-tool-intro {
+  color: var(--compute-text);
+}
+
+.public-tool-intro > h1 {
+  font: revert;
+  letter-spacing: revert;
+  margin: revert;
+  color: inherit;
+}
+
+/* Preserve the former shell width: viewport minus 40px, capped at 1180px. */
+.public-tool-workspace,
+.public-tool-document > .chapter-footer-nav {
+  width: min(1180px, calc(100% - 24px));
+}
+
+.public-tool-document > .chapter-footer-nav {
+  margin: 1em 0 0;
+}
+
+/* Panel text only: leave the surrounding document and outputs unchanged. */
+.app-root-public-tools .runner-toolbar,
+.app-root-public-tools .runner-toolbar * {
+  color: CanvasText !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+.app-root-public-tools .runner-toolbar :is(.function-card-label, .runner-control-label, .math-text, .function-expression-view span) {
+  opacity: 1 !important;
+}
+
+.app-root-public-tools .runner-toolbar :is(.function-card-label, .runner-mode-label) {
+  text-transform: capitalize !important;
+  letter-spacing: normal !important;
+}
+
+/* Reserve the old label's intrinsic width so title case cannot move the select. */
+.app-root-public-tools .runner-toolbar .runner-mode-label {
+  display: inline-grid;
+}
+
+.app-root-public-tools .runner-toolbar .runner-mode-label::before {
+  content: "MODE";
+  visibility: hidden;
+  letter-spacing: 0.04em;
+  grid-area: 1 / 1;
+}
+
+.app-root-public-tools .runner-toolbar .runner-mode-label > span {
+  grid-area: 1 / 1;
+}
+
+/* Restore native paint while retaining the established control geometry. */
+.app-root-public-tools .runner-toolbar :is(.runner-toolbar-select, .runner-run-button) {
+  appearance: revert !important;
+  cursor: revert !important;
+  background: revert !important;
+  border-color: revert !important;
+  border-style: revert !important;
+  border-radius: revert !important;
+  box-shadow: revert !important;
+  outline: revert !important;
+  outline-offset: revert !important;
+  transition: revert !important;
+}
+
+.app-root-public-tools .runner-toolbar .runner-run-button:disabled {
+  color: GrayText !important;
+  opacity: revert !important;
+}

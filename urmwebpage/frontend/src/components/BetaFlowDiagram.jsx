@@ -15409,6 +15409,7 @@ function renderFlowSvgPanel(
 }
 
 function isVisualGeometryDebugEnabled() {
+  if (import.meta.env?.PROD) return false;
   if (ENABLE_VISUAL_GEOMETRY_DEBUG || isBetaFlowAuditDebugEnabled()) return true;
   return false;
 }
@@ -15421,6 +15422,7 @@ function isVisualGeometryDebugEnabled() {
 // expensive post-layout diagnostic assembly. (Comparison mode renders nodes/edges only and
 // does not read the debug payload, so it does not force diagnostics on its own.)
 function isSketchV3DiagnosticsRequested() {
+  if (import.meta.env?.PROD) return false;
   if (isVisualGeometryDebugEnabled()) return true; // covers betaFlowAudit + geometryDebug
   if (typeof window === "undefined") return true;   // headless harness / tests / SSR
   try {
@@ -15437,6 +15439,7 @@ function isSketchV3DiagnosticsRequested() {
 }
 
 function isBetaFlowAuditDebugEnabled() {
+  if (import.meta.env?.PROD) return false;
   if (typeof window === "undefined") return false;
 
   try {
@@ -15472,6 +15475,7 @@ function safeComputeLayout(program, selectedFunctionId, options, layout) {
 // query value cannot silently restore the legacy engine.
 
 function selectedPrimaryLayoutEngine() {
+  if (import.meta.env?.PROD) return "sketchV4";
   // Headless overrides for verification. The old boolean hook remains as an explicit V4 alias.
   if (typeof globalThis !== "undefined" && globalThis.__flowLayoutEngine === "sketchV3") return "sketchV3";
   if (typeof globalThis !== "undefined" && globalThis.__flowLayoutEngine === "sketchV4") return "sketchV4";
@@ -15490,6 +15494,7 @@ function selectedPrimaryLayoutEngine() {
 // the Phase-4a changed-port edges and labels their portPolicyCase, so the (often subtle) port
 // changes are visible in the live diagram. Never affects SketchV3 (it tags V4 plan edges only).
 function isPortDebugRequested() {
+  if (import.meta.env?.PROD) return false;
   if (typeof globalThis !== "undefined" && globalThis.__sketchV4PortDebug) return true;
   if (typeof window === "undefined") return false;
   try {

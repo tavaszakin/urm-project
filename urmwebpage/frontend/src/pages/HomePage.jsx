@@ -1,11 +1,11 @@
+import "./HomePage.css";
+
 const overviewItems = [
   {
-    step: "1",
     title: "Simulator",
     path: "/compute",
   },
   {
-    step: "2",
     title: "Flow Diagram",
     path: "/flow-diagram",
   },
@@ -20,17 +20,24 @@ export default function HomePage({ onNavigate }) {
         </div>
 
         <nav className="home-overview" aria-label="Overview">
-          <ol className="home-overview-list">
+          <ol>
             {overviewItems.map((item) => (
-              <li key={item.path} className="home-overview-item">
-                <span className="home-overview-number">{item.step}</span>
-                <button
-                  type="button"
+              <li key={item.path}>
+                <a
+                  href={item.path}
                   className="home-overview-link"
-                  onClick={() => onNavigate(item.path)}
+                  onClick={(event) => {
+                    if (
+                      event.defaultPrevented ||
+                      event.button !== 0 ||
+                      event.metaKey || event.ctrlKey || event.shiftKey || event.altKey
+                    ) return;
+                    event.preventDefault();
+                    onNavigate(item.path);
+                  }}
                 >
                   {item.title}
-                </button>
+                </a>
                 {item.note ? <span className="home-overview-note">{item.note}</span> : null}
               </li>
             ))}
