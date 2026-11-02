@@ -1,0 +1,12 @@
+{
+  "url": "https://urm-project-neon.vercel.app",
+  "cases": [
+    "Native modified-click opens Simulator in a new tab and preserves homepage",
+    "Ordinary links, back/forward history and tool-page navigation",
+    "Live addition result, trace and program listing",
+    "Live 293-instruction / 295-node complex SketchV4 diagram",
+    "Readable live mobile dark-mode controls and diagram"
+  ],
+  "api_override": null,
+  "bypass": null
+}

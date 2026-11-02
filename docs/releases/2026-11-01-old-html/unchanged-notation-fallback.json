@@ -1,0 +1,26 @@
+[
+  {
+    "origin": "http://127.0.0.1:5173",
+    "html": "<span class=\"math-text math-inline\" style=\"color: var(--surface-text-primary); line-height: 1.45;\"><span class=\"katex-error\" title=\"ParseError: KaTeX parse error: Expected 'EOF', got '#' at position 22: …(x\\right)=τ(x)=#̲ {d: 1≤d≤x, d|x…\" style=\"color:#cc0000\">f\\left(x\\right)=τ(x)=# {d: 1≤d≤x, d|x}</span></span>",
+    "text": "f\\left(x\\right)=τ(x)=# {d: 1≤d≤x, d|x}",
+    "katexLoaded": true,
+    "errors": [
+      {
+        "text": "f\\left(x\\right)=τ(x)=# {d: 1≤d≤x, d|x}",
+        "title": "ParseError: KaTeX parse error: Expected 'EOF', got '#' at position 22: …(x\\right)=τ(x)=#̲ {d: 1≤d≤x, d|x…"
+      }
+    ]
+  },
+  {
+    "origin": "https://urm-project-neon.vercel.app",
+    "html": "<span class=\"math-text math-inline\" style=\"color: var(--surface-text-primary); line-height: 1.45;\"><span class=\"katex-error\" title=\"ParseError: KaTeX parse error: Expected 'EOF', got '#' at position 22: …(x\\right)=τ(x)=#̲ {d: 1≤d≤x, d|x…\" style=\"color:#cc0000\">f\\left(x\\right)=τ(x)=# {d: 1≤d≤x, d|x}</span></span>",
+    "text": "f\\left(x\\right)=τ(x)=# {d: 1≤d≤x, d|x}",
+    "katexLoaded": true,
+    "errors": [
+      {
+        "text": "f\\left(x\\right)=τ(x)=# {d: 1≤d≤x, d|x}",
+        "title": "ParseError: KaTeX parse error: Expected 'EOF', got '#' at position 22: …(x\\right)=τ(x)=#̲ {d: 1≤d≤x, d|x…"
+      }
+    ]
+  }
+]

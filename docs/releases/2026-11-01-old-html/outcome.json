@@ -1,0 +1,110 @@
+{
+  "status": "successful; deployed and live-verified",
+  "report_date": "2026-11-02",
+  "url": "https://urm-project-neon.vercel.app",
+  "skill": "deploy-public-site; read from existing deployment-lessons worktree and followed established provider procedure",
+  "source_sha": "da9c400edf584f18b7f0e1d66e740aa993432ae5",
+  "reviewed_candidate_sha": "3c63d532eb026558c0d134aa6f7ce7d7228b87c8",
+  "production_deployed_sha": "34115e860d079b4e6f9b69e08af1811917aad8e2",
+  "candidate_and_merged_trees_identical": true,
+  "pr": "https://github.com/tavaszakin/urm-project/pull/4",
+  "frontend_deployment_id": "dpl_J6GfPoDcf7ykiyj68U95qpKayEuS",
+  "staged_url": "https://urm-project-l05joxmas-tavaszakins-projects.vercel.app",
+  "backend_sha": "749e2aea572fda6d230f9b281e0701f49c2abbb3",
+  "backend_deployment_id": "dep-dbi8vlmgekts7397dp40",
+  "backend_redeployed": false,
+  "routes": [
+    "/",
+    "/compute",
+    "/flow-diagram"
+  ],
+  "excluded_family": [
+    "Median of 3",
+    "Second smallest of 4",
+    "Second smallest of 5",
+    "Second smallest of 6"
+  ],
+  "nested_menus_and_query_attempts_checked": true,
+  "unpublished_routes_and_debug_entry_points_checked": true,
+  "local_validation": {
+    "clean_build": true,
+    "backend_tests": 89,
+    "layout_tests": 84,
+    "private_arity_3_6_offline_checks": true,
+    "approved_geometry_katex_svg_parity_cases": 26
+  },
+  "staging_validation": {
+    "temporary_bypass_created": true,
+    "temporary_bypass_revoked": true,
+    "api_override": null,
+    "bundle_parity": [
+      {
+        "path": "/assets/index-B2Z3hcCc.js",
+        "sha256": "df929a72f9274de4abcbb22103338f08286e6b16d936465fdaf4aecb4e5a491a",
+        "matches_local": true
+      },
+      {
+        "path": "/assets/index-BmVltvxS.css",
+        "sha256": "1f7f5fae06dd57b5926007250bedcce066e535a5eb99f6d9997cf5d25118f4a4",
+        "matches_local": true
+      }
+    ],
+    "rollback_artifact_retrieved": true,
+    "browser_passed": true,
+    "checks": 22,
+    "observed_api_origins": [
+      "https://urm-backend.onrender.com"
+    ]
+  },
+  "public_validation": {
+    "browser_checks": 22,
+    "extra_navigation_output_checks": 5,
+    "api_override": null,
+    "authentication_bypass": null,
+    "observed_api": "https://urm-backend.onrender.com",
+    "visual_inspection": true,
+    "desktop_width": 1440,
+    "mobile_width": 390,
+    "light_and_dark": true,
+    "browser_errors": []
+  },
+  "final_provider_state": {
+    "main_sha": "34115e860d079b4e6f9b69e08af1811917aad8e2",
+    "vercel_project": "prj_XVFhCNAgLhKd20scuP74q5cfalwn",
+    "vercel_autoAssignCustomDomains": true,
+    "vercel_createDeployments": {
+      "createDeployments": "enabled"
+    },
+    "vercel_productionBranch": "main",
+    "vercel_alias_deployment": "dpl_J6GfPoDcf7ykiyj68U95qpKayEuS",
+    "vercel_ssoProtection": {
+      "deploymentType": "all_except_custom_domains"
+    },
+    "vercel_bypass_count": 0,
+    "production_api": "https://urm-backend.onrender.com",
+    "render_live_sha": "749e2aea572fda6d230f9b281e0701f49c2abbb3",
+    "render_live_deployment": "dep-dbi8vlmgekts7397dp40",
+    "render_autoDeploy": "yes",
+    "render_autoDeployTrigger": "commit",
+    "render_previews": {
+      "generation": "off"
+    },
+    "github_hooks": 0,
+    "github_workflows": 0
+  },
+  "source_worktrees_and_all_dirty_edits_preserved": true,
+  "temporary_local_oidc_file_removed": true,
+  "new_staging_bypass_revoked": true,
+  "rollback_performed": false,
+  "rollback_frontend_id": "dpl_RDxHnN9RgumBUzqrkG7V7N5L5HRy",
+  "rollback_frontend_sha": "cdeffaffe5b0af89670b4621ded94f66ec0e5b90",
+  "unexpected_differences": [
+    "Development-gated pre-existing comparison/debug UI to honor public-only scope; normal SketchV4 geometry unchanged"
+  ],
+  "unchanged_findings": [
+    "17 development/build dependency advisories; zero production dependency advisories",
+    "Existing large-bundle and backend test warnings",
+    "Existing offline layout diagnostics for private functions",
+    "Divisor-count definition has the same pre-existing KaTeX-error fallback in approved design source and live site; exact DOM equality confirmed; deliberately not changed"
+  ]
+}

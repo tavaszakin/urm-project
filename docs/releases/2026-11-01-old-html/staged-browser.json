@@ -1,0 +1,35 @@
+{
+  "frontend": "https://urm-project-l05joxmas-tavaszakins-projects.vercel.app/",
+  "legacy": false,
+  "staging_authentication": "vercel-bypass",
+  "api_override": null,
+  "intercepted_requests": 0,
+  "observed_api_origins": [
+    "https://urm-backend.onrender.com"
+  ],
+  "checks": [
+    "/: navigation and refresh",
+    "/compute: navigation and refresh",
+    "add: execution output 5, program and trace",
+    "Simulator playback, next/previous stepping, seeking and rendered workspace",
+    "bounded_sub: execution output 3, program and trace",
+    "/flow-diagram: navigation and refresh",
+    "successor: compile, SketchV4 SVG with 3 nodes, fit and scroll",
+    "add: compile, SketchV4 SVG with 7 nodes, fit and scroll",
+    "divisor_count: compile, SketchV4 SVG with 295 nodes, fit and scroll",
+    "compose: compile, SketchV4 SVG with 16 nodes, fit and scroll",
+    "primrec: compile, SketchV4 SVG with 20 nodes, fit and scroll",
+    "minimization: compile, SketchV4 SVG with 28 nodes, fit and scroll",
+    "successor: execution output 5, program and trace",
+    "Private-family query attempts ignored; debug/collector/legacy-engine entry points unavailable",
+    "/: navigation and refresh",
+    "/compute: navigation and refresh",
+    "/flow-diagram: navigation and refresh",
+    "/: navigation and refresh",
+    "/compute: navigation and refresh",
+    "/flow-diagram: navigation and refresh",
+    "Desktop/mobile document layout, native list, public links, black panel text, title-case labels and theme switching",
+    "Unpublished development routes/viewers do not load; production exports only index.html and assets"
+  ],
+  "browser_errors": []
+}
