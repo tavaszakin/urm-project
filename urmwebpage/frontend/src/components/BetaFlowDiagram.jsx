@@ -15072,9 +15072,10 @@ function auditEdgeBoundsForLayoutPlan(layoutPlan) {
   };
 }
 
-function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow diagram" }) {
+function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow diagram", nativeViewControls = false }) {
   const { layout } = layoutPlan;
   const arrowMarkerId = `beta-flow-arrow-${useId().replace(/:/g, "")}`;
+  const viewControlName = `${arrowMarkerId}-view`;
   const containerRef = useRef(null);
   // Start with MAX_COMFORTABLE_GRAPH_WIDTH so the first render matches the existing
   // graphScale behavior. ResizeObserver updates this to the actual container width.
@@ -15259,6 +15260,37 @@ function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow di
   return (
     <div className="beta-flow-svg-viewport">
       <div className="beta-flow-svg-controls">
+        {nativeViewControls ? (
+          <span className="beta-flow-view-radios" role="radiogroup" aria-label="View">
+            View:{" "}
+            <label>
+              <input
+                type="radio"
+                name={viewControlName}
+                value="fit"
+                checked={!readableScroll}
+                onChange={() => setViewMode("fit")}
+                onClick={() => {
+                  if (viewMode === "auto" && !readableScroll) setViewMode("fit");
+                }}
+              />{" "}
+              Fit all
+            </label>{" "}
+            <label>
+              <input
+                type="radio"
+                name={viewControlName}
+                value="scroll"
+                checked={readableScroll}
+                onChange={() => setViewMode("scroll")}
+                onClick={() => {
+                  if (viewMode === "auto" && readableScroll) setViewMode("scroll");
+                }}
+              />{" "}
+              Readable size (scroll)
+            </label>
+          </span>
+        ) : (
         <div className="beta-flow-view-toggle" role="group" aria-label="Diagram view mode">
           <button
             type="button"
@@ -15277,6 +15309,7 @@ function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow di
             Readable scroll
           </button>
         </div>
+        )}
         {showDebugInfo ? (
           <span className="beta-flow-diagram-debug-info" aria-hidden="true">{debugText}</span>
         ) : null}
@@ -15373,8 +15406,8 @@ function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow di
   );
 }
 
-function renderFlowSvg(layoutPlan, { ariaLabel = "Instruction-level URM flow diagram" } = {}) {
-  return <FlowSvgDisplay layoutPlan={layoutPlan} ariaLabel={ariaLabel} />;
+function renderFlowSvg(layoutPlan, { ariaLabel = "Instruction-level URM flow diagram", nativeViewControls = false } = {}) {
+  return <FlowSvgDisplay layoutPlan={layoutPlan} ariaLabel={ariaLabel} nativeViewControls={nativeViewControls} />;
 }
 
 function renderFlowSvgPanel(
@@ -15384,6 +15417,7 @@ function renderFlowSvgPanel(
   ariaLabel = "Instruction-level URM flow diagram",
   debugBadge = null,
   headerControl = null,
+  nativeViewControls = false,
 ) {
   return (
     <section className="beta-flow-comparison-panel" aria-label={title}>
@@ -15403,7 +15437,7 @@ function renderFlowSvgPanel(
           <p className="beta-flow-comparison-panel-note">{subtitle}</p>
         ) : null}
       </header>
-      {renderFlowSvg(layoutPlan, { ariaLabel })}
+      {renderFlowSvg(layoutPlan, { ariaLabel, nativeViewControls })}
     </section>
   );
 }
@@ -15770,6 +15804,7 @@ export default function BetaFlowDiagram({
   selectedExampleName = null,
   layoutMetadata = null,
   showLayoutComparison = false,
+  nativeViewControls = false,
 }) {
   // "Collapse setup blocks" (v1) is disabled/archived — see
   // .sketchv3-harness/archive/collapse_setup_blocks_v1_disabled.md. Hardcoded false so the active
@@ -15857,7 +15892,7 @@ export default function BetaFlowDiagram({
   // this function. Without it (or with comparison off) render the single sketchV3
   // view; the legacy no-tuned comparison grid below is intentionally unreachable now.
   if (!shouldShowTunedComparisonPanel) {
-    return renderFlowSvg(layoutPlan);
+    return renderFlowSvg(layoutPlan, { nativeViewControls });
   }
 
   const geometryDebugEnabled = isVisualGeometryDebugEnabled();
@@ -15881,6 +15916,9 @@ export default function BetaFlowDiagram({
         "sketchV3 layout",
         null,
         "sketchV3 URM flow diagram",
+        null,
+        null,
+        nativeViewControls,
       )}
       {generatedLayoutPlan
         ? renderFlowSvgPanel(
@@ -15889,6 +15927,8 @@ export default function BetaFlowDiagram({
           null,
           "Reference (tuned) URM flow diagram",
           generatedStrategyLabel,
+          null,
+          nativeViewControls,
         )
         : (
           <section className="beta-flow-comparison-panel beta-flow-comparison-panel-empty" aria-label="Reference (tuned) layout unavailable">

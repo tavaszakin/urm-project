@@ -61,7 +61,7 @@ export default function LearnPage({ onNavigate }) {
           <p className="learn-section-copy">
             Recursive-function programs are assembled from familiar patterns: base-case setup,
             copying carried values, updating a running value, and using small control loops to
-            decide what happens next. The Simulator page keeps the mathematical definition in front;
+            decide what happens next. The Compute page keeps the mathematical definition in front;
             these cards show the register-level moves underneath it.
           </p>
         </div>

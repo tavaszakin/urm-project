@@ -333,6 +333,7 @@ export default function TraceTable({
   compact = false,
   showStepGroups = true,
   progressiveReveal = false,
+  documentScroll = false,
   outputIsFinal = false,
   traceIndexHeader = "Step",
   traceIndexValueFormatter = null,
@@ -393,6 +394,14 @@ export default function TraceTable({
   }, []);
 
   useEffect(() => {
+    if (documentScroll) {
+      if (animationFrameRef.current !== null) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+      targetScrollTopRef.current = null;
+      return;
+    }
     const container = containerRef.current;
     const row = rowRefs.current[effectiveCurrentTraceIndex];
 
@@ -445,7 +454,7 @@ export default function TraceTable({
     };
 
     animationFrameRef.current = requestAnimationFrame(tick);
-  }, [effectiveCurrentTraceIndex, isPlaying]);
+  }, [effectiveCurrentTraceIndex, isPlaying, documentScroll]);
 
   if (!trace || trace.length === 0) {
     return (
@@ -501,6 +510,7 @@ export default function TraceTable({
   const effectiveHeaderCellFontSize = tracePresentation.headerCellFontSize;
   const effectiveBodyCellLineHeight = tracePresentation.bodyCellLineHeight;
   const shouldRenderPlaybackScrollBuffer =
+    !documentScroll &&
     Boolean(progressiveReveal) &&
     Boolean(isPlaying) &&
     !suppressActiveHighlight &&

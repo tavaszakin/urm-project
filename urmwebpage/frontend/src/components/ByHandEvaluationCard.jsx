@@ -937,6 +937,7 @@ function InlineDerivation({ chain }) {
   return (
     <KatexMath
       expression={latex}
+      className="by-hand-evaluation-text"
       style={{
         color: "var(--surface-text-primary)",
         lineHeight: 1.22,
@@ -974,6 +975,7 @@ function DetailSection({ section }) {
   return (
     <div style={{ display: "grid", gap: 6, justifyItems: "start" }}>
       <div
+        className="by-hand-evaluation-text"
         style={{
           ...TYPOGRAPHY.styles.label,
           color: "var(--surface-text-secondary)",
@@ -1012,6 +1014,7 @@ export default function ByHandEvaluationCard({
   inputValues,
   enabled = true,
   selectedStepIndex = null,
+  resultLabel = "Result",
 }) {
   const [showDetails, setShowDetails] = useState(false);
   const evaluation = useMemo(
@@ -1026,6 +1029,7 @@ export default function ByHandEvaluationCard({
 
   return (
     <section
+      className="by-hand-evaluation-text"
       style={{
         background: "var(--surface-card)",
         padding: "10px 12px 14px",
@@ -1044,6 +1048,7 @@ export default function ByHandEvaluationCard({
         }}
       >
         <div
+          className="by-hand-evaluation-text"
           style={{
             ...TYPOGRAPHY.styles.label,
             fontSize: TYPOGRAPHY.sizes.sm,
@@ -1062,7 +1067,7 @@ export default function ByHandEvaluationCard({
         >
           {!isPrimitiveEvaluation ? (
             <div
-              className="math-inline"
+              className="math-inline by-hand-evaluation-text"
               style={{
                 padding: "3px 8px",
                 borderRadius: 4,
@@ -1076,7 +1081,7 @@ export default function ByHandEvaluationCard({
                 whiteSpace: "nowrap",
               }}
             >
-              {evaluation.result === null ? "Result pending" : `Result = ${evaluation.result}`}
+              {evaluation.result === null ? "Result pending" : `${resultLabel} = ${evaluation.result}`}
             </div>
           ) : null}
         </div>
@@ -1094,6 +1099,7 @@ export default function ByHandEvaluationCard({
         <div style={{ display: "grid", gap: isPrimitiveEvaluation ? 8 : 5, width: "100%" }}>
           {statusMessage ? (
             <div
+              className="by-hand-evaluation-text"
               style={{
                 ...TYPOGRAPHY.styles.uiText,
                 fontSize: TYPOGRAPHY.sizes.sm,
@@ -1112,6 +1118,7 @@ export default function ByHandEvaluationCard({
           <div style={{ display: "grid", gap: 8, justifyItems: "start", width: "100%", marginBottom: 1 }}>
             <button
               type="button"
+              className="by-hand-evaluation-text"
               onClick={() => setShowDetails((current) => !current)}
               style={{
                 border: "1px solid color-mix(in srgb, var(--border-default) 82%, transparent)",
@@ -1140,6 +1147,7 @@ export default function ByHandEvaluationCard({
                 }}
               >
                 <div
+                  className="by-hand-evaluation-text"
                   style={{
                     ...TYPOGRAPHY.styles.label,
                     color: "var(--surface-text-secondary)",
