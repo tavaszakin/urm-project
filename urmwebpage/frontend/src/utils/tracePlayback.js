@@ -51,3 +51,11 @@ export function getTracePlaybackTiming({
     speedScale,
   };
 }
+
+// Public document playback. Manual seeks use the next absolute boundary.
+export const PUBLIC_PLAYBACK_BATCH_SIZE = 100;
+
+export function getNextPlaybackBatchEnd(currentIndex) {
+  const index = Number.isFinite(currentIndex) ? Math.max(0, Math.floor(currentIndex)) : 0;
+  return (Math.floor(index / PUBLIC_PLAYBACK_BATCH_SIZE) + 1) * PUBLIC_PLAYBACK_BATCH_SIZE;
+}

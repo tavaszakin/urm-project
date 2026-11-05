@@ -221,6 +221,7 @@ function SectionedProgramList({
   renderProgramInstruction = null,
   renderProgramIndex = null,
   showProgramHeader = false,
+  contentSizedProgram = false,
 }) {
   return (
     <div style={{ display: "grid", gap: 8 }}>
@@ -259,6 +260,7 @@ function SectionedProgramList({
             renderInstruction={renderProgramInstruction}
             renderIndex={renderProgramIndex}
             showHeader={showProgramHeader && sections.length === 1}
+            contentSized={contentSizedProgram && sections.length === 1}
           />
         </div>
       ))}
@@ -270,6 +272,8 @@ export default function MachinePanel({
   title,
   headerContent = null,
   hideSectionCaptions = false,
+  publicSectionHeadings = false,
+  documentScroll = false,
   traceCompact = false,
   program,
   row,
@@ -286,6 +290,7 @@ export default function MachinePanel({
   renderProgramInstruction = null,
   renderProgramIndex = null,
   showProgramHeader = false,
+  contentSizedProgram = false,
   programSections = null,
   combinedProgramRows = null,
   stageSummary = "",
@@ -309,6 +314,7 @@ export default function MachinePanel({
   const programRefs = useRef([]);
   const activeStageLabel = row?.stageLabel ?? row?.stageKey ?? stageSummary;
   const panelTitleParts = splitPanelTitle(title);
+  const SectionHeading = publicSectionHeadings ? "h2" : "div";
 
   const sections = useMemo(
     () =>
@@ -321,7 +327,7 @@ export default function MachinePanel({
     Array.isArray(combinedProgramRows) && combinedProgramRows.length > 0;
 
   useEffect(() => {
-    if (!row) return;
+    if (documentScroll || !row) return;
 
     if (hasCombinedProgramRows) {
       const activeKey = combinedProgramRows.find(
@@ -338,7 +344,7 @@ export default function MachinePanel({
         ? `${row.stageKey}-${row.instructionIndex}`
         : row.instructionIndex;
     scrollElementIntoContainerView(programRefs.current[activeKey]);
-  }, [combinedProgramRows, hasCombinedProgramRows, row, sections]);
+  }, [combinedProgramRows, hasCombinedProgramRows, row, sections, documentScroll]);
 
   return (
     <div className="machine-panel">
@@ -365,7 +371,7 @@ export default function MachinePanel({
       <div className="machine-workspace">
         <section className="machine-column machine-trace-column">
           <div className="machine-panel-section-header machine-trace-header">
-            <div className="machine-panel-title">Computation Trace</div>
+            <SectionHeading className="machine-panel-title">Computation Trace</SectionHeading>
             {!hideSectionCaptions && tracePanelCaption !== "" ? (
               <div className="machine-panel-caption">
                 {tracePanelCaption ?? "Current trace step in yellow. Changed registers in pink."}
@@ -386,6 +392,7 @@ export default function MachinePanel({
                 maxHeight={524}
                 showStepGroups={traceShowStepGroups}
                 progressiveReveal
+                documentScroll={documentScroll}
                 outputIsFinal={outputIsFinal}
                 traceIndexHeader={traceIndexHeader}
                 traceIndexValueFormatter={traceIndexValueFormatter}
@@ -406,9 +413,9 @@ export default function MachinePanel({
 
         <aside className="machine-column machine-status-column machine-status-panel">
           <div className="machine-panel-section-header">
-            <div className="machine-panel-title">
+            <SectionHeading className="machine-panel-title">
               {programPanelTitle ?? (hasCombinedProgramRows ? "URM Program" : sections.length > 1 ? "URM Programs" : "URM Program")}
-            </div>
+            </SectionHeading>
             {!hideSectionCaptions ? (
               <div className="machine-panel-caption">
                 {programPanelCaption ?? "The active instruction stays highlighted and in view during playback."}
@@ -428,6 +435,7 @@ export default function MachinePanel({
                   renderProgramInstruction={renderProgramInstruction}
                   renderProgramIndex={renderProgramIndex}
                   showProgramHeader={showProgramHeader}
+                  contentSizedProgram={contentSizedProgram}
                 />
               )}
             </div>

@@ -51,7 +51,7 @@
 /* Panel text only: leave the surrounding document and outputs unchanged. */
 .app-root-public-tools .runner-toolbar,
 .app-root-public-tools .runner-toolbar * {
-  color: CanvasText !important;
+  color: inherit !important;
   -webkit-text-fill-color: currentColor !important;
 }
 
@@ -98,3 +98,581 @@
   color: GrayText !important;
   opacity: revert !important;
 }
+
+/* BEGIN unapproved Compute card-spacing experiment.
+   Use one document-sized heading margin instead of stacked grid/padding gaps.
+   Local rules preserve the shared layouts used by other pages. */
+.app-root-public-tools .compute-page:not(.beta-flow-page) .machine-workspace
+  > :is(.machine-trace-column, .machine-status-column) {
+  row-gap: 0;
+}
+
+.app-root-public-tools .compute-page:not(.beta-flow-page) .machine-workspace
+  > * > .machine-panel-section-header {
+  margin-bottom: 1rem;
+}
+
+.app-root-public-tools .compute-page:not(.beta-flow-page)
+  .machine-program-card-inline {
+  padding-top: 0;
+}
+/* END unapproved Compute card-spacing experiment. */
+
+/* BEGIN unapproved Compute workspace-inset experiment. */
+.app-root-public-tools .compute-page:not(.beta-flow-page) .machine-workspace {
+  padding: 8px;
+}
+/* END unapproved Compute workspace-inset experiment. */
+
+/* Approved Variant A: ordinary public-program instruction alignment only. */
+.app-root-public-tools .compute-page .program-listing
+  > .program-listing-row > .program-listing-instruction {
+  text-align: left;
+}
+
+/* Ordinary public-program instruction expressions. */
+.app-root-public-tools .compute-page .program-listing
+  > .program-listing-row > .program-listing-instruction > .math-inline > .katex {
+  font-size: 19px;
+}
+
+/* BEGIN public-tool typography scale.
+   Important font-size overrides are limited to existing inline typography. */
+
+/* 13px: supporting labels, parameter labels, and secondary summaries. */
+.app-root-public-tools .runner-toolbar :is(
+  .runner-control-label:not(.runner-mode-label),
+  .runner-arity-hint
+),
+.app-root-public-tools .machine-panel-playback .runner-playback-summary {
+  font-size: 13px !important;
+}
+
+.app-root-public-tools :is(
+  .machine-program-group-label,
+  .machine-status-section-label,
+  .machine-stage-summary,
+  .beta-flow-diagram-debug-info,
+  .beta-flow-comparison-panel-badge,
+  .beta-flow-comparison-panel-note
+) {
+  font-size: 13px;
+}
+
+/* 14px: the Definition and Current Call labels. */
+.app-root-public-tools .runner-toolbar .function-card-label {
+  font-size: 14px !important;
+}
+
+/* 15px: ordinary controls, buttons, and the primary Mode label. */
+.app-root-public-tools .runner-toolbar :is(
+  .runner-mode-label,
+  .runner-toolbar-select,
+  .runner-toolbar-select option,
+  .runner-toolbar-number-input,
+  .runner-run-button,
+  .runner-add-register-button
+),
+.app-root-public-tools .runner-toolbar-primrec button[aria-expanded] {
+  font-size: 15px !important;
+}
+
+.app-root-public-tools .machine-panel-playback .transport-btn,
+.app-root-public-tools .beta-flow-view-toggle-button,
+.app-root-public-tools .beta-flow-generated-strategy-select,
+.app-root-public-tools .beta-flow-placeholder-card > label,
+.app-root-public-tools .compute-page .program-listing
+  > .program-listing-row > :is(.program-listing-index, .program-listing-instruction) {
+  font-size: 15px;
+}
+
+/* 16px: section headings. The ordinary instruction rule above is unchanged. */
+.app-root-public-tools .compute-page .machine-panel-section-header .machine-panel-title,
+.app-root-public-tools .beta-flow-card-title,
+.app-root-public-tools .beta-flow-comparison-panel-title,
+/* PrimitiveDefinitionTitle's two plain spans; exclude its mathematical child. */
+.app-root-public-tools .runner-toolbar-primrec
+  div:has(> .function-expression-view) > span:not([class]):not([style]) {
+  font-size: 16px;
+}
+
+/* END public-tool typography scale. */
+
+/* BEGIN unapproved text-color experiment 3: light public tools only.
+   Preserve stateful body cells, active instructions, and interactive colors.
+   Important overrides are needed for existing inline header/index colors. */
+.app-root-public-tools[data-theme="light"] :is(
+  .machine-panel-section-header .machine-panel-title,
+  .machine-trace-column thead th,
+  .machine-status-column table thead th,
+  .machine-program-group-label,
+  .machine-status-section-label,
+  .machine-stage-summary,
+  .beta-flow-card-title,
+  .beta-flow-comparison-panel-title,
+  .beta-flow-comparison-panel-note,
+  .beta-flow-comparison-panel-badge,
+  .beta-flow-diagram-debug-info,
+  .beta-flow-placeholder-card > label
+),
+.app-root-public-tools[data-theme="light"] .compute-page .program-listing
+  > .program-listing-row:not(.is-current)
+  > :is(.program-listing-index, .program-listing-instruction) {
+  color: CanvasText !important;
+}
+/* END unapproved text-color experiment 3. */
+
+/* BEGIN unapproved font-weight experiment 4: ordinary public-tool text only.
+   Keep mathematical glyphs, trace-body weights, and result emphasis intact.
+   Important overrides are limited to labels/selectors and inline index/header weights. */
+.app-root-public-tools .runner-toolbar :is(
+  .function-card-label,
+  .runner-control-label,
+  .runner-toolbar-select,
+  .runner-toolbar-select option
+),
+.app-root-public-tools .compute-page .program-listing
+  > .program-listing-row > :is(.program-listing-index, .program-listing-instruction),
+.app-root-public-tools .machine-status-column table thead th {
+  font-weight: 400 !important;
+}
+
+.app-root-public-tools .compute-page :is(
+  .machine-panel-section-header .machine-panel-title,
+  .machine-program-group-label,
+  .machine-status-section-label,
+  .beta-flow-card-title,
+  .beta-flow-comparison-panel-title,
+  .beta-flow-comparison-panel-badge,
+  .beta-flow-view-toggle-button.is-active
+),
+/* Existing index spans include the composition table's active arrow. */
+.app-root-public-tools .machine-status-column table tbody td > span[title^="I"],
+/* PrimitiveDefinitionTitle's plain text; its mathematical child is untouched. */
+.app-root-public-tools .runner-toolbar-primrec
+  div:has(> .function-expression-view) > span:not([class]):not([style]) {
+  font-weight: 400;
+}
+/* END unapproved font-weight experiment 4. */
+
+/* BEGIN unapproved label-presentation experiment 5: public Compute only.
+   Both source strings already have the requested casing. Important overrides
+   are needed for the By-hand evaluation caption's inline typography. */
+.app-root-public-tools .compute-page:not(.beta-flow-page)
+  .machine-panel-playback .runner-playback-summary-step,
+/* ByHandEvaluationCard's first header label; leave the result badge untouched. */
+.app-root-public-tools .compute-page:not(.beta-flow-page)
+  .machine-trace-footer > section > div:first-child > div:first-child {
+  text-transform: none !important;
+  letter-spacing: normal !important;
+}
+/* END unapproved label-presentation experiment 5. */
+
+/* BEGIN approved public ordinary-program table structure.
+   Public Compute only; other ProgramListing callers retain their original layout. */
+.app-root-public-tools .compute-program-table-experiment
+  .machine-program-inline-section:has(> .program-listing--content-table) {
+  box-sizing: border-box;
+  width: fit-content;
+  min-width: min(200px, 100%);
+  max-width: 100%;
+  justify-self: start;
+}
+
+.app-root-public-tools .compute-program-table-experiment
+  .program-listing--content-table > .program-listing-row {
+  grid-template-columns: 14px 28px minmax(0, 1fr) !important;
+  column-gap: 0 !important;
+}
+
+.app-root-public-tools .compute-program-table-experiment
+  .program-listing--content-table .program-listing-arrow {
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.app-root-public-tools .compute-program-table-experiment
+  .program-listing--content-table .program-listing-index {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  align-self: stretch;
+  margin-block: -7px;
+  padding-block: 7px;
+  padding-inline-end: 3px;
+  border-inline-end: 1px solid var(--machine-inner-border);
+}
+
+.app-root-public-tools .compute-program-table-experiment
+  .program-listing--content-table .program-listing-instruction {
+  box-sizing: border-box;
+  padding-inline-start: 3px;
+}
+/* END public ordinary-program table structure. */
+
+/* BEGIN public ordinary-program table refinement: width.
+   Development-only ?program-table=content-200 retains the preceding candidate. */
+.app-root-public-tools .compute-program-table-refinement
+  .machine-program-inline-section:has(> .program-listing--content-table) {
+  min-width: min(250px, 100%);
+}
+/* END public ordinary-program table refinement: width. */
+
+/* BEGIN public ordinary-program table refinement: row rules.
+   Keep the existing adjacent-row top borders and semantic active outline. */
+.app-root-public-tools .compute-program-table-refinement
+  .program-listing--content-table > .program-listing-row:not(.is-current) {
+  box-shadow: none !important;
+}
+/* END public ordinary-program table refinement: row rules. */
+
+/* BEGIN public ordinary-program table refinement: separator spacing.
+   Fixed column tracks keep the separator and arrow gutter in place. */
+.app-root-public-tools .compute-program-table-refinement
+  .program-listing--content-table .program-listing-index {
+  padding-inline-end: 6px;
+}
+
+.app-root-public-tools .compute-program-table-refinement
+  .program-listing--content-table .program-listing-instruction {
+  padding-inline-start: 6px;
+}
+/* END public ordinary-program table refinement: separator spacing. */
+
+/* BEGIN approved public trace KaTeX ceiling.
+   Default on public Compute; development-only ?trace-math=uncapped opts out.
+   Cap actual KaTeX roots once, after
+   adaptive wrapper sizing: 19.2px at an 18px root, 17.0667px at 16px.
+   Leave KaTeX's internal subscript/superscript sizing rules intact. */
+.app-root-public-tools .compute-page.compute-trace-math-cap
+  .machine-trace-column :is(th, td) > .math-inline > .katex {
+  font-size: min(1.21em, 1.0666666667rem);
+}
+/* END approved public trace KaTeX ceiling. */
+
+/* Ordinary traces: preserve existing border slots, fonts and geometry.
+   The visible strokes are 1px paint inside the existing layout slots. */
+.app-root-public-tools .compute-page[data-table-aesthetics-experiment]:has(.program-listing--content-table)
+  .machine-trace-column table {
+  --public-trace-grid-width: 1px;
+  --public-trace-grid-color: #777777;
+  position: relative;
+}
+
+.app-root-public-tools[data-theme="night"] .compute-page[data-table-aesthetics-experiment]:has(.program-listing--content-table)
+  .machine-trace-column table {
+  --public-trace-grid-color: #cccccc;
+}
+
+/* Retain the viewport's 1px layout space, without a second visible frame. */
+.app-root-public-tools .compute-page[data-table-aesthetics-experiment]:has(.program-listing--content-table)
+  .machine-trace-table-shell {
+  border-color: transparent;
+}
+
+.app-root-public-tools .compute-page[data-table-aesthetics-experiment]:has(.program-listing--content-table)
+  .machine-trace-column :is(th, td) {
+  border-color: transparent !important;
+  background-image: linear-gradient(var(--public-trace-grid-color), var(--public-trace-grid-color)), linear-gradient(var(--public-trace-grid-color), var(--public-trace-grid-color)) !important;
+  background-size: 100% var(--public-trace-grid-width), var(--public-trace-grid-width) 100% !important;
+  background-position: left bottom, right top !important;
+  background-repeat: no-repeat !important;
+  background-origin: border-box !important;
+  background-clip: border-box !important;
+}
+
+.app-root-public-tools .compute-page[data-table-aesthetics-experiment]:has(.program-listing--content-table)
+  .machine-trace-column :is(th, td):last-child {
+  background-size: 100% var(--public-trace-grid-width), 0 0 !important;
+}
+
+.app-root-public-tools .compute-page[data-table-aesthetics-experiment]:has(.program-listing--content-table)
+  .machine-trace-column tbody > tr:last-child > td {
+  background-size: 0 0, var(--public-trace-grid-width) 100% !important;
+}
+
+.app-root-public-tools .compute-page[data-table-aesthetics-experiment]:has(.program-listing--content-table)
+  .machine-trace-column tbody > tr:last-child > td:last-child {
+  background-image: none !important;
+}
+
+/* The outline follows the actual table as rows appear. The playback buffer
+   is a sibling of the table, so it is never enclosed by this outline. */
+.app-root-public-tools .compute-page[data-table-aesthetics-experiment]:has(.program-listing--content-table)
+  .machine-trace-column table::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: linear-gradient(var(--public-trace-grid-color), var(--public-trace-grid-color)), linear-gradient(var(--public-trace-grid-color), var(--public-trace-grid-color)), linear-gradient(var(--public-trace-grid-color), var(--public-trace-grid-color)), linear-gradient(var(--public-trace-grid-color), var(--public-trace-grid-color));
+  background-size: 100% var(--public-trace-grid-width), 100% var(--public-trace-grid-width), var(--public-trace-grid-width) 100%, var(--public-trace-grid-width) 100%;
+  background-position: left top, left bottom, left top, right top;
+  background-repeat: no-repeat;
+}
+/* END unapproved trace-grid experiment. */
+
+/* BEGIN unapproved ordinary-program header/rules experiment.
+   Reuse the optional header and the approved 14px/28px/expression tracks.
+   Paint 1px rules in existing layout slots; preserve the active outline.
+   Do not position the scroller: existing instruction offset parents stay intact. */
+.app-root-public-tools .compute-page[data-table-aesthetics-experiment]
+  .machine-program-inline-section:has(> .program-listing--content-table) {
+  --public-program-rule: #777777;
+  --public-program-rule-width: 1px;
+  border-color: transparent;
+  background-image: linear-gradient(var(--public-program-rule), var(--public-program-rule)), linear-gradient(var(--public-program-rule), var(--public-program-rule)), linear-gradient(var(--public-program-rule), var(--public-program-rule)), linear-gradient(var(--public-program-rule), var(--public-program-rule));
+  background-size: 100% var(--public-program-rule-width), 100% var(--public-program-rule-width), var(--public-program-rule-width) 100%, var(--public-program-rule-width) 100%;
+  background-position: left top, left bottom, left top, right top;
+  background-repeat: no-repeat;
+  background-origin: border-box;
+  background-clip: border-box;
+}
+
+.app-root-public-tools[data-theme="night"] .compute-page[data-table-aesthetics-experiment]
+  .machine-program-inline-section:has(> .program-listing--content-table) {
+  --public-program-rule: #cccccc;
+}
+
+.app-root-public-tools .compute-page[data-table-aesthetics-experiment]
+  .program-listing--content-table > .program-listing-row + .program-listing-row {
+  border-top-color: transparent;
+}
+
+.app-root-public-tools .compute-page[data-table-aesthetics-experiment]
+  .program-listing--content-table .program-listing-index {
+  position: relative;
+  border-inline-end-color: transparent;
+}
+
+.app-root-public-tools .compute-page[data-table-aesthetics-experiment]
+  .program-listing--content-table > .program-listing-header {
+  grid-template-columns: 14px 28px minmax(0, 1fr) !important;
+  column-gap: 0 !important;
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  background: transparent !important;
+  border-bottom-color: transparent !important;
+}
+
+.app-root-public-tools .compute-page[data-table-aesthetics-experiment]
+  .program-listing--content-table .program-listing-header-index {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  align-self: stretch;
+  text-align: right !important;
+  margin-block: -6px -7px;
+  padding-block: 6px 7px;
+  padding-inline-end: 6px;
+  position: relative;
+  border-inline-end: 1px solid transparent;
+}
+
+.app-root-public-tools .compute-page[data-table-aesthetics-experiment]
+  .program-listing--content-table .program-listing-header-instruction {
+  padding-inline-start: 6px;
+  min-width: 0;
+}
+
+.app-root-public-tools .compute-page[data-table-aesthetics-experiment]
+  .program-listing--content-table > :is(.program-listing-header, .program-listing-row) {
+  position: relative;
+}
+
+/* One horizontal stroke per boundary. The first body row uses the header's
+   bottom stroke, and the existing outer frame supplies the terminal boundary.
+   Pseudo boxes occupy existing 1px slots; the painted stroke stays 1px. */
+.app-root-public-tools .compute-page[data-table-aesthetics-experiment]
+  .program-listing--content-table > .program-listing-row + .program-listing-row::after,
+.app-root-public-tools .compute-page[data-table-aesthetics-experiment]
+  .program-listing--content-table > .program-listing-header::after {
+  content: "";
+  position: absolute;
+  left: -4px;
+  right: 0;
+  height: 1px;
+  z-index: 1;
+  pointer-events: none;
+  background-image: linear-gradient(var(--public-program-rule), var(--public-program-rule));
+  background-size: 100% var(--public-program-rule-width);
+  background-position: left top;
+  background-repeat: no-repeat;
+}
+
+.app-root-public-tools .compute-page[data-table-aesthetics-experiment]
+  .program-listing--content-table > .program-listing-row + .program-listing-row::after {
+  top: -1px;
+}
+
+.app-root-public-tools .compute-page[data-table-aesthetics-experiment]
+  .program-listing--content-table > .program-listing-header::after {
+  bottom: -1px;
+  background-position: left bottom;
+}
+
+.app-root-public-tools .compute-page[data-table-aesthetics-experiment]
+  .program-listing--content-table :is(.program-listing-index, .program-listing-header-index)::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -1px;
+  bottom: 0;
+  width: 1px;
+  pointer-events: none;
+  background-image: linear-gradient(var(--public-program-rule), var(--public-program-rule));
+  background-size: var(--public-program-rule-width) 100%;
+  background-position: right top;
+  background-repeat: no-repeat;
+}
+
+.app-root-public-tools .compute-page[data-table-aesthetics-experiment]
+  .program-listing--content-table > .program-listing-row + .program-listing-row > .program-listing-index::after {
+  top: -1px;
+}
+
+.app-root-public-tools .compute-page[data-table-aesthetics-experiment]
+  .program-listing--content-table .program-listing-header-index::after {
+  bottom: -1px;
+}
+/* END unapproved ordinary-program header/rules experiment. */
+
+/* BEGIN approved public document-scrolling / batch-playback.
+   Keep existing horizontal scrolling. With overflow-x:auto the browser may compute
+   overflow-y:auto, but natural uncapped height leaves no vertical scroll range. */
+.app-root-public-tools .compute-page:not(.beta-flow-page)
+  .function-runner[data-public-document-playback] :is(
+    .program-listing,
+    .machine-trace-table-shell > div:has(> table)
+  ) {
+  max-height: none !important;
+  overflow-y: visible !important;
+}
+
+/* The longer continuation label must be allowed to wrap its control group. */
+.app-root-public-tools .compute-page:not(.beta-flow-page)
+  .function-runner[data-public-document-playback] .runner-playback-actions {
+  flex-wrap: wrap;
+  flex: 0 1 auto;
+}
+/* END approved public document-scrolling / batch-playback. */
+
+/* BEGIN unapproved native public controls experiment (independent of table rules).
+   Preserve typography and the existing control-group layout; restore native paint,
+   dimensions, focus treatment and disabled-state presentation. */
+.app-root-public-tools .compute-page:not(.beta-flow-page)
+  .machine-panel-playback .transport-btn {
+  appearance: revert;
+  display: revert;
+  height: revert;
+  min-height: revert;
+  padding: revert;
+  border: revert;
+  border-radius: revert;
+  background: revert;
+  color: revert;
+  box-shadow: revert;
+  outline: revert;
+  outline-offset: revert;
+  opacity: revert;
+  cursor: revert;
+  transition: revert;
+}
+
+/* Keep the existing public view-control text size without the segmented skin. */
+.app-root-public-tools .beta-flow-page .beta-flow-view-radios {
+  font-size: 15px;
+}
+
+/* Undo the shared non-range input paint for these native radios only. */
+.app-root-public-tools .beta-flow-page .beta-flow-view-radios input[type="radio"] {
+  appearance: revert;
+  background: revert;
+  border: revert;
+  border-radius: revert;
+  padding: revert;
+  box-shadow: revert;
+  outline: revert;
+  outline-offset: revert;
+}
+/* END unapproved native public controls experiment. */
+
+/* BEGIN approved public text weight/color standard.
+   Workspace inheritance excludes page titles, navigation and other public pages.
+   Keep all existing size/metric rules and independently pending experiments. */
+.app-root-public-tools .public-tool-workspace {
+  color: CanvasText;
+  font-weight: 400;
+}
+
+.app-root-public-tools[data-theme="night"] .public-tool-workspace {
+  color: var(--theme-text);
+}
+
+/* Keep labels/controls and outer math normal without relying on pending overrides.
+   KaTeX's internal glyph classes retain their own structural font requirements. */
+.app-root-public-tools .public-tool-workspace .runner-toolbar :is(
+  .function-card-label,
+  .runner-control-label,
+  .runner-toolbar-select,
+  .runner-toolbar-select option,
+  .math-text,
+  .math-token-callee
+),
+.app-root-public-tools .public-tool-workspace .runner-toolbar-primrec
+  div:has(> .function-expression-view) > span:not([class]):not([style]) {
+  font-weight: 400 !important;
+}
+
+/* Combined composition tables keep their existing renderer and text states.
+   Ordinary traces/programs already identify states with backgrounds/rules/arrow.
+   These existing variables are foreground/weight hooks, not border colors. */
+.app-root-public-tools .public-tool-workspace .machine-panel:has(.program-listing) {
+  color: inherit;
+  --machine-inner-text: currentColor;
+  --machine-inner-text-primary: currentColor;
+  --machine-inner-text-secondary: currentColor;
+  --machine-inner-text-structural: currentColor;
+  --machine-active-text: currentColor;
+  --machine-changed-text: currentColor;
+  --trace-cell-active-weight: 400;
+  --program-active-weight: 400;
+}
+
+/* Existing inline caption/summary styles need explicit local overrides.
+   Derivation lines whose only result distinction is text emphasis are excluded. */
+.app-root-public-tools .public-tool-workspace .machine-panel:has(.program-listing) :is(
+  .machine-panel-section-header .machine-panel-title,
+  .machine-panel-playback .runner-playback-summary,
+  .machine-program-group-label,
+  .machine-status-section-label,
+  .machine-stage-summary,
+  .by-hand-evaluation-text
+),
+.app-root-public-tools .beta-flow-page .public-tool-workspace :is(
+  .beta-flow-card-title,
+  .beta-flow-comparison-panel-title,
+  .beta-flow-comparison-panel-badge,
+  .beta-flow-comparison-panel-note,
+  .beta-flow-diagram-debug-info,
+  .beta-flow-view-radios,
+  .beta-flow-view-toggle-button,
+  .beta-flow-placeholder-card > label,
+  .beta-flow-generated-strategy-select
+),
+.app-root-public-tools .public-tool-workspace .function-runner:has(.program-listing)
+  .runner-minimization-summary div {
+  color: inherit !important;
+  font-weight: 400 !important;
+}
+
+/* Keep disabled native button colors; enabled playback text follows the workspace. */
+.app-root-public-tools .public-tool-workspace .machine-panel:has(.program-listing)
+  .machine-panel-playback .transport-btn:not(:disabled) {
+  color: inherit;
+}
+/* END approved public text weight/color standard. */

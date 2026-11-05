@@ -19,11 +19,13 @@ const playbackStepLabelStyle = {
 export default function MachinePlaybackControls({
   disabled = false,
   isPlaying = false,
+  canContinueBatch = false,
   currentIndex = 0,
   maxIndex = 0,
   playbackLength = 0,
   onPrev,
   onToggle,
+  showReplayLabel = false,
   onNext,
   onChange,
   showSummary = true,
@@ -56,7 +58,8 @@ export default function MachinePlaybackControls({
           disabled={disabled || playbackLength === 0}
           className="transport-btn"
         >
-          {isPlaying ? "Pause" : "Play"}
+          {isPlaying ? "Pause" : canContinueBatch ? "Continue for 100 more steps"
+            : showReplayLabel && playbackLength > 0 && safeCurrentIndex >= safeMaxIndex ? "Replay" : "Play"}
         </button>
 
         <button

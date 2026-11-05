@@ -13,6 +13,7 @@ export default function ProgramListing({
   renderInstruction = null,
   renderIndex = null,
   showHeader = false,
+  contentSized = false,
 }) {
   const codeFontFamily = `var(--program-font-family, ${TYPOGRAPHY.styles.code.fontFamily})`;
   const codeFontSize = `var(--program-font-size, ${TYPOGRAPHY.sizes.base}px)`;
@@ -20,7 +21,7 @@ export default function ProgramListing({
 
   return (
     <div
-      className="program-listing"
+      className={`program-listing${contentSized ? " program-listing--content-table" : ""}`}
       style={{
         overflowY: "auto",
         maxHeight,
@@ -51,8 +52,15 @@ export default function ProgramListing({
             textTransform: "uppercase",
           }}
         >
-          <span style={{ textAlign: "center" }}>#</span>
-          <span style={{ textAlign: "left" }}>Instruction</span>
+          {contentSized ? <span aria-hidden="true" /> : null}
+          <span
+            className={contentSized ? "program-listing-header-index" : undefined}
+            style={{ textAlign: "center" }}
+          >#</span>
+          <span
+            className={contentSized ? "program-listing-header-instruction" : undefined}
+            style={{ textAlign: "left" }}
+          >Instruction</span>
         </div>
       ) : null}
 
@@ -95,6 +103,9 @@ export default function ProgramListing({
                 "background 120ms ease, border-color 120ms ease, color 120ms ease, box-shadow 120ms ease",
             }}
           >
+            {contentSized ? (
+              <span className="program-listing-arrow">{isCurrent ? "▶" : ""}</span>
+            ) : null}
             <span
               className="program-listing-index"
               style={{
@@ -119,7 +130,7 @@ export default function ProgramListing({
                 letterSpacing: "0.01em",
               }}
             >
-              {isCurrent ? "▶ " : ""}
+              {!contentSized && isCurrent ? "▶ " : ""}
               {typeof renderInstruction === "function" ? (
                 renderInstruction({ instruction, index, displayIndex, isCurrent })
               ) : (

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import ByHandEvaluationCard from "./ByHandEvaluationCard.jsx";
 import MachinePanel from "./MachinePanel";
 import MachinePlaybackControls from "./MachinePlaybackControls.jsx";
@@ -32,7 +32,7 @@ import { FunctionCard } from "./FunctionCardLayout.jsx";
 import PrimitiveRecursionDefinitionPreview from "./PrimitiveRecursionDefinitionPreview.jsx";
 import { InlineMath, MathEquals } from "./MathText.jsx";
 import { API_URL } from "../api.js";
-import { getTracePlaybackTiming } from "../utils/tracePlayback.js";
+import { getTracePlaybackTiming, getNextPlaybackBatchEnd, PUBLIC_PLAYBACK_BATCH_SIZE } from "../utils/tracePlayback.js";
 import {
   CHARACTERISTIC_RELATIONS,
   normalizeCharacteristicRelation,
@@ -952,6 +952,9 @@ export default function FunctionRunner({
   machinePanelHeaderContent = null,
   machinePanelProgramCaption = null,
   hideMachinePanelSectionCaptions = false,
+  publicSectionHeadings = false,
+  publicGenerateProgram = false,
+  publicDocumentPlayback = false,
   machinePanelTraceCompact = false,
   showPlaybackSummary = true,
   playbackExternallyControlled = false,
@@ -964,6 +967,8 @@ export default function FunctionRunner({
   onRunDataChange = null,
   onFunctionStateChange = null,
   hideMachinePanel = false,
+  contentSizedProgram = false,
+  showProgramHeader = false,
   functionExecutionMode = null,
   functionModeOptions = null,
   templateFunctionKind = null,
@@ -979,6 +984,29 @@ export default function FunctionRunner({
   const [isPrimitiveSetupExpanded, setIsPrimitiveSetupExpanded] = useState(true);
   const [selectedMinimizationCandidate, setSelectedMinimizationCandidate] = useState(null);
   const [slowPlaybackRequested, setSlowPlaybackRequested] = useState(false);
+  const [playbackBatchEnd, setPlaybackBatchEnd] = useState(PUBLIC_PLAYBACK_BATCH_SIZE);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const generationButtonLabel = publicGenerateProgram
+    ? isGenerating ? "Generating program…" : "Generate program"
+    : "Run";
+
+  const generationVersionRef = useRef(0);
+  const latestSetupKeyRef = useRef("");
+  const setupKey = JSON.stringify({
+    function: normalizeFunctionSpec(functionSpec),
+    initial_registers: registerValues,
+  });
+  latestSetupKeyRef.current = setupKey;
+
+  // Editing a public setup invalidates its visible result and any pending response.
+  useLayoutEffect(() => {
+    if (!publicGenerateProgram) return;
+    generationVersionRef.current += 1;
+    setRunData(null);
+    setIsPlaying(false);
+    setIsGenerating(false);
+    setError("");
+  }, [publicGenerateProgram, setupKey]);
 
   function setPlaybackTraceIndex(nextValue) {
     if (playbackExternallyControlled && typeof onExternalTraceIndexChange === "function") {
@@ -1003,6 +1031,9 @@ export default function FunctionRunner({
   }
 
   async function handleRunFunction() {
+    if (publicGenerateProgram) clearRunState();
+    const generationVersion = generationVersionRef.current;
+    const requestSetupKey = latestSetupKeyRef.current;
     try {
       setError("");
 
@@ -1011,6 +1042,7 @@ export default function FunctionRunner({
       if (validationError) {
         throw new Error(validationError);
       }
+      if (publicGenerateProgram) setIsGenerating(true);
 
       const payload = {
         function: normalizeFunctionSpec(functionSpec),
@@ -1043,12 +1075,23 @@ export default function FunctionRunner({
       }
 
       const json = await response.json();
+      if (publicGenerateProgram && (generationVersion !== generationVersionRef.current
+        || requestSetupKey !== latestSetupKeyRef.current)) return;
+      if (publicGenerateProgram
+        && JSON.stringify(normalizeFunctionSpec(json.function)) !== JSON.stringify(payload.function)) {
+        throw new Error("Generated program does not match the selected function");
+      }
+      setIsGenerating(false);
       setRunData(json);
       setPlaybackTraceIndex(0);
-      setPlaybackIsPlaying(!playbackExternallyControlled && !hideMachinePanel);
+      setPlaybackBatchEnd(PUBLIC_PLAYBACK_BATCH_SIZE);
+      setPlaybackIsPlaying(!publicGenerateProgram && !playbackExternallyControlled && !hideMachinePanel);
       setSelectedMinimizationCandidate(null);
       setSlowPlaybackRequested(false);
     } catch (err) {
+      if (publicGenerateProgram && (generationVersion !== generationVersionRef.current
+        || requestSetupKey !== latestSetupKeyRef.current)) return;
+      setIsGenerating(false);
       setPlaybackIsPlaying(false);
       setError(mapRunErrorMessage(err.message, functionSpec));
     }
@@ -1078,6 +1121,11 @@ export default function FunctionRunner({
   const playbackLength = activeTraceLength;
   const maxPlaybackIndex = Math.max(0, playbackLength - 1);
   const activeTraceRowIndex = playbackTraceIndex;
+  // Public ordinary playback only: composition keeps its existing tables and following.
+  const documentPlayback = publicDocumentPlayback && !playbackExternallyControlled
+    && !composedTraceView && normalizeFunctionKind(functionSpec?.kind) !== "compose";
+  const canContinueBatch = documentPlayback && !playbackIsPlaying
+    && playbackTraceIndex >= playbackBatchEnd && playbackTraceIndex < maxPlaybackIndex;
   const playbackTiming = useMemo(
     () => getTracePlaybackTiming({ traceLength: playbackLength, slowPlaybackRequested }),
     [playbackLength, slowPlaybackRequested],
@@ -1096,12 +1144,17 @@ export default function FunctionRunner({
       return;
     }
 
+    if (documentPlayback && playbackTraceIndex >= playbackBatchEnd) {
+      setPlaybackIsPlaying(false);
+      return;
+    }
+
     const timer = setTimeout(() => {
       setPlaybackTraceIndex((i) => i + 1);
     }, playbackTiming.intervalMs);
 
     return () => clearTimeout(timer);
-  }, [playbackExternallyControlled, playbackIsPlaying, playbackLength, playbackTiming.intervalMs, playbackTraceIndex]);
+  }, [playbackExternallyControlled, playbackIsPlaying, playbackLength, playbackTiming.intervalMs, playbackTraceIndex, documentPlayback, playbackBatchEnd]);
 
   useEffect(() => {
     if (playbackTraceIndex <= maxPlaybackIndex) return;
@@ -1136,7 +1189,8 @@ export default function FunctionRunner({
       : runData?.program ?? [];
 
   const panelFinalRegisters = composedTraceView?.finalRegisters ?? runData?.final_registers ?? [];
-  const outputIsFinal = runData?.status_summary?.output_is_final === true;
+  const outputIsFinal = runData?.status_summary?.output_is_final === true
+    && (!publicGenerateProgram || (activeTraceLength > 0 && playbackTraceIndex >= maxPlaybackIndex));
   const arityInfo = useMemo(() => deriveFunctionArity(functionSpec), [functionSpec]);
 
   function handleRegisterChange(index, rawValue) {
@@ -1167,27 +1221,36 @@ export default function FunctionRunner({
 
     if (playbackTraceIndex >= playbackLength - 1) {
       setPlaybackTraceIndex(0);
+      setPlaybackBatchEnd(PUBLIC_PLAYBACK_BATCH_SIZE);
       setPlaybackIsPlaying(true);
       return;
     }
 
+    if (documentPlayback && playbackTraceIndex >= playbackBatchEnd) {
+      setPlaybackBatchEnd(getNextPlaybackBatchEnd(playbackTraceIndex));
+    }
     setPlaybackIsPlaying((current) => !current);
   }
 
   function handlePrevStep() {
     setPlaybackIsPlaying(false);
     setPlaybackTraceIndex((index) => Math.max(0, index - 1));
+    if (documentPlayback) setPlaybackBatchEnd(getNextPlaybackBatchEnd(Math.max(0, playbackTraceIndex - 1)));
   }
 
   function handleNextStep() {
     setPlaybackIsPlaying(false);
     setPlaybackTraceIndex((index) => Math.min(playbackLength - 1, index + 1));
+    if (documentPlayback) setPlaybackBatchEnd(getNextPlaybackBatchEnd(Math.min(playbackLength - 1, playbackTraceIndex + 1)));
   }
 
   function clearRunState() {
+    if (publicGenerateProgram) generationVersionRef.current += 1;
     setRunData(null);
+    setIsGenerating(false);
     setError("");
     setPlaybackTraceIndex(0);
+    setPlaybackBatchEnd(PUBLIC_PLAYBACK_BATCH_SIZE);
     setPlaybackIsPlaying(false);
     setSelectedMinimizationCandidate(null);
     setSlowPlaybackRequested(false);
@@ -1299,7 +1362,7 @@ export default function FunctionRunner({
     onRunDataChange(runData);
   }, [onRunDataChange, runData]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (typeof onFunctionStateChange !== "function") return;
 
     onFunctionStateChange({
@@ -1502,6 +1565,7 @@ export default function FunctionRunner({
   function handleSelectMinimizationIteration(iteration) {
     setSelectedMinimizationCandidate(iteration.candidate);
     setPlaybackTraceIndex(iteration.traceStart);
+    if (documentPlayback) setPlaybackBatchEnd(getNextPlaybackBatchEnd(iteration.traceStart));
     setPlaybackIsPlaying(false);
   }
 
@@ -1530,7 +1594,11 @@ export default function FunctionRunner({
   }
 
   return (
-    <div className="function-runner" style={{ marginBottom: 16 }}>
+    <div
+      className="function-runner"
+      data-public-document-playback={documentPlayback ? "" : undefined}
+      style={{ marginBottom: 16 }}
+    >
       {!hideToolbar ? (
         <FunctionCard as="div">
           <div className={`runner-toolbar${isPrimitiveRecursion ? " runner-toolbar-primrec" : ""}`}>
@@ -1630,7 +1698,7 @@ export default function FunctionRunner({
                                 className="app-primary-button runner-run-button"
                                 disabled={disableRun}
                               >
-                                Run
+                                {generationButtonLabel}
                               </button>
                             </div>
                           </div>
@@ -1731,7 +1799,7 @@ export default function FunctionRunner({
                             )}
                           </div>
                           <button onClick={handleRunFunction} style={runButtonStyle} className="app-primary-button runner-run-button">
-                            Run
+                            {generationButtonLabel}
                           </button>
                         </div>
                       </div>
@@ -1808,7 +1876,7 @@ export default function FunctionRunner({
                             )}
                           </div>
                           <button onClick={handleRunFunction} style={compactRunButtonStyle} className="app-primary-button runner-run-button">
-                            Run
+                            {generationButtonLabel}
                           </button>
                         </div>
                       </div>
@@ -1850,9 +1918,13 @@ export default function FunctionRunner({
             }
             headerContent={resolvedMachinePanelHeaderContent}
             hideSectionCaptions={hideMachinePanelSectionCaptions}
+            publicSectionHeadings={publicSectionHeadings}
+            documentScroll={documentPlayback}
             programPanelCaption={machinePanelProgramCaption}
             traceCompact={machinePanelTraceCompact}
             program={panelProgram}
+            contentSizedProgram={contentSizedProgram}
+            showProgramHeader={showProgramHeader}
             row={currentRow}
             finalRegisters={panelFinalRegisters}
             trace={activeTrace}
@@ -1866,15 +1938,18 @@ export default function FunctionRunner({
               <MachinePlaybackControls
                 disabled={playbackControlsDisabled}
                 isPlaying={playbackIsPlaying}
+                canContinueBatch={canContinueBatch}
                 currentIndex={playbackTraceIndex}
                 maxIndex={maxTraceIndex}
                 playbackLength={playbackLength}
                 onPrev={handlePrevStep}
                 onToggle={handleTogglePlayback}
+                showReplayLabel={publicGenerateProgram}
                 onNext={handleNextStep}
                 onChange={(nextIndex) => {
                   setPlaybackIsPlaying(false);
                   setPlaybackTraceIndex(nextIndex);
+                  if (documentPlayback) setPlaybackBatchEnd(getNextPlaybackBatchEnd(nextIndex));
                 }}
                 showSummary={showPlaybackSummary}
                 showSlowDown={playbackTiming.isSlowDownControlAvailable && !playbackExternallyControlled}
@@ -1890,11 +1965,12 @@ export default function FunctionRunner({
                   functionSpec={functionSpec}
                   inputValues={visibleInputValues}
                   selectedStepIndex={selectedPrimitiveStepIndex}
+                  resultLabel={publicGenerateProgram && !outputIsFinal ? "Expected result" : "Result"}
                 />
               ) : null
             }
           />
-          {runData.evaluation && (
+          {runData.evaluation && (!publicGenerateProgram || playbackTraceIndex >= maxPlaybackIndex) && (
             !primitiveStepView && normalizeFunctionKind(runData.evaluation?.kind) !== "compose" ? (
               <div className="runner-evaluation-strip">
                 <NestedEvaluationPanel

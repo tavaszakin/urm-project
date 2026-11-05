@@ -243,7 +243,10 @@ export default function FlowDiagramBetaPage() {
   // which previously caused SketchV3 to compute once with stale data before the correct
   // program arrived.
   const [compiledResult, setCompiledResult] = useState(null);
-  const [diagramMessage, setDiagramMessage] = useState("Preparing flow diagram.");
+  const [generationRequest, setGenerationRequest] = useState(null);
+  const latestGenerationRef = useRef(null);
+  const [diagramMessage, setDiagramMessage] = useState("");
+  const [isCompiling, setIsCompiling] = useState(false);
   // "Collapse setup blocks" (v1) is disabled/archived — see
   // .sketchv3-harness/archive/collapse_setup_blocks_v1_disabled.md. The control was removed and
   // BetaFlowDiagram hardcodes collapseSetupBlocks=false, so the active SketchV4 layout always runs
@@ -264,30 +267,46 @@ export default function FlowDiagramBetaPage() {
   //
   // Fix: keep a ref to the current functionSpec so the callback can always access the latest
   // value without being recreated, then use an empty-dep useCallback so its identity is stable.
-  const _selectedFunctionSpecRef = useRef(selectedFunctionState.functionSpec);
-  _selectedFunctionSpecRef.current = selectedFunctionState.functionSpec;
+  const selectedFunctionStateRef = useRef(selectedFunctionState);
+  selectedFunctionStateRef.current = selectedFunctionState;
 
   const handleRunDataChange = useCallback((runData) => {
-    if (!Array.isArray(runData?.program)) return;
-    const functionSpec = _selectedFunctionSpecRef.current;
-    setCompiledResult((prev) => {
-      // Bail out when the incoming program+spec are the same references as what is already
-      // stored.  This prevents a cascading layoutMetadata / layoutPlan recompute when the
-      // run result matches an already-compiled diagram.
-      if (prev !== null && prev.program === runData.program && prev.functionSpec === functionSpec) {
-        return prev;
-      }
-      return { program: runData.program, functionSpec };
-    });
-    setDiagramMessage("");
-  }, []); // empty deps — identity is stable for the lifetime of this component
+    if (!Array.isArray(runData?.program)) {
+      latestGenerationRef.current = null;
+      setGenerationRequest(null);
+      setCompiledResult(null);
+      setIsCompiling(false);
+      setDiagramMessage(runData ? "No program was returned for the selected function." : "");
+      return;
+    }
+    const { functionSpec } = selectedFunctionStateRef.current;
+    if (JSON.stringify(normalizeFunctionSpec(runData.function)) !== JSON.stringify(normalizeFunctionSpec(functionSpec))) return;
+    if (latestGenerationRef.current?.runData === runData
+      && latestGenerationRef.current.functionSpec === functionSpec) return;
 
+    const request = { runData, functionSpec };
+    latestGenerationRef.current = request;
+    setGenerationRequest(request);
+    setCompiledResult(null);
+    setIsCompiling(true);
+    setDiagramMessage("");
+  }, []);
+
+  const handleFunctionStateChange = useCallback((state) => {
+    selectedFunctionStateRef.current = state;
+    setSelectedFunctionState(state);
+    handleRunDataChange(null);
+  }, [handleRunDataChange]);
+
+  // Only accepted explicit generation starts compilation. Setup edits invalidate
+  // the request synchronously, before effect cleanup aborts any pending fetch.
   useEffect(() => {
-    const functionSpec = selectedFunctionState.functionSpec;
+    if (!generationRequest || latestGenerationRef.current !== generationRequest) return undefined;
+    const { functionSpec } = generationRequest;
     const validationMessage = validateFunctionSpec(functionSpec);
 
     if (validationMessage) {
-      setCompiledResult(null);
+      setIsCompiling(false);
       setDiagramMessage(validationMessage);
       return undefined;
     }
@@ -296,8 +315,6 @@ export default function FlowDiagramBetaPage() {
 
     async function compileSelectedFunction() {
       try {
-        setDiagramMessage("Preparing flow diagram.");
-
         const response = await fetch(`${API_URL}/compile-function`, {
           method: "POST",
           headers: {
@@ -307,28 +324,28 @@ export default function FlowDiagramBetaPage() {
           signal: controller.signal,
         });
 
-        if (!response.ok) {
-          throw new Error(`Compile failed: ${response.status}`);
+        if (!response.ok) throw new Error(`Compile failed: ${response.status}`);
+        const payload = await response.json();
+        if (controller.signal.aborted || latestGenerationRef.current !== generationRequest) return;
+        if (!Array.isArray(payload?.program)) throw new Error("No compiled program returned");
+        if (JSON.stringify(normalizeFunctionSpec(payload.function)) !== JSON.stringify(normalizeFunctionSpec(functionSpec))) {
+          throw new Error("Compiled program does not match the selected function");
         }
 
-        const payload = await response.json();
-        setCompiledResult(
-          Array.isArray(payload?.program)
-            ? { program: payload.program, functionSpec }
-            : null,
-        );
+        setCompiledResult({ program: payload.program, functionSpec });
+        setIsCompiling(false);
         setDiagramMessage("");
       } catch (error) {
-        if (error.name === "AbortError") return;
+        if (error.name === "AbortError" || latestGenerationRef.current !== generationRequest) return;
         setCompiledResult(null);
-        setDiagramMessage("No program is available for the selected function yet.");
+        setIsCompiling(false);
+        setDiagramMessage("Could not generate the flow diagram. Please try again.");
       }
     }
 
     void compileSelectedFunction();
-
     return () => controller.abort();
-  }, [selectedFunctionState.functionSpec]);
+  }, [generationRequest]);
 
   useEffect(() => {
     if (typeof window === "undefined") return undefined;
@@ -492,44 +509,44 @@ export default function FlowDiagramBetaPage() {
           <FunctionRunner
             initialFunctionSpec={DEFAULT_FUNCTION_SPEC}
             hideMachinePanel
+            publicGenerateProgram
             onRunDataChange={handleRunDataChange}
-            onFunctionStateChange={setSelectedFunctionState}
+            onFunctionStateChange={handleFunctionStateChange}
           />
         </section>
 
-        <section
-          className="beta-flow-card beta-flow-placeholder-card"
-          aria-labelledby="beta-flow-placeholder-title"
-          data-selected-kind={selectedFunctionState.functionSpec?.kind ?? "successor"}
-        >
-          <h3 id="beta-flow-placeholder-title" className="beta-flow-card-title">
-            Generated flow diagram
-          </h3>
-          {import.meta.env.DEV && layoutMetadata?.hasTunedLayout ? (
-            <label>
-              <input
-                type="checkbox"
-                checked={showLayoutComparison}
-                onChange={(event) => setShowLayoutComparison(event.target.checked)}
-              />
-              {" "}
-              Show layout comparison
-            </label>
-          ) : null}
-          {compiledResult ? (
+        {isCompiling ? <p role="status">Compiling flow diagram…</p> : null}
+        {diagramMessage ? <p role="alert">{diagramMessage}</p> : null}
+        {compiledResult ? (
+          <section
+            className="beta-flow-card beta-flow-placeholder-card"
+            aria-labelledby="beta-flow-placeholder-title"
+            data-selected-kind={compiledResult.functionSpec?.kind ?? "successor"}
+          >
+            <h3 id="beta-flow-placeholder-title" className="beta-flow-card-title">
+              Generated flow diagram
+            </h3>
+            {import.meta.env.DEV && layoutMetadata?.hasTunedLayout ? (
+              <label>
+                <input
+                  type="checkbox"
+                  checked={showLayoutComparison}
+                  onChange={(event) => setShowLayoutComparison(event.target.checked)}
+                />
+                {" "}
+                Show layout comparison
+              </label>
+            ) : null}
             <BetaFlowDiagram
               program={compiledResult.program}
               selectedFunctionId={compiledResult.functionSpec?.kind}
               selectedExampleName={layoutMetadata?.exampleKey ?? compiledResult.functionSpec?.kind}
               layoutMetadata={layoutMetadata}
               showLayoutComparison={import.meta.env.DEV && showLayoutComparison}
+              nativeViewControls
             />
-          ) : (
-            <div className="beta-flow-placeholder">
-              {diagramMessage || "No program is available for the selected function yet."}
-            </div>
-          )}
-        </section>
+          </section>
+        ) : null}
       </div>
     </div>
   );
