@@ -120,6 +120,25 @@ def second_smallest(k: int) -> List[Instruction]:
     ]
 
 
+def modulo_3() -> List[Instruction]:
+    """Compute R0 mod 3, preserving the three independent termination tests."""
+    return [
+        ("T", 0, 1),
+        ("Z", 0),
+        ("Z", 2),
+        ("J", 2, 1, 13),
+        ("S", 2),
+        ("S", 0),
+        ("J", 2, 1, 13),
+        ("S", 2),
+        ("S", 0),
+        ("J", 2, 1, 13),
+        ("S", 2),
+        ("Z", 0),
+        ("J", 0, 0, 3),
+    ]
+
+
 # ============================================================
 # Derived macros
 # ============================================================

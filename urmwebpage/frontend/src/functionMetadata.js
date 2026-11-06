@@ -74,6 +74,7 @@ export const FUNCTION_METADATA = {
     notation: "1 + x + … + x^y",
     description: "Computes 1 + x + x² + … + xʸ using primitive recursion.",
     aliases: ["geom"],
+    publicVisible: false,
   },
   divisor_count: {
     display: "Divisor Count",
@@ -81,6 +82,7 @@ export const FUNCTION_METADATA = {
     notation: "τ(n)",
     description: "Counts the positive divisors of n.",
     aliases: ["num_divisors"],
+    publicVisible: false,
   },
   bounded_sub: {
     display: "Truncated subtraction",
@@ -103,6 +105,15 @@ export const FUNCTION_METADATA = {
       publicVisible: false,
     }];
   })),
+  modulo_3: {
+    display: "Modulo 3",
+    shortDisplay: "Modulo 3",
+    notation: "mod3",
+    description: "Returns n mod 3 using three remainder states and a repeating counting cycle.",
+    aliases: [],
+    arity: 1,
+    defaultInputs: [10],
+  },
   characteristic: {
     display: "Characteristic Function",
     shortDisplay: "Characteristic Function",
@@ -160,6 +171,7 @@ export const FUNCTION_ORDER = [
   "second_smallest_5",
   "second_smallest_6",
   "bounded_sub",
+  "modulo_3",
   "characteristic",
   "compose",
   "primrec",
