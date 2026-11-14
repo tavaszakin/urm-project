@@ -12,6 +12,9 @@ before screenshots. Source path:
 `FlowDiagramBetaPage.jsx` → `BetaFlowDiagram` → `computePrimaryLayoutPlan` →
 `buildSketchV4LayoutPlan` → `layout/sketchv4/pipeline.js:buildLayout`.
 `selectedPrimaryLayoutEngine` returned V4 unconditionally in production.
+The V4 invocation passed `orientationSource: "v4Assigned"`, empty pins,
+`diagnostics: true`, and TEXTBOOK_LAYOUT body dimensions with setup/ordinary
+pitches 54/82, branchRayDistance 126 and clearance 16; no collapse rewrite.
 Development supported explicit V3 query/global overrides; the production build
 did not. No production environment or feature flag selected V5.
 
@@ -135,11 +138,28 @@ available Playwright and Chrome (CHROME_PATH can override the executable).
 
 ## Deployment record
 
-Prepared for the existing GitHub main → Vercel production workflow, preserving
-provider settings. Commit uses `[skip render]` since backend runtime inputs are
-unchanged. Final deployed SHA, deployment ID, live asset comparison and actual
-public-browser results will be recorded in `deployment-result.json` after release.
-A local build alone does not establish live deployment.
+Merged PR #8 using the existing GitHub main → Vercel production workflow.
+Production commit: `c8c7ec65a5e0fdff6be5d80d6706ab75181375e3`.
+Vercel deployment: `dpl_5bMbZz6wh7M7j9gCZRFzwFWYe5M7`, READY;
+GitHub production deployment 7793185118 reports success for this exact commit.
+The public alias points to `urm-project-buzhtxgn7-tavaszakins-projects.vercel.app`.
+The merged tree exactly matched the tested release commit `c9119ac2dd76267ef3962bb737e77e12c6a783a4`.
+No provider setting or environment change was made; `[skip render]` was retained.
+
+The public HTML, JS and CSS were downloaded after deployment and are byte-identical
+to the tested local production build. JS changed from `index-tKqH2Muo.js` to
+`index-BpKhxK_8.js`; SHA-256 values are in `deployment-result.json`. This verifies
+the public URL is serving the intended build rather than a stale frontend asset.
+
+`live-browser.json`: all 16 public defaults again complete under official V5,
+with exact reference node/route/bounds/coverage comparisons and exact SVG route
+coordinates, no API interception and no browser errors. Local/live compiled
+instruction lists agree exactly. Fit/scroll, program selection, GCD execution,
+compute Next playback and both registry/notation requirements pass live.
+`live-*.png` captures the deployed diagrams; compare `before-subtractive_gcd.png`
+and `before-modulo_3.png` with the corresponding live captures. Post-release
+evidence is committed on the release branch without an unnecessary second
+production deployment. No public route uses an older constructor.
 
 ## Prior work and provenance
 

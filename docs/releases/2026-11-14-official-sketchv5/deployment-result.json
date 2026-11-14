@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-14",
+  "publicUrl": "https://urm-project-neon.vercel.app/",
+  "releaseCommit": "c9119ac2dd76267ef3962bb737e77e12c6a783a4",
+  "productionCommit": "c8c7ec65a5e0fdff6be5d80d6706ab75181375e3",
+  "pullRequest": "https://github.com/tavaszakin/urm-project/pull/8",
+  "vercelDeployment": "dpl_5bMbZz6wh7M7j9gCZRFzwFWYe5M7",
+  "deploymentUrl": "https://urm-project-buzhtxgn7-tavaszakins-projects.vercel.app",
+  "githubDeployment": 7793185118,
+  "status": "READY / GitHub success",
+  "beforeCommit": "7978b77f50f3af0fcc61cf0c37c7403c59dfde43",
+  "beforeDeployment": "dpl_9XaPqMZJicFH7XJknJQostZF1q97",
+  "assetsByteIdenticalToTestedProductionBuild": {
+    "index.html": "73417e8a32a27651ed51e4926d5c1ceefe19acb2ad90b955f9a5284cabb48ab9",
+    "assets/index-BpKhxK_8.js": "f7cf7eae6b0352233e533ccd6d4bb3a78b850f18e01f8500870083b17fd10c19",
+    "assets/index-DRHyM9fo.css": "01b82edc3b584c480be5c11df125e57736babda463533adaf2d441c693c7d3cb"
+  },
+  "mergedTreeMatchesTestedRelease": true,
+  "referenceFixtures": 72,
+  "localProductionBrowserDefaults": 16,
+  "livePublicBrowserDefaults": 16,
+  "allPublicDefaultStatuses": "complete",
+  "browserErrors": [],
+  "programInputsLocalLiveIdentical": true,
+  "registryAndNotationPreserved": true,
+  "sourceClosureHashMatches": 12,
+  "hostingSettingsChanged": false,
+  "backendInputsChanged": false,
+  "researchArtifactsModified": false,
+  "postReleaseEvidence": "Stored on release branch; no second production rollout needed."
+}
