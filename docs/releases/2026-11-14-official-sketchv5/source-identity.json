@@ -1,0 +1,74 @@
+{
+  "date": "2026-11-14",
+  "entryPoint": "/Users/denizakin/urmwebpage-public/urmwebpage/frontend/src/layout/sketchv5/pipeline.js",
+  "displayEntry": "/Users/denizakin/urmwebpage-public/urmwebpage/frontend/src/layout/sketchv5/display.js",
+  "closure": {
+    "src/layout/sketchv4/attachmentStubs.js": {
+      "live": "/Users/denizakin/urmwebpage-public/urmwebpage/frontend/src/layout/sketchv4/attachmentStubs.js",
+      "sha256": "8c2bffc8c65eedafddf6f359dbd33faf2024b0b7fd8f931bc2b1adee23d2039a",
+      "lines": 246
+    },
+    "src/layout/sketchv4/cfg.js": {
+      "live": "/Users/denizakin/urmwebpage-public/urmwebpage/frontend/src/layout/sketchv4/cfg.js",
+      "sha256": "8688579bbeec111080b5f896f21ebb3ea93e07dc12306b2faa11e5fedc94d59b",
+      "lines": 251
+    },
+    "src/layout/sketchv4/constructionHistory.js": {
+      "live": "/Users/denizakin/urmwebpage-public/urmwebpage/frontend/src/layout/sketchv4/constructionHistory.js",
+      "sha256": "9e5e4d204eab66360119d789fae16f144112af055b66610d2af663670ac33fb1",
+      "lines": 155
+    },
+    "src/layout/sketchv4/displayGeometry.js": {
+      "live": "/Users/denizakin/urmwebpage-public/urmwebpage/frontend/src/layout/sketchv4/displayGeometry.js",
+      "sha256": "7ee4c7b7858709da335dc789b28de9451b2531d8c8d2841711584ed2607afacd",
+      "lines": 87
+    },
+    "src/layout/sketchv4/loopTargetAttachments.js": {
+      "live": "/Users/denizakin/urmwebpage-public/urmwebpage/frontend/src/layout/sketchv4/loopTargetAttachments.js",
+      "sha256": "d02a575aaa59ebfa2e97d65be6d7762042d6444d27fdb922686a8d8552281497",
+      "lines": 278
+    },
+    "src/layout/sketchv4/ownership.js": {
+      "live": "/Users/denizakin/urmwebpage-public/urmwebpage/frontend/src/layout/sketchv4/ownership.js",
+      "sha256": "22e92c868ecb6a242d2d374f98664b1dd94b826272474260463286d7cf37a4c8",
+      "lines": 69
+    },
+    "src/layout/sketchv4/roles.js": {
+      "live": "/Users/denizakin/urmwebpage-public/urmwebpage/frontend/src/layout/sketchv4/roles.js",
+      "sha256": "49f4c7369b3c083e2da637cdc63b3b2abf9e8114b3e8a3c04ea50c401d171185",
+      "lines": 145
+    },
+    "src/layout/sketchv5/connections.js": {
+      "live": "/Users/denizakin/urmwebpage-public/urmwebpage/frontend/src/layout/sketchv5/connections.js",
+      "sha256": "b7720e5911fa5d30ae1161f3a58f40a5cdd4a7b4a083e3d771e1e248fe706096",
+      "lines": 217
+    },
+    "src/layout/sketchv5/display.js": {
+      "live": "/Users/denizakin/urmwebpage-public/urmwebpage/frontend/src/layout/sketchv5/display.js",
+      "sha256": "353486c66507bc77e7363dccc240f195c3232be553afbfdad85bdd1dfc38bb23",
+      "lines": 40
+    },
+    "src/layout/sketchv5/pipeline.js": {
+      "live": "/Users/denizakin/urmwebpage-public/urmwebpage/frontend/src/layout/sketchv5/pipeline.js",
+      "sha256": "871bf84957a799fd0eab019e024b557787a79a12980e7a6311eb2d0e2bb53a7b",
+      "lines": 243
+    },
+    "src/layout/sketchv5/structure.js": {
+      "live": "/Users/denizakin/urmwebpage-public/urmwebpage/frontend/src/layout/sketchv5/structure.js",
+      "sha256": "35286bb1c5afc3ee646887eecb04edcfcb0f8459ad8bead0c19687e776fb3cb8",
+      "lines": 263
+    },
+    "src/layout/sketchv5/validation.js": {
+      "live": "/Users/denizakin/urmwebpage-public/urmwebpage/frontend/src/layout/sketchv5/validation.js",
+      "sha256": "01445544536e89f101b61d3501a2f9b5ea8b6adc93a1e3e5c26dbbb207210af8",
+      "lines": 280
+    }
+  },
+  "matchesAtlasClosure": true,
+  "atlasSourceSetSha256": "7bc1a4f030845d36cae2d284ba8df814497ea6b632b1f1345e97e1c280a281a5",
+  "constructorInvocation": "buildLayout(program,{recordConstruction:true})",
+  "closureDerivation": "Recursive static relative imports from display.js; no policy edits.",
+  "entryPointLine": 100,
+  "inventoryDigestConvention": "SHA256 of sorted lines: sha256 + two spaces + relative path + newline",
+  "sourceInventorySha256": "5413041ecad80982d21a11621bd3fa5a1c3b8ac4a39811e19c49a3b5a87b266e"
+}
