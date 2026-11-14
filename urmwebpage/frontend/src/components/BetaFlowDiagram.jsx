@@ -1,3 +1,4 @@
+import { buildLayoutPlan as buildOfficialSketchV5Plan } from "../layout/sketchv5/display.js";
 import KatexMath from "./KatexMath.jsx";
 import { applySketchV1Layout } from "./SketchV1FlowDiagram.jsx";
 import { applySketchV3LayoutWithAutomaticRepair } from "./SketchV3FlowDiagram.jsx";
@@ -15318,6 +15319,8 @@ function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow di
         ref={containerRef}
         className="beta-flow-svg-shell"
         style={readableScroll ? { maxHeight: availHeight } : undefined}
+        data-constructor={layoutPlan.layoutMode}
+        data-construction-status={layoutPlan.constructionStatus}
         data-fit-scale={fitScale.toFixed(4)}
         data-diagram-bounds={`${Math.round(layoutPlan.width)}x${Math.round(layoutPlan.height)}`}
         data-view-mode={readableScroll ? "scroll" : "fit"}
@@ -15503,26 +15506,7 @@ function safeComputeLayout(program, selectedFunctionId, options, layout) {
   }
 }
 
-// ---- SketchV4 primary integration -------------------------------------------------------
-// The ordinary CFG path and the explicit beta control both select SketchV4. SketchV3 remains
-// reachable only as ?flowLayout=sketchv3 for deliberate debugging; an absent or unrecognized
-// query value cannot silently restore the legacy engine.
-
-function selectedPrimaryLayoutEngine() {
-  if (import.meta.env?.PROD) return "sketchV4";
-  // Headless overrides for verification. The old boolean hook remains as an explicit V4 alias.
-  if (typeof globalThis !== "undefined" && globalThis.__flowLayoutEngine === "sketchV3") return "sketchV3";
-  if (typeof globalThis !== "undefined" && globalThis.__flowLayoutEngine === "sketchV4") return "sketchV4";
-  if (typeof globalThis !== "undefined" && globalThis.__sketchV4Requested) return "sketchV4";
-  if (typeof window === "undefined") return "sketchV4";
-  try {
-    return new URLSearchParams(window.location.search).get("flowLayout")?.toLowerCase() === "sketchv3"
-      ? "sketchV3"
-      : "sketchV4";
-  } catch {
-    return "sketchV4";
-  }
-}
+// Legacy helpers retained for headless/reference comparisons only.
 
 // V4-ONLY opt-in visual debug: ?flowDebugPorts=1 (only meaningful when V4 is active) highlights
 // the Phase-4a changed-port edges and labels their portPolicyCase, so the (often subtle) port
@@ -15768,21 +15752,16 @@ function buildSketchV4LayoutPlan(program, selectedFunctionId, sketchV3Plan, opti
   };
 }
 
-// Primary layout dispatch. The ordinary path and ?flowLayout=sketchv4 build the same V4 plan.
-// The full SketchV3 path is reachable only through the explicit ?flowLayout=sketchv3 debug mode.
-// V4 failures are not silently replaced by legacy geometry.
-// Collapse setup blocks (v1) is disabled/archived — V4 always lays out the original full program
-// (see .sketchv3-harness/archive/collapse_setup_blocks_v1_disabled.md).
+// Every ordinary diagram uses the unchanged official V5 display adapter.
+// Metadata supplies labels/dimensions only; V5 owns all construction geometry.
+// Stopped/unsupported results remain their actual prefix, without legacy fallback.
 function computePrimaryLayoutPlan(program, selectedFunctionId, options = {}) {
-  if (selectedPrimaryLayoutEngine() === "sketchV3") {
-    return buildDiagramModel(program, selectedFunctionId, { ...options, layoutMode: "sketchV3" });
-  }
-  const sketchV4MetadataPlan = buildSketchV4MetadataPlan(program, selectedFunctionId, options);
-  return buildSketchV4LayoutPlan(program, selectedFunctionId, sketchV4MetadataPlan, options);
+  const metadata = buildSketchV4MetadataPlan(program, selectedFunctionId, options);
+  return buildOfficialSketchV5Plan(program, metadata, options);
 }
 
 // Headless verification entry points (node harness / dev console); not used by the app UI.
-export { buildDiagramModel, buildSketchV4LayoutPlan, computePrimaryLayoutPlan, labelPointForPolyline };
+export { buildDiagramModel, buildSketchV4LayoutPlan, computePrimaryLayoutPlan, labelPointForPolyline, FlowSvgDisplay };
 
 export function buildFlowGeometryReport(
   program,
@@ -15794,7 +15773,7 @@ export function buildFlowGeometryReport(
     return null;
   }
 
-  const layoutPlan = buildDiagramModel(program, selectedFunctionId, options, layout);
+  const layoutPlan = computePrimaryLayoutPlan(program, selectedFunctionId, options);
   return classifyVisualGeometry(layoutPlan, selectedFunctionId);
 }
 
@@ -15808,7 +15787,7 @@ export default function BetaFlowDiagram({
 }) {
   // "Collapse setup blocks" (v1) is disabled/archived — see
   // .sketchv3-harness/archive/collapse_setup_blocks_v1_disabled.md. Hardcoded false so the active
-  // SketchV4/SketchV3 layout always runs on the original full program (any prop passed is ignored).
+  // SketchV5 layout always runs on the original full program (any prop passed is ignored).
   // To be rebuilt as a post-layout display macro layer (v2), never a program rewrite.
   const collapseSetupBlocks = false;
   // Memoize layout computations so they only re-run when their inputs change.
@@ -15889,10 +15868,15 @@ export default function BetaFlowDiagram({
   }
 
   // Layout comparison is only meaningful when a tuned/reference layout exists for
-  // this function. Without it (or with comparison off) render the single sketchV3
+  // this function. Without it (or with comparison off) render the single SketchV5
   // view; the legacy no-tuned comparison grid below is intentionally unreachable now.
   if (!shouldShowTunedComparisonPanel) {
-    return renderFlowSvg(layoutPlan, { nativeViewControls });
+    return <>
+      {layoutPlan.constructionStatus !== "complete" && <p role="status">
+        SketchV5 construction {layoutPlan.constructionStatus}. Showing the committed prefix.
+      </p>}
+      {renderFlowSvg(layoutPlan, { nativeViewControls })}
+    </>;
   }
 
   const geometryDebugEnabled = isVisualGeometryDebugEnabled();
@@ -15913,9 +15897,9 @@ export default function BetaFlowDiagram({
     <div className="beta-flow-comparison-grid">
       {renderFlowSvgPanel(
         layoutPlan,
-        "sketchV3 layout",
+        "SketchV5 layout",
         null,
-        "sketchV3 URM flow diagram",
+        "SketchV5 URM flow diagram",
         null,
         null,
         nativeViewControls,

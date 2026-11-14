@@ -1,0 +1,72 @@
+{
+  "urm-family-atlas-2026-11-14": {
+    "src/layout/sketchv4/attachmentStubs.js": true,
+    "src/layout/sketchv4/cfg.js": true,
+    "src/layout/sketchv4/constructionHistory.js": true,
+    "src/layout/sketchv4/displayGeometry.js": true,
+    "src/layout/sketchv4/loopTargetAttachments.js": true,
+    "src/layout/sketchv4/ownership.js": true,
+    "src/layout/sketchv4/roles.js": true,
+    "src/layout/sketchv5/connections.js": true,
+    "src/layout/sketchv5/display.js": true,
+    "src/layout/sketchv5/pipeline.js": true,
+    "src/layout/sketchv5/structure.js": true,
+    "src/layout/sketchv5/validation.js": true
+  },
+  "constructible-families-preservation-2026-11-12": {
+    "src/layout/sketchv4/attachmentStubs.js": true,
+    "src/layout/sketchv4/cfg.js": true,
+    "src/layout/sketchv4/constructionHistory.js": true,
+    "src/layout/sketchv4/displayGeometry.js": true,
+    "src/layout/sketchv4/loopTargetAttachments.js": true,
+    "src/layout/sketchv4/ownership.js": true,
+    "src/layout/sketchv4/roles.js": true,
+    "src/layout/sketchv5/connections.js": true,
+    "src/layout/sketchv5/display.js": true,
+    "src/layout/sketchv5/pipeline.js": true,
+    "src/layout/sketchv5/structure.js": true,
+    "src/layout/sketchv5/validation.js": true
+  },
+  "shared-exit-search-cycles-2026-11-13": {
+    "src/layout/sketchv4/attachmentStubs.js": true,
+    "src/layout/sketchv4/cfg.js": true,
+    "src/layout/sketchv4/constructionHistory.js": true,
+    "src/layout/sketchv4/displayGeometry.js": true,
+    "src/layout/sketchv4/loopTargetAttachments.js": true,
+    "src/layout/sketchv4/ownership.js": true,
+    "src/layout/sketchv4/roles.js": true,
+    "src/layout/sketchv5/connections.js": true,
+    "src/layout/sketchv5/display.js": true,
+    "src/layout/sketchv5/pipeline.js": true,
+    "src/layout/sketchv5/structure.js": true,
+    "src/layout/sketchv5/validation.js": true
+  },
+  "reusable-enclosure-profiles-2026-11-13": {
+    "src/layout/sketchv4/attachmentStubs.js": true,
+    "src/layout/sketchv4/cfg.js": true,
+    "src/layout/sketchv4/constructionHistory.js": true,
+    "src/layout/sketchv4/displayGeometry.js": true,
+    "src/layout/sketchv4/loopTargetAttachments.js": true,
+    "src/layout/sketchv4/ownership.js": true,
+    "src/layout/sketchv4/roles.js": true,
+    "src/layout/sketchv5/connections.js": true,
+    "src/layout/sketchv5/display.js": true,
+    "src/layout/sketchv5/pipeline.js": true,
+    "src/layout/sketchv5/structure.js": true,
+    "src/layout/sketchv5/validation.js": true
+  },
+  "v5-rulebook-theorem-audit-2026-11-14": {
+    "src/layout/sketchv4/attachmentStubs.js": true,
+    "src/layout/sketchv4/cfg.js": true,
+    "src/layout/sketchv4/constructionHistory.js": true,
+    "src/layout/sketchv4/displayGeometry.js": true,
+    "src/layout/sketchv4/loopTargetAttachments.js": true,
+    "src/layout/sketchv4/ownership.js": true,
+    "src/layout/sketchv4/roles.js": true,
+    "src/layout/sketchv5/connections.js": true,
+    "src/layout/sketchv5/display.js": true,
+    "src/layout/sketchv5/pipeline.js": true,
+    "src/layout/sketchv5/structure.js": true,
+    "src/layout/sketchv5/validation.js": true
+  }
+}

@@ -1,0 +1,511 @@
+{
+  "reference": "/Users/denizakin/urm-project/experiments/v5-rulebook-theorem-audit-2026-11-14/source/frontend",
+  "closureFiles": 12,
+  "checks": "exact full results, CFG, coverage, orientations, events, ports, production nodes/routes/bounds, replay hard validators, SVG rendering",
+  "results": [
+    {
+      "id": "af-01-n1",
+      "status": "complete",
+      "nodes": 3,
+      "edges": 2,
+      "events": 4
+    },
+    {
+      "id": "af-02-one",
+      "status": "complete",
+      "nodes": 4,
+      "edges": 4,
+      "events": 6
+    },
+    {
+      "id": "af-04-two-terminal",
+      "status": "complete",
+      "nodes": 7,
+      "edges": 8,
+      "events": 10
+    },
+    {
+      "id": "af-04-short-first-leaf",
+      "status": "complete",
+      "nodes": 11,
+      "edges": 12,
+      "events": 14
+    },
+    {
+      "id": "cy-03-minimal",
+      "status": "complete",
+      "nodes": 7,
+      "edges": 8,
+      "events": 10
+    },
+    {
+      "id": "cy-03-subtraction-kernel",
+      "status": "complete",
+      "nodes": 9,
+      "edges": 10,
+      "events": 12
+    },
+    {
+      "id": "cy-04-ordinary-preparation",
+      "status": "complete",
+      "nodes": 11,
+      "edges": 12,
+      "events": 14
+    },
+    {
+      "id": "cy-04-terminal3-p0",
+      "status": "complete",
+      "nodes": 6,
+      "edges": 8,
+      "events": 10
+    },
+    {
+      "id": "cy-04-terminal4-p0",
+      "status": "failed",
+      "nodes": 7,
+      "edges": 9,
+      "events": 10
+    },
+    {
+      "id": "ex-neg-01-floor-negative",
+      "status": "failed",
+      "nodes": 22,
+      "edges": 22,
+      "events": 23
+    },
+    {
+      "id": "ex-neg-01-shallow-control",
+      "status": "complete",
+      "nodes": 21,
+      "edges": 24,
+      "events": 26
+    },
+    {
+      "id": "ex-neg-01-longer-negative",
+      "status": "failed",
+      "nodes": 26,
+      "edges": 26,
+      "events": 27
+    },
+    {
+      "id": "af-04-three-certified",
+      "status": "complete",
+      "nodes": 17,
+      "edges": 19,
+      "events": 21
+    },
+    {
+      "id": "af-05-two-results",
+      "status": "failed",
+      "nodes": 6,
+      "edges": 6,
+      "events": 7
+    },
+    {
+      "id": "af-06-k3",
+      "status": "failed",
+      "nodes": 7,
+      "edges": 7,
+      "events": 8
+    },
+    {
+      "id": "cy-02-shared-header",
+      "status": "complete",
+      "nodes": 5,
+      "edges": 6,
+      "events": 8
+    },
+    {
+      "id": "cy-05-two-latches",
+      "status": "complete",
+      "nodes": 7,
+      "edges": 8,
+      "events": 10
+    },
+    {
+      "id": "hi-01-independent-stems",
+      "status": "complete",
+      "nodes": 9,
+      "edges": 10,
+      "events": 12
+    },
+    {
+      "id": "co-01-unguarded",
+      "status": "failed",
+      "nodes": 5,
+      "edges": 6,
+      "events": 7
+    },
+    {
+      "id": "in-01-body1",
+      "status": "complete",
+      "nodes": 7,
+      "edges": 8,
+      "events": 10
+    },
+    {
+      "id": "in-02-minimal",
+      "status": "unsupported",
+      "nodes": 4,
+      "edges": 4,
+      "events": 5
+    },
+    {
+      "id": "in-03-atlas-example",
+      "status": "failed",
+      "nodes": 6,
+      "edges": 6,
+      "events": 7
+    },
+    {
+      "id": "straight",
+      "status": "complete",
+      "nodes": 5,
+      "edges": 4,
+      "events": 6
+    },
+    {
+      "id": "fanin-4",
+      "status": "complete",
+      "nodes": 8,
+      "edges": 11,
+      "events": 13
+    },
+    {
+      "id": "drift-spaced",
+      "status": "complete",
+      "nodes": 10,
+      "edges": 12,
+      "events": 14
+    },
+    {
+      "id": "drift-unspaced",
+      "status": "failed",
+      "nodes": 6,
+      "edges": 7,
+      "events": 8
+    },
+    {
+      "id": "long-arm-3",
+      "status": "complete",
+      "nodes": 8,
+      "edges": 8,
+      "events": 10
+    },
+    {
+      "id": "selector-prep0-tail20",
+      "status": "complete",
+      "nodes": 42,
+      "edges": 51,
+      "events": 53
+    },
+    {
+      "id": "selector-prep1-tail20",
+      "status": "failed",
+      "nodes": 30,
+      "edges": 35,
+      "events": 36
+    },
+    {
+      "id": "prep-window-a0-c3",
+      "status": "complete",
+      "nodes": 21,
+      "edges": 29,
+      "events": 31
+    },
+    {
+      "id": "prep-window-a0-c4",
+      "status": "failed",
+      "nodes": 21,
+      "edges": 25,
+      "events": 26
+    },
+    {
+      "id": "weak-core-floor",
+      "status": "complete",
+      "nodes": 44,
+      "edges": 54,
+      "events": 56
+    },
+    {
+      "id": "terminal4-offset2",
+      "status": "complete",
+      "nodes": 10,
+      "edges": 15,
+      "events": 17
+    },
+    {
+      "id": "subdivide-terminal4-offset2",
+      "status": "failed",
+      "nodes": 11,
+      "edges": 13,
+      "events": 14
+    },
+    {
+      "id": "posttest-small",
+      "status": "complete",
+      "nodes": 13,
+      "edges": 16,
+      "events": 18
+    },
+    {
+      "id": "posttest-fresh-suffix-g0",
+      "status": "failed",
+      "nodes": 11,
+      "edges": 14,
+      "events": 15
+    },
+    {
+      "id": "ordinary-m6-compact-and-sharing",
+      "status": "complete",
+      "nodes": 12,
+      "edges": 17,
+      "events": 19
+    },
+    {
+      "id": "fanin-width-tower",
+      "status": "complete",
+      "nodes": 16,
+      "edges": 22,
+      "events": 24
+    },
+    {
+      "id": "width-with-tail",
+      "status": "complete",
+      "nodes": 20,
+      "edges": 25,
+      "events": 27
+    },
+    {
+      "id": "width-without-tail",
+      "status": "complete",
+      "nodes": 19,
+      "edges": 24,
+      "events": 26
+    },
+    {
+      "id": "small-single-offset",
+      "status": "complete",
+      "nodes": 13,
+      "edges": 18,
+      "events": 20
+    },
+    {
+      "id": "small-double-offset",
+      "status": "failed",
+      "nodes": 14,
+      "edges": 17,
+      "events": 18
+    },
+    {
+      "id": "P_3_2",
+      "status": "complete",
+      "nodes": 21,
+      "edges": 29,
+      "events": 31
+    },
+    {
+      "id": "P_5_4",
+      "status": "failed",
+      "nodes": 26,
+      "edges": 35,
+      "events": 36
+    },
+    {
+      "id": "two-returns",
+      "status": "complete",
+      "nodes": 6,
+      "edges": 7,
+      "events": 9
+    },
+    {
+      "id": "native-gcd",
+      "status": "complete",
+      "nodes": 29,
+      "edges": 35,
+      "events": 37
+    },
+    {
+      "id": "public-eq",
+      "status": "complete",
+      "nodes": 50,
+      "edges": 57,
+      "events": 59
+    },
+    {
+      "id": "public-zero",
+      "status": "complete",
+      "nodes": 3,
+      "edges": 2,
+      "events": 4
+    },
+    {
+      "id": "public-successor",
+      "status": "complete",
+      "nodes": 3,
+      "edges": 2,
+      "events": 4
+    },
+    {
+      "id": "public-predecessor",
+      "status": "complete",
+      "nodes": 9,
+      "edges": 10,
+      "events": 12
+    },
+    {
+      "id": "public-constant",
+      "status": "complete",
+      "nodes": 6,
+      "edges": 5,
+      "events": 7
+    },
+    {
+      "id": "public-projection",
+      "status": "complete",
+      "nodes": 3,
+      "edges": 2,
+      "events": 4
+    },
+    {
+      "id": "public-add",
+      "status": "complete",
+      "nodes": 7,
+      "edges": 7,
+      "events": 9
+    },
+    {
+      "id": "public-multiplication",
+      "status": "complete",
+      "nodes": 22,
+      "edges": 23,
+      "events": 25
+    },
+    {
+      "id": "public-exponentiation",
+      "status": "complete",
+      "nodes": 43,
+      "edges": 45,
+      "events": 47
+    },
+    {
+      "id": "public-factorial",
+      "status": "complete",
+      "nodes": 43,
+      "edges": 45,
+      "events": 47
+    },
+    {
+      "id": "public-geometric_sum",
+      "status": "complete",
+      "nodes": 210,
+      "edges": 214,
+      "events": 216
+    },
+    {
+      "id": "public-divisor_count",
+      "status": "failed",
+      "nodes": 289,
+      "edges": 298,
+      "events": 299
+    },
+    {
+      "id": "public-second_smallest_3",
+      "status": "complete",
+      "nodes": 21,
+      "edges": 29,
+      "events": 31
+    },
+    {
+      "id": "public-second_smallest_4",
+      "status": "failed",
+      "nodes": 30,
+      "edges": 42,
+      "events": 43
+    },
+    {
+      "id": "public-second_smallest_5",
+      "status": "failed",
+      "nodes": 26,
+      "edges": 35,
+      "events": 36
+    },
+    {
+      "id": "public-second_smallest_6",
+      "status": "failed",
+      "nodes": 29,
+      "edges": 40,
+      "events": 41
+    },
+    {
+      "id": "public-bounded_sub",
+      "status": "complete",
+      "nodes": 14,
+      "edges": 16,
+      "events": 18
+    },
+    {
+      "id": "public-modulo_3",
+      "status": "complete",
+      "nodes": 15,
+      "edges": 17,
+      "events": 19
+    },
+    {
+      "id": "public-characteristic:leq",
+      "status": "complete",
+      "nodes": 27,
+      "edges": 30,
+      "events": 32
+    },
+    {
+      "id": "public-characteristic:lt",
+      "status": "complete",
+      "nodes": 29,
+      "edges": 32,
+      "events": 34
+    },
+    {
+      "id": "public-characteristic:eq",
+      "status": "complete",
+      "nodes": 50,
+      "edges": 57,
+      "events": 59
+    },
+    {
+      "id": "public-characteristic:divides",
+      "status": "complete",
+      "nodes": 60,
+      "edges": 70,
+      "events": 72
+    },
+    {
+      "id": "public-compose",
+      "status": "complete",
+      "nodes": 9,
+      "edges": 8,
+      "events": 10
+    },
+    {
+      "id": "public-primrec",
+      "status": "complete",
+      "nodes": 17,
+      "edges": 17,
+      "events": 19
+    },
+    {
+      "id": "public-minimization",
+      "status": "complete",
+      "nodes": 19,
+      "edges": 20,
+      "events": 22
+    },
+    {
+      "id": "public-subtractive_gcd",
+      "status": "complete",
+      "nodes": 29,
+      "edges": 35,
+      "events": 37
+    }
+  ]
+}
