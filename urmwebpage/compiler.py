@@ -368,7 +368,7 @@ def infer_function_arity(spec: FunctionSpec) -> int:
     if kind in {"zero", "succ", "successor", "pred", "predecessor", "truncated_predecessor", "const", "constant", "modulo_3"}:
         return 1
 
-    if kind in {"add", "addition", "bounded_sub", "truncated_sub", "truncated_subtraction", "sub"}:
+    if kind in {"add", "addition", "bounded_sub", "truncated_sub", "truncated_subtraction", "sub", "subtractive_gcd"}:
         return 2
 
     if kind == "characteristic":
@@ -1019,7 +1019,7 @@ def compile_characteristic_function(spec: FunctionSpec) -> Program:
 
 def compile_function_to_program(spec: FunctionSpec):
     """Compile a high-level function spec into a URM instruction list."""
-    from urm_macros import add, bounded_sub, constant, modulo_3, predecessor, projection, second_smallest, successor, zero
+    from urm_macros import add, bounded_sub, constant, modulo_3, predecessor, projection, second_smallest, subtractive_gcd, successor, zero
 
     kind = _normalized_kind(spec.kind)
 
@@ -1028,6 +1028,9 @@ def compile_function_to_program(spec: FunctionSpec):
 
     if kind == "modulo_3":
         return modulo_3()
+
+    if kind == "subtractive_gcd":
+        return subtractive_gcd()
 
     if _is_multiplication_kind(kind):
         return compile_primitive_recursion_flat(build_multiplication_primitive_recursion_spec())
@@ -1122,6 +1125,7 @@ PUBLIC_FUNCTION_KINDS: dict[str, list[str]] = {
     "geometric_sum": ["geom"],
     "divisor_count": ["num_divisors"],
     "modulo_3": [],
+    "subtractive_gcd": [],
     **{kind: [] for kind in SECOND_SMALLEST_ARITIES},
     "bounded_sub": ["sub", "truncated_sub", "truncated_subtraction"],
     "characteristic": [],

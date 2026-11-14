@@ -73,6 +73,7 @@ REPRESENTATIVE_SPECS: Dict[str, Dict[str, Any]] = {
     "geometric_sum": {"kind": "geometric_sum"},
     "divisor_count": {"kind": "divisor_count"},
     "modulo_3": {"kind": "modulo_3"},
+    "subtractive_gcd": {"kind": "subtractive_gcd"},
     **{f"second_smallest_{k}": {"kind": f"second_smallest_{k}"} for k in range(3, 7)},
     "bounded_sub": {"kind": "bounded_sub"},
     "characteristic": {"kind": "characteristic", "relation": "leq"},

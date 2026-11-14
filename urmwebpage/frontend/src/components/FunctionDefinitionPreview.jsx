@@ -80,6 +80,13 @@ function buildFunctionCall(name, args) {
 
 function renderMeaningExpression(spec, args = []) {
   const kind = normalizeFunctionKind(spec?.kind);
+  if (kind === "modulo_3") {
+    return {
+      primary: createExpressionText(`${args[0] ?? "x"} \\bmod 3`),
+      familiar: null,
+    };
+  }
+
   if (Number.isInteger(getFunctionMetadata(kind).arity)) {
     return {
       primary: buildFunctionExpressionNode(spec, args.map((value) => createExpressionText(value))),

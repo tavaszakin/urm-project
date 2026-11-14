@@ -114,6 +114,15 @@ export const FUNCTION_METADATA = {
     arity: 1,
     defaultInputs: [10],
   },
+  subtractive_gcd: {
+    display: "gcd",
+    shortDisplay: "gcd",
+    notation: "gcd",
+    description: "Computes gcd(a,b) by repeated subtraction using counting loops; gcd(0,0) = 0.",
+    aliases: [],
+    arity: 2,
+    defaultInputs: [12, 8],
+  },
   characteristic: {
     display: "Characteristic Function",
     shortDisplay: "Characteristic Function",
@@ -172,6 +181,7 @@ export const FUNCTION_ORDER = [
   "second_smallest_6",
   "bounded_sub",
   "modulo_3",
+  "subtractive_gcd",
   "characteristic",
   "compose",
   "primrec",
