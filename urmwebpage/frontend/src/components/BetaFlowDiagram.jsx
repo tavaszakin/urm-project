@@ -1,3 +1,4 @@
+import useFittedInstructionLabels from "./betaFlow/useFittedInstructionLabels.js";
 import { buildLayoutPlan as buildOfficialSketchV5Plan } from "../layout/sketchv5/display.js";
 import KatexMath from "./KatexMath.jsx";
 import { applySketchV1Layout } from "./SketchV1FlowDiagram.jsx";
@@ -14932,11 +14933,15 @@ function renderNodeShape(node, layout, offsetX, offsetY) {
   );
 }
 
-function renderMathNodeLabel(node, layout, offsetX, offsetY) {
+function renderMathNodeLabel(node, layout, offsetX, offsetY, largerText) {
   const { width, height } = getNodeSize(node, layout);
   const x = safeSvgCoordinate(node.x + offsetX);
   const y = safeSvgCoordinate(node.y + offsetY);
   const { title, label, summary } = getNodeMathLines(node);
+  // KaTeX otherwise adds the standard thin space after each comma.
+  const expression = largerText && node.kind === "conditionalJump"
+    ? label.replaceAll(",", "{,}")
+    : label;
   const hasSummary = Boolean(summary);
   const labelBoxHeight = Math.max(height - 4, 20);
 
@@ -14953,7 +14958,7 @@ function renderMathNodeLabel(node, layout, offsetX, offsetY) {
           <KatexMath expression={title} fallback={formatNodeTitle(node)} />
         </div>
         <div className="beta-flow-node-body-math">
-          <KatexMath expression={label} fallback={node.label} />
+          <KatexMath expression={expression} fallback={node.label} />
         </div>
         {hasSummary ? (
           <div className="beta-flow-node-body-math">
@@ -15073,11 +15078,12 @@ function auditEdgeBoundsForLayoutPlan(layoutPlan) {
   };
 }
 
-function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow diagram", nativeViewControls = false, diagramView = null }) {
+function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow diagram", nativeViewControls = false, diagramView = null, largerText = false }) {
   const { layout } = layoutPlan;
   const arrowMarkerId = `beta-flow-arrow-${useId().replace(/:/g, "")}`;
   const viewControlName = `${arrowMarkerId}-view`;
   const containerRef = useRef(null);
+  const svgRef = useRef(null);
   // Start with MAX_COMFORTABLE_GRAPH_WIDTH so the first render matches the existing
   // graphScale behavior. ResizeObserver updates this to the actual container width.
   const [containerWidth, setContainerWidth] = useState(MAX_COMFORTABLE_GRAPH_WIDTH);
@@ -15249,6 +15255,7 @@ function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow di
   const fitScale = readableScroll ? widthFitScale : fitWholeScale;
   const displayWidth = Math.round(naturalWidth * fitScale);
   const displayHeight = Math.round(naturalHeight * fitScale);
+  useFittedInstructionLabels(svgRef, layoutPlan, largerText, displayWidth);
 
   // Show info whenever the diagram is scaled down, scrolling, or when audit debug is on.
   const isScaled = fitScale < 0.999;
@@ -15328,7 +15335,8 @@ function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow di
         data-view-mode={readableScroll ? "scroll" : "fit"}
       >
         <svg
-          className="beta-flow-svg"
+          ref={svgRef}
+          className={largerText ? "beta-flow-svg flow-diagram-typography" : "beta-flow-svg"}
         style={{ display: "block", width: displayWidth, height: displayHeight, flex: "none" }}
         viewBox={`0 0 ${naturalWidth} ${naturalHeight}`}
         role="img"
@@ -15399,7 +15407,7 @@ function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow di
                     {node.label}
                   </text>
                 ) : (
-                  renderMathNodeLabel(node, layout, layoutPlan.offsetX, layoutPlan.offsetY)
+                  renderMathNodeLabel(node, layout, layoutPlan.offsetX, layoutPlan.offsetY, largerText)
                 )}
               </g>
             ))}
@@ -15411,8 +15419,8 @@ function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow di
   );
 }
 
-function renderFlowSvg(layoutPlan, { ariaLabel = "Instruction-level URM flow diagram", nativeViewControls = false, diagramView = null } = {}) {
-  return <FlowSvgDisplay layoutPlan={layoutPlan} ariaLabel={ariaLabel} nativeViewControls={nativeViewControls} diagramView={diagramView} />;
+function renderFlowSvg(layoutPlan, { ariaLabel = "Instruction-level URM flow diagram", nativeViewControls = false, diagramView = null, largerText = false } = {}) {
+  return <FlowSvgDisplay layoutPlan={layoutPlan} ariaLabel={ariaLabel} nativeViewControls={nativeViewControls} diagramView={diagramView} largerText={largerText} />;
 }
 
 function renderFlowSvgPanel(
@@ -15424,6 +15432,7 @@ function renderFlowSvgPanel(
   headerControl = null,
   nativeViewControls = false,
   diagramView = null,
+  largerText = false,
 ) {
   return (
     <section className="beta-flow-comparison-panel" aria-label={title}>
@@ -15443,7 +15452,7 @@ function renderFlowSvgPanel(
           <p className="beta-flow-comparison-panel-note">{subtitle}</p>
         ) : null}
       </header>
-      {renderFlowSvg(layoutPlan, { ariaLabel, nativeViewControls, diagramView })}
+      {renderFlowSvg(layoutPlan, { ariaLabel, nativeViewControls, diagramView, largerText })}
     </section>
   );
 }
@@ -15788,6 +15797,7 @@ export default function BetaFlowDiagram({
   showLayoutComparison = false,
   nativeViewControls = false,
   diagramView = null,
+  largerText = false,
 }) {
   // "Collapse setup blocks" (v1) is disabled/archived — see
   // .sketchv3-harness/archive/collapse_setup_blocks_v1_disabled.md. Hardcoded false so the active
@@ -15879,7 +15889,7 @@ export default function BetaFlowDiagram({
       {layoutPlan.constructionStatus !== "complete" && <p role="status">
         SketchV5 construction {layoutPlan.constructionStatus}. Showing the committed prefix.
       </p>}
-      {renderFlowSvg(layoutPlan, { nativeViewControls, diagramView })}
+      {renderFlowSvg(layoutPlan, { nativeViewControls, diagramView, largerText })}
     </>;
   }
 
@@ -15908,6 +15918,7 @@ export default function BetaFlowDiagram({
         null,
         nativeViewControls,
         diagramView,
+        largerText,
       )}
       {generatedLayoutPlan
         ? renderFlowSvgPanel(
@@ -15919,6 +15930,7 @@ export default function BetaFlowDiagram({
           null,
           nativeViewControls,
           diagramView,
+          largerText,
         )
         : (
           <section className="beta-flow-comparison-panel beta-flow-comparison-panel-empty" aria-label="Reference (tuned) layout unavailable">
