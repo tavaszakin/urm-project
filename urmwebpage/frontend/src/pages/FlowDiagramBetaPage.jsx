@@ -546,6 +546,7 @@ export default function FlowDiagramBetaPage() {
               showLayoutComparison={import.meta.env.DEV && showLayoutComparison}
               diagramView={{ mode: viewMode, onChange: setViewMode }}
               nativeViewControls
+              largerText
             />
           </section>
         ) : null}

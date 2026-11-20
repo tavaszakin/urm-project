@@ -730,3 +730,26 @@
   font-size: 10px;
   font-weight: 700;
 }
+
+.beta-flow-page .flow-diagram-typography .beta-flow-node-title-math {
+  font-size: calc(9px * var(--flow-instruction-label-scale, 1));
+}
+
+.beta-flow-page .flow-diagram-typography .beta-flow-node-body-math {
+  font-size: calc(15px * var(--flow-instruction-label-scale, 1));
+}
+
+.beta-flow-page .flow-diagram-typography .beta-flow-node-label-html :is(.math-text, .katex) {
+  font-size: 1em;
+}
+
+/* Center the wider expression in the diamond and position its index above it. */
+.beta-flow-page .flow-diagram-typography .beta-flow-node-conditionalJump + foreignObject .beta-flow-node-label-html {
+  position: relative;
+}
+
+.beta-flow-page .flow-diagram-typography .beta-flow-node-conditionalJump + foreignObject .beta-flow-node-title-math {
+  position: absolute;
+  bottom: calc(50% + 9px * var(--flow-instruction-label-scale, 1));
+  font-size: min(8px, 12px * var(--flow-instruction-label-scale, 1));
+}
