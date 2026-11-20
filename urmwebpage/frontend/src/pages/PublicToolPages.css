@@ -676,3 +676,57 @@
   color: inherit;
 }
 /* END approved public text weight/color standard. */
+
+/* Keep the former inset where it determines the SVG viewport width. */
+.beta-flow-page .beta-flow-card {
+  --flow-diagram-inset: calc(var(--app-panel-padding) + 1px);
+  min-width: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.beta-flow-page .beta-flow-card :is(.beta-flow-comparison-grid, .beta-flow-svg-shell) {
+  margin-inline: var(--flow-diagram-inset);
+}
+
+.beta-flow-page .beta-flow-card .beta-flow-comparison-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+}
+
+.beta-flow-page .beta-flow-card .beta-flow-comparison-grid .beta-flow-svg-shell {
+  margin-inline: 0;
+}
+
+.beta-flow-page .beta-flow-card .beta-flow-svg-shell {
+  /* Preserve the scrollport dimensions with an invisible border. */
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+}
+
+[data-theme="light"] .beta-flow-page .beta-flow-card .beta-flow-svg-shell {
+  background: #fff;
+}
+
+.beta-flow-page .beta-flow-card .beta-flow-svg {
+  --beta-flow-structure: #111318;
+  --beta-flow-annotation: #171d27;
+  --beta-flow-text: #101520;
+}
+
+[data-theme="night"] .beta-flow-page .beta-flow-card .beta-flow-svg {
+  --beta-flow-structure: #d7e1ed;
+  --beta-flow-annotation: #e6eef7;
+  --beta-flow-text: #f2f6fc;
+}
+
+.beta-flow-page .beta-flow-svg :is(.beta-flow-edge polyline, .beta-flow-node-shape) {
+  stroke-width: 1.2;
+}
+
+.beta-flow-page .beta-flow-svg .beta-flow-edge-label {
+  font-size: 10px;
+  font-weight: 700;
+}
