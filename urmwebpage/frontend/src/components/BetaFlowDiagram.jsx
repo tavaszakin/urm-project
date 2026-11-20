@@ -15073,7 +15073,7 @@ function auditEdgeBoundsForLayoutPlan(layoutPlan) {
   };
 }
 
-function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow diagram", nativeViewControls = false }) {
+function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow diagram", nativeViewControls = false, diagramView = null }) {
   const { layout } = layoutPlan;
   const arrowMarkerId = `beta-flow-arrow-${useId().replace(/:/g, "")}`;
   const viewControlName = `${arrowMarkerId}-view`;
@@ -15084,7 +15084,9 @@ function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow di
   // View mode for fitting the (already-computed) SVG into the panel: "auto" picks
   // fit-whole for short diagrams and readable-scroll for tall ones; the toggle lets the
   // user force either. Purely a display choice — never touches layout/positions/routes.
-  const [viewMode, setViewMode] = useState("auto");
+  const [localViewMode, setLocalViewMode] = useState("auto");
+  const viewMode = diagramView?.mode ?? localViewMode;
+  const setViewMode = diagramView?.onChange ?? setLocalViewMode;
 
   useEffect(() => {
     const el = containerRef.current;
@@ -15337,10 +15339,10 @@ function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow di
             id={arrowMarkerId}
             markerWidth="9"
             markerHeight="9"
-            refX="8"
+            refX={diagramView ? 8.1 : 8}
             refY="4.5"
             orient="auto"
-            markerUnits="strokeWidth"
+            markerUnits={diagramView ? "userSpaceOnUse" : "strokeWidth"}
           >
             <path d="M0,0 L9,4.5 L0,9 Z" className="beta-flow-arrow-head" />
           </marker>
@@ -15409,8 +15411,8 @@ function FlowSvgDisplay({ layoutPlan, ariaLabel = "Instruction-level URM flow di
   );
 }
 
-function renderFlowSvg(layoutPlan, { ariaLabel = "Instruction-level URM flow diagram", nativeViewControls = false } = {}) {
-  return <FlowSvgDisplay layoutPlan={layoutPlan} ariaLabel={ariaLabel} nativeViewControls={nativeViewControls} />;
+function renderFlowSvg(layoutPlan, { ariaLabel = "Instruction-level URM flow diagram", nativeViewControls = false, diagramView = null } = {}) {
+  return <FlowSvgDisplay layoutPlan={layoutPlan} ariaLabel={ariaLabel} nativeViewControls={nativeViewControls} diagramView={diagramView} />;
 }
 
 function renderFlowSvgPanel(
@@ -15421,6 +15423,7 @@ function renderFlowSvgPanel(
   debugBadge = null,
   headerControl = null,
   nativeViewControls = false,
+  diagramView = null,
 ) {
   return (
     <section className="beta-flow-comparison-panel" aria-label={title}>
@@ -15440,7 +15443,7 @@ function renderFlowSvgPanel(
           <p className="beta-flow-comparison-panel-note">{subtitle}</p>
         ) : null}
       </header>
-      {renderFlowSvg(layoutPlan, { ariaLabel, nativeViewControls })}
+      {renderFlowSvg(layoutPlan, { ariaLabel, nativeViewControls, diagramView })}
     </section>
   );
 }
@@ -15784,6 +15787,7 @@ export default function BetaFlowDiagram({
   layoutMetadata = null,
   showLayoutComparison = false,
   nativeViewControls = false,
+  diagramView = null,
 }) {
   // "Collapse setup blocks" (v1) is disabled/archived — see
   // .sketchv3-harness/archive/collapse_setup_blocks_v1_disabled.md. Hardcoded false so the active
@@ -15875,7 +15879,7 @@ export default function BetaFlowDiagram({
       {layoutPlan.constructionStatus !== "complete" && <p role="status">
         SketchV5 construction {layoutPlan.constructionStatus}. Showing the committed prefix.
       </p>}
-      {renderFlowSvg(layoutPlan, { nativeViewControls })}
+      {renderFlowSvg(layoutPlan, { nativeViewControls, diagramView })}
     </>;
   }
 
@@ -15903,6 +15907,7 @@ export default function BetaFlowDiagram({
         null,
         null,
         nativeViewControls,
+        diagramView,
       )}
       {generatedLayoutPlan
         ? renderFlowSvgPanel(
@@ -15913,6 +15918,7 @@ export default function BetaFlowDiagram({
           generatedStrategyLabel,
           null,
           nativeViewControls,
+          diagramView,
         )
         : (
           <section className="beta-flow-comparison-panel beta-flow-comparison-panel-empty" aria-label="Reference (tuned) layout unavailable">

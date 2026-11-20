@@ -234,6 +234,7 @@ function isGeometryCollectionModeEnabled() {
 }
 
 export default function FlowDiagramBetaPage() {
+  const [viewMode, setViewMode] = useState("fit");
   const [selectedFunctionState, setSelectedFunctionState] = useState({
     functionSpec: DEFAULT_FUNCTION_SPEC,
   });
@@ -543,6 +544,7 @@ export default function FlowDiagramBetaPage() {
               selectedExampleName={layoutMetadata?.exampleKey ?? compiledResult.functionSpec?.kind}
               layoutMetadata={layoutMetadata}
               showLayoutComparison={import.meta.env.DEV && showLayoutComparison}
+              diagramView={{ mode: viewMode, onChange: setViewMode }}
               nativeViewControls
             />
           </section>
