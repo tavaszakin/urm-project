@@ -1,5 +1,6 @@
 import useFittedInstructionLabels from "./betaFlow/useFittedInstructionLabels.js";
 import { buildLayoutPlan as buildOfficialSketchV5Plan } from "../layout/sketchv5/display.js";
+import { buildLayoutPlan as buildSketchV53Plan } from "../layout/sketchv53/display.js";
 import KatexMath from "./KatexMath.jsx";
 import { applySketchV1Layout } from "./SketchV1FlowDiagram.jsx";
 import { applySketchV3LayoutWithAutomaticRepair } from "./SketchV3FlowDiagram.jsx";
@@ -15764,12 +15765,18 @@ function buildSketchV4LayoutPlan(program, selectedFunctionId, sketchV3Plan, opti
   };
 }
 
-// Every ordinary diagram uses the unchanged official V5 display adapter.
-// Metadata supplies labels/dimensions only; V5 owns all construction geometry.
+// Metadata supplies labels and dimensions for the renderer.
+// The public Flow Diagram opts into SketchV5.3 with the validated E/74 profile.
 // Stopped/unsupported results remain their actual prefix, without legacy fallback.
 function computePrimaryLayoutPlan(program, selectedFunctionId, options = {}) {
   const metadata = buildSketchV4MetadataPlan(program, selectedFunctionId, options);
-  return buildOfficialSketchV5Plan(program, metadata, options);
+  if (!options.useE74Layout) return buildOfficialSketchV5Plan(program, metadata, options);
+  return buildSketchV53Plan(program, metadata, {
+    rectangleWidth: 74,
+    spacingScale: 0.8,
+    ordinaryPitch: 54,
+    recordEmbedding: false,
+  });
 }
 
 // Headless verification entry points (node harness / dev console); not used by the app UI.
@@ -15798,6 +15805,7 @@ export default function BetaFlowDiagram({
   nativeViewControls = false,
   diagramView = null,
   largerText = false,
+  useE74Layout = false,
 }) {
   // "Collapse setup blocks" (v1) is disabled/archived — see
   // .sketchv3-harness/archive/collapse_setup_blocks_v1_disabled.md. Hardcoded false so the active
@@ -15819,13 +15827,14 @@ export default function BetaFlowDiagram({
   const layoutPlan = useMemo(
     () => isInstructionList(program)
       ? computePrimaryLayoutPlan(program, selectedFunctionId, {
+          useE74Layout,
           collapseSetupBlocks,
           selectedExampleName,
           debugLayoutMetadata: layoutMetadata,
         })
       : null,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [program, selectedFunctionId, collapseSetupBlocks, selectedExampleName],
+    [program, selectedFunctionId, collapseSetupBlocks, selectedExampleName, useE74Layout],
   );
 
   const [generatedLayoutPlan, generatedLayoutError] = useMemo(

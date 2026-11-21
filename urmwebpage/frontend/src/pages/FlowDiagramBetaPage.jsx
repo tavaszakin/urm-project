@@ -547,6 +547,7 @@ export default function FlowDiagramBetaPage() {
               diagramView={{ mode: viewMode, onChange: setViewMode }}
               nativeViewControls
               largerText
+              useE74Layout
             />
           </section>
         ) : null}
