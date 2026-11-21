@@ -530,7 +530,7 @@ def _compile_primitive_recursion_flat_parts(spec: FunctionSpec) -> tuple[Program
     if type(recursion_index) is not int or recursion_index < 0 or recursion_index > base_arity:
         raise ValueError(f"{kind} requires `recursion_index` to be within 0..{base_arity}")
 
-    default_step_argument_indices = list(range(required_step_arity))
+    default_step_argument_indices = list(range(step_arity))
     step_argument_indices = spec.step_argument_indices
     if step_argument_indices is None:
         resolved_step_argument_indices = default_step_argument_indices
